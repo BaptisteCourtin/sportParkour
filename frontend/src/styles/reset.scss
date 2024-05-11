@@ -1,0 +1,160 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  vertical-align: baseline;
+  font-size: 100%;
+}
+
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  min-height: 100vh;
+}
+
+body {
+  min-height: 100%;
+
+  background: var(--back);
+  color: var(--color);
+
+  font-size: 1rem;
+  font-family: sans-serif;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background-color: var(--color);
+  color: var(--back);
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+textarea {
+  resize: none;
+}
+
+ol,
+ul {
+  list-style: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* --- */
+
+h1 {
+  font-size: var(--fs-h1);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+h2 {
+  font-size: var(--fs-h2);
+  text-align: center;
+}
+
+h3 {
+  font-size: var(--fs-h3);
+  text-align: center;
+}
+
+h4 {
+  font-size: var(--fs-h4);
+  text-align: center;
+}
+
+/* --- */
+
+.layoutFlex {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width: 100%;
+  min-height: 100vh;
+
+  background-color: var(--back);
+  color: var(--color);
+
+  .layoutChild {
+    padding: 2rem 2rem;
+
+    width: 100%;
+    max-width: 1360px;
+
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 0;
+
+    main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      width: 100%;
+    }
+  }
+}
+
+footer {
+  height: 2rem;
+}
+
+.retourTopButton {
+  width: 100%;
+  padding-left: 2rem;
+  text-align: left;
+}
+
+.adminDeleteCategorie,
+.adminDeleteAd {
+  width: 100%;
+  margin: 1rem 0;
+
+  button {
+    border-radius: var(--border-radius);
+    padding: var(--pad);
+    float: right;
+  }
+}
+
+.container-modifier {
+  width: 100%;
+  text-align: right;
+}
+
+.error {
+  color: var(--red);
+}
+
+/* --- */
+
+@media (prefers-reduced-motion: reduce) {
+  html:focus-within {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    -webkit-animation-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    -webkit-animation-iteration-count: 1 !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
