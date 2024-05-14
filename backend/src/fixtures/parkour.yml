@@ -1,0 +1,15 @@
+entity: ParkourEntity
+items:
+  parkour{1..3}:
+    title: "{{lorem.word}}"
+    description: "{{lorem.paragraphs(7)}}"
+    time: "{{number.int(150)}}"
+    city: "{{location.city}}"
+    start: "{{location.nearbyGPSCoordinate}}"
+
+  parkour{4..6}:
+    title: "{{lorem.word}}"
+    description: "{{lorem.paragraphs(7)}}"
+    time: "{{number.int(150)}}"
+    city: "{{location.city}}"
+    start: "{{location.nearbyGPSCoordinate}}"

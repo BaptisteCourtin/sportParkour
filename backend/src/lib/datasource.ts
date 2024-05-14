@@ -1,5 +1,8 @@
 import { DataSource } from "typeorm";
 // import les entities
+import EpreuveEntity from "../entities/epreuve.entity";
+import ParkourEntity from "../entities/parkour.entity";
+import UserEntity from "../entities/user.entity";
 
 // -----------
 // AVEC DOCKER
@@ -12,7 +15,7 @@ import { DataSource } from "typeorm";
 //   database: process.env.POSTGRES_DB,
 //   username: process.env.POSTGRES_USER,
 //   password: process.env.POSTGRES_PASSWORD,
-//   entities: [], // mettre les entities ici
+//   entities: [EpreuveEntity, ParkourEntity, UserEntity], // mettre les entities ici
 //   synchronize: true, //à ne pas utiliser en production
 //   logging: ["error", "query"], //à ne pas utiliser en production
 // });
@@ -24,7 +27,7 @@ import { DataSource } from "typeorm";
 export default new DataSource({
   type: "sqlite",
   database: "sportParkour.sqlite",
-  entities: [], // mettre les entities
+  entities: [EpreuveEntity, ParkourEntity, UserEntity], // mettre les entities
   synchronize: true, //à ne pas utiliser en production
   logging: ["error", "query"], //à ne pas utiliser en production
 });

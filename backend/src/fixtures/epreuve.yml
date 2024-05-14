@@ -1,0 +1,8 @@
+entity: EpreuveEntity
+items:
+  epreuve{1..8}:
+    title: "{{lorem.word}}"
+    description: "{{lorem.paragraphs(7)}}"
+    easyToDo: "{{lorem.sentence(45)}}"
+    mediumToDo: "{{lorem.sentence(40)}}"
+    hardToDo: "{{lorem.sentence(55)}}"

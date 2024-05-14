@@ -2,6 +2,8 @@ import "reflect-metadata";
 import datasource from "./lib/datasource";
 
 // import les resolvers
+import EpreuveResolver from "./resolvers/epreuve.resolver";
+import ParkourResolver from "./resolvers/parkour.resolver";
 import UserResolver from "./resolvers/user.resolver";
 
 import { buildSchema } from "type-graphql";
@@ -19,7 +21,7 @@ const httpServer = http.createServer(app);
 
 async function main() {
   const schema = await buildSchema({
-    resolvers: [UserResolver], // mettre les resolvers
+    resolvers: [EpreuveResolver, ParkourResolver, UserResolver], // mettre les resolvers
     validate: false,
   });
   const server = new ApolloServer<{}>({
