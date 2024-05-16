@@ -1,0 +1,16 @@
+entity: JoinUserParkourEntity
+items:
+  join_user_parkour1:
+    user: "@user1"
+    parkour: "@parkour1"
+    note: 4.75
+    favoris: true
+  join_user_parkour2:
+    user: "@user1"
+    parkour: "@parkour2"
+    note: 2.25
+    favoris: false
+  join_user_parkour3:
+    user: "@user2"
+    parkour: "@parkour1"
+    favoris: true

@@ -1,10 +1,3 @@
-epreuves:
-	- "@epreuve1"
-	- "@epreuve2"
-	- "@epreuve3"
-
-
-epreuves:
-	- "@epreuve3"
-	- "@epreuve4"
-	- "@epreuve5"
+    parkours:
+      - "@parkour1"
+      - "@parkour2"

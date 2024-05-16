@@ -1,20 +1,26 @@
 import { Repository } from "typeorm";
+import datasource from "../lib/datasource";
+
 import EpreuveEntity, {
   EpreuveCreateEntity,
   EpreuveUpdateEntity,
 } from "../entities/epreuve.entity";
-
-import datasource from "../lib/datasource";
+import EpreuveImageEntity from "../entities/imageEpreuve.entity";
 
 class EpreuveService {
   db: Repository<EpreuveEntity>;
+  dbImage: Repository<EpreuveImageEntity>;
 
   constructor() {
     this.db = datasource.getRepository(EpreuveEntity);
+    this.dbImage = datasource.getRepository(EpreuveImageEntity);
   }
 
   async get(id: number) {
-    const epreuve = await this.db.findOneBy({ id });
+    const epreuve = await this.db.findOne({
+      where: { id },
+      relations: ["images"], // Charge la relation 'images'
+    });
     if (!epreuve) {
       throw new Error("Cette épreuve n'existe pas");
     }

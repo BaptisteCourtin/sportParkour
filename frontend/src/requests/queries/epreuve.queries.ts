@@ -3,12 +3,17 @@ import { gql } from "@apollo/client";
 export const GET_EPREUVE = gql`
   query GetEpreuve($getEpreuveId: Float!) {
     getEpreuve(id: $getEpreuveId) {
+      id
+      title
       description
       easyToDo
-      hardToDo
-      id
       mediumToDo
-      title
+      hardToDo
+      videoLink
+      images {
+        id
+        lien
+      }
     }
   }
 `;

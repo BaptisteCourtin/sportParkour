@@ -1,8 +1,16 @@
-import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import {
+  BeforeInsert,
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 import { Field, ID, InputType, ObjectType } from "type-graphql";
 // const argon2 = require("argon2");
 
 import { Role } from "../enum/role.enum";
+import ParkourEntity from "./parkour.entity";
 
 // user en entier
 @Entity("user")
@@ -16,6 +24,10 @@ class UserEntity {
   @Field(() => ID)
   @PrimaryGeneratedColumn("uuid")
   id: string;
+
+  @Field()
+  @Column({ length: 100 })
+  password: string;
 
   @Field()
   @Column({ length: 100 })
@@ -43,23 +55,38 @@ class UserEntity {
   email: string;
 
   @Field()
-  @Column({ length: 100 })
-  password: string;
-
-  @Field({ nullable: true })
   @Column({ length: 200, nullable: true })
   adress: string;
 
-  @Field({ nullable: true })
+  @Field()
   @Column({ length: 10, nullable: true })
   phone: string;
 
   @Field(() => Role)
   @Column({
-    type: "integer",
+    type: "text",
     default: Role.CLIENT,
   })
   role: Role;
+
+  @Field(() => ParkourEntity)
+  @ManyToMany(() => ParkourEntity, {
+    onDelete: "NO ACTION",
+    onUpdate: "NO ACTION",
+    nullable: true,
+  })
+  @JoinTable({
+    name: "join_user_parkour",
+    joinColumn: {
+      name: "user_id",
+      referencedColumnName: "id",
+    },
+    inverseJoinColumn: {
+      name: "parkour_id",
+      referencedColumnName: "id",
+    },
+  })
+  parkours: ParkourEntity[];
 }
 
 // ---
@@ -68,13 +95,13 @@ class UserEntity {
 @InputType()
 export class UserInputRegisterEntity {
   @Field()
+  password: string;
+  @Field()
   name: string;
   @Field()
   firstname: string;
   @Field()
   email: string;
-  @Field()
-  password: string;
   @Field({ nullable: true })
   adress: string;
   @Field({ nullable: true })
@@ -85,14 +112,16 @@ export class UserInputRegisterEntity {
 @InputType()
 export class UserInputLoginEntity {
   @Field()
-  email: string;
-  @Field()
   password: string;
+  @Field()
+  email: string;
 }
 
 // update du user (changement des infos)
 @InputType()
 export class UserUpdateEntity {
+  @Field({ nullable: true })
+  password: string;
   @Field({ nullable: true })
   name: string;
   @Field({ nullable: true })
@@ -100,22 +129,9 @@ export class UserUpdateEntity {
   @Field({ nullable: true })
   email: string;
   @Field({ nullable: true })
-  password: string;
-  @Field({ nullable: true })
   adress: string;
   @Field({ nullable: true })
   phone: string;
-}
-
-// ---
-
-// savoir si l'authent s'est bien passé
-@ObjectType()
-export class UserMessageEntity {
-  @Field()
-  message: string;
-  @Field()
-  success: boolean;
 }
 
 export default UserEntity;
