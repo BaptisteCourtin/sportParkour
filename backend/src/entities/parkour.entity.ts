@@ -6,7 +6,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { Field, ID, InputType, ObjectType } from "type-graphql";
+import { Field, ID, InputType, Int, ObjectType } from "type-graphql";
 import EpreuveEntity from "./epreuve.entity";
 
 import { Difficulty } from "../enum/difficulty.enum";
@@ -27,22 +27,23 @@ class ParkourEntity {
   @Column()
   description: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ nullable: true })
   time: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ nullable: true })
   length: string;
 
-  @Field(() => Difficulty)
+  @Field(() => Difficulty, { nullable: true })
   @Column({
     type: "text",
+    enum: Difficulty,
     nullable: true,
   })
   difficulty: Difficulty;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ nullable: true })
   city: string;
 
@@ -50,15 +51,19 @@ class ParkourEntity {
   @Column()
   start: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ nullable: true })
   note: number;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ nullable: true })
   nbVote: number;
 
-  @Field(() => EpreuveEntity)
+  @Field(() => [ImageParkourEntity], { nullable: true })
+  @OneToMany(() => ImageParkourEntity, (img) => img.id_parkour)
+  images: ImageParkourEntity[];
+
+  @Field(() => [EpreuveEntity], { nullable: true })
   @ManyToMany(() => EpreuveEntity, {
     onDelete: "NO ACTION",
     onUpdate: "NO ACTION",
@@ -76,10 +81,6 @@ class ParkourEntity {
     },
   })
   epreuves: EpreuveEntity[];
-
-  @Field(() => [ImageParkourEntity])
-  @OneToMany(() => ImageParkourEntity, (img) => img.id_parkour)
-  images: ImageParkourEntity[];
 }
 
 // ---
@@ -90,20 +91,22 @@ export class ParkourCreateEntity {
   title: string;
   @Field()
   description: string;
-  @Field()
+  @Field({ nullable: true })
   time: string;
-  @Field()
+  @Field({ nullable: true })
   length: string;
-  @Field(() => Difficulty)
+  @Field(() => Difficulty, { nullable: true })
   difficulty: Difficulty;
-  @Field()
+  @Field({ nullable: true })
   city: string;
   @Field()
   start: string;
-  @Field()
+  @Field({ nullable: true })
   note: number;
-  @Field()
+  @Field({ nullable: true })
   nbVote: number;
+  @Field(() => [Int], { nullable: true })
+  epreuves: number[];
 }
 
 @InputType()
@@ -126,6 +129,8 @@ export class ParkourUpdateEntity {
   note: number;
   @Field({ nullable: true })
   nbVote: number;
+  @Field(() => [Int], { nullable: true })
+  epreuves: number[];
 }
 
 export default ParkourEntity;

@@ -14,6 +14,12 @@ export default class EpreuveResolver {
     return result;
   }
 
+  @Query(() => [EpreuveEntity])
+  async getListAd() {
+    const result: EpreuveEntity[] = await new EpreuveService().getAll();
+    return result;
+  }
+
   // ---
 
   @Mutation(() => EpreuveEntity)

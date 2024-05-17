@@ -1,3 +1,11 @@
-    parkours:
-      - "@parkour1"
-      - "@parkour2"
+les images EpreuveImageEntity / ParkourImageEntity : 
+  -> ne pas les create en même temps que les entity avec EpreuveCreateEntity / ParkourCreateEntity
+  -> on les uploads avec le service image
+    -> on met le lien + l'id_epreuve / id_parkour dans la bdd image_epreuve/ image_parkour
+  => on pourra les reprendre normalement avec apollo
+
+
+relier les epreuves aux parkours :
+  -> dans la partie admin des parkours, y'a une recherche sur les epreuves
+    -> on voie juste le nom
+    -> on envoie juste les id pour la création / modification des epreuves

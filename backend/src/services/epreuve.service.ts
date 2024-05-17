@@ -1,4 +1,4 @@
-import { Repository } from "typeorm";
+import { In, Repository } from "typeorm";
 import datasource from "../lib/datasource";
 
 import EpreuveEntity, {
@@ -17,7 +17,7 @@ class EpreuveService {
   }
 
   async get(id: number) {
-    const epreuve = await this.db.findOne({
+    const epreuve: EpreuveEntity | null = await this.db.findOne({
       where: { id },
       relations: ["images"], // Charge la relation 'images'
     });
@@ -27,22 +27,50 @@ class EpreuveService {
     return epreuve;
   }
 
+  async getAll(epreuvesIds?: number[]) {
+    const allEpreuves: EpreuveEntity[] | null = await this.db.find({
+      where: {
+        id:
+          epreuvesIds && epreuvesIds.length > 0
+            ? In(epreuvesIds.map((id) => id))
+            : undefined,
+      },
+    });
+
+    if (!allEpreuves) {
+      throw new Error("Pas d'epreuves");
+    }
+
+    console.log(allEpreuves);
+    return allEpreuves;
+  }
+
   // ---
 
-  async create({ ...data }: EpreuveCreateEntity) {
+  async create(data: EpreuveCreateEntity) {
     const newEpreuve = this.db.create(data);
     return await this.db.save(newEpreuve);
   }
 
-  async modify(id: number, { ...data }: Partial<EpreuveUpdateEntity>) {
-    const ad = await this.get(id);
-    const infosMerge = this.db.merge(ad, data);
-    return await this.db.save(infosMerge);
+  // pas besoin de partial<>
+  async modify(id: number, data: EpreuveUpdateEntity) {
+    const epreuve = await this.get(id);
+
+    // Itérer sur les clés de l'objet data
+    for (const key of Object.keys(data) as Array<keyof EpreuveUpdateEntity>) {
+      // Vérifier si la valeur n'est pas nulle
+      if (data[key] !== null) {
+        // Mettre à jour la propriété correspondante de epreuve
+        (epreuve as any)[key] = data[key];
+      }
+    }
+
+    return await this.db.save(epreuve);
   }
 
   async delete(id: number) {
-    const ad = await this.get(id);
-    await this.db.remove(ad);
+    const epreuve = await this.get(id);
+    await this.db.remove(epreuve);
   }
 }
 

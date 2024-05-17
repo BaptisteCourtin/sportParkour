@@ -23,19 +23,19 @@ class EpreuveEntity {
   @Column()
   description: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ nullable: true })
   easyToDo: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ nullable: true })
   mediumToDo: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ nullable: true })
   hardToDo: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ nullable: true })
   videoLink: string;
 
@@ -62,6 +62,7 @@ export class EpreuveCreateEntity {
   videoLink: string;
 }
 
+// obliger de mettre nullable: true si on veut modifier que certain champs
 @InputType()
 export class EpreuveUpdateEntity {
   @Field({ nullable: true })
