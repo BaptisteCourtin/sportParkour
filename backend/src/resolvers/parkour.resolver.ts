@@ -18,12 +18,10 @@ export default class ParkourResolver {
 
   @Mutation(() => ParkourEntity)
   async createParkour(@Arg("infos") infos: ParkourCreateEntity) {
-    const resultNewParkour: ParkourEntity = await new ParkourService().create(
-      infos
-    );
+    const resultNewParkourID: number = await new ParkourService().create(infos);
 
     const result: ParkourEntity = await new ParkourService().get(
-      resultNewParkour.id
+      resultNewParkourID
     );
     return result;
   }
@@ -42,7 +40,7 @@ export default class ParkourResolver {
     await new ParkourService().delete(id);
 
     const returnMessage = new MessageEntity();
-    returnMessage.message = "Vous venez de supprimer une épreuve";
+    returnMessage.message = "Vous venez de supprimer un parkour";
     returnMessage.success = true;
     return returnMessage;
   }

@@ -9,3 +9,14 @@ relier les epreuves aux parkours :
   -> dans la partie admin des parkours, y'a une recherche sur les epreuves
     -> on voie juste le nom
     -> on envoie juste les id pour la création / modification des epreuves
+
+
+
+pour ModifyParkour => 
+  pour les epreuves => [1,2,5]
+  rien modifier => null
+  enlever tout => []
+
+
+on ne peux pas supprimer une epreuve si elle est relier à un parkour
+on peux supprimer un parkour si y'a une relation avec epreuve, ça supprime aussi les relations

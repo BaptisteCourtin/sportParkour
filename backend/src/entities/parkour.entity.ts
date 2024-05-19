@@ -74,8 +74,6 @@ class ParkourEntity {
 
   @Field(() => [EpreuveEntity], { nullable: true })
   @ManyToMany(() => EpreuveEntity, {
-    onDelete: "NO ACTION",
-    onUpdate: "NO ACTION",
     nullable: true,
   })
   @JoinTable({

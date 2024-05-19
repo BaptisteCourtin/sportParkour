@@ -20,7 +20,7 @@ export const CREATE_EPREUVE = gql`
 
 // {
 //   "infos": {
-//     "title": null,
+//     "title": "null",
 //     "description": null,
 //     "easyToDo": null,
 //     "mediumToDo": null,
@@ -59,7 +59,7 @@ export const MODIFY_EPREUVE = gql`
 //     "hardToDo": null,
 //     "videoLink": null
 //   },
-//   "modifyEpreuveId": null
+//   "modifyEpreuveId": 0
 // }
 
 export const DELETE_EPREUVE = gql`

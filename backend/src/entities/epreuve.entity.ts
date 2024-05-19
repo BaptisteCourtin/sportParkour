@@ -1,6 +1,14 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 import { Field, ID, InputType, ObjectType } from "type-graphql";
 import ImageEpreuveEntity from "./imageEpreuve.entity";
+import ParkourEntity from "./parkour.entity";
 
 @Entity("epreuve")
 @ObjectType()
@@ -38,6 +46,23 @@ class EpreuveEntity {
     nullable: true,
   })
   images: ImageEpreuveEntity[];
+
+  @Field(() => [ParkourEntity], { nullable: true })
+  @ManyToMany(() => ParkourEntity, {
+    nullable: true,
+  })
+  @JoinTable({
+    name: "join_parkour_epreuve",
+    joinColumn: {
+      name: "epreuve_id",
+      referencedColumnName: "id",
+    },
+    inverseJoinColumn: {
+      name: "parkour_id",
+      referencedColumnName: "id",
+    },
+  })
+  parkours: ParkourEntity[];
 }
 
 // ---
@@ -46,7 +71,7 @@ class EpreuveEntity {
 export class EpreuveCreateEntity {
   @Field()
   title: string;
-  @Field()
+  @Field({ nullable: true })
   description: string;
   @Field({ nullable: true })
   easyToDo: string;

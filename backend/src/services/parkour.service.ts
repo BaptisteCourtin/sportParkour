@@ -11,11 +11,9 @@ import EpreuveService from "./epreuve.service";
 
 class ParkourService {
   db: Repository<ParkourEntity>;
-  // dbEpreuve: Repository<EpreuveEntity>;
 
   constructor() {
     this.db = datasource.getRepository(ParkourEntity);
-    // this.dbEpreuve = datasource.getRepository(EpreuveEntity);
   }
 
   async get(id: number) {
@@ -38,17 +36,25 @@ class ParkourService {
     }
 
     const newParkour = this.db.create({ ...data, epreuves });
-
-    return await this.db.save(newParkour);
+    await this.db.save(newParkour);
+    return newParkour.id;
   }
 
   async modify(id: number, data: ParkourUpdateEntity) {
     const parkour = await this.get(id);
 
     for (const key of Object.keys(data) as Array<keyof ParkourUpdateEntity>) {
-      if (data[key] !== null) {
+      if (data[key] !== null && key !== "epreuves") {
         (parkour as any)[key] = data[key];
       }
+    }
+
+    // Gérer les relations avec epreuves
+    if (data.epreuves !== null && data.epreuves.length > 0) {
+      const epreuveIds = data.epreuves;
+      parkour.epreuves = await new EpreuveService().getAll(epreuveIds);
+    } else if (data.epreuves.length == 0) {
+      parkour.epreuves = [];
     }
 
     return await this.db.save(parkour);
@@ -56,6 +62,10 @@ class ParkourService {
 
   async delete(id: number) {
     const parkour = await this.get(id);
+    // pour sup les relations
+    parkour.epreuves = [];
+    await this.db.save(parkour);
+
     await this.db.remove(parkour);
   }
 }

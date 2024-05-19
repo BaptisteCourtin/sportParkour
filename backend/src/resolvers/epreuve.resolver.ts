@@ -24,7 +24,12 @@ export default class EpreuveResolver {
 
   @Mutation(() => EpreuveEntity)
   async createEpreuve(@Arg("infos") infos: EpreuveCreateEntity) {
-    const result: EpreuveEntity = await new EpreuveService().create(infos);
+    const resultNewEpreuveID: number = await new EpreuveService().create(infos);
+
+    // on cré pas les images ici => on récupe par rapport à l'id
+    const result: EpreuveEntity = await new EpreuveService().get(
+      resultNewEpreuveID
+    );
     return result;
   }
 
@@ -39,6 +44,14 @@ export default class EpreuveResolver {
 
   @Mutation(() => MessageEntity)
   async deleteEpreuve(@Arg("id") id: number) {
+    const isLinkedToParkours =
+      await new EpreuveService().isEpreuveLinkedToParkours(id);
+
+    if (isLinkedToParkours) {
+      throw new Error(
+        "Cette épreuve est encore liée à des parkours et ne peut pas être supprimée."
+      );
+    }
     await new EpreuveService().delete(id);
 
     const returnMessage = new MessageEntity();

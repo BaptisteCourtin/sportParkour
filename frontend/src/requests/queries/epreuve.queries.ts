@@ -17,3 +17,12 @@ export const GET_EPREUVE = gql`
     }
   }
 `;
+
+export const GET_ALL_EPREUVE = gql`
+  query GetListEpreuve {
+    getListEpreuve {
+      id
+      title
+    }
+  }
+`;
