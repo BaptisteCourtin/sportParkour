@@ -21,6 +21,10 @@ import UserResolver from "./resolvers/user.resolver";
 import AuthResolver from "./resolvers/auth.resolver";
 
 // authent
+import dotenv from "dotenv";
+dotenv.config({
+  path: "../.env", // je ne sais pas pk le path est pas le bon mais ça marche
+});
 import UserEntity from "./entities/user.entity";
 import AuthService from "./services/auth.service";
 import Cookies from "cookies";
@@ -51,7 +55,7 @@ import { customAuthChecker } from "./lib/authChecker";
 //     expressMiddleware(server)
 //   );
 
-//   await datasource.initialize(); // .env ?
+//   await datasource.initialize();
 
 //   await new Promise<void>((resolve) =>
 //     httpServer.listen({ port: 4000 }, resolve)
@@ -127,7 +131,8 @@ async function main() {
     httpServer.listen({ port: 4000 }, resolve)
   );
 
-  // console.log("ENV : ", process.env); // remove this after you've confirmed it is working
+  // console.log("ENV : ", process.env.JWT_EXPIRATION_TIME);
+  // console.log("ENV : ", process.env.SECRET_KEY);
   console.log(`🚀 Server lancé sur http://localhost:4000/`);
 }
 

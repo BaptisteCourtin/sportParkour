@@ -24,3 +24,7 @@ export const GET_PARKOUR = gql`
     }
   }
 `;
+
+// {
+//   "getParkourId": 10
+// }

@@ -1,4 +1,11 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryColumn,
+} from "typeorm";
 import { Max, Min } from "class-validator";
 import { Field, ID, ObjectType } from "type-graphql";
 
@@ -19,7 +26,7 @@ export class JoinUserParkourEntity {
 
   // precision = maximum number of digits that are stored for the values
   // scale = the number of digits to the right of the decimal point
-  @Field()
+  @Field({ nullable: true })
   @Column("decimal", { precision: 3, scale: 2, unsigned: true, nullable: true })
   @Min(0, { message: "La valeur minimale est 0." })
   @Max(5, { message: "La valeur maximale est 5." })
@@ -30,14 +37,14 @@ export class JoinUserParkourEntity {
   favoris: boolean;
 
   @Field(() => UserEntity)
-  @ManyToOne(() => UserEntity, (user) => user.parkours)
+  @ManyToOne(() => UserEntity)
   @JoinColumn({ name: "user_id" })
-  user: UserEntity;
+  users: UserEntity;
 
   @Field(() => ParkourEntity)
   @ManyToOne(() => ParkourEntity)
   @JoinColumn({ name: "parkour_id" })
-  parkour: ParkourEntity;
+  parkours: ParkourEntity;
 }
 
 export default JoinUserParkourEntity;

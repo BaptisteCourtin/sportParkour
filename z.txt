@@ -18,5 +18,25 @@ pour ModifyParkour =>
   enlever tout => []
 
 
+
 on ne peux pas supprimer une epreuve si elle est relier à un parkour
 on peux supprimer un parkour si y'a une relation avec epreuve, ça supprime aussi les relations
+
+
+
++---------------+             +--------------+
+|    Resolver   |             |   Service    |
++---------------+             +--------------+
+| +handleQuery()|<>----------->| +méthode1() |
+| +handleMutat()|             | +méthode2() |
++---------------+             +--------------+
+         ^                            |
+         |                            |
+         |                            | 0..* 
+         |                            |
++---------------+             +--------------+
+|     Entité    |             |   Entité     |
++---------------+             +--------------+
+| -attribut1    |             | -attribut1   |
+| -attribut2    |             | -attribut2   |
++---------------+             +--------------+

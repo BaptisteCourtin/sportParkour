@@ -29,14 +29,14 @@ export default class AuthResolver {
     const newUser = await new AuthentService().createUser(infos);
     const returnMessage = new MessageEntity();
 
-    // meassage de retour
+    // meassage de retour si bien create
     if (newUser) {
       returnMessage.message =
         "Bien joué! Vous avez maintenant un compte chez nous!";
       returnMessage.success = true;
-      // authentifie directement le user
-      const authInfos = { email: infos.email, password: infos.password };
-      this.authentification(authInfos, ctx);
+      // // authentifie directement le user
+      // const authInfos = { email: infos.email, password: infos.password };
+      // this.authentification(authInfos, ctx);
     } else {
       returnMessage.message =
         "Euuuuuuh petit problème... Je suis confu 😕 (aïe)";
@@ -70,6 +70,9 @@ export default class AuthResolver {
 
     // vérification mdp
     if (await argon2.verify(user.password, infos.password)) {
+      console.log("ENV : ", process.env.JWT_EXPIRATION_TIME);
+      console.log("ENV : ", process.env.SECRET_KEY);
+
       token = await new SignJWT({
         email: user.email,
         id: user.id,

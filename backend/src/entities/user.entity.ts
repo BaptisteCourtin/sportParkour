@@ -2,15 +2,14 @@ import {
   BeforeInsert,
   Column,
   Entity,
-  JoinTable,
-  ManyToMany,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { Field, ID, InputType, ObjectType } from "type-graphql";
 const argon2 = require("argon2");
 
 import { Role } from "../enum/role.enum";
-import ParkourEntity from "./parkour.entity";
+import JoinUserParkourEntity from "./joinUserParkour.entity";
 
 // user en entier
 @Entity("user")
@@ -70,24 +69,11 @@ class UserEntity {
   })
   role: Role;
 
-  @Field(() => [ParkourEntity], { nullable: true })
-  @ManyToMany(() => ParkourEntity, {
-    onDelete: "NO ACTION",
-    onUpdate: "NO ACTION",
+  @Field(() => [JoinUserParkourEntity], { nullable: true })
+  @OneToMany(() => JoinUserParkourEntity, (join) => join.users, {
     nullable: true,
   })
-  @JoinTable({
-    name: "join_user_parkour",
-    joinColumn: {
-      name: "user_id",
-      referencedColumnName: "id",
-    },
-    inverseJoinColumn: {
-      name: "parkour_id",
-      referencedColumnName: "id",
-    },
-  })
-  parkours: ParkourEntity[];
+  parkours: JoinUserParkourEntity[];
 }
 
 // ---

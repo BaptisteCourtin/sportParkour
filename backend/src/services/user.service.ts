@@ -13,7 +13,7 @@ class UserService {
   async get(id: string) {
     const user = await this.db.findOne({
       where: { id },
-      relations: ["parkours"], // Charge la relation 'parkours'
+      relations: ["parkours.parkours"], // Charge les relations 'parkours' => JoinUserParkourEntity ET 'parkours.parkours' => l'netity parkour pour le title
     });
     if (!user) {
       throw new Error("Vous n'existez pas ? 🤔 bizarre...");

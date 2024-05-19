@@ -5,15 +5,12 @@ import EpreuveEntity, {
   EpreuveCreateEntity,
   EpreuveUpdateEntity,
 } from "../entities/epreuve.entity";
-import EpreuveImageEntity from "../entities/imageEpreuve.entity";
 
 class EpreuveService {
   db: Repository<EpreuveEntity>;
-  dbImage: Repository<EpreuveImageEntity>;
 
   constructor() {
     this.db = datasource.getRepository(EpreuveEntity);
-    this.dbImage = datasource.getRepository(EpreuveImageEntity);
   }
 
   async get(id: number) {
@@ -27,13 +24,10 @@ class EpreuveService {
     return epreuve;
   }
 
-  async getAll(epreuvesIds?: number[]) {
+  async getAll(ids?: number[]) {
     const allEpreuves: EpreuveEntity[] | null = await this.db.find({
       where: {
-        id:
-          epreuvesIds && epreuvesIds.length > 0
-            ? In(epreuvesIds.map((id) => id))
-            : undefined,
+        id: ids && ids.length > 0 ? In(ids.map((id) => id)) : undefined,
       },
     });
 
