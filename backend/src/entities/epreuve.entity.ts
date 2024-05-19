@@ -1,10 +1,4 @@
-import {
-  Column,
-  Entity,
-  ManyToMany,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Field, ID, InputType, ObjectType } from "type-graphql";
 import ImageEpreuveEntity from "./imageEpreuve.entity";
 
@@ -16,31 +10,33 @@ class EpreuveEntity {
   id: number;
 
   @Field()
-  @Column({ unique: true })
+  @Column({ type: "varchar", length: 50, unique: true })
   title: string;
 
-  @Field()
-  @Column()
+  @Field({ nullable: true })
+  @Column({ type: "varchar", length: 750, nullable: true })
   description: string;
 
   @Field({ nullable: true })
-  @Column({ nullable: true })
+  @Column({ type: "varchar", length: 250, nullable: true })
   easyToDo: string;
 
   @Field({ nullable: true })
-  @Column({ nullable: true })
+  @Column({ type: "varchar", length: 250, nullable: true })
   mediumToDo: string;
 
   @Field({ nullable: true })
-  @Column({ nullable: true })
+  @Column({ type: "varchar", length: 250, nullable: true })
   hardToDo: string;
 
   @Field({ nullable: true })
-  @Column({ nullable: true })
+  @Column({ type: "varchar", length: 250, nullable: true })
   videoLink: string;
 
   @Field(() => [ImageEpreuveEntity], { nullable: true })
-  @OneToMany(() => ImageEpreuveEntity, (img) => img.id_epreuve)
+  @OneToMany(() => ImageEpreuveEntity, (img) => img.id_epreuve, {
+    nullable: true,
+  })
   images: ImageEpreuveEntity[];
 }
 

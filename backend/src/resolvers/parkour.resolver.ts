@@ -18,7 +18,13 @@ export default class ParkourResolver {
 
   @Mutation(() => ParkourEntity)
   async createParkour(@Arg("infos") infos: ParkourCreateEntity) {
-    const result: ParkourEntity = await new ParkourService().create(infos);
+    const resultNewParkour: ParkourEntity = await new ParkourService().create(
+      infos
+    );
+
+    const result: ParkourEntity = await new ParkourService().get(
+      resultNewParkour.id
+    );
     return result;
   }
 

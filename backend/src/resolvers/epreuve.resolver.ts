@@ -15,7 +15,7 @@ export default class EpreuveResolver {
   }
 
   @Query(() => [EpreuveEntity])
-  async getListAd() {
+  async getListEpreuve() {
     const result: EpreuveEntity[] = await new EpreuveService().getAll();
     return result;
   }

@@ -7,7 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { Field, ID, InputType, ObjectType } from "type-graphql";
-// const argon2 = require("argon2");
+const argon2 = require("argon2");
 
 import { Role } from "../enum/role.enum";
 import ParkourEntity from "./parkour.entity";
@@ -16,30 +16,31 @@ import ParkourEntity from "./parkour.entity";
 @Entity("user")
 @ObjectType()
 class UserEntity {
-  // @BeforeInsert()
-  // protected async hashPassword() {
-  //   this.password = await argon2.hash(this.password);
-  // }
+  @BeforeInsert()
+  protected async hashPassword() {
+    this.password = await argon2.hash(this.password);
+  }
 
   @Field(() => ID)
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
   @Field()
-  @Column({ length: 100 })
+  @Column({ type: "varchar", length: 100 })
   password: string;
 
   @Field()
-  @Column({ length: 100 })
+  @Column({ type: "varchar", length: 100 })
   name: string;
 
   @Field()
-  @Column({ length: 100 })
+  @Column({ type: "varchar", length: 100 })
   firstname: string;
 
   @Field()
   @Column({
-    length: 100,
+    type: "varchar",
+    length: 255,
     unique: true,
     transformer: {
       from(value: string) {
@@ -54,12 +55,12 @@ class UserEntity {
   })
   email: string;
 
-  @Field()
-  @Column({ length: 200, nullable: true })
+  @Field({ nullable: true })
+  @Column({ type: "varchar", length: 200, nullable: true })
   adress: string;
 
-  @Field()
-  @Column({ length: 10, nullable: true })
+  @Field({ nullable: true })
+  @Column({ type: "varchar", length: 10, nullable: true })
   phone: string;
 
   @Field(() => Role)
@@ -69,7 +70,7 @@ class UserEntity {
   })
   role: Role;
 
-  @Field(() => ParkourEntity)
+  @Field(() => [ParkourEntity], { nullable: true })
   @ManyToMany(() => ParkourEntity, {
     onDelete: "NO ACTION",
     onUpdate: "NO ACTION",
@@ -110,7 +111,7 @@ export class UserInputRegisterEntity {
 
 // quand le user se login
 @InputType()
-export class UserInputLoginEntity {
+export class UserInputAuthEntity {
   @Field()
   password: string;
   @Field()

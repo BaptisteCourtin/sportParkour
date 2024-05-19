@@ -7,10 +7,12 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { Field, ID, InputType, Int, ObjectType } from "type-graphql";
+import { Max, Min } from "class-validator";
+
 import EpreuveEntity from "./epreuve.entity";
+import ImageParkourEntity from "./imageParkour.entity";
 
 import { Difficulty } from "../enum/difficulty.enum";
-import ImageParkourEntity from "./imageParkour.entity";
 
 @Entity("parkour")
 @ObjectType()
@@ -20,20 +22,24 @@ class ParkourEntity {
   id: number;
 
   @Field()
-  @Column({ unique: true })
+  @Column({ type: "varchar", length: 50, unique: true })
   title: string;
 
-  @Field()
-  @Column()
+  @Field({ nullable: true })
+  @Column({ type: "varchar", length: 50, nullable: true })
   description: string;
 
   @Field({ nullable: true })
-  @Column({ nullable: true })
-  time: string;
+  @Column({ type: "int", unsigned: true, nullable: true })
+  @Min(0, { message: "La valeur minimale est 0." })
+  @Max(600, { message: "La valeur maximale est 600." })
+  time?: number;
 
   @Field({ nullable: true })
-  @Column({ nullable: true })
-  length: string;
+  @Column({ type: "int", unsigned: true, nullable: true })
+  @Min(0, { message: "La valeur minimale est 0." })
+  @Max(60, { message: "La valeur maximale est 60." })
+  length: number;
 
   @Field(() => Difficulty, { nullable: true })
   @Column({
@@ -44,11 +50,12 @@ class ParkourEntity {
   difficulty: Difficulty;
 
   @Field({ nullable: true })
-  @Column({ nullable: true })
+  @Column({ type: "varchar", length: 40, nullable: true })
   city: string;
 
+  // 49.421015, -1.388178
   @Field()
-  @Column()
+  @Column({ type: "varchar", length: 20 })
   start: string;
 
   @Field({ nullable: true })
@@ -60,7 +67,9 @@ class ParkourEntity {
   nbVote: number;
 
   @Field(() => [ImageParkourEntity], { nullable: true })
-  @OneToMany(() => ImageParkourEntity, (img) => img.id_parkour)
+  @OneToMany(() => ImageParkourEntity, (img) => img.id_parkour, {
+    nullable: true,
+  })
   images: ImageParkourEntity[];
 
   @Field(() => [EpreuveEntity], { nullable: true })
@@ -89,12 +98,12 @@ class ParkourEntity {
 export class ParkourCreateEntity {
   @Field()
   title: string;
-  @Field()
+  @Field({ nullable: true })
   description: string;
   @Field({ nullable: true })
-  time: string;
+  time: number;
   @Field({ nullable: true })
-  length: string;
+  length: number;
   @Field(() => Difficulty, { nullable: true })
   difficulty: Difficulty;
   @Field({ nullable: true })
@@ -116,9 +125,9 @@ export class ParkourUpdateEntity {
   @Field({ nullable: true })
   description: string;
   @Field({ nullable: true })
-  time: string;
+  time: number;
   @Field({ nullable: true })
-  length: string;
+  length: number;
   @Field(() => Difficulty, { nullable: true })
   difficulty: Difficulty;
   @Field({ nullable: true })

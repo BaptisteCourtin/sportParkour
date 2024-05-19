@@ -11,7 +11,10 @@ class UserService {
   }
 
   async get(id: string) {
-    const user = await this.db.findOneBy({ id });
+    const user = await this.db.findOne({
+      where: { id },
+      relations: ["parkours"], // Charge la relation 'parkours'
+    });
     if (!user) {
       throw new Error("Vous n'existez pas ? 🤔 bizarre...");
     }

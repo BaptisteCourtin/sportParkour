@@ -13,13 +13,13 @@ export const CREATE_EPREUVE = gql`
       start
       note
       nbVote
-      epreuves {
-        id
-        title
-      }
       images {
         id
         lien
+      }
+      epreuves {
+        id
+        title
       }
     }
   }

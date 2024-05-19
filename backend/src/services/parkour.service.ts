@@ -1,4 +1,4 @@
-import { DataSource, Repository } from "typeorm";
+import { Repository } from "typeorm";
 import datasource from "../lib/datasource";
 
 import ParkourEntity, {

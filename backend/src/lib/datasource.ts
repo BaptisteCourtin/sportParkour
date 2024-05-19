@@ -18,7 +18,14 @@ import ImageParkourEntity from "../entities/imageParkour.entity";
 //   database: process.env.POSTGRES_DB,
 //   username: process.env.POSTGRES_USER,
 //   password: process.env.POSTGRES_PASSWORD,
-//   entities: [EpreuveEntity, ParkourEntity, UserEntity, JoinUserParkourEntity, ImageEpreuveEntity, ImageParkourEntity], // mettre les entities ici
+//   entities: [
+//     EpreuveEntity,
+//     ParkourEntity,
+//     UserEntity,
+//     JoinUserParkourEntity,
+//     ImageEpreuveEntity,
+//     ImageParkourEntity,
+//   ], // mettre les entities ici
 //   synchronize: true, //à ne pas utiliser en production
 //   logging: ["error", "query"], //à ne pas utiliser en production
 // });
