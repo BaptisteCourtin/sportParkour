@@ -1,13 +1,6 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-  PrimaryColumn,
-} from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
 import { Max, Min } from "class-validator";
-import { Field, ID, ObjectType } from "type-graphql";
+import { Field, ID, InputType, ObjectType } from "type-graphql";
 
 import UserEntity from "./user.entity";
 import ParkourEntity from "./parkour.entity";
@@ -45,6 +38,30 @@ export class JoinUserParkourEntity {
   @ManyToOne(() => ParkourEntity)
   @JoinColumn({ name: "parkour_id" })
   parkours: ParkourEntity;
+}
+
+@InputType()
+export class JoinUserParkourCreateEntity {
+  @Field()
+  user_id: string;
+  @Field()
+  parkour_id: number;
+  @Field({ nullable: true })
+  note: number;
+  @Field()
+  favoris: boolean;
+}
+
+@InputType()
+export class JoinUserParkourUpdateEntity {
+  @Field()
+  user_id: string;
+  @Field()
+  parkour_id: number;
+  @Field({ nullable: true })
+  note: number;
+  @Field()
+  favoris: boolean;
 }
 
 export default JoinUserParkourEntity;

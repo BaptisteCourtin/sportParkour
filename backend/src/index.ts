@@ -19,6 +19,7 @@ import EpreuveResolver from "./resolvers/epreuve.resolver";
 import ParkourResolver from "./resolvers/parkour.resolver";
 import UserResolver from "./resolvers/user.resolver";
 import AuthResolver from "./resolvers/auth.resolver";
+import JoinUserParkourResolver from "./resolvers/joinUserParkour.resolver";
 
 // authent
 import dotenv from "dotenv";
@@ -81,7 +82,13 @@ export interface Payload {
 
 async function main() {
   const schema = await buildSchema({
-    resolvers: [EpreuveResolver, ParkourResolver, UserResolver, AuthResolver],
+    resolvers: [
+      EpreuveResolver,
+      ParkourResolver,
+      UserResolver,
+      AuthResolver,
+      JoinUserParkourResolver,
+    ],
     validate: false,
     authChecker: customAuthChecker,
   });

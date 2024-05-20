@@ -34,7 +34,7 @@ export default class AuthResolver {
       returnMessage.message =
         "Bien joué! Vous avez maintenant un compte chez nous!";
       returnMessage.success = true;
-      // // authentifie directement le user
+      // authentifie directement le user
       // const authInfos = { email: infos.email, password: infos.password };
       // this.authentification(authInfos, ctx);
     } else {

@@ -8,6 +8,7 @@ import ParkourEntity, {
 import EpreuveEntity from "../entities/epreuve.entity";
 
 import EpreuveService from "./epreuve.service";
+import JoinUserParkourService from "./joinUserParkour.service";
 
 class ParkourService {
   db: Repository<ParkourEntity>;
@@ -48,12 +49,13 @@ class ParkourService {
         (parkour as any)[key] = data[key];
       }
     }
+    console.log(parkour);
 
     // Gérer les relations avec epreuves
     if (data.epreuves !== null && data.epreuves.length > 0) {
       const epreuveIds = data.epreuves;
       parkour.epreuves = await new EpreuveService().getAll(epreuveIds);
-    } else if (data.epreuves.length == 0) {
+    } else if (data.epreuves?.length == 0) {
       parkour.epreuves = [];
     }
 
@@ -62,10 +64,13 @@ class ParkourService {
 
   async delete(id: number) {
     const parkour = await this.get(id);
-    // pour sup les relations
+    // pour sup les relations epreuves
     parkour.epreuves = [];
-    await this.db.save(parkour);
 
+    // pour sup les relations user
+    await new JoinUserParkourService().deleteAllByParkourId(id);
+
+    await this.db.save(parkour);
     await this.db.remove(parkour);
   }
 }

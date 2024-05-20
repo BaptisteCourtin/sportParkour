@@ -11,7 +11,6 @@ const argon2 = require("argon2");
 import { Role } from "../enum/role.enum";
 import JoinUserParkourEntity from "./joinUserParkour.entity";
 
-// user en entier
 @Entity("user")
 @ObjectType()
 class UserEntity {
@@ -107,8 +106,6 @@ export class UserInputAuthEntity {
 // update du user (changement des infos)
 @InputType()
 export class UserUpdateEntity {
-  @Field({ nullable: true })
-  password: string;
   @Field({ nullable: true })
   name: string;
   @Field({ nullable: true })
