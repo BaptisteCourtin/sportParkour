@@ -7,7 +7,8 @@ export const MODIFY_USER = gql`
       name
       firstname
       email
-      adress
+      city
+      codePostal
       phone
     }
   }
@@ -18,7 +19,8 @@ export const MODIFY_USER = gql`
 //     "name": "test",
 //     "firstname": null,
 //     "email": null,
-//     "adress": null,
+//     "city": null,
+//     "codePostal": null,
 //     "phone": null
 //   },
 //   "modifyUserId": "a02ee680-bc7a-4291-ad25-8e307f976424"

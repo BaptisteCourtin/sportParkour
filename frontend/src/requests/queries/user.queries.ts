@@ -7,7 +7,8 @@ export const GET_USER = gql`
       name
       firstname
       email
-      adress
+      city
+      codePostal
       phone
       parkours {
         note

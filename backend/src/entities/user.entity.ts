@@ -55,7 +55,11 @@ class UserEntity {
 
   @Field({ nullable: true })
   @Column({ type: "varchar", length: 200, nullable: true })
-  adress: string;
+  city: string;
+
+  @Field({ nullable: true })
+  @Column({ type: "varchar", length: 200, nullable: true })
+  codePostal: string;
 
   @Field({ nullable: true })
   @Column({ type: "varchar", length: 10, nullable: true })
@@ -89,7 +93,9 @@ export class UserInputRegisterEntity {
   @Field()
   email: string;
   @Field({ nullable: true })
-  adress: string;
+  city: string;
+  @Field({ nullable: true })
+  codePostal: string;
   @Field({ nullable: true })
   phone: string;
 }
@@ -113,7 +119,9 @@ export class UserUpdateEntity {
   @Field({ nullable: true })
   email: string;
   @Field({ nullable: true })
-  adress: string;
+  city: string;
+  @Field({ nullable: true })
+  codePostal: string;
   @Field({ nullable: true })
   phone: string;
 }

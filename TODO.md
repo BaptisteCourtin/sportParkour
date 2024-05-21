@@ -1,12 +1,7 @@
 # BACK
 
-- entities
-- resolvers
-- services
-
-1 - Epreuve
-2 - Parkour
-3 - User
+- appel parkours getAllByPostalCode (checher dans la bdd avec les 2 premiers chiffres)
+- appel parkours getTopTen (20 premiers en fonction des filtres)
 
 ##################################################################################################################
 
