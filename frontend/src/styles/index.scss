@@ -1,10 +1,32 @@
-@import "./reset.scss";
 @import "./variables.scss";
+@import "./reset.scss";
 
+// --- components ---
 @import "../components/layout/navbar.scss";
 @import "../components/layout/footer.scss";
 @import "../components/layout/darkLight.scss";
 
 @import "../components/parkour/cardParkour.scss";
 
+@import "../components/epreuve/nameEpreuve.scss";
+
+// --- pages ---
+@import "../pages/admin/createEpreuve.scss";
+@import "../pages/admin/createParkour.scss";
+@import "../pages/admin/modifyEpreuve.scss";
+@import "../pages/admin/modifyParkour.scss";
+
+@import "../pages/auth/auth.scss";
+
+@import "../pages/epreuve/epreuveById.scss";
+@import "../pages/epreuve/allEpreuves.scss";
+
+@import "../pages/infos/pagesInfos.scss";
+
+@import "../pages/parkour/parkourById.scss";
+
+@import "../pages/user/favoris.scss";
+@import "../pages/user/profil.scss";
+
+@import "../pages/pageIndex.scss";
 @import "../pages/404.scss";

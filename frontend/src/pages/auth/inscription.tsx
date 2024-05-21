@@ -2,9 +2,9 @@ import React from "react";
 
 const inscription = () => {
   return (
-    <div>
+    <main className="auth">
       <p>inscription</p>
-    </div>
+    </main>
   );
 };
 

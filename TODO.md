@@ -7,9 +7,9 @@
 
 # FRONT
 
-- page accueil = recherche de parkour
-- component fiche parkour
+- trouver des fonts (2 ou 3)
 
+- page accueil = recherche de parkour et affichage cartes parkours
 - page parkour (via id)
 - page epreuve (via id)
 
@@ -21,6 +21,8 @@
 ##################################################################################################################
 
 # GLOBAL
+
+- figma
 
 ##################################################################################################################
 

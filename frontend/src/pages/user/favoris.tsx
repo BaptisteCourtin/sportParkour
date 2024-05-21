@@ -2,9 +2,9 @@ import React from "react";
 
 const favoris = () => {
   return (
-    <div>
+    <main className="favoris">
       <p>favoris user</p>
-    </div>
+    </main>
   );
 };
 

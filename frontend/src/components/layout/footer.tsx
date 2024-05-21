@@ -12,7 +12,7 @@ const footer = () => {
           >
             Baptiste Courtin
           </a>{" "}
-          - 11/2023
+          - 11/2024
         </p>
       </nav>
     </footer>

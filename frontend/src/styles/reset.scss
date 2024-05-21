@@ -30,7 +30,7 @@ body {
 button {
   cursor: pointer;
   border: none;
-  background-color: var(--color);
+  background-color: var(--blue);
   color: var(--back);
 }
 
@@ -53,30 +53,33 @@ table {
   border-spacing: 0;
 }
 
-/* --- */
+/* --- titres --- */
 
 h1 {
   font-size: var(--fs-h1);
-  margin-bottom: 1rem;
+  font-family: serif;
   text-align: center;
 }
 
 h2 {
   font-size: var(--fs-h2);
+  font-family: serif;
   text-align: center;
 }
 
 h3 {
   font-size: var(--fs-h3);
+  font-family: serif;
   text-align: center;
 }
 
 h4 {
   font-size: var(--fs-h4);
+  font-family: serif;
   text-align: center;
 }
 
-/* --- */
+/* --- layout --- */
 
 .layoutFlex {
   display: flex;
@@ -110,38 +113,18 @@ h4 {
   }
 }
 
-footer {
-  height: 2rem;
-}
-
-.retourTopButton {
-  width: 100%;
-  padding-left: 2rem;
-  text-align: left;
-}
-
-.adminDeleteCategorie,
-.adminDeleteAd {
-  width: 100%;
-  margin: 1rem 0;
-
-  button {
-    border-radius: var(--border-radius);
-    padding: var(--pad);
-    float: right;
-  }
-}
-
-.container-modifier {
-  width: 100%;
-  text-align: right;
-}
+// .retourTopButton {
+//   width: 50px;
+//   height: 50px;
+//   border-radius: 50%;
+//   text-align: center;
+// }
 
 .error {
   color: var(--red);
 }
 
-/* --- */
+/* --- reduce motion --- */
 
 @media (prefers-reduced-motion: reduce) {
   html:focus-within {

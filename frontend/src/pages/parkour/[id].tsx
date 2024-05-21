@@ -2,9 +2,9 @@ import React from "react";
 
 const OneParkour = () => {
   return (
-    <div>
+    <main className="oneParkour">
       <p>Un parkour</p>
-    </div>
+    </main>
   );
 };
 

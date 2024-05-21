@@ -1,16 +1,17 @@
 import Link from "next/link";
 import React from "react";
-import Image from "next/image";
 
-import icon from "/public/favicon.ico";
 import DarkLight from "./DarkLight";
 
 const navbar = ({ isDarkTheme, setIsDarkTheme }: any) => {
+  // link page user + logo user
+  // link page all epreuves
+
   return (
     <header>
       <nav className="navbar">
         <Link href="/">
-          {/* <Image src={icon} alt="icon" className="logo-icon" priority={true} /> */}
+          <img src="/logoAvecNom.png" alt="logo" className="logo" />
         </Link>
 
         <div className="links">

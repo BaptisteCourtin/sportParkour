@@ -2,9 +2,9 @@ import React from "react";
 
 const profil = () => {
   return (
-    <div>
-      <p>profil</p>
-    </div>
+    <main className="profil">
+      <p>profil user</p>
+    </main>
   );
 };
 
