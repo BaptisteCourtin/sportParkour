@@ -2,7 +2,8 @@
 @import "./reset.scss";
 
 // --- components ---
-@import "../components/layout/navbar.scss";
+@import "../components/layout/navbarOrdi.scss";
+@import "../components/layout/navbarPhone.scss";
 @import "../components/layout/footer.scss";
 @import "../components/layout/darkLight.scss";
 
@@ -24,6 +25,7 @@
 @import "../pages/infos/pagesInfos.scss";
 
 @import "../pages/parkour/parkourById.scss";
+@import "../pages/parkour/parkourMap.scss";
 
 @import "../pages/user/favoris.scss";
 @import "../pages/user/profil.scss";

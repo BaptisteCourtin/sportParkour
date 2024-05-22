@@ -1,4 +1,4 @@
-header {
+.navbarOrdi {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -14,8 +14,8 @@ header {
     max-width: calc(100% - 2rem);
     background-color: var(--color);
     color: var(--back);
-    border-bottom-left-radius: var(--border-radius);
-    border-bottom-right-radius: var(--border-radius);
+    border-bottom-left-radius: var(--radius);
+    border-bottom-right-radius: var(--radius);
 
     display: flex;
     flex-direction: row;

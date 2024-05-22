@@ -1,14 +1,14 @@
-import Link from "next/link";
 import React from "react";
+import Link from "next/link";
 
 import DarkLight from "./DarkLight";
 
-const navbar = ({ isDarkTheme, setIsDarkTheme }: any) => {
+const navbarOrdi = ({ isDarkTheme, setIsDarkTheme }: any) => {
   // link page user + logo user
   // link page all epreuves
 
   return (
-    <header>
+    <header className="navbarOrdi">
       <nav className="navbar">
         <Link href="/">
           <img src="/logoAvecNom.png" alt="logo" className="logo" />
@@ -27,4 +27,4 @@ const navbar = ({ isDarkTheme, setIsDarkTheme }: any) => {
   );
 };
 
-export default navbar;
+export default navbarOrdi;
