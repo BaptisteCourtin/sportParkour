@@ -6,4 +6,26 @@
   gap: var(--gap);
 
   width: 100%;
+
+  // faq
+  .userChoose {
+    background-color: black;
+    color: white;
+  }
+
+  .css-adcfpp-MuiAccordionActions-root {
+    flex-direction: column;
+  }
+
+  // ---
+  &.cgu,
+  &.pdc,
+  &.ml {
+    align-items: flex-start;
+
+    h2,
+    h3 {
+      margin-top: 3rem;
+    }
+  }
 }
