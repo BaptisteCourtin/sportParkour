@@ -9,9 +9,21 @@ import { MessageEntity } from "../entities/message.entity";
 @Resolver()
 export default class ParkourResolver {
   @Query(() => ParkourEntity)
-  async getParkour(@Arg("id") id: number) {
-    const ParkourEntity = await new ParkourService().get(id);
+  async getParkourById(@Arg("id") id: number) {
+    const ParkourEntity = await new ParkourService().getById(id);
     return ParkourEntity;
+  }
+
+  @Query(() => ParkourEntity)
+  async getParkourByTitle(@Arg("title") title: string) {
+    const ParkourEntity = await new ParkourService().getByTitle(title);
+    return ParkourEntity;
+  }
+
+  @Query(() => [ParkourEntity])
+  async getAllParkour() {
+    const result: ParkourEntity[] = await new ParkourService().getAll();
+    return result;
   }
 
   // ---
@@ -20,7 +32,7 @@ export default class ParkourResolver {
   async createParkour(@Arg("infos") infos: ParkourCreateEntity) {
     const resultNewParkourID: number = await new ParkourService().create(infos);
 
-    const result: ParkourEntity = await new ParkourService().get(
+    const result: ParkourEntity = await new ParkourService().getById(
       resultNewParkourID
     );
     return result;

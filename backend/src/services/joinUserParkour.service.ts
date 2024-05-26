@@ -13,18 +13,6 @@ class JoinUserParkourService {
     this.db = datasource.getRepository(JoinUserParkourEntity);
   }
 
-  // async get(user_id: string, parkour_id: number) {
-  //   const joinUserParkour: JoinUserParkourEntity | null = await this.db.findOne(
-  //     {
-  //       where: { user_id, parkour_id },
-  //     }
-  //   );
-  //   if (!joinUserParkour) {
-  //     throw new Error("Cette relation User-Parkour n'existe pas");
-  //   }
-  //   return joinUserParkour;
-  // }
-
   async getAllByUserId(user_id: string) {
     const allJoinUserParkours: JoinUserParkourEntity[] | null =
       await this.db.find({

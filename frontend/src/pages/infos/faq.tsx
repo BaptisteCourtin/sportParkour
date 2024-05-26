@@ -4,8 +4,9 @@ import Accordion from "@mui/material/Accordion";
 import AccordionActions from "@mui/material/AccordionActions";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Button from "@mui/material/Button";
+
+import { FaAngleDown } from "react-icons/fa6";
 
 const faq = () => {
   const [isUserOk, setIsUserOk] = useState("");
@@ -16,7 +17,7 @@ const faq = () => {
       <div>
         <Accordion>
           <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
+            expandIcon={<FaAngleDown />}
             aria-controls="panel1-content"
             id="panel1-header"
           >
@@ -27,7 +28,7 @@ const faq = () => {
 
         <Accordion>
           <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
+            expandIcon={<FaAngleDown />}
             aria-controls="panel2-content"
             id="panel2-header"
           >
@@ -38,7 +39,7 @@ const faq = () => {
 
         <Accordion>
           <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
+            expandIcon={<FaAngleDown />}
             aria-controls="panel3-content"
             id="panel3-header"
           >

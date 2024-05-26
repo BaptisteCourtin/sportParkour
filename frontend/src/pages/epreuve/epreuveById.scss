@@ -5,4 +5,19 @@
   justify-content: center;
 
   width: 100%;
+
+  .carrouselEpreuve {
+    width: 360px;
+    height: 340px;
+
+    .imageContainer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      img {
+        height: 300px;
+      }
+    }
+  }
 }

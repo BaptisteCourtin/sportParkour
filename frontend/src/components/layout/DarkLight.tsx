@@ -1,5 +1,5 @@
-import { FaMoon } from "react-icons/fa";
-import { FaSun } from "react-icons/fa";
+import { FaMoon } from "react-icons/fa6";
+import { FaSun } from "react-icons/fa6";
 
 import React from "react";
 

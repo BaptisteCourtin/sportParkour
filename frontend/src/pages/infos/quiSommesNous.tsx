@@ -3,7 +3,8 @@ import React from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+
+import { FaAngleDown } from "react-icons/fa6";
 
 const quiSommesNous = () => {
   return (
@@ -18,7 +19,7 @@ const quiSommesNous = () => {
       <div>
         <Accordion>
           <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
+            expandIcon={<FaAngleDown />}
             aria-controls="panel1-content"
             id="panel1-header"
           >
@@ -33,7 +34,7 @@ const quiSommesNous = () => {
 
         <Accordion>
           <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
+            expandIcon={<FaAngleDown />}
             aria-controls="panel2-content"
             id="panel2-header"
           >
@@ -48,7 +49,7 @@ const quiSommesNous = () => {
 
         <Accordion>
           <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
+            expandIcon={<FaAngleDown />}
             aria-controls="panel3-content"
             id="panel3-header"
           >
@@ -61,7 +62,7 @@ const quiSommesNous = () => {
 
         <Accordion>
           <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
+            expandIcon={<FaAngleDown />}
             aria-controls="panel3-content"
             id="panel3-header"
           >
@@ -71,8 +72,17 @@ const quiSommesNous = () => {
           </AccordionSummary>
           <AccordionDetails>
             Alors! Très bonne question!
-            <a href="https://github.com/BaptisteCourtin">Github</a>
-            <a href="https://www.linkedin.com/in/baptistecourtin/">LinkedIn</a>
+            <br />
+            <br />
+            <a href="https://github.com/BaptisteCourtin">
+              Github : https://github.com/BaptisteCourtin
+            </a>
+            <br />
+            <a href="https://www.linkedin.com/in/baptistecourtin/">
+              LinkedIn : https://www.linkedin.com/in/baptistecourtin/
+            </a>
+            <br />
+            <br />
             (Embauchez moi s'il vous plait)
           </AccordionDetails>
         </Accordion>

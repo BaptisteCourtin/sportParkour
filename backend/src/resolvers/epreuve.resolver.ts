@@ -9,14 +9,22 @@ import { MessageEntity } from "../entities/message.entity";
 @Resolver()
 export default class EpreuveResolver {
   @Query(() => EpreuveEntity)
-  async getEpreuve(@Arg("id") id: number) {
-    const result: EpreuveEntity = await new EpreuveService().get(id);
+  async getEpreuveById(@Arg("id") id: number) {
+    const result: EpreuveEntity = await new EpreuveService().getById(id);
     return result;
   }
 
   @Query(() => [EpreuveEntity])
-  async getListEpreuve() {
-    const result: EpreuveEntity[] = await new EpreuveService().getAll();
+  async getListEpreuveByIds() {
+    const result: EpreuveEntity[] = await new EpreuveService().getAllByIds();
+    return result;
+  }
+
+  @Query(() => [EpreuveEntity])
+  async getListBySearch(@Arg("search", { nullable: true }) search: string) {
+    const result: EpreuveEntity[] = await new EpreuveService().getListBySearch(
+      search as any as string | undefined
+    );
     return result;
   }
 
@@ -27,7 +35,7 @@ export default class EpreuveResolver {
     const resultNewEpreuveID: number = await new EpreuveService().create(infos);
 
     // on cré pas les images ici => on récupe par rapport à l'id
-    const result: EpreuveEntity = await new EpreuveService().get(
+    const result: EpreuveEntity = await new EpreuveService().getById(
       resultNewEpreuveID
     );
     return result;

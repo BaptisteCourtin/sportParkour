@@ -2,10 +2,10 @@ import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-import { FaUser } from "react-icons/fa";
-import { IoHome } from "react-icons/io5";
-import { FaMap } from "react-icons/fa";
-import { GiSportMedal } from "react-icons/gi";
+import { FaUser } from "react-icons/fa6";
+import { FaHouseChimney } from "react-icons/fa6";
+import { FaMapLocationDot } from "react-icons/fa6";
+import { FaMedal } from "react-icons/fa6";
 
 const navbarPhone = () => {
   const router = useRouter();
@@ -20,7 +20,7 @@ const navbarPhone = () => {
       </Link>
       <Link href="/" className={router.pathname == "/" ? "active" : ""}>
         <span className="icon">
-          <IoHome />
+          <FaHouseChimney />
         </span>
         <p>Accueil</p>
       </Link>
@@ -29,7 +29,7 @@ const navbarPhone = () => {
         className={router.pathname == "/parkour/parkourMap" ? "active" : ""}
       >
         <span className="icon">
-          <FaMap />
+          <FaMapLocationDot />
         </span>
         <p>Map</p>
       </Link>
@@ -38,7 +38,7 @@ const navbarPhone = () => {
         className={router.pathname == "/epreuve/allEpreuves" ? "active" : ""}
       >
         <span className="icon">
-          <GiSportMedal />
+          <FaMedal />
         </span>
         <p>Epreuves</p>
       </Link>

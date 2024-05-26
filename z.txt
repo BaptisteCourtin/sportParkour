@@ -44,4 +44,4 @@ on peux supprimer un parkour si y'a une relation avec epreuve, ça supprime auss
 
 https://api-adresse.data.gouv.fr/search/?q=caen&postcode=14000&type=municipality
 
-une carte avec tout les parkours
+une map avec tout les parkours

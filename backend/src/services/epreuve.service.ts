@@ -1,4 +1,4 @@
-import { In, Repository } from "typeorm";
+import { In, Like, Repository } from "typeorm";
 import datasource from "../lib/datasource";
 
 import EpreuveEntity, {
@@ -13,7 +13,7 @@ class EpreuveService {
     this.db = datasource.getRepository(EpreuveEntity);
   }
 
-  async get(id: number) {
+  async getById(id: number) {
     const epreuve: EpreuveEntity | null = await this.db.findOne({
       where: { id },
       relations: ["images"], // Charge la relation 'images'
@@ -24,7 +24,7 @@ class EpreuveService {
     return epreuve;
   }
 
-  async getAll(ids?: number[]) {
+  async getAllByIds(ids?: number[]) {
     const allEpreuves: EpreuveEntity[] | null = await this.db.find({
       where: {
         id: ids && ids.length > 0 ? In(ids.map((id) => id)) : undefined,
@@ -36,6 +36,18 @@ class EpreuveService {
     }
 
     return allEpreuves;
+  }
+
+  async getListBySearch(search?: string) {
+    const listEpreuves: EpreuveEntity[] | null = await this.db.find({
+      where: search ? [{ title: Like(`%${search}%`) }] : undefined,
+    });
+
+    if (!listEpreuves) {
+      throw new Error("Pas d'epreuves");
+    }
+
+    return listEpreuves;
   }
 
   // ---
@@ -66,7 +78,7 @@ class EpreuveService {
   // pas besoin de partial<>
   async modify(id: number, data: EpreuveUpdateEntity) {
     // les images ont déjà été changés avant (si besoin) => donc on peut juste renvoyer le save
-    const epreuve = await this.get(id);
+    const epreuve = await this.getById(id);
 
     // Itérer sur les clés de l'objet data
     for (const key of Object.keys(data) as Array<keyof EpreuveUpdateEntity>) {
@@ -81,7 +93,7 @@ class EpreuveService {
   }
 
   async delete(id: number) {
-    const epreuve = await this.get(id);
+    const epreuve = await this.getById(id);
     await this.db.remove(epreuve);
   }
 }

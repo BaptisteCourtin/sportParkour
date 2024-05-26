@@ -28,3 +28,28 @@ export const GET_PARKOUR = gql`
 // {
 //   "getParkourId": 10
 // }
+
+export const GET_ALL_PARKOUR = gql`
+  query GetAllParkour {
+    getAllParkour {
+      id
+      title
+      description
+      time
+      length
+      difficulty
+      city
+      start
+      note
+      nbVote
+      images {
+        id
+        lien
+      }
+      epreuves {
+        id
+        title
+      }
+    }
+  }
+`;

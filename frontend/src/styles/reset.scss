@@ -1,3 +1,6 @@
+@import url("https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap"); // titre
+@import url("https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap"); // text
+
 * {
   margin: 0;
   padding: 0;
@@ -23,7 +26,7 @@ body {
   color: var(--color);
 
   font-size: 1rem;
-  font-family: sans-serif;
+  font-family: "Instrument Sans", sans-serif;
 }
 
 button {
@@ -55,24 +58,24 @@ table {
 
 h1 {
   font-size: var(--fs-h1);
-  font-family: serif;
+  font-family: "Jost", serif;
   text-align: center;
 }
 
 h2 {
   font-size: var(--fs-h2);
-  font-family: serif;
+  font-family: "Jost", serif;
   text-align: center;
 }
 
 h3 {
   font-size: var(--fs-h3);
-  font-family: serif;
+  font-family: "Jost", serif;
 }
 
 h4 {
   font-size: var(--fs-h4);
-  font-family: serif;
+  font-family: "Jost", serif;
 }
 
 /* --- layout --- */

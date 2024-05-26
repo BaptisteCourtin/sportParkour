@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
 export const CREATE_EPREUVE = gql`
-  mutation Mutation($infos: EpreuveCreateEntity!) {
+  mutation CreateEpreuve($infos: EpreuveCreateEntity!) {
     createEpreuve(infos: $infos) {
       videoLink
       hardToDo
@@ -63,7 +63,7 @@ export const MODIFY_EPREUVE = gql`
 // }
 
 export const DELETE_EPREUVE = gql`
-  mutation Mutation($deleteEpreuveId: Float!) {
+  mutation DeleteEpreuve($deleteEpreuveId: Float!) {
     deleteEpreuve(id: $deleteEpreuveId) {
       message
       success
