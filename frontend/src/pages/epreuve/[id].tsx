@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import {
   useDeleteEpreuveMutation,
-  useGetEpreuveLazyQuery,
+  useGetEpreuveByIdLazyQuery,
 } from "@/types/graphql";
 import Carousel from "react-material-ui-carousel";
 
@@ -23,12 +23,12 @@ const OneEpreuve = () => {
   const router = useRouter();
   const { id } = router.query;
 
-  const [getEpreuve, { data, loading, error }] = useGetEpreuveLazyQuery();
+  const [getEpreuve, { data, loading, error }] = useGetEpreuveByIdLazyQuery();
 
   useEffect(() => {
     if (router.isReady) {
       getEpreuve({
-        variables: { getEpreuveId: parseInt(id as string) },
+        variables: { getEpreuveByIdId: parseInt(id as string) },
         // onCompleted(data) {
         //   console.log(data);
         // },
@@ -93,10 +93,10 @@ const OneEpreuve = () => {
       ) : loading ? (
         <h2>Chargement en cours</h2>
       ) : (
-        data?.getEpreuve && (
+        data?.getEpreuveById && (
           <div>
             <Button variant="outlined" onClick={handleClickOpen}>
-              Delete epreuve {data.getEpreuve.id}
+              Delete epreuve {data.getEpreuveById.id}
             </Button>
             <Dialog
               open={open}
@@ -112,9 +112,9 @@ const OneEpreuve = () => {
                   );
                   const nomEpreuve = formJson.nomEpreuve;
 
-                  if (data.getEpreuve.title == nomEpreuve) {
+                  if (data.getEpreuveById.title == nomEpreuve) {
                     console.log("OUI");
-                    handleDeleteEpreuve(data.getEpreuve.id);
+                    handleDeleteEpreuve(data.getEpreuveById.id);
 
                     if (errorDelete) {
                       handleClickClose();
@@ -129,11 +129,11 @@ const OneEpreuve = () => {
                 },
               }}
             >
-              <DialogTitle>Delete epreuve {data.getEpreuve.id}</DialogTitle>
+              <DialogTitle>Delete epreuve {data.getEpreuveById.id}</DialogTitle>
               <DialogContent>
                 <DialogContentText>
                   Pour supprimer cette épreuve entrez son nom :
-                  {data.getEpreuve.title}
+                  {data.getEpreuveById.title}
                 </DialogContentText>
                 <TextField
                   autoFocus
@@ -170,45 +170,46 @@ const OneEpreuve = () => {
 
             <br />
             <br />
-            <p>{data.getEpreuve.title}</p>
+            <p>{data.getEpreuveById.title}</p>
             <br />
             <br />
-            <p>{data.getEpreuve.description}</p>
+            <p>{data.getEpreuveById.description}</p>
             <br />
             <br />
-            {data.getEpreuve.images && data.getEpreuve.images.length > 0 && (
-              <Carousel
-                className="carrouselEpreuve"
-                NextIcon={<FaAngleRight />}
-                PrevIcon={<FaAngleLeft />}
-                autoPlay={false}
-                indicators={true}
-                swipe={true}
-                cycleNavigation={true}
-                navButtonsAlwaysVisible={true}
-                navButtonsAlwaysInvisible={false}
-                fullHeightHover={true}
-                animation="slide"
-              >
-                {data.getEpreuve.images.map((image) => (
-                  <div className="imageContainer">
-                    <img src={image.lien as string} alt="" />
-                  </div>
-                ))}
-              </Carousel>
-            )}
-            <p>Débutant : {data.getEpreuve.easyToDo}</p>
+            {data.getEpreuveById.images &&
+              data.getEpreuveById.images.length > 0 && (
+                <Carousel
+                  className="carrouselEpreuve"
+                  NextIcon={<FaAngleRight />}
+                  PrevIcon={<FaAngleLeft />}
+                  autoPlay={false}
+                  indicators={true}
+                  swipe={true}
+                  cycleNavigation={true}
+                  navButtonsAlwaysVisible={true}
+                  navButtonsAlwaysInvisible={false}
+                  fullHeightHover={true}
+                  animation="slide"
+                >
+                  {data.getEpreuveById.images.map((image) => (
+                    <div className="imageContainer">
+                      <img src={image.lien as string} alt="" />
+                    </div>
+                  ))}
+                </Carousel>
+              )}
+            <p>Débutant : {data.getEpreuveById.easyToDo}</p>
             <br />
             <br />
-            <p>Intermédiaire : {data.getEpreuve.mediumToDo}</p>
+            <p>Intermédiaire : {data.getEpreuveById.mediumToDo}</p>
             <br />
             <br />
-            <p>Confirmé : {data.getEpreuve.hardToDo}</p>
+            <p>Confirmé : {data.getEpreuveById.hardToDo}</p>
             <br />
             <br />
-            {data.getEpreuve.videoLink && (
-              <a target="blank" href={data.getEpreuve.videoLink}>
-                {data.getEpreuve.videoLink}
+            {data.getEpreuveById.videoLink && (
+              <a target="blank" href={data.getEpreuveById.videoLink}>
+                {data.getEpreuveById.videoLink}
               </a>
             )}
           </div>

@@ -7,6 +7,8 @@
 - get favoris
 - rename les fonctions
 
+- changer le get all parkours en get 20
+
 ##################################################################################################################
 
 # FRONT

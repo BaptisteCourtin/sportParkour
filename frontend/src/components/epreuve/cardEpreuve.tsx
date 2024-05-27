@@ -1,11 +1,11 @@
 import React from "react";
-import { GetEpreuveQuery } from "@/types/graphql";
+import { GetEpreuveByIdQuery } from "@/types/graphql";
 import Link from "next/link";
 
 const cardEpreuve = ({
   epreuve,
 }: {
-  epreuve: GetEpreuveQuery["getEpreuve"];
+  epreuve: GetEpreuveByIdQuery["getEpreuveById"];
 }) => {
   return (
     <li className="cardEpreuve">

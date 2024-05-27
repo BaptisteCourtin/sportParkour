@@ -6,8 +6,8 @@ import { MessageEntity } from "../entities/message.entity";
 @Resolver()
 export default class UserResolver {
   @Query(() => UserEntity)
-  async getUser(@Arg("id") id: string) {
-    const UserEntity = await new UserService().get(id);
+  async getUserById(@Arg("id") id: string) {
+    const UserEntity = await new UserService().getById(id);
     return UserEntity;
   }
 

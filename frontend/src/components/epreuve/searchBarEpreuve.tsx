@@ -3,25 +3,25 @@ import React, { SyntheticEvent, useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 
-import { useGetListEpreuvesBySearchLazyQuery } from "@/types/graphql";
+import { useGetListEpreuveByTitleLazyQuery } from "@/types/graphql";
 import Link from "next/link";
 
 // style le link pour prendre toute la place
-const searchBarEpreuve = () => {
-  const [getListEpreuvesBySearch, { data, loading, error }] =
-    useGetListEpreuvesBySearchLazyQuery();
+const titleBarEpreuve = () => {
+  const [getListEpreuvesByTitle, { data, loading, error }] =
+    useGetListEpreuveByTitleLazyQuery();
 
-  const handleSearch = (e: SyntheticEvent<Element, Event>, value: string) => {
-    getListEpreuvesBySearch({ variables: { search: value as string } });
+  const handleTitle = (e: SyntheticEvent<Element, Event>, value: string) => {
+    getListEpreuvesByTitle({ variables: { title: value as string } });
   };
 
   useEffect(() => {
-    getListEpreuvesBySearch();
+    getListEpreuvesByTitle();
   }, []);
 
   return (
     <Autocomplete
-      className="searchBar"
+      className="titleBar"
       disablePortal
       renderInput={(params) => (
         <TextField {...params} label="Recherche épreuve" />
@@ -29,9 +29,9 @@ const searchBarEpreuve = () => {
       sx={{ width: 300 }}
       // ---
       loading={loading}
-      options={data?.getListBySearch ?? []}
+      options={data?.getListEpreuveByTitle ?? []}
       getOptionLabel={(option) => option.title}
-      onInputChange={handleSearch}
+      onInputChange={handleTitle}
       // ---
       renderOption={(props, option, state) => (
         <li {...props} key={option.id}>
@@ -44,4 +44,4 @@ const searchBarEpreuve = () => {
   );
 };
 
-export default searchBarEpreuve;
+export default titleBarEpreuve;

@@ -1,7 +1,7 @@
 import {
-  GetEpreuveQuery,
+  GetEpreuveByIdQuery,
   useDeleteParkourMutation,
-  useGetParkourLazyQuery,
+  useGetParkourByIdLazyQuery,
 } from "@/types/graphql";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -24,15 +24,15 @@ const OneParkour = () => {
   const router = useRouter();
   const { id } = router.query;
 
-  const [getParkour, { data, loading, error }] = useGetParkourLazyQuery();
+  const [getParkour, { data, loading, error }] = useGetParkourByIdLazyQuery();
 
   useEffect(() => {
     if (router.isReady) {
       getParkour({
-        variables: { getParkourId: parseInt(id as string) },
-        onCompleted(data) {
-          console.log(data);
-        },
+        variables: { getParkourByIdId: parseInt(id as string) },
+        // onCompleted(data) {
+        //   console.log(data);
+        // },
         onError(err: any) {
           console.log("error", err);
         },
@@ -59,7 +59,7 @@ const OneParkour = () => {
       deleteParkour({
         variables: { deleteParkourId: +id },
         onCompleted() {
-          router.push(`/epreuve/allParkours`);
+          router.push(`/`);
         },
         onError(error) {
           console.error(error);
@@ -94,10 +94,10 @@ const OneParkour = () => {
       ) : loading ? (
         <h2>Chargement en cours</h2>
       ) : (
-        data?.getParkour && (
+        data?.getParkourById && (
           <div>
             <Button variant="outlined" onClick={handleClickOpen}>
-              Delete parkour {data.getParkour.id}
+              Delete parkour {data.getParkourById.id}
             </Button>
             <Dialog
               open={open}
@@ -113,9 +113,9 @@ const OneParkour = () => {
                   );
                   const nomParkour = formJson.nomParkour;
 
-                  if (data.getParkour.title == nomParkour) {
+                  if (data.getParkourById.title == nomParkour) {
                     console.log("OUI");
-                    handleDeleteParkour(data.getParkour.id);
+                    handleDeleteParkour(data.getParkourById.id);
 
                     if (errorDelete) {
                       handleClickClose();
@@ -130,11 +130,11 @@ const OneParkour = () => {
                 },
               }}
             >
-              <DialogTitle>Delete parkour {data.getParkour.id}</DialogTitle>
+              <DialogTitle>Delete parkour {data.getParkourById.id}</DialogTitle>
               <DialogContent>
                 <DialogContentText>
                   Pour supprimer ce parkour entrez son nom :
-                  {data.getParkour.title}
+                  {data.getParkourById.title}
                 </DialogContentText>
                 <TextField
                   autoFocus
@@ -171,64 +171,65 @@ const OneParkour = () => {
 
             <br />
             <br />
-            <p>titre : {data.getParkour.title}</p>
+            <p>titre : {data.getParkourById.title}</p>
             <br />
             <br />
-            <p>description : {data.getParkour.description}</p>
-            <p>city : {data.getParkour.city}</p>
+            <p>description : {data.getParkourById.description}</p>
+            <p>city : {data.getParkourById.city}</p>
             <br />
             <br />
-            <p>difficulty : {data.getParkour.difficulty}</p>
+            <p>difficulty : {data.getParkourById.difficulty}</p>
             <br />
             <br />
-            <p>length : {data.getParkour.length}</p>
+            <p>length : {data.getParkourById.length}</p>
             <br />
             <br />
             <a
-              href={`https://www.google.fr/maps/place/${data.getParkour.start}`}
+              href={`https://www.google.fr/maps/place/${data.getParkourById.start}`}
               target="blank"
             >
-              {data.getParkour.start}
+              {data.getParkourById.start}
             </a>
             <br />
             <br />
-            <p>time : {data.getParkour.time}</p>
+            <p>time : {data.getParkourById.time}</p>
             <br />
             <br />
-            <p>note : {data.getParkour.note}</p>
+            <p>note : {data.getParkourById.note}</p>
             <br />
             <br />
-            <p>nbVote : {data.getParkour.nbVote}</p>
+            <p>nbVote : {data.getParkourById.nbVote}</p>
             <br />
             <br />
 
-            {data.getParkour.images && data.getParkour.images.length > 0 && (
-              <Carousel
-                className="carrouselParkour"
-                NextIcon={<FaAngleRight />}
-                PrevIcon={<FaAngleLeft />}
-                autoPlay={false}
-                indicators={true}
-                swipe={true}
-                cycleNavigation={true}
-                navButtonsAlwaysVisible={true}
-                navButtonsAlwaysInvisible={false}
-                fullHeightHover={true}
-                animation="slide"
-              >
-                {data.getParkour.images?.map((image) => (
-                  <div className="imageContainer">
-                    <img src={image.lien as string} alt="" />
-                  </div>
-                ))}
-              </Carousel>
-            )}
+            {data.getParkourById.images &&
+              data.getParkourById.images.length > 0 && (
+                <Carousel
+                  className="carrouselParkour"
+                  NextIcon={<FaAngleRight />}
+                  PrevIcon={<FaAngleLeft />}
+                  autoPlay={false}
+                  indicators={true}
+                  swipe={true}
+                  cycleNavigation={true}
+                  navButtonsAlwaysVisible={true}
+                  navButtonsAlwaysInvisible={false}
+                  fullHeightHover={true}
+                  animation="slide"
+                >
+                  {data.getParkourById.images?.map((image) => (
+                    <div className="imageContainer">
+                      <img src={image.lien as string} alt="" />
+                    </div>
+                  ))}
+                </Carousel>
+              )}
 
             <br />
             <br />
             <div className="container-epreuves">
-              {data.getParkour.epreuves?.map(
-                (epreuve: GetEpreuveQuery["getEpreuve"]) => (
+              {data.getParkourById.epreuves?.map(
+                (epreuve: GetEpreuveByIdQuery["getEpreuveById"]) => (
                   <Link href={`/epreuve/${epreuve.id}`}>{epreuve.title}</Link>
                 )
               )}

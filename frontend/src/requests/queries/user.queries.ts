@@ -1,20 +1,22 @@
 import { gql } from "@apollo/client";
 
-export const GET_USER = gql`
-  query GetUser($getUserId: String!) {
-    getUser(id: $getUserId) {
+export const GET_USER_BY_ID = gql`
+  query GetUserById($getUserByIdId: String!) {
+    getUserById(id: $getUserByIdId) {
       id
+      password
       name
       firstname
       email
       city
       codePostal
       phone
+      role
       parkours {
-        note
+        user_id
         parkour_id
         favoris
-        user_id
+        note
         parkours {
           id
           title
@@ -25,5 +27,5 @@ export const GET_USER = gql`
 `;
 
 // {
-//   "getEpreuveId": 10
+//   "getUserByIdId": "41842629-d707-4e75-ade3-1e559ef21cc0"
 // }

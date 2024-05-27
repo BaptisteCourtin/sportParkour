@@ -1,10 +1,16 @@
 import React from "react";
+import { GetEpreuveByIdQuery } from "@/types/graphql";
+import Link from "next/link";
 
-const nameEpreuve = () => {
+const nameEpreuve = ({
+  epreuve,
+}: {
+  epreuve: GetEpreuveByIdQuery["getEpreuveById"];
+}) => {
   return (
-    <div className="nameEpreuve">
-      <p>nameEpreuve</p>
-    </div>
+    <li className="nameEpreuve">
+      <Link href={`/epreuve/${epreuve.id}`}>{epreuve.title}</Link>
+    </li>
   );
 };
 

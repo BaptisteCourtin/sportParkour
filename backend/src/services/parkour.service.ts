@@ -31,7 +31,7 @@ class ParkourService {
   async getByTitle(title: string) {
     const parkour = await this.db.findOne({
       where: { title },
-      relations: ["images", "epreuves"], // Charge la relation 'images' et 'parcours'
+      relations: ["images", "epreuves"],
     });
     if (!parkour) {
       throw new Error("Ce parkour n'existe pas");
@@ -56,7 +56,7 @@ class ParkourService {
   async create(data: ParkourCreateEntity) {
     let epreuves: EpreuveEntity[] = [];
     if (data.epreuves?.length) {
-      epreuves = await new EpreuveService().getAllByIds(data.epreuves);
+      epreuves = await new EpreuveService().getListByIds(data.epreuves);
     }
 
     const newParkour = this.db.create({ ...data, epreuves });
@@ -77,7 +77,7 @@ class ParkourService {
     // Gérer les relations avec epreuves
     if (data.epreuves !== null && data.epreuves.length > 0) {
       const epreuveIds = data.epreuves;
-      parkour.epreuves = await new EpreuveService().getAllByIds(epreuveIds);
+      parkour.epreuves = await new EpreuveService().getListByIds(epreuveIds);
     } else if (data.epreuves?.length == 0) {
       parkour.epreuves = [];
     }

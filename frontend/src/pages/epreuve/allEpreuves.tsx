@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { GetEpreuveQuery, useGetListEpreuvesQuery } from "@/types/graphql";
+import { GetEpreuveByIdQuery, useGetListEpreuveQuery } from "@/types/graphql";
 
 import CardEpreuve from "@/components/epreuve/cardEpreuve";
 import SearchBarEpreuve from "@/components/epreuve/searchBarEpreuve";
@@ -8,7 +8,7 @@ import SearchBarEpreuve from "@/components/epreuve/searchBarEpreuve";
 const allEpreuves = () => {
   const [tri, setTri] = useState<string>("Titre A-Z");
 
-  const { data, loading, error } = useGetListEpreuvesQuery({
+  const { data, loading, error } = useGetListEpreuveQuery({
     fetchPolicy: "no-cache",
   });
 
@@ -39,7 +39,7 @@ const allEpreuves = () => {
             }
             return 0;
           })
-          .map((epreuve: GetEpreuveQuery["getEpreuve"]) => (
+          .map((epreuve: GetEpreuveByIdQuery["getEpreuveById"]) => (
             <CardEpreuve epreuve={epreuve} key={epreuve.id} />
           ))}
       </ul>

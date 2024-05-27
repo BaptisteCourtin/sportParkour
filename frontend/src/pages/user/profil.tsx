@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { useDeleteUserMutation, useGetUserLazyQuery } from "@/types/graphql";
+import {
+  useDeleteUserMutation,
+  useGetUserByIdLazyQuery,
+} from "@/types/graphql";
 
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -12,19 +15,20 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { Snackbar } from "@mui/material";
 
 // get le user en fonction du token et du mail et pas du router
+// si pas de token -> redirect auth / login
 const profil = () => {
   const router = useRouter();
-  const { id } = router.query;
 
-  const [getUser, { data, loading, error }] = useGetUserLazyQuery();
+  const [getUser, { data, loading, error }] = useGetUserByIdLazyQuery();
 
   useEffect(() => {
     if (router.isReady) {
+      const id = "41842629-d707-4e75-ade3-1e559ef21cc0";
       getUser({
-        variables: { getUserId: id as string },
-        onCompleted(data) {
-          console.log(data);
-        },
+        variables: { getUserByIdId: id as string },
+        // onCompleted(data) {
+        //   console.log(data);
+        // },
         onError(err: any) {
           console.log("error", err);
         },
@@ -86,10 +90,10 @@ const profil = () => {
       ) : loading ? (
         <h2>Chargement en cours</h2>
       ) : (
-        data?.getUser && (
+        data?.getUserById && (
           <div>
             <Button variant="outlined" onClick={handleClickOpen}>
-              Delete profil user {data.getUser.id}
+              Delete profil user {data.getUserById.id}
             </Button>
             <Dialog
               open={open}
@@ -105,9 +109,9 @@ const profil = () => {
                   );
                   const nomUser = formJson.nomUser;
 
-                  if (data.getUser.name == nomUser) {
+                  if (data.getUserById.name == nomUser) {
                     console.log("OUI");
-                    handleDeleteUser(data.getUser.id);
+                    handleDeleteUser(data.getUserById.id);
 
                     if (errorDelete) {
                       handleClickClose();
@@ -122,10 +126,11 @@ const profil = () => {
                 },
               }}
             >
-              <DialogTitle>Delete user {data.getUser.id}</DialogTitle>
+              <DialogTitle>Delete user {data.getUserById.id}</DialogTitle>
               <DialogContent>
                 <DialogContentText>
-                  Pour supprimer cette user entrez son nom :{data.getUser.name}
+                  Pour supprimer cette user entrez son nom :
+                  {data.getUserById.name}
                 </DialogContentText>
                 <TextField
                   autoFocus
@@ -162,22 +167,22 @@ const profil = () => {
 
             <br />
             <br />
-            <p>nom : {data.getUser.name}</p>
+            <p>nom : {data.getUserById.name}</p>
             <br />
             <br />
-            <p>prénom : {data.getUser.firstname}</p>
+            <p>prénom : {data.getUserById.firstname}</p>
             <br />
             <br />
-            <p>email : {data.getUser.email}</p>
+            <p>email : {data.getUserById.email}</p>
             <br />
             <br />
-            <p>ville : {data.getUser.city}</p>
+            <p>ville : {data.getUserById.city}</p>
             <br />
             <br />
-            <p>codePostal : {data.getUser.codePostal}</p>
+            <p>codePostal : {data.getUserById.codePostal}</p>
             <br />
             <br />
-            <p>phone : {data.getUser.phone}</p>
+            <p>phone : {data.getUserById.phone}</p>
           </div>
         )
       )}

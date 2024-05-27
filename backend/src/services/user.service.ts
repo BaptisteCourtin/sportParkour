@@ -11,7 +11,7 @@ class UserService {
     this.db = datasource.getRepository(UserEntity);
   }
 
-  async get(id: string) {
+  async getById(id: string) {
     const user = await this.db.findOne({
       where: { id },
       relations: ["parkours.parkours"], // Charge les relations 'parkours' => JoinUserParkourEntity ET 'parkours.parkours' => l'netity parkour pour le title
@@ -25,7 +25,7 @@ class UserService {
   // ---
 
   async modify(id: string, data: UserUpdateEntity) {
-    const user = await this.get(id);
+    const user = await this.getById(id);
     const { parkours, ...userWithoutParkours } = user;
 
     for (const key of Object.keys(data) as Array<keyof UserUpdateEntity>) {
@@ -38,7 +38,7 @@ class UserService {
   }
 
   async delete(id: string) {
-    const user = await this.get(id);
+    const user = await this.getById(id);
     await new JoinUserParkourService().deleteAllByUserId(id);
 
     await this.db.save(user);

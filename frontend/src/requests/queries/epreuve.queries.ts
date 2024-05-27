@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
-export const GET_EPREUVE = gql`
-  query GetEpreuve($getEpreuveId: Float!) {
-    getEpreuve(id: $getEpreuveId) {
+export const GET_EPREUVE_BY_ID = gql`
+  query GetEpreuveById($getEpreuveByIdId: Float!) {
+    getEpreuveById(id: $getEpreuveByIdId) {
       id
       title
       description
@@ -18,18 +18,26 @@ export const GET_EPREUVE = gql`
   }
 `;
 
-export const GET_LIST_EPREUVES = gql`
-  query GetListEpreuves {
-    getListEpreuve {
+// {
+//   "getEpreuveByIdId": 12
+// }
+
+export const GET_LIST_EPREUVE_BY_SEARCH = gql`
+  query GetListEpreuveByTitle($title: String) {
+    getListEpreuveByTitle(title: $title) {
       id
       title
     }
   }
 `;
 
-export const GET_LIST_EPREUVES_BY_SEARCH = gql`
-  query GetListEpreuvesBySearch($search: String) {
-    getListBySearch(search: $search) {
+// {
+//   "title": "dita"
+// }
+
+export const GET_LIST_EPREUVE = gql`
+  query GetListEpreuve {
+    getListEpreuve {
       id
       title
     }

@@ -1,11 +1,11 @@
-import { GetParkourQuery } from "@/types/graphql";
+import { GetParkourByIdQuery } from "@/types/graphql";
 import Link from "next/link";
 import React from "react";
 
 const cardParkour = ({
   parkour,
 }: {
-  parkour: GetParkourQuery["getParkour"];
+  parkour: GetParkourByIdQuery["getParkourById"];
 }) => {
   // on reçoit les infos
   // mettre un icon pour dire de cliquer sur la ville

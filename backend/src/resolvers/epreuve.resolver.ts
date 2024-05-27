@@ -15,19 +15,19 @@ export default class EpreuveResolver {
   }
 
   @Query(() => [EpreuveEntity])
-  async getListEpreuveByIds() {
-    const result: EpreuveEntity[] = await new EpreuveService().getAllByIds();
-    return result;
-  }
-
-  @Query(() => [EpreuveEntity])
-  async getListBySearch(@Arg("search", { nullable: true }) search: string) {
-    const result: EpreuveEntity[] = await new EpreuveService().getListBySearch(
-      search as any as string | undefined
+  async getListEpreuveByTitle(@Arg("title", { nullable: true }) title: string) {
+    const result: EpreuveEntity[] = await new EpreuveService().getListByTitle(
+      title
     );
     return result;
   }
 
+  // utilise le get by ids mais sans parametre => all
+  @Query(() => [EpreuveEntity])
+  async getListEpreuve() {
+    const result: EpreuveEntity[] = await new EpreuveService().getListByIds();
+    return result;
+  }
   // ---
 
   @Mutation(() => EpreuveEntity)

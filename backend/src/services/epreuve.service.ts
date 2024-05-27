@@ -15,7 +15,7 @@ class EpreuveService {
 
   async getById(id: number) {
     const epreuve: EpreuveEntity | null = await this.db.findOne({
-      where: { id },
+      where: { id: id },
       relations: ["images"], // Charge la relation 'images'
     });
     if (!epreuve) {
@@ -24,23 +24,24 @@ class EpreuveService {
     return epreuve;
   }
 
-  async getAllByIds(ids?: number[]) {
-    const allEpreuves: EpreuveEntity[] | null = await this.db.find({
+  async getListByTitle(title?: string) {
+    const listEpreuves: EpreuveEntity[] | null = await this.db.find({
+      where: title ? [{ title: Like(`%${title}%`) }] : undefined,
+      relations: ["images"],
+    });
+
+    if (!listEpreuves) {
+      throw new Error("Pas d'épreuve portant ce nom");
+    }
+
+    return listEpreuves;
+  }
+
+  async getListByIds(ids?: number[]) {
+    const listEpreuves: EpreuveEntity[] | null = await this.db.find({
       where: {
         id: ids && ids.length > 0 ? In(ids.map((id) => id)) : undefined,
       },
-    });
-
-    if (!allEpreuves) {
-      throw new Error("Pas d'epreuves");
-    }
-
-    return allEpreuves;
-  }
-
-  async getListBySearch(search?: string) {
-    const listEpreuves: EpreuveEntity[] | null = await this.db.find({
-      where: search ? [{ title: Like(`%${search}%`) }] : undefined,
     });
 
     if (!listEpreuves) {

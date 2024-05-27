@@ -26,7 +26,7 @@ export const MODIFY_USER = gql`
 //   "modifyUserId": "a02ee680-bc7a-4291-ad25-8e307f976424"
 // }
 
-export const DELTE_USER = gql`
+export const DELETE_USER = gql`
   mutation DeleteUser($deleteUserId: String!) {
     deleteUser(id: $deleteUserId) {
       message
