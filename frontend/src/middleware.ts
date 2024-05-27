@@ -2,37 +2,48 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { jwtVerify } from "jose";
 
+// vérifier par role et email
 interface Payload {
   email: string;
+  role: string;
 }
 
-// mettre dotenv en front
+// l'appel de dotenv est fait dans le next.config
 const SECRET_KEY = process.env.SECRET_KEY || "";
 
 export default async function middleware(request: NextRequest) {
   const { cookies } = request;
   const token = cookies.get("tokenParkour");
 
-  return await checkToken(token?.value, request);
-}
-
-export async function verify(token: string): Promise<Payload> {
-  const { payload } = await jwtVerify<Payload>(
-    token,
-    new TextEncoder().encode(SECRET_KEY)
-  );
-  return payload;
+  const response = await checkToken(token?.value, request);
+  return response;
 }
 
 async function checkToken(token: string | undefined, request: NextRequest) {
+  const nextUrl = request.nextUrl;
+
   if (!token) {
     return NextResponse.redirect(new URL("/auth/login", request.url));
   }
 
   try {
-    const payload = await verify(token);
+    const payload = await jwtVerify<Payload>(
+      token,
+      new TextEncoder().encode(SECRET_KEY)
+    );
 
-    if (payload?.email) {
+    // cherche si email dans le token && role = ADMIN && path pour admin
+    if (
+      payload?.payload.email &&
+      payload?.payload.role == "ADMIN" &&
+      request.nextUrl.pathname.startsWith("/admin")
+    ) {
+      return NextResponse.next();
+    } else if (
+      payload?.payload.email &&
+      payload?.payload.role == "CLIENT" &&
+      request.nextUrl.pathname.startsWith("/user")
+    ) {
       return NextResponse.next();
     }
 
@@ -43,6 +54,7 @@ async function checkToken(token: string | undefined, request: NextRequest) {
   }
 }
 
+// check pour ces routes là
 export const config = {
-  matcher: "/admin/:path*",
+  matcher: ["/admin/:path*", "/user/:path*"],
 };

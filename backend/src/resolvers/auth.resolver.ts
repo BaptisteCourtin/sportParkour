@@ -75,7 +75,6 @@ export default class AuthResolver {
 
       token = await new SignJWT({
         email: user.email,
-        id: user.id,
         role: user.role,
       })
         .setProtectedHeader({ alg: "HS256", typ: "jwt" })
