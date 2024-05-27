@@ -6,13 +6,15 @@ export const customAuthChecker: AuthChecker<MyContext> = (
   roles
 ) => {
   if (context.user) {
-    if (roles.length > 0) {
-      if (roles.includes(context.user.role)) {
-        return true;
-      } else {
-        return false;
-      }
-    }
+    // gérer les rôles ici
+
+    // if (roles.length > 0) {
+    //   if (roles.includes(context.user.role)) {
+    //     return true;
+    //   } else {
+    //     return false;
+    //   }
+    // }
 
     return true;
   }

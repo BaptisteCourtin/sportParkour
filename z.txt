@@ -50,3 +50,24 @@ une map avec tout les parkours
 
 resolver => ce qui va etre utilisé en front
 service => utiliser à partir du back
+
+
+-----
+
+**Première solution :** Nous pourrions envoyer le token dans le retour de la requête en plus de notre Message et le stocker ensuite dans le front avec un **localStorage** pourquoi pas? Puis utiliser Apollo Client pour envoyer à chaque requête le token que nous avions préalablement stocké dans le localStorage.
+C’est bien une des possibilités, mais pas celle que je vais vous proposer. 
+
+Pourquoi?
+Parce que le **localStorage** a beau être simple à utiliser et ne pas nécessiter de configuration particulière, il est vulnérable aux attaques **XSS** (Cross Site Scripting) (Si un attaquant parvient à injecter un script malveillant sur la page, il pourrait accéder au localStorage).
+De plus les données stockées dans le **localStorage** ne sont pas automatiquement expirées.
+Elles ne sont pas non plus envoyées automatiquement dans chaque requête (ce qui peut être un bien si cela est souhaité, un mal quand ça ne l’est pas puisqu’il faudra le faire manuellement dans notre code (vous pourrez trouver un exemple avec Apollo Client ici : https://www.apollographql.com/docs/react/networking/authentication/#header)
+Je ne dis pas que cette solution n’est pas possible, je dis que je lui préfère les cookies.
+
+**Deuxième solution :** Les cookies donc! L’avantage des cookies est qu’ils vous nous permettre de les sécuriser notamment à l’aide d’options telles que **HttpOnly** et **Secure (qui permettrait de le restreindre aux connexions HTTPS, ce qui renforce la sécurité, à garder en tête quand vous aurez un nom de domaine sur votre site/projet)**
+Les **HttpOnly et Secure** sont donc des attributs ajoutés à un cookie pour indiquer que ce cookie ne peut pas être accessible via **HTTP** et qu'il est inaccessible aux scripts côté client (JavaScript).
+
+Cela signifie que les scripts malveillants ne peuvent pas accéder aux informations sensibles stockées dans le cookie, ce qui renforce en quelque sorte la sécurité de l'application web.
+**Les cookies sont envoyées automatiquement dans chaque requête** (à contrario du **localStorage**, cela peut être un bien si cela est souhaité, un mal quand ça ne l’est pas puisqu’ils seront systématiquement envoyés même si vous n’en avez pas le besoin).
+Dans notre cas de figure ça s’y prête bien puisque c’est justement ce que l’on cherche à faire : envoyer le token à chaque requête.
+
+-----

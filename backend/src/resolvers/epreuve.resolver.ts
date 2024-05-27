@@ -1,10 +1,12 @@
-import { Arg, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Mutation, Query, Resolver, Ctx, Authorized } from "type-graphql";
 import EpreuveEntity, {
   EpreuveCreateEntity,
   EpreuveUpdateEntity,
 } from "../entities/epreuve.entity";
 import EpreuveService from "../services/epreuve.service";
 import { MessageEntity } from "../entities/message.entity";
+
+import { MyContext } from "..";
 
 @Resolver()
 export default class EpreuveResolver {
@@ -23,8 +25,14 @@ export default class EpreuveResolver {
   }
 
   // utilise le get by ids mais sans parametre => all
+  @Authorized()
   @Query(() => [EpreuveEntity])
-  async getListEpreuve() {
+  async getListEpreuve(@Ctx() ctx: MyContext) {
+    // if (!ctx.user) {
+    //   throw new Error(
+    //     "Vous devez être authentifié pour accéder à la liste des livres!"
+    //   );
+    // }
     const result: EpreuveEntity[] = await new EpreuveService().getListByIds();
     return result;
   }

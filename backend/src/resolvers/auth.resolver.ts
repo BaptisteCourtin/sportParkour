@@ -70,8 +70,8 @@ export default class AuthResolver {
 
     // vérification mdp
     if (await argon2.verify(user.password, infos.password)) {
-      console.log("ENV : ", process.env.JWT_EXPIRATION_TIME);
-      console.log("ENV : ", process.env.SECRET_KEY);
+      // console.log("ENV : ", process.env.JWT_EXPIRATION_TIME);
+      // console.log("ENV : ", process.env.SECRET_KEY);
 
       token = await new SignJWT({
         email: user.email,
@@ -83,7 +83,8 @@ export default class AuthResolver {
         .sign(new TextEncoder().encode(`${process.env.SECRET_KEY}`));
 
       let cookies = new Cookies(ctx.req, ctx.res);
-      cookies.set("token", token, { httpOnly: true });
+      cookies.set("tokenParkour", token, { httpOnly: true }); // mettre à true = sécurité
+
       returnMessage.message = "Salut! Viens parkourir le monde ?";
       returnMessage.success = true;
     } else {

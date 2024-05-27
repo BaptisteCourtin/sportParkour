@@ -27,9 +27,9 @@ const OneParkour = () => {
   const [getParkour, { data, loading, error }] = useGetParkourByIdLazyQuery();
 
   useEffect(() => {
-    if (router.isReady) {
+    if (router.isReady && id) {
       getParkour({
-        variables: { getParkourByIdId: parseInt(id as string) },
+        variables: { getParkourByIdId: +id },
         // onCompleted(data) {
         //   console.log(data);
         // },

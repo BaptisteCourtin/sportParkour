@@ -288,6 +288,13 @@ export type UserUpdateEntity = {
   phone?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type InscriptionMutationVariables = Exact<{
+  infos: UserInputRegisterEntity;
+}>;
+
+
+export type InscriptionMutation = { __typename?: 'Mutation', inscription: { __typename?: 'MessageEntity', message: string, success: boolean } };
+
 export type CreateEpreuveMutationVariables = Exact<{
   infos: EpreuveCreateEntity;
 }>;
@@ -405,6 +412,40 @@ export type GetUserByIdQueryVariables = Exact<{
 export type GetUserByIdQuery = { __typename?: 'Query', getUserById: { __typename?: 'UserEntity', id: string, password: string, name: string, firstname: string, email: string, city?: string | null, codePostal?: string | null, phone?: string | null, role: Role, parkours?: Array<{ __typename?: 'JoinUserParkourEntity', user_id: string, parkour_id: string, favoris: boolean, note?: number | null, parkours: { __typename?: 'ParkourEntity', id: string, title: string } }> | null } };
 
 
+export const InscriptionDocument = gql`
+    mutation Inscription($infos: UserInputRegisterEntity!) {
+  inscription(infos: $infos) {
+    message
+    success
+  }
+}
+    `;
+export type InscriptionMutationFn = Apollo.MutationFunction<InscriptionMutation, InscriptionMutationVariables>;
+
+/**
+ * __useInscriptionMutation__
+ *
+ * To run a mutation, you first call `useInscriptionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInscriptionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [inscriptionMutation, { data, loading, error }] = useInscriptionMutation({
+ *   variables: {
+ *      infos: // value for 'infos'
+ *   },
+ * });
+ */
+export function useInscriptionMutation(baseOptions?: Apollo.MutationHookOptions<InscriptionMutation, InscriptionMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<InscriptionMutation, InscriptionMutationVariables>(InscriptionDocument, options);
+      }
+export type InscriptionMutationHookResult = ReturnType<typeof useInscriptionMutation>;
+export type InscriptionMutationResult = Apollo.MutationResult<InscriptionMutation>;
+export type InscriptionMutationOptions = Apollo.BaseMutationOptions<InscriptionMutation, InscriptionMutationVariables>;
 export const CreateEpreuveDocument = gql`
     mutation CreateEpreuve($infos: EpreuveCreateEntity!) {
   createEpreuve(infos: $infos) {

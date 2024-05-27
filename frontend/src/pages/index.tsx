@@ -1,8 +1,8 @@
 import CardParkour from "@/components/parkour/cardParkour";
 import {
-  GetParkourQuery,
+  GetParkourByIdQuery,
   useGetAllParkourQuery,
-  useGetParkourLazyQuery,
+  useGetParkourByIdLazyQuery,
 } from "@/types/graphql";
 
 export default function Home() {
@@ -57,7 +57,7 @@ export default function Home() {
       <ul className="cardsParkoursUl">
         {data?.getAllParkour
           .slice() // car graphql nous renvoie un tableau en lecture seule
-          .map((parkour: GetParkourQuery["getParkour"]) => (
+          .map((parkour: GetParkourByIdQuery["getParkourById"]) => (
             <CardParkour parkour={parkour} key={parkour.id} />
           ))}
       </ul>

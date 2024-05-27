@@ -16,6 +16,9 @@ import { Snackbar } from "@mui/material";
 
 // get le user en fonction du token et du mail et pas du router
 // si pas de token -> redirect auth / login
+
+// tokenParkour
+
 const profil = () => {
   const router = useRouter();
 

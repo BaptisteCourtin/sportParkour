@@ -43,6 +43,7 @@ const allEpreuves = () => {
             <CardEpreuve epreuve={epreuve} key={epreuve.id} />
           ))}
       </ul>
+      {error && <p>{error.message}</p>}
     </main>
   );
 };

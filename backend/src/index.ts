@@ -36,40 +36,6 @@ import { customAuthChecker } from "./lib/authChecker";
 // ---------------------------------------------
 // ---------------------------------------------
 
-// async function main() {
-//   const schema = await buildSchema({
-//     resolvers: [EpreuveResolver, ParkourResolver, UserResolver], // mettre les resolvers
-//     validate: false,
-//   });
-//   const server = new ApolloServer<{}>({
-//     schema,
-//     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
-//   });
-//   await server.start();
-//   app.use(
-//     "/",
-//     cors<cors.CorsRequest>({
-//       origin: ["http://localhost:3000", "https://studio.apollographql.com"],
-//       credentials: true,
-//     }),
-//     express.json(),
-//     expressMiddleware(server)
-//   );
-
-//   await datasource.initialize();
-
-//   await new Promise<void>((resolve) =>
-//     httpServer.listen({ port: 4000 }, resolve)
-//   );
-//   console.log(`🚀 Server lancé sur http://localhost:4000/`);
-// }
-
-// main();
-
-// ---------------------------------------------
-// ---------------------------------------------
-// ---------------------------------------------
-
 export interface MyContext {
   req: express.Request;
   res: express.Response;
@@ -113,7 +79,9 @@ async function main() {
         let user: UserEntity | null = null;
 
         const cookies = new Cookies(req, res);
-        const token = cookies.get("token");
+        const token = cookies.get("tokenParkour");
+        // console.log("TOKEN", token); // on reçoit le token à chaque requête (fait par défaut par jose)
+
         if (token) {
           try {
             const verify = await jwtVerify<Payload>(

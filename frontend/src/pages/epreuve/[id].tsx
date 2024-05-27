@@ -26,9 +26,9 @@ const OneEpreuve = () => {
   const [getEpreuve, { data, loading, error }] = useGetEpreuveByIdLazyQuery();
 
   useEffect(() => {
-    if (router.isReady) {
+    if (router.isReady && id) {
       getEpreuve({
-        variables: { getEpreuveByIdId: parseInt(id as string) },
+        variables: { getEpreuveByIdId: +id },
         // onCompleted(data) {
         //   console.log(data);
         // },
