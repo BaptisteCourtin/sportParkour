@@ -104,7 +104,8 @@ export default class AuthResolver {
   async logout(@Ctx() ctx: MyContext) {
     if (ctx.user) {
       let cookies = new Cookies(ctx.req, ctx.res);
-      cookies.set("token"); //sans valeur, le cookie token sera supprimé
+      cookies.set("tokenParkour"); //sans valeur, le cookie sera supprimé
+      cookies.set("emailUserParkour");
     }
 
     const returnMessage = new MessageEntity();

@@ -5,6 +5,7 @@ import {
   useGetUserByEmailLazyQuery,
 } from "@/types/graphql";
 import Cookies from "js-cookie";
+import Link from "next/link";
 
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -15,7 +16,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { Snackbar } from "@mui/material";
 
-// mettre les infos dans un form ?
+// mettre les infos dans un form
 const profil = () => {
   const router = useRouter();
 
@@ -185,6 +186,9 @@ const profil = () => {
           </div>
         )
       )}
+
+      <Link href="/user/favoris">mes favoris</Link>
+      <Link href="/user/logout">se déconnecter</Link>
     </main>
   );
 };

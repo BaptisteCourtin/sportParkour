@@ -7,7 +7,6 @@ const cardParkour = ({
 }: {
   parkour: GetParkourByIdQuery["getParkourById"];
 }) => {
-  // on reçoit les infos
   // mettre un icon pour dire de cliquer sur la ville
 
   return (

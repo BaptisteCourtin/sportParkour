@@ -18,7 +18,6 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { Snackbar } from "@mui/material";
 
-// intégrer yt
 const OneEpreuve = () => {
   const router = useRouter();
   const { id } = router.query;
@@ -208,9 +207,13 @@ const OneEpreuve = () => {
             <br />
             <br />
             {data.getEpreuveById.videoLink && (
-              <a target="blank" href={data.getEpreuveById.videoLink}>
-                {data.getEpreuveById.videoLink}
-              </a>
+              <iframe
+                width="1236"
+                height="695"
+                src={`https://www.youtube.com/embed/${
+                  data.getEpreuveById.videoLink.split("watch?v=")[1]
+                }`}
+              ></iframe>
             )}
           </div>
         )

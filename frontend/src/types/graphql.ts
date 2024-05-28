@@ -211,6 +211,7 @@ export type Query = {
   getParkourById: ParkourEntity;
   getParkourByTitle: ParkourEntity;
   getUserByEmail: UserEntity;
+  getUserFavByEmail: Array<JoinUserParkourEntity>;
   logout: MessageEntity;
 };
 
@@ -241,6 +242,11 @@ export type QueryGetParkourByTitleArgs = {
 
 
 export type QueryGetUserByEmailArgs = {
+  email: Scalars['String']['input'];
+};
+
+
+export type QueryGetUserFavByEmailArgs = {
   email: Scalars['String']['input'];
 };
 
@@ -384,6 +390,13 @@ export type GetListEpreuveQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetListEpreuveQuery = { __typename?: 'Query', getListEpreuve: Array<{ __typename?: 'EpreuveEntity', id: string, title: string }> };
+
+export type GetUserFavByEmailQueryVariables = Exact<{
+  email: Scalars['String']['input'];
+}>;
+
+
+export type GetUserFavByEmailQuery = { __typename?: 'Query', getUserFavByEmail: Array<{ __typename?: 'JoinUserParkourEntity', parkour_id: string, note?: number | null, favoris: boolean, parkours: { __typename?: 'ParkourEntity', id: string, title: string } }> };
 
 export type GetParkourByIdQueryVariables = Exact<{
   getParkourByIdId: Scalars['Float']['input'];
@@ -988,6 +1001,52 @@ export type GetListEpreuveQueryHookResult = ReturnType<typeof useGetListEpreuveQ
 export type GetListEpreuveLazyQueryHookResult = ReturnType<typeof useGetListEpreuveLazyQuery>;
 export type GetListEpreuveSuspenseQueryHookResult = ReturnType<typeof useGetListEpreuveSuspenseQuery>;
 export type GetListEpreuveQueryResult = Apollo.QueryResult<GetListEpreuveQuery, GetListEpreuveQueryVariables>;
+export const GetUserFavByEmailDocument = gql`
+    query GetUserFavByEmail($email: String!) {
+  getUserFavByEmail(email: $email) {
+    parkour_id
+    note
+    favoris
+    parkours {
+      id
+      title
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetUserFavByEmailQuery__
+ *
+ * To run a query within a React component, call `useGetUserFavByEmailQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserFavByEmailQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserFavByEmailQuery({
+ *   variables: {
+ *      email: // value for 'email'
+ *   },
+ * });
+ */
+export function useGetUserFavByEmailQuery(baseOptions: Apollo.QueryHookOptions<GetUserFavByEmailQuery, GetUserFavByEmailQueryVariables> & ({ variables: GetUserFavByEmailQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserFavByEmailQuery, GetUserFavByEmailQueryVariables>(GetUserFavByEmailDocument, options);
+      }
+export function useGetUserFavByEmailLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserFavByEmailQuery, GetUserFavByEmailQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserFavByEmailQuery, GetUserFavByEmailQueryVariables>(GetUserFavByEmailDocument, options);
+        }
+export function useGetUserFavByEmailSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetUserFavByEmailQuery, GetUserFavByEmailQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetUserFavByEmailQuery, GetUserFavByEmailQueryVariables>(GetUserFavByEmailDocument, options);
+        }
+export type GetUserFavByEmailQueryHookResult = ReturnType<typeof useGetUserFavByEmailQuery>;
+export type GetUserFavByEmailLazyQueryHookResult = ReturnType<typeof useGetUserFavByEmailLazyQuery>;
+export type GetUserFavByEmailSuspenseQueryHookResult = ReturnType<typeof useGetUserFavByEmailSuspenseQuery>;
+export type GetUserFavByEmailQueryResult = Apollo.QueryResult<GetUserFavByEmailQuery, GetUserFavByEmailQueryVariables>;
 export const GetParkourByIdDocument = gql`
     query GetParkourById($getParkourByIdId: Float!) {
   getParkourById(id: $getParkourByIdId) {

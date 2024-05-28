@@ -2,14 +2,15 @@
 @import "./reset.scss";
 
 // --- components ---
+@import "../components/epreuve/nameEpreuve.scss";
+
 @import "../components/layout/navbarOrdi.scss";
 @import "../components/layout/navbarPhone.scss";
 @import "../components/layout/footer.scss";
 @import "../components/layout/darkLight.scss";
 
 @import "../components/parkour/cardParkour.scss";
-
-@import "../components/epreuve/nameEpreuve.scss";
+@import "../components/parkour/cardFavParkour.scss";
 
 // --- pages ---
 @import "../pages/admin/createEpreuve.scss";
@@ -28,6 +29,7 @@
 @import "../pages/parkour/parkourMap.scss";
 
 @import "../pages/user/favoris.scss";
+@import "../pages/user/logout.scss";
 @import "../pages/user/profil.scss";
 
 @import "../pages/pageIndex.scss";

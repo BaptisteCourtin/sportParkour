@@ -55,11 +55,11 @@ export default function Home() {
       </form> */}
 
       <ul className="cardsParkoursUl">
-        {data?.getAllParkour
-          .slice() // car graphql nous renvoie un tableau en lecture seule
-          .map((parkour: GetParkourByIdQuery["getParkourById"]) => (
+        {data?.getAllParkour.map(
+          (parkour: GetParkourByIdQuery["getParkourById"]) => (
             <CardParkour parkour={parkour} key={parkour.id} />
-          ))}
+          )
+        )}
       </ul>
     </main>
   );

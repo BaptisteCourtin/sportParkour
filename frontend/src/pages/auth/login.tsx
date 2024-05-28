@@ -2,6 +2,7 @@ import {
   UserInputAuthEntity,
   useAuthentificationLazyQuery,
 } from "@/types/graphql";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 
@@ -31,6 +32,8 @@ const login = () => {
 
   return (
     <main className="auth">
+      <Link href="/auth/inscription">Inscription</Link>
+
       <form onSubmit={handleAuthentification}>
         <div>
           <label htmlFor="email">Your Email</label>

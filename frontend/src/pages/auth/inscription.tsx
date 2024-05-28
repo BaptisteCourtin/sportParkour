@@ -4,6 +4,7 @@ import {
   useInscriptionMutation,
 } from "@/types/graphql";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 const inscription = () => {
   const router = useRouter();
@@ -30,6 +31,8 @@ const inscription = () => {
 
   return (
     <main className="auth">
+      <Link href="/auth/login">Authentification</Link>
+
       <h1>INSCRIPTION</h1>
 
       <form onSubmit={handleInscription}>

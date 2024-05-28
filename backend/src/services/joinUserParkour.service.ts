@@ -13,6 +13,22 @@ class JoinUserParkourService {
     this.db = datasource.getRepository(JoinUserParkourEntity);
   }
 
+  async getFavByEmail(email: string) {
+    const allFav: JoinUserParkourEntity[] | null = await this.db.find({
+      where: {
+        users: { email: email },
+        favoris: true,
+      },
+      relations: ["parkours"], // Charge les relations 'parkours' => JoinUserParkourEntity ET 'parkours.parkours' => l'netity parkour pour le title
+    });
+
+    if (!allFav) {
+      throw new Error("Pas de join User-Parkour");
+    }
+
+    return allFav;
+  }
+
   async getAllByUserId(user_id: string) {
     const allJoinUserParkours: JoinUserParkourEntity[] | null =
       await this.db.find({

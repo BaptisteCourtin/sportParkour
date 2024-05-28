@@ -7,7 +7,13 @@ import JoinUserParkourService from "../services/joinUserParkour.service";
 
 @Resolver()
 export default class JoinUserParkourResolver {
-  // le get est fait par le user
+  @Authorized("ADMIN", "CLIENT")
+  @Query(() => [JoinUserParkourEntity])
+  async getUserFavByEmail(@Arg("email") email: string) {
+    const result: JoinUserParkourEntity[] =
+      await new JoinUserParkourService().getFavByEmail(email);
+    return result;
+  }
 
   @Authorized("CLIENT")
   @Mutation(() => JoinUserParkourEntity)
