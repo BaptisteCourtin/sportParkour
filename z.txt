@@ -71,3 +71,10 @@ Cela signifie que les scripts malveillants ne peuvent pas accéder aux informati
 Dans notre cas de figure ça s’y prête bien puisque c’est justement ce que l’on cherche à faire : envoyer le token à chaque requête.
 
 -----
+
+    CLIENT    |    ADMIN     | NON CONNECTE
+--------------|--------------|-------------
+page profil   | page profil  |  
+favoris       | options      |
+note          |              |
+options       |              |

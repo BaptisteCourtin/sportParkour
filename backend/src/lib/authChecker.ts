@@ -5,18 +5,20 @@ export const customAuthChecker: AuthChecker<MyContext> = (
   { context },
   roles
 ) => {
+  // roles = ce qui est mis dans le @authorized du resolver
   if (context.user) {
-    // gérer les rôles ici
-
-    // if (roles.length > 0) {
-    //   if (roles.includes(context.user.role)) {
-    //     return true;
-    //   } else {
-    //     return false;
-    //   }
-    // }
+    // gère les roles quand besoin
+    if (roles.length > 0) {
+      if (roles.includes(context.user.role)) {
+        return true;
+      } else {
+        return false;
+      }
+    }
 
     return true;
   }
   return false;
 };
+
+// @Authorized("ADMIN", "CLIENT")

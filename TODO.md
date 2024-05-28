@@ -17,9 +17,12 @@
 - recherche de parkours par id / nom (sur les plaques)
 
 - page user
+
   - les derniers parkours fait
   - les notes données
   - liste des favoris
+
+- un truc sur la navbar ordi pour dire où on est
 
 ##################################################################################################################
 

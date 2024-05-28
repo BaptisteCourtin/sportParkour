@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import {
   useDeleteUserMutation,
-  useGetUserByIdLazyQuery,
+  useGetUserByEmailLazyQuery,
 } from "@/types/graphql";
+import Cookies from "js-cookie";
 
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -14,32 +15,27 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { Snackbar } from "@mui/material";
 
-// get le user en fonction du token et du mail et pas du router
-// si pas de token -> redirect auth / login
-
-// tokenParkour
-
+// mettre les infos dans un form ?
 const profil = () => {
   const router = useRouter();
 
-  const [getUser, { data, loading, error }] = useGetUserByIdLazyQuery();
+  const [getUser, { data, loading, error }] = useGetUserByEmailLazyQuery();
 
   useEffect(() => {
-    if (router.isReady) {
-      const id = "41842629-d707-4e75-ade3-1e559ef21cc0";
-      getUser({
-        variables: { getUserByIdId: id as string },
-        // onCompleted(data) {
-        //   console.log(data);
-        // },
-        onError(err: any) {
-          console.log("error", err);
-        },
-      });
-    }
+    const userEmail = Cookies.get("emailUserParkour"); // on a mis l'email en cliar a partir du middleware
+
+    getUser({
+      variables: { email: userEmail as string },
+      onCompleted(data) {
+        console.log(data);
+      },
+      onError(err: any) {
+        console.log("error", err);
+      },
+    });
   }, [router.isReady]);
 
-  // --- DELETE EPREUVE ---
+  // --- DELETE USER ---
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -93,10 +89,10 @@ const profil = () => {
       ) : loading ? (
         <h2>Chargement en cours</h2>
       ) : (
-        data?.getUserById && (
+        data?.getUserByEmail && (
           <div>
             <Button variant="outlined" onClick={handleClickOpen}>
-              Delete profil user {data.getUserById.id}
+              Delete profil user {data.getUserByEmail.id}
             </Button>
             <Dialog
               open={open}
@@ -112,9 +108,9 @@ const profil = () => {
                   );
                   const nomUser = formJson.nomUser;
 
-                  if (data.getUserById.name == nomUser) {
+                  if (data.getUserByEmail.name == nomUser) {
                     console.log("OUI");
-                    handleDeleteUser(data.getUserById.id);
+                    handleDeleteUser(data.getUserByEmail.id);
 
                     if (errorDelete) {
                       handleClickClose();
@@ -129,11 +125,11 @@ const profil = () => {
                 },
               }}
             >
-              <DialogTitle>Delete user {data.getUserById.id}</DialogTitle>
+              <DialogTitle>Delete user {data.getUserByEmail.id}</DialogTitle>
               <DialogContent>
                 <DialogContentText>
                   Pour supprimer cette user entrez son nom :
-                  {data.getUserById.name}
+                  {data.getUserByEmail.name}
                 </DialogContentText>
                 <TextField
                   autoFocus
@@ -170,22 +166,22 @@ const profil = () => {
 
             <br />
             <br />
-            <p>nom : {data.getUserById.name}</p>
+            <p>nom : {data.getUserByEmail.name}</p>
             <br />
             <br />
-            <p>prénom : {data.getUserById.firstname}</p>
+            <p>prénom : {data.getUserByEmail.firstname}</p>
             <br />
             <br />
-            <p>email : {data.getUserById.email}</p>
+            <p>email : {data.getUserByEmail.email}</p>
             <br />
             <br />
-            <p>ville : {data.getUserById.city}</p>
+            <p>ville : {data.getUserByEmail.city}</p>
             <br />
             <br />
-            <p>codePostal : {data.getUserById.codePostal}</p>
+            <p>codePostal : {data.getUserByEmail.codePostal}</p>
             <br />
             <br />
-            <p>phone : {data.getUserById.phone}</p>
+            <p>phone : {data.getUserByEmail.phone}</p>
           </div>
         )
       )}

@@ -25,19 +25,14 @@ export default class EpreuveResolver {
   }
 
   // utilise le get by ids mais sans parametre => all
-  @Authorized()
   @Query(() => [EpreuveEntity])
   async getListEpreuve(@Ctx() ctx: MyContext) {
-    // if (!ctx.user) {
-    //   throw new Error(
-    //     "Vous devez être authentifié pour accéder à la liste des livres!"
-    //   );
-    // }
     const result: EpreuveEntity[] = await new EpreuveService().getListByIds();
     return result;
   }
   // ---
 
+  @Authorized("ADMIN")
   @Mutation(() => EpreuveEntity)
   async createEpreuve(@Arg("infos") infos: EpreuveCreateEntity) {
     const resultNewEpreuveID: number = await new EpreuveService().create(infos);
@@ -49,6 +44,7 @@ export default class EpreuveResolver {
     return result;
   }
 
+  @Authorized("ADMIN")
   @Mutation(() => EpreuveEntity)
   async modifyEpreuve(
     @Arg("id") id: number,
@@ -58,6 +54,7 @@ export default class EpreuveResolver {
     return result;
   }
 
+  @Authorized("ADMIN")
   @Mutation(() => MessageEntity)
   async deleteEpreuve(@Arg("id") id: number) {
     const isLinkedToParkours =

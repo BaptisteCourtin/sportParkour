@@ -210,7 +210,7 @@ export type Query = {
   getListEpreuveByTitle: Array<EpreuveEntity>;
   getParkourById: ParkourEntity;
   getParkourByTitle: ParkourEntity;
-  getUserById: UserEntity;
+  getUserByEmail: UserEntity;
   logout: MessageEntity;
 };
 
@@ -240,8 +240,8 @@ export type QueryGetParkourByTitleArgs = {
 };
 
 
-export type QueryGetUserByIdArgs = {
-  id: Scalars['String']['input'];
+export type QueryGetUserByEmailArgs = {
+  email: Scalars['String']['input'];
 };
 
 /** Role enum */
@@ -404,12 +404,12 @@ export type GetAllParkourQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetAllParkourQuery = { __typename?: 'Query', getAllParkour: Array<{ __typename?: 'ParkourEntity', id: string, title: string, description?: string | null, time?: number | null, length?: number | null, difficulty?: Difficulty | null, city?: string | null, start: string, note?: number | null, nbVote?: number | null, images?: Array<{ __typename?: 'ImageParkourEntity', id: string, lien?: string | null }> | null, epreuves?: Array<{ __typename?: 'EpreuveEntity', id: string, title: string }> | null }> };
 
-export type GetUserByIdQueryVariables = Exact<{
-  getUserByIdId: Scalars['String']['input'];
+export type GetUserByEmailQueryVariables = Exact<{
+  email: Scalars['String']['input'];
 }>;
 
 
-export type GetUserByIdQuery = { __typename?: 'Query', getUserById: { __typename?: 'UserEntity', id: string, password: string, name: string, firstname: string, email: string, city?: string | null, codePostal?: string | null, phone?: string | null, role: Role, parkours?: Array<{ __typename?: 'JoinUserParkourEntity', user_id: string, parkour_id: string, favoris: boolean, note?: number | null, parkours: { __typename?: 'ParkourEntity', id: string, title: string } }> | null } };
+export type GetUserByEmailQuery = { __typename?: 'Query', getUserByEmail: { __typename?: 'UserEntity', id: string, name: string, firstname: string, email: string, city?: string | null, codePostal?: string | null, phone?: string | null, parkours?: Array<{ __typename?: 'JoinUserParkourEntity', user_id: string, parkour_id: string, favoris: boolean, note?: number | null, parkours: { __typename?: 'ParkourEntity', id: string, title: string } }> | null } };
 
 
 export const InscriptionDocument = gql`
@@ -1158,18 +1158,16 @@ export type GetAllParkourQueryHookResult = ReturnType<typeof useGetAllParkourQue
 export type GetAllParkourLazyQueryHookResult = ReturnType<typeof useGetAllParkourLazyQuery>;
 export type GetAllParkourSuspenseQueryHookResult = ReturnType<typeof useGetAllParkourSuspenseQuery>;
 export type GetAllParkourQueryResult = Apollo.QueryResult<GetAllParkourQuery, GetAllParkourQueryVariables>;
-export const GetUserByIdDocument = gql`
-    query GetUserById($getUserByIdId: String!) {
-  getUserById(id: $getUserByIdId) {
+export const GetUserByEmailDocument = gql`
+    query GetUserByEmail($email: String!) {
+  getUserByEmail(email: $email) {
     id
-    password
     name
     firstname
     email
     city
     codePostal
     phone
-    role
     parkours {
       user_id
       parkour_id
@@ -1185,34 +1183,34 @@ export const GetUserByIdDocument = gql`
     `;
 
 /**
- * __useGetUserByIdQuery__
+ * __useGetUserByEmailQuery__
  *
- * To run a query within a React component, call `useGetUserByIdQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetUserByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetUserByEmailQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserByEmailQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetUserByIdQuery({
+ * const { data, loading, error } = useGetUserByEmailQuery({
  *   variables: {
- *      getUserByIdId: // value for 'getUserByIdId'
+ *      email: // value for 'email'
  *   },
  * });
  */
-export function useGetUserByIdQuery(baseOptions: Apollo.QueryHookOptions<GetUserByIdQuery, GetUserByIdQueryVariables> & ({ variables: GetUserByIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+export function useGetUserByEmailQuery(baseOptions: Apollo.QueryHookOptions<GetUserByEmailQuery, GetUserByEmailQueryVariables> & ({ variables: GetUserByEmailQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetUserByIdQuery, GetUserByIdQueryVariables>(GetUserByIdDocument, options);
+        return Apollo.useQuery<GetUserByEmailQuery, GetUserByEmailQueryVariables>(GetUserByEmailDocument, options);
       }
-export function useGetUserByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserByIdQuery, GetUserByIdQueryVariables>) {
+export function useGetUserByEmailLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserByEmailQuery, GetUserByEmailQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetUserByIdQuery, GetUserByIdQueryVariables>(GetUserByIdDocument, options);
+          return Apollo.useLazyQuery<GetUserByEmailQuery, GetUserByEmailQueryVariables>(GetUserByEmailDocument, options);
         }
-export function useGetUserByIdSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetUserByIdQuery, GetUserByIdQueryVariables>) {
+export function useGetUserByEmailSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetUserByEmailQuery, GetUserByEmailQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetUserByIdQuery, GetUserByIdQueryVariables>(GetUserByIdDocument, options);
+          return Apollo.useSuspenseQuery<GetUserByEmailQuery, GetUserByEmailQueryVariables>(GetUserByEmailDocument, options);
         }
-export type GetUserByIdQueryHookResult = ReturnType<typeof useGetUserByIdQuery>;
-export type GetUserByIdLazyQueryHookResult = ReturnType<typeof useGetUserByIdLazyQuery>;
-export type GetUserByIdSuspenseQueryHookResult = ReturnType<typeof useGetUserByIdSuspenseQuery>;
-export type GetUserByIdQueryResult = Apollo.QueryResult<GetUserByIdQuery, GetUserByIdQueryVariables>;
+export type GetUserByEmailQueryHookResult = ReturnType<typeof useGetUserByEmailQuery>;
+export type GetUserByEmailLazyQueryHookResult = ReturnType<typeof useGetUserByEmailLazyQuery>;
+export type GetUserByEmailSuspenseQueryHookResult = ReturnType<typeof useGetUserByEmailSuspenseQuery>;
+export type GetUserByEmailQueryResult = Apollo.QueryResult<GetUserByEmailQuery, GetUserByEmailQueryVariables>;

@@ -1,18 +1,20 @@
-import { Arg, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Authorized, Mutation, Query, Resolver } from "type-graphql";
 import UserEntity, { UserUpdateEntity } from "../entities/user.entity";
 import UserService from "../services/user.service";
 import { MessageEntity } from "../entities/message.entity";
 
 @Resolver()
 export default class UserResolver {
+  @Authorized("ADMIN", "CLIENT")
   @Query(() => UserEntity)
-  async getUserById(@Arg("id") id: string) {
-    const UserEntity = await new UserService().getById(id);
+  async getUserByEmail(@Arg("email") email: string) {
+    const UserEntity = await new UserService().getByEmail(email);
     return UserEntity;
   }
 
   // ---
 
+  @Authorized("ADMIN", "CLIENT")
   @Mutation(() => UserEntity)
   async modifyUser(
     @Arg("id") id: string,
@@ -22,6 +24,7 @@ export default class UserResolver {
     return result;
   }
 
+  @Authorized("ADMIN", "CLIENT")
   @Mutation(() => MessageEntity)
   async deleteUser(@Arg("id") id: string) {
     await new UserService().delete(id);

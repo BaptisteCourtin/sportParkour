@@ -1,4 +1,4 @@
-import { Arg, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Authorized, Mutation, Query, Resolver } from "type-graphql";
 import ParkourEntity, {
   ParkourCreateEntity,
   ParkourUpdateEntity,
@@ -28,6 +28,7 @@ export default class ParkourResolver {
 
   // ---
 
+  @Authorized("ADMIN")
   @Mutation(() => ParkourEntity)
   async createParkour(@Arg("infos") infos: ParkourCreateEntity) {
     const resultNewParkourID: number = await new ParkourService().create(infos);
@@ -38,6 +39,7 @@ export default class ParkourResolver {
     return result;
   }
 
+  @Authorized("ADMIN")
   @Mutation(() => ParkourEntity)
   async modifyParkour(
     @Arg("id") id: number,
@@ -47,6 +49,7 @@ export default class ParkourResolver {
     return result;
   }
 
+  @Authorized("ADMIN")
   @Mutation(() => MessageEntity)
   async deleteParkour(@Arg("id") id: number) {
     await new ParkourService().delete(id);

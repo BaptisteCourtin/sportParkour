@@ -1,4 +1,4 @@
-import { Arg, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Authorized, Mutation, Query, Resolver } from "type-graphql";
 import JoinUserParkourEntity, {
   JoinUserParkourCreateEntity,
   JoinUserParkourUpdateEntity,
@@ -9,6 +9,7 @@ import JoinUserParkourService from "../services/joinUserParkour.service";
 export default class JoinUserParkourResolver {
   // le get est fait par le user
 
+  @Authorized("CLIENT")
   @Mutation(() => JoinUserParkourEntity)
   async createJoinUserParkour(
     @Arg("infos") infos: JoinUserParkourCreateEntity

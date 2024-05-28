@@ -20,7 +20,7 @@ export default async function middleware(request: NextRequest) {
 }
 
 async function checkToken(token: string | undefined, request: NextRequest) {
-  const nextUrl = request.nextUrl;
+  let response: NextResponse<unknown>;
 
   if (!token) {
     return NextResponse.redirect(new URL("/auth/login", request.url));
@@ -32,25 +32,40 @@ async function checkToken(token: string | undefined, request: NextRequest) {
       new TextEncoder().encode(SECRET_KEY)
     );
 
-    // cherche si email dans le token && role = ADMIN && path pour admin
+    // cherche si email et role selon path
     if (
-      payload?.payload.email &&
-      payload?.payload.role == "ADMIN" &&
-      request.nextUrl.pathname.startsWith("/admin")
+      // l'admin aussi a un profil
+      request.nextUrl.pathname.startsWith("/user/profil") &&
+      payload?.payload.email
     ) {
-      return NextResponse.next();
+      response = NextResponse.next();
+      response.cookies.set("emailUserParkour", payload.payload.email);
     } else if (
-      payload?.payload.email &&
-      payload?.payload.role == "CLIENT" &&
-      request.nextUrl.pathname.startsWith("/user")
+      // les pages admin
+      request.nextUrl.pathname.startsWith("/admin") &&
+      payload?.payload.role == "ADMIN" &&
+      payload?.payload.email
     ) {
-      return NextResponse.next();
+      response = NextResponse.next();
+    } else if (
+      // reste des /users (favoris)
+      request.nextUrl.pathname.startsWith("/user") &&
+      payload?.payload.role == "CLIENT" &&
+      payload?.payload.email
+    ) {
+      response = NextResponse.next();
+      response.cookies.set("emailUserParkour", payload.payload.email);
+    } else {
+      response = NextResponse.redirect(new URL("/auth/login", request.url));
+      response.cookies.delete("tokenParkour");
     }
 
-    return NextResponse.redirect(new URL("/auth/login", request.url));
+    return response;
   } catch (err) {
     console.error("Verification failed", err);
-    return NextResponse.redirect(new URL("/auth/login", request.url));
+    response = NextResponse.redirect(new URL("/auth/login", request.url));
+    response.cookies.delete("tokenParkour");
+    return response;
   }
 }
 
