@@ -12,12 +12,13 @@
 @import "../components/parkour/cardParkour.scss";
 @import "../components/parkour/cardFavParkour.scss";
 
-// --- pages ---
+// --- admin ---
 @import "../pages/admin/createEpreuve.scss";
 @import "../pages/admin/createParkour.scss";
-@import "../pages/admin/modifyEpreuve.scss";
-@import "../pages/admin/modifyParkour.scss";
+@import "../pages/admin/modifyEpreuve/modifyEpreuve.scss";
+@import "../pages/admin/modifyParkour/modifyParkour.scss";
 
+// --- pages ---
 @import "../pages/auth/auth.scss";
 
 @import "../pages/epreuve/epreuveById.scss";

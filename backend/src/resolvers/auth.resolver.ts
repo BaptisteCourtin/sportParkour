@@ -106,6 +106,7 @@ export default class AuthResolver {
       let cookies = new Cookies(ctx.req, ctx.res);
       cookies.set("tokenParkour"); //sans valeur, le cookie sera supprimé
       cookies.set("emailUserParkour");
+      cookies.set("roleUserParkour");
     }
 
     const returnMessage = new MessageEntity();

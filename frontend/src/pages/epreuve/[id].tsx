@@ -5,18 +5,11 @@ import {
   useGetEpreuveByIdLazyQuery,
 } from "@/types/graphql";
 import Carousel from "react-material-ui-carousel";
+import Cookies from "js-cookie";
 
 import { FaAngleRight } from "react-icons/fa6";
 import { FaAngleLeft } from "react-icons/fa6";
-
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-import { Snackbar } from "@mui/material";
+import Link from "next/link";
 
 const OneEpreuve = () => {
   const router = useRouter();
@@ -38,52 +31,7 @@ const OneEpreuve = () => {
     }
   }, [router.isReady]);
 
-  // --- DELETE EPREUVE ---
-  const [open, setOpen] = useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClickClose = () => {
-    setOpen(false);
-  };
-
-  const [deleteEpreuve, { loading: loadingDelete, error: errorDelete }] =
-    useDeleteEpreuveMutation();
-
-  function handleDeleteEpreuve(id: string): void {
-    if (id) {
-      deleteEpreuve({
-        variables: { deleteEpreuveId: +id },
-        onCompleted() {
-          router.push(`/epreuve/allEpreuves`);
-        },
-        onError(error) {
-          console.error(error);
-        },
-      });
-    }
-  }
-
-  // --- SNACKBAR ---
-  const [openSnack, setOpenSnack] = useState(false);
-  const [snackComment, setSnackComment] = useState("");
-
-  const handleClickSnack = () => {
-    setOpenSnack(true);
-  };
-
-  const handleCloseSnack = (
-    event: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    setOpenSnack(false);
-  };
+  console.log(Cookies.get("roleUserParkour") == "ADMIN");
 
   return (
     <main className="oneEpreuve">
@@ -94,79 +42,11 @@ const OneEpreuve = () => {
       ) : (
         data?.getEpreuveById && (
           <div>
-            <Button variant="outlined" onClick={handleClickOpen}>
-              Delete epreuve {data.getEpreuveById.id}
-            </Button>
-            <Dialog
-              open={open}
-              onClose={handleClickClose}
-              PaperProps={{
-                component: "form",
-                onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
-                  event.preventDefault();
-
-                  const formData = new FormData(event.currentTarget);
-                  const formJson = Object.fromEntries(
-                    (formData as any).entries()
-                  );
-                  const nomEpreuve = formJson.nomEpreuve;
-
-                  if (data.getEpreuveById.title == nomEpreuve) {
-                    console.log("OUI");
-                    handleDeleteEpreuve(data.getEpreuveById.id);
-
-                    if (errorDelete) {
-                      handleClickClose();
-                      setSnackComment(errorDelete?.message);
-                      handleClickSnack();
-                    }
-                  } else {
-                    handleClickClose();
-                    setSnackComment("Le nom de l'épreuve ne correspond pas");
-                    handleClickSnack();
-                  }
-                },
-              }}
-            >
-              <DialogTitle>Delete epreuve {data.getEpreuveById.id}</DialogTitle>
-              <DialogContent>
-                <DialogContentText>
-                  Pour supprimer cette épreuve entrez son nom :
-                  {data.getEpreuveById.title}
-                </DialogContentText>
-                <TextField
-                  autoFocus
-                  required
-                  margin="dense"
-                  id="nomEpreuve"
-                  name="nomEpreuve"
-                  label="nom de l'épreuve"
-                  type="nomEpreuve"
-                  fullWidth
-                  variant="standard"
-                />
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleClickClose}>En fait, non</Button>
-                <Button type="submit">Hop, ça dégage!</Button>
-              </DialogActions>
-            </Dialog>
-
-            {/* --- */}
-
-            <Snackbar
-              open={openSnack}
-              autoHideDuration={3000}
-              onClose={handleCloseSnack}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "center",
-              }}
-              message={snackComment}
-            />
-
-            {/* --- */}
-
+            {Cookies.get("roleUserParkour") == "ADMIN" ? (
+              <Link href={`/admin/modifyEpreuve/${data.getEpreuveById.id}`}>
+                Modifier cette épreuve
+              </Link>
+            ) : null}
             <br />
             <br />
             <p>{data.getEpreuveById.title}</p>

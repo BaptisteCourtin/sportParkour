@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+
 import {
-  useDeleteUserMutation,
-  useGetUserByEmailLazyQuery,
+  useDeleteEpreuveMutation,
+  useGetEpreuveByIdLazyQuery,
 } from "@/types/graphql";
-import Cookies from "js-cookie";
-import Link from "next/link";
 
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -16,27 +15,27 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { Snackbar } from "@mui/material";
 
-// mettre les infos dans un form
-const profil = () => {
+const modifyOneEpreuve = () => {
   const router = useRouter();
+  const { id } = router.query;
 
-  const [getUser, { data, loading, error }] = useGetUserByEmailLazyQuery();
+  const [getEpreuve, { data, loading, error }] = useGetEpreuveByIdLazyQuery();
 
   useEffect(() => {
-    const userEmail = Cookies.get("emailUserParkour"); // on a mis l'email en clair dans un cookie a partir du middleware, on peut changer le cookie mais on repasse dans le middleware donc osef
-
-    getUser({
-      variables: { email: userEmail as string },
-      onCompleted(data) {
-        console.log(data);
-      },
-      onError(err: any) {
-        console.log("error", err);
-      },
-    });
+    if (router.isReady && id) {
+      getEpreuve({
+        variables: { getEpreuveByIdId: +id },
+        // onCompleted(data) {
+        //   console.log(data);
+        // },
+        onError(err: any) {
+          console.log("error", err);
+        },
+      });
+    }
   }, [router.isReady]);
 
-  // --- DELETE USER ---
+  // --- DELETE EPREUVE ---
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -47,15 +46,15 @@ const profil = () => {
     setOpen(false);
   };
 
-  const [deleteUser, { loading: loadingDelete, error: errorDelete }] =
-    useDeleteUserMutation();
+  const [deleteEpreuve, { loading: loadingDelete, error: errorDelete }] =
+    useDeleteEpreuveMutation();
 
-  function handleDeleteUser(id: string): void {
+  function handleDeleteEpreuve(id: string): void {
     if (id) {
-      deleteUser({
-        variables: { deleteUserId: id },
+      deleteEpreuve({
+        variables: { deleteEpreuveId: +id },
         onCompleted() {
-          router.push(`/user/allUsers`);
+          router.push(`/epreuve/allEpreuves`);
         },
         onError(error) {
           console.error(error);
@@ -84,17 +83,18 @@ const profil = () => {
   };
 
   return (
-    <main className="profil">
+    <main className="modifyOneEpreuve">
       {error ? (
         <h2>une erreur... (déso)</h2>
       ) : loading ? (
         <h2>Chargement en cours</h2>
       ) : (
-        data?.getUserByEmail && (
+        data?.getEpreuveById && (
           <div>
             <Button variant="outlined" onClick={handleClickOpen}>
-              Delete profil user {data.getUserByEmail.id}
+              Delete epreuve
             </Button>
+
             <Dialog
               open={open}
               onClose={handleClickClose}
@@ -107,11 +107,11 @@ const profil = () => {
                   const formJson = Object.fromEntries(
                     (formData as any).entries()
                   );
-                  const nomUser = formJson.nomUser;
+                  const nomEpreuve = formJson.nomEpreuve;
 
-                  if (data.getUserByEmail.name == nomUser) {
+                  if (data.getEpreuveById.title == nomEpreuve) {
                     console.log("OUI");
-                    handleDeleteUser(data.getUserByEmail.id);
+                    handleDeleteEpreuve(data.getEpreuveById.id);
 
                     if (errorDelete) {
                       handleClickClose();
@@ -120,26 +120,26 @@ const profil = () => {
                     }
                   } else {
                     handleClickClose();
-                    setSnackComment("Le nom de l'user ne correspond pas");
+                    setSnackComment("Le nom de l'épreuve ne correspond pas");
                     handleClickSnack();
                   }
                 },
               }}
             >
-              <DialogTitle>Delete user {data.getUserByEmail.id}</DialogTitle>
+              <DialogTitle>Delete epreuve {data.getEpreuveById.id}</DialogTitle>
               <DialogContent>
                 <DialogContentText>
-                  Pour supprimer cette user entrez son nom :
-                  {data.getUserByEmail.name}
+                  Pour supprimer cette épreuve entrez son nom :
+                  {data.getEpreuveById.title}
                 </DialogContentText>
                 <TextField
                   autoFocus
                   required
                   margin="dense"
-                  id="nomUser"
-                  name="nomUser"
-                  label="nom de l'user"
-                  type="nomUser"
+                  id="nomEpreuve"
+                  name="nomEpreuve"
+                  label="nom de l'épreuve"
+                  type="nomEpreuve"
                   fullWidth
                   variant="standard"
                 />
@@ -164,36 +164,11 @@ const profil = () => {
             />
 
             {/* --- */}
-
-            <br />
-            <br />
-            <p>nom : {data.getUserByEmail.name}</p>
-            <br />
-            <br />
-            <p>prénom : {data.getUserByEmail.firstname}</p>
-            <br />
-            <br />
-            <p>email : {data.getUserByEmail.email}</p>
-            <br />
-            <br />
-            <p>ville : {data.getUserByEmail.city}</p>
-            <br />
-            <br />
-            <p>codePostal : {data.getUserByEmail.codePostal}</p>
-            <br />
-            <br />
-            <p>phone : {data.getUserByEmail.phone}</p>
           </div>
         )
       )}
-
-      {Cookies.get("roleUserParkour") == "CLIENT" ? (
-        <Link href="/user/favoris">mes favoris</Link>
-      ) : null}
-
-      <Link href="/user/logout">se déconnecter</Link>
     </main>
   );
 };
 
-export default profil;
+export default modifyOneEpreuve;

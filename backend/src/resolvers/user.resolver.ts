@@ -12,13 +12,6 @@ export default class UserResolver {
     return UserEntity;
   }
 
-  // @Authorized("ADMIN", "CLIENT")
-  // @Query(() => UserEntity)
-  // async getUserFavByEmail(@Arg("email") email: string) {
-  //   const UserEntity = await new UserService().getFavByEmail(email);
-  //   return UserEntity;
-  // }
-
   // ---
 
   @Authorized("ADMIN", "CLIENT")

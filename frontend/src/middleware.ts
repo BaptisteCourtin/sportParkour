@@ -15,8 +15,16 @@ export default async function middleware(request: NextRequest) {
   const { cookies } = request;
   const token = cookies.get("tokenParkour");
 
-  const response = await checkToken(token?.value, request);
-  return response;
+  if (
+    request.nextUrl.pathname.startsWith("/user") ||
+    request.nextUrl.pathname.startsWith("/admin")
+  ) {
+    const response = await checkToken(token?.value, request);
+    return response;
+  } else {
+    const response = verifyAllOk(token?.value, request);
+    return response;
+  }
 }
 
 async function checkToken(token: string | undefined, request: NextRequest) {
@@ -39,7 +47,6 @@ async function checkToken(token: string | undefined, request: NextRequest) {
       payload?.payload.email
     ) {
       response = NextResponse.next();
-      response.cookies.set("emailUserParkour", payload.payload.email);
     } else if (
       // les pages admin
       request.nextUrl.pathname.startsWith("/admin") &&
@@ -54,17 +61,49 @@ async function checkToken(token: string | undefined, request: NextRequest) {
       payload?.payload.email
     ) {
       response = NextResponse.next();
-      response.cookies.set("emailUserParkour", payload.payload.email);
     } else {
       response = NextResponse.redirect(new URL("/auth/login", request.url));
       response.cookies.delete("tokenParkour");
+      return response;
     }
 
+    // c'est ok
+    response.cookies.set("emailUserParkour", payload.payload.email);
+    response.cookies.set("roleUserParkour", payload.payload.role);
     return response;
   } catch (err) {
     console.error("Verification failed", err);
     response = NextResponse.redirect(new URL("/auth/login", request.url));
     response.cookies.delete("tokenParkour");
+    response.cookies.delete("emailUserParkour");
+    response.cookies.delete("roleUserParkour");
+    return response;
+  }
+}
+
+async function verifyAllOk(token: string | undefined, request: NextRequest) {
+  let response: NextResponse<unknown>;
+
+  if (!token) {
+    return NextResponse.next();
+  }
+
+  try {
+    const payload = await jwtVerify<Payload>(
+      token,
+      new TextEncoder().encode(SECRET_KEY)
+    );
+
+    response = NextResponse.next();
+    response.cookies.set("emailUserParkour", payload.payload.email);
+    response.cookies.set("roleUserParkour", payload.payload.role);
+    return response;
+  } catch (err) {
+    console.error("Verification failed", err);
+    response = NextResponse.redirect(new URL("/auth/login", request.url));
+    response.cookies.delete("tokenParkour");
+    response.cookies.delete("emailUserParkour");
+    response.cookies.delete("roleUserParkour");
     return response;
   }
 }

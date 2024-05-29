@@ -1,20 +1,49 @@
 import React, { useState } from "react";
 
-import { GetEpreuveByIdQuery, useGetListEpreuveQuery } from "@/types/graphql";
+import {
+  GetEpreuveByIdQuery,
+  useGetEpreuveByIdLazyQuery,
+  useGetListEpreuveQuery,
+} from "@/types/graphql";
 
 import CardEpreuve from "@/components/epreuve/cardEpreuve";
 import SearchBarEpreuve from "@/components/epreuve/searchBarEpreuve";
+import { useRouter } from "next/router";
 
 const allEpreuves = () => {
+  const router = useRouter();
+
   const [tri, setTri] = useState<string>("Titre A-Z");
 
   const { data, loading, error } = useGetListEpreuveQuery({
     fetchPolicy: "no-cache",
   });
 
+  const handleSearchById = (e: React.MouseEvent<HTMLFormElement>): void => {
+    e.preventDefault();
+
+    const formData = new FormData(e.currentTarget);
+    const data = Object.fromEntries(formData);
+
+    router.push(`/epreuve/${data.idEpreuve}`);
+  };
+
   return (
     <main className="allEpreuves">
       <SearchBarEpreuve />
+
+      <form onSubmit={handleSearchById}>
+        <div>
+          <label htmlFor="idEpreuve">numéro de l'épreuve :</label>
+          <input
+            id="idEpreuve"
+            name="idEpreuve"
+            type="number"
+            placeholder="numéro de l'épreuve"
+          />
+        </div>
+        <button type="submit">Chercher</button>
+      </form>
 
       <div className="trieur">
         <label htmlFor="tri">Ordre de tri : </label>

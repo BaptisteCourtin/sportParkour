@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 dotenv.config({ path: "../.env" });
 
 const nextConfig = {
-  reactStrictMode: true,
+  reactStrictMode: false,
 };
 
 export default nextConfig;

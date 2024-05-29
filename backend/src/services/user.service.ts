@@ -33,20 +33,6 @@ class UserService {
     return user;
   }
 
-  // async getFavByEmail(email: string) {
-  //   const user = await this.db.find({
-  //     where: {
-  //       email: email,
-  //       parkours: { favoris: true },
-  //     },
-  //     relations: ["parkours.parkours"], // Charge les relations 'parkours' => JoinUserParkourEntity ET 'parkours.parkours' => l'netity parkour pour le title
-  //   });
-  //   if (!user) {
-  //     throw new Error("Vous n'avez pas de favoris");
-  //   }
-  //   return user;
-  // }
-
   // ---
 
   async modify(id: string, data: UserUpdateEntity) {

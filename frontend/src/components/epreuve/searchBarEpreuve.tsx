@@ -24,7 +24,7 @@ const titleBarEpreuve = () => {
       className="titleBar"
       disablePortal
       renderInput={(params) => (
-        <TextField {...params} label="Recherche épreuve" />
+        <TextField {...params} label="Recherche une épreuve par titre" />
       )}
       sx={{ width: 300 }}
       // ---

@@ -80,7 +80,3 @@ note          |              |
 options       |              |
 
 
---- MAPS ---
-
-https://developers.google.com/codelabs/maps-platform/maps-platform-101-react-js#0
-AIzaSyC3ORbJDHOmjpFa_3v_C0cLaUkLv7I0HoM

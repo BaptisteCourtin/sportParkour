@@ -1,14 +1,12 @@
+import { useRouter } from "next/router";
 import CardParkour from "@/components/parkour/cardParkour";
-import {
-  GetParkourByIdQuery,
-  useGetAllParkourQuery,
-  useGetParkourByIdLazyQuery,
-} from "@/types/graphql";
+import { GetParkourByIdQuery, useGetAllParkourQuery } from "@/types/graphql";
 
+// appel à 20 parkours (les + proches de base)
+// les 20 + nouveaux
+// favoris (???)
 export default function Home() {
-  // appel à 20 parkours (les + proches de base)
-  // les 20 + nouveaux
-  // favoris (???)
+  const router = useRouter();
 
   const { data, loading, error } = useGetAllParkourQuery({
     fetchPolicy: "no-cache",
@@ -29,30 +27,31 @@ export default function Home() {
   // });
 
   // --- GET BY ID ---
-  // function handleSearchById(e: React.MouseEvent<HTMLButtonElement>): void {
-  //   const numero = e.target.value;
-  //   if (numero) {
-  //   }
-  // }
+  const handleSearchById = (e: React.MouseEvent<HTMLFormElement>): void => {
+    e.preventDefault();
+
+    const formData = new FormData(e.currentTarget);
+    const data = Object.fromEntries(formData);
+
+    router.push(`/parkour/${data.idParkour}`);
+  };
 
   return (
     <main className="pageIndex">
       <h1>Bonjour</h1>
 
-      {/* <form onSubmit={handleSearchById(onSubmit)}>
-        <label htmlFor="numero">numéro du parkour :</label>
-        <input
-          id="numero"
-          {...register("numero")}
-          placeholder="numéro du parkour"
-        />
-        <button
-          type="submit"
-          disabled={loadingCreate || loadingPatch} // évite de recliquer quand c'est entrain de faire la requête
-        >
-          Enregistrer
-        </button>
-      </form> */}
+      <form onSubmit={handleSearchById}>
+        <div>
+          <label htmlFor="idParkour">numéro du parkour :</label>
+          <input
+            id="idParkour"
+            name="idParkour"
+            type="number"
+            placeholder="numéro du parkour"
+          />
+        </div>
+        <button type="submit">Chercher</button>
+      </form>
 
       <ul className="cardsParkoursUl">
         {data?.getAllParkour.map(
