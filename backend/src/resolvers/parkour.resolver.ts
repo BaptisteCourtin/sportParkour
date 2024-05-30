@@ -10,14 +10,14 @@ import { MessageEntity } from "../entities/message.entity";
 export default class ParkourResolver {
   @Query(() => ParkourEntity)
   async getParkourById(@Arg("id") id: number) {
-    const ParkourEntity = await new ParkourService().getById(id);
-    return ParkourEntity;
+    const result = await new ParkourService().getById(id);
+    return result;
   }
 
   @Query(() => ParkourEntity)
   async getParkourByTitle(@Arg("title") title: string) {
-    const ParkourEntity = await new ParkourService().getByTitle(title);
-    return ParkourEntity;
+    const result = await new ParkourService().getByTitle(title);
+    return result;
   }
 
   @Query(() => [ParkourEntity])

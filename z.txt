@@ -44,9 +44,6 @@ on peux supprimer un parkour si y'a une relation avec epreuve, ça supprime auss
 
 https://api-adresse.data.gouv.fr/search/?q=caen&postcode=14000&type=municipality
 
-une map avec tout les parkours
-
-
 
 resolver => ce qui va etre utilisé en front
 service => utiliser à partir du back
@@ -80,3 +77,16 @@ note          |              |
 options       |              |
 
 
+------------------------------------------------------------------------------------------------------
+
+diagrammes
+
+create epreuve / parkour
+create image associées via service d'image
+
+mettre parkour en favoris
+mettre une note 
+
+------------------------------------------------------------------------------------------------------
+
+ajouter commentaire à la note + date de création OU de mise à jour

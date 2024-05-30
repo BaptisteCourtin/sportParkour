@@ -4,41 +4,22 @@ import { MessageEntity } from "../entities/message.entity";
 import UserService from "../services/user.service";
 import AuthService from "../services/auth.service";
 
-import { MyContext, Payload } from "..";
-import { jwtVerify } from "jose";
+import { MyContext } from "..";
 
 @Resolver()
 export default class UserResolver {
   @Authorized("ADMIN", "CLIENT")
   @Query(() => UserEntity)
-  async getUserByEmail(@Arg("email") email: string) {
-    const UserEntity = await new UserService().getByEmail(email);
-    return UserEntity;
-  }
-
-  @Authorized("ADMIN", "CLIENT")
-  @Query(() => UserEntity)
   async getUserByToken(@Ctx() ctx: MyContext) {
     let token = ctx.req.cookies["tokenParkour"];
-    let user: UserEntity | null = null;
+    let result: UserEntity | null = null;
 
-    if (token) {
-      try {
-        const verify = await jwtVerify<Payload>(
-          token,
-          new TextEncoder().encode(process.env.SECRET_KEY)
-        );
-        user = await new AuthService().findUserByEmail(verify.payload.email);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-
+    const user = await new AuthService().getUserFromToken(token);
     if (user) {
-      user = await new UserService().getByEmail(user.email);
+      result = await new UserService().getByEmail(user.email);
     }
 
-    return user;
+    return result;
   }
 
   // le @Authorized vérifie déjà que on est admin
@@ -50,6 +31,7 @@ export default class UserResolver {
 
   // ---
 
+  // éviter le id et faire avec le token
   @Authorized("ADMIN", "CLIENT")
   @Mutation(() => UserEntity)
   async modifyUser(
@@ -60,6 +42,7 @@ export default class UserResolver {
     return result;
   }
 
+  // éviter le id et faire avec le token
   @Authorized("ADMIN", "CLIENT")
   @Mutation(() => MessageEntity)
   async deleteUser(@Arg("id") id: string) {
