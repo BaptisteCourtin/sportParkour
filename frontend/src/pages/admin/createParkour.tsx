@@ -3,7 +3,8 @@ import React from "react";
 const createParkour = () => {
   return (
     <main className="createParkour">
-      <p>create parkour</p>
+      <h1>create parkour</h1>
+      <form>des trucs</form>
     </main>
   );
 };

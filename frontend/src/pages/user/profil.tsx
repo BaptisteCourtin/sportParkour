@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import {
   useDeleteUserMutation,
-  useGetUserByEmailLazyQuery,
+  useGetUserByTokenLazyQuery,
+  useIsAdminQuery,
 } from "@/types/graphql";
 import Cookies from "js-cookie";
 import Link from "next/link";
@@ -20,13 +21,16 @@ import { Snackbar } from "@mui/material";
 const profil = () => {
   const router = useRouter();
 
-  const [getUser, { data, loading, error }] = useGetUserByEmailLazyQuery();
+  const {
+    data: dateIsAdmin,
+    loading: loadingIsAdmin,
+    error: errorIsAdmin,
+  } = useIsAdminQuery();
+
+  const [getUser, { data, loading, error }] = useGetUserByTokenLazyQuery();
 
   useEffect(() => {
-    const userEmail = Cookies.get("emailUserParkour"); // on a mis l'email en clair dans un cookie a partir du middleware, on peut changer le cookie mais on repasse dans le middleware donc osef
-
     getUser({
-      variables: { email: userEmail as string },
       onCompleted(data) {
         console.log(data);
       },
@@ -34,7 +38,7 @@ const profil = () => {
         console.log("error", err);
       },
     });
-  }, [router.isReady]);
+  }, []);
 
   // --- DELETE USER ---
   const [open, setOpen] = useState(false);
@@ -90,10 +94,10 @@ const profil = () => {
       ) : loading ? (
         <h2>Chargement en cours</h2>
       ) : (
-        data?.getUserByEmail && (
+        data?.getUserByToken && (
           <div>
             <Button variant="outlined" onClick={handleClickOpen}>
-              Delete profil user {data.getUserByEmail.id}
+              Delete profil user {data.getUserByToken.id}
             </Button>
             <Dialog
               open={open}
@@ -109,9 +113,9 @@ const profil = () => {
                   );
                   const nomUser = formJson.nomUser;
 
-                  if (data.getUserByEmail.name == nomUser) {
+                  if (data.getUserByToken.name == nomUser) {
                     console.log("OUI");
-                    handleDeleteUser(data.getUserByEmail.id);
+                    handleDeleteUser(data.getUserByToken.id);
 
                     if (errorDelete) {
                       handleClickClose();
@@ -126,11 +130,11 @@ const profil = () => {
                 },
               }}
             >
-              <DialogTitle>Delete user {data.getUserByEmail.id}</DialogTitle>
+              <DialogTitle>Delete user {data.getUserByToken.id}</DialogTitle>
               <DialogContent>
                 <DialogContentText>
                   Pour supprimer cette user entrez son nom :
-                  {data.getUserByEmail.name}
+                  {data.getUserByToken.name}
                 </DialogContentText>
                 <TextField
                   autoFocus
@@ -167,29 +171,27 @@ const profil = () => {
 
             <br />
             <br />
-            <p>nom : {data.getUserByEmail.name}</p>
+            <p>nom : {data.getUserByToken.name}</p>
             <br />
             <br />
-            <p>prénom : {data.getUserByEmail.firstname}</p>
+            <p>prénom : {data.getUserByToken.firstname}</p>
             <br />
             <br />
-            <p>email : {data.getUserByEmail.email}</p>
+            <p>email : {data.getUserByToken.email}</p>
             <br />
             <br />
-            <p>ville : {data.getUserByEmail.city}</p>
+            <p>ville : {data.getUserByToken.city}</p>
             <br />
             <br />
-            <p>codePostal : {data.getUserByEmail.codePostal}</p>
+            <p>codePostal : {data.getUserByToken.codePostal}</p>
             <br />
             <br />
-            <p>phone : {data.getUserByEmail.phone}</p>
+            <p>phone : {data.getUserByToken.phone}</p>
           </div>
         )
       )}
 
-      {Cookies.get("roleUserParkour") == "CLIENT" ? (
-        <Link href="/user/favoris">mes favoris</Link>
-      ) : null}
+      {!dateIsAdmin ? <Link href="/user/favoris">mes favoris</Link> : null}
 
       <Link href="/user/logout">se déconnecter</Link>
     </main>

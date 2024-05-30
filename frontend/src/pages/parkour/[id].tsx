@@ -1,28 +1,25 @@
-import {
-  GetEpreuveByIdQuery,
-  useDeleteParkourMutation,
-  useGetParkourByIdLazyQuery,
-} from "@/types/graphql";
+import React, { useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
-import Carousel from "react-material-ui-carousel";
+import {
+  GetEpreuveByIdQuery,
+  useGetParkourByIdLazyQuery,
+  useIsAdminQuery,
+} from "@/types/graphql";
 
+import Carousel from "react-material-ui-carousel";
 import { FaAngleRight } from "react-icons/fa6";
 import { FaAngleLeft } from "react-icons/fa6";
-
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-import { Snackbar } from "@mui/material";
 
 const OneParkour = () => {
   const router = useRouter();
   const { id } = router.query;
+
+  const {
+    data: dateIsAdmin,
+    loading: loadingIsAdmin,
+    error: errorIsAdmin,
+  } = useIsAdminQuery();
 
   const [getParkour, { data, loading, error }] = useGetParkourByIdLazyQuery();
 
@@ -40,53 +37,6 @@ const OneParkour = () => {
     }
   }, [router.isReady]);
 
-  // --- DELETE EPREUVE ---
-  const [open, setOpen] = useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClickClose = () => {
-    setOpen(false);
-  };
-
-  const [deleteParkour, { loading: loadingDelete, error: errorDelete }] =
-    useDeleteParkourMutation();
-
-  function handleDeleteParkour(id: string): void {
-    if (id) {
-      deleteParkour({
-        variables: { deleteParkourId: +id },
-        onCompleted() {
-          router.push(`/`);
-        },
-        onError(error) {
-          console.error(error);
-        },
-      });
-    }
-  }
-
-  // --- SNACKBAR ---
-  const [openSnack, setOpenSnack] = useState(false);
-  const [snackComment, setSnackComment] = useState("");
-
-  const handleClickSnack = () => {
-    setOpenSnack(true);
-  };
-
-  const handleCloseSnack = (
-    event: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    setOpenSnack(false);
-  };
-
   return (
     <main className="oneParkour">
       {error ? (
@@ -96,79 +46,11 @@ const OneParkour = () => {
       ) : (
         data?.getParkourById && (
           <div>
-            <Button variant="outlined" onClick={handleClickOpen}>
-              Delete parkour {data.getParkourById.id}
-            </Button>
-            <Dialog
-              open={open}
-              onClose={handleClickClose}
-              PaperProps={{
-                component: "form",
-                onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
-                  event.preventDefault();
-
-                  const formData = new FormData(event.currentTarget);
-                  const formJson = Object.fromEntries(
-                    (formData as any).entries()
-                  );
-                  const nomParkour = formJson.nomParkour;
-
-                  if (data.getParkourById.title == nomParkour) {
-                    console.log("OUI");
-                    handleDeleteParkour(data.getParkourById.id);
-
-                    if (errorDelete) {
-                      handleClickClose();
-                      setSnackComment(errorDelete?.message);
-                      handleClickSnack();
-                    }
-                  } else {
-                    handleClickClose();
-                    setSnackComment("Le nom du parkour ne correspond pas");
-                    handleClickSnack();
-                  }
-                },
-              }}
-            >
-              <DialogTitle>Delete parkour {data.getParkourById.id}</DialogTitle>
-              <DialogContent>
-                <DialogContentText>
-                  Pour supprimer ce parkour entrez son nom :
-                  {data.getParkourById.title}
-                </DialogContentText>
-                <TextField
-                  autoFocus
-                  required
-                  margin="dense"
-                  id="nomParkour"
-                  name="nomParkour"
-                  label="nom du parkour"
-                  type="nomParkour"
-                  fullWidth
-                  variant="standard"
-                />
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleClickClose}>En fait, non</Button>
-                <Button type="submit">Hop, ça dégage!</Button>
-              </DialogActions>
-            </Dialog>
-
-            {/* --- */}
-
-            <Snackbar
-              open={openSnack}
-              autoHideDuration={3000}
-              onClose={handleCloseSnack}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "center",
-              }}
-              message={snackComment}
-            />
-
-            {/* --- */}
-
+            {dateIsAdmin ? (
+              <Link href={`/admin/modifyParkour/${data.getParkourById.id}`}>
+                Modifier ce parkour
+              </Link>
+            ) : null}
             <br />
             <br />
             <p>titre : {data.getParkourById.title}</p>

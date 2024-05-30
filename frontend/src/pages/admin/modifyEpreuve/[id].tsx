@@ -15,6 +15,10 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { Snackbar } from "@mui/material";
 
+import Carousel from "react-material-ui-carousel";
+import { FaAngleRight } from "react-icons/fa6";
+import { FaAngleLeft } from "react-icons/fa6";
+
 const modifyOneEpreuve = () => {
   const router = useRouter();
   const { id } = router.query;
@@ -78,7 +82,6 @@ const modifyOneEpreuve = () => {
     if (reason === "clickaway") {
       return;
     }
-
     setOpenSnack(false);
   };
 
@@ -90,81 +93,132 @@ const modifyOneEpreuve = () => {
         <h2>Chargement en cours</h2>
       ) : (
         data?.getEpreuveById && (
-          <div>
-            <Button variant="outlined" onClick={handleClickOpen}>
-              Delete epreuve
-            </Button>
+          <>
+            <div className="epreuveToDelete">
+              <Button variant="outlined" onClick={handleClickOpen}>
+                Delete epreuve
+              </Button>
 
-            <Dialog
-              open={open}
-              onClose={handleClickClose}
-              PaperProps={{
-                component: "form",
-                onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
-                  event.preventDefault();
+              <Dialog
+                open={open}
+                onClose={handleClickClose}
+                PaperProps={{
+                  component: "form",
+                  onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
+                    event.preventDefault();
 
-                  const formData = new FormData(event.currentTarget);
-                  const formJson = Object.fromEntries(
-                    (formData as any).entries()
-                  );
-                  const nomEpreuve = formJson.nomEpreuve;
+                    const formData = new FormData(event.currentTarget);
+                    const formJson = Object.fromEntries(
+                      (formData as any).entries()
+                    );
+                    const nomEpreuve = formJson.nomEpreuve;
 
-                  if (data.getEpreuveById.title == nomEpreuve) {
-                    console.log("OUI");
-                    handleDeleteEpreuve(data.getEpreuveById.id);
+                    if (data.getEpreuveById.title == nomEpreuve) {
+                      console.log("OUI");
+                      handleDeleteEpreuve(data.getEpreuveById.id);
 
-                    if (errorDelete) {
+                      if (errorDelete) {
+                        handleClickClose();
+                        setSnackComment(errorDelete?.message);
+                        handleClickSnack();
+                      }
+                    } else {
                       handleClickClose();
-                      setSnackComment(errorDelete?.message);
+                      setSnackComment("Le nom de l'épreuve ne correspond pas");
                       handleClickSnack();
                     }
-                  } else {
-                    handleClickClose();
-                    setSnackComment("Le nom de l'épreuve ne correspond pas");
-                    handleClickSnack();
-                  }
-                },
-              }}
-            >
-              <DialogTitle>Delete epreuve {data.getEpreuveById.id}</DialogTitle>
-              <DialogContent>
-                <DialogContentText>
-                  Pour supprimer cette épreuve entrez son nom :
-                  {data.getEpreuveById.title}
-                </DialogContentText>
-                <TextField
-                  autoFocus
-                  required
-                  margin="dense"
-                  id="nomEpreuve"
-                  name="nomEpreuve"
-                  label="nom de l'épreuve"
-                  type="nomEpreuve"
-                  fullWidth
-                  variant="standard"
-                />
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleClickClose}>En fait, non</Button>
-                <Button type="submit">Hop, ça dégage!</Button>
-              </DialogActions>
-            </Dialog>
+                  },
+                }}
+              >
+                <DialogTitle>
+                  Delete epreuve {data.getEpreuveById.id}
+                </DialogTitle>
+                <DialogContent>
+                  <DialogContentText>
+                    Pour supprimer cette épreuve entrez son nom :
+                    {data.getEpreuveById.title}
+                  </DialogContentText>
+                  <TextField
+                    autoFocus
+                    required
+                    margin="dense"
+                    id="nomEpreuve"
+                    name="nomEpreuve"
+                    label="nom de l'épreuve"
+                    type="nomEpreuve"
+                    fullWidth
+                    variant="standard"
+                  />
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleClickClose}>En fait, non</Button>
+                  <Button type="submit">Hop, ça dégage!</Button>
+                </DialogActions>
+              </Dialog>
 
-            {/* --- */}
+              {/* --- */}
 
-            <Snackbar
-              open={openSnack}
-              autoHideDuration={3000}
-              onClose={handleCloseSnack}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "center",
-              }}
-              message={snackComment}
-            />
+              <Snackbar
+                open={openSnack}
+                autoHideDuration={3000}
+                onClose={handleCloseSnack}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "center",
+                }}
+                message={snackComment}
+              />
+            </div>
 
-            {/* --- */}
-          </div>
+            <form action="">
+              <p>{data.getEpreuveById.title}</p>
+              <br />
+              <br />
+              <p>{data.getEpreuveById.description}</p>
+              <br />
+              <br />
+              {data.getEpreuveById.images &&
+                data.getEpreuveById.images.length > 0 && (
+                  <Carousel
+                    className="carrouselEpreuve"
+                    NextIcon={<FaAngleRight />}
+                    PrevIcon={<FaAngleLeft />}
+                    autoPlay={false}
+                    indicators={true}
+                    swipe={true}
+                    cycleNavigation={true}
+                    navButtonsAlwaysVisible={true}
+                    navButtonsAlwaysInvisible={false}
+                    fullHeightHover={true}
+                    animation="slide"
+                  >
+                    {data.getEpreuveById.images.map((image) => (
+                      <div className="imageContainer">
+                        <img src={image.lien as string} alt="" />
+                      </div>
+                    ))}
+                  </Carousel>
+                )}
+              <p>Débutant : {data.getEpreuveById.easyToDo}</p>
+              <br />
+              <br />
+              <p>Intermédiaire : {data.getEpreuveById.mediumToDo}</p>
+              <br />
+              <br />
+              <p>Confirmé : {data.getEpreuveById.hardToDo}</p>
+              <br />
+              <br />
+              {data.getEpreuveById.videoLink && (
+                <iframe
+                  width="1236"
+                  height="695"
+                  src={`https://www.youtube.com/embed/${
+                    data.getEpreuveById.videoLink.split("watch?v=")[1]
+                  }`}
+                ></iframe>
+              )}
+            </form>
+          </>
         )
       )}
     </main>

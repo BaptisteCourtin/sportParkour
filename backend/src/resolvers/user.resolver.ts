@@ -1,7 +1,11 @@
-import { Arg, Authorized, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from "type-graphql";
 import UserEntity, { UserUpdateEntity } from "../entities/user.entity";
-import UserService from "../services/user.service";
 import { MessageEntity } from "../entities/message.entity";
+import UserService from "../services/user.service";
+import AuthService from "../services/auth.service";
+
+import { MyContext, Payload } from "..";
+import { jwtVerify } from "jose";
 
 @Resolver()
 export default class UserResolver {
@@ -10,6 +14,38 @@ export default class UserResolver {
   async getUserByEmail(@Arg("email") email: string) {
     const UserEntity = await new UserService().getByEmail(email);
     return UserEntity;
+  }
+
+  @Authorized("ADMIN", "CLIENT")
+  @Query(() => UserEntity)
+  async getUserByToken(@Ctx() ctx: MyContext) {
+    let token = ctx.req.cookies["tokenParkour"];
+    let user: UserEntity | null = null;
+
+    if (token) {
+      try {
+        const verify = await jwtVerify<Payload>(
+          token,
+          new TextEncoder().encode(process.env.SECRET_KEY)
+        );
+        user = await new AuthService().findUserByEmail(verify.payload.email);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+    if (user) {
+      user = await new UserService().getByEmail(user.email);
+    }
+
+    return user;
+  }
+
+  // le @Authorized vérifie déjà que on est admin
+  @Authorized("ADMIN")
+  @Query(() => Boolean)
+  async isAdmin() {
+    return true;
   }
 
   // ---

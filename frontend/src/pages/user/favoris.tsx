@@ -1,10 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/router";
-import Cookies from "js-cookie";
-import {
-  GetUserFavByEmailQuery,
-  useGetUserFavByEmailLazyQuery,
-} from "@/types/graphql";
+import { useGetUserFavByTokenLazyQuery } from "@/types/graphql";
 
 import CardFavParkour from "@/components/parkour/cardFavParkour";
 
@@ -12,13 +8,10 @@ import CardFavParkour from "@/components/parkour/cardFavParkour";
 const favoris = () => {
   const router = useRouter();
 
-  const [getFav, { data, loading, error }] = useGetUserFavByEmailLazyQuery();
+  const [getFav, { data, loading, error }] = useGetUserFavByTokenLazyQuery();
 
   useEffect(() => {
-    const userEmail = Cookies.get("emailUserParkour"); // on a mis l'email en cliar a partir du middleware
-
     getFav({
-      variables: { email: userEmail as string },
       onCompleted(data) {
         console.log(data);
       },
@@ -26,12 +19,12 @@ const favoris = () => {
         console.log("error", err);
       },
     });
-  }, [router.isReady]);
+  }, []);
 
   return (
     <main className="favoris">
       <ul className="cardsFavParkour">
-        {data?.getUserFavByEmail.map((parkour: any) => (
+        {data?.getUserFavByToken.map((parkour: any) => (
           <CardFavParkour parkour={parkour.parkours} key={parkour.parkour_id} />
         ))}
       </ul>

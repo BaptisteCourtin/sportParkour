@@ -1,19 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
+import Link from "next/link";
 import { useRouter } from "next/router";
-import {
-  useDeleteEpreuveMutation,
-  useGetEpreuveByIdLazyQuery,
-} from "@/types/graphql";
-import Carousel from "react-material-ui-carousel";
-import Cookies from "js-cookie";
+import { useGetEpreuveByIdLazyQuery, useIsAdminQuery } from "@/types/graphql";
 
+import Carousel from "react-material-ui-carousel";
 import { FaAngleRight } from "react-icons/fa6";
 import { FaAngleLeft } from "react-icons/fa6";
-import Link from "next/link";
 
 const OneEpreuve = () => {
   const router = useRouter();
   const { id } = router.query;
+
+  const {
+    data: dateIsAdmin,
+    loading: loadingIsAdmin,
+    error: errorIsAdmin,
+  } = useIsAdminQuery();
 
   const [getEpreuve, { data, loading, error }] = useGetEpreuveByIdLazyQuery();
 
@@ -31,8 +33,6 @@ const OneEpreuve = () => {
     }
   }, [router.isReady]);
 
-  console.log(Cookies.get("roleUserParkour") == "ADMIN");
-
   return (
     <main className="oneEpreuve">
       {error ? (
@@ -42,7 +42,7 @@ const OneEpreuve = () => {
       ) : (
         data?.getEpreuveById && (
           <div>
-            {Cookies.get("roleUserParkour") == "ADMIN" ? (
+            {dateIsAdmin ? (
               <Link href={`/admin/modifyEpreuve/${data.getEpreuveById.id}`}>
                 Modifier cette épreuve
               </Link>

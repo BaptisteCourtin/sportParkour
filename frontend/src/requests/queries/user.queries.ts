@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
-export const GET_USER_BY_EMAIL = gql`
-  query GetUserByEmail($email: String!) {
-    getUserByEmail(email: $email) {
+export const GET_USER_BY_TOKEN = gql`
+  query GetUserByToken {
+    getUserByToken {
       id
       name
       firstname
@@ -24,6 +24,8 @@ export const GET_USER_BY_EMAIL = gql`
   }
 `;
 
-// {
-//   "email": "bap2910@gmail.com"
-// }
+export const IS_ADMIN = gql`
+  query IsAdmin {
+    isAdmin
+  }
+`;

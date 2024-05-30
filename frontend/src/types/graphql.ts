@@ -211,7 +211,9 @@ export type Query = {
   getParkourById: ParkourEntity;
   getParkourByTitle: ParkourEntity;
   getUserByEmail: UserEntity;
-  getUserFavByEmail: Array<JoinUserParkourEntity>;
+  getUserByToken: UserEntity;
+  getUserFavByToken: Array<JoinUserParkourEntity>;
+  isAdmin: Scalars['Boolean']['output'];
   logout: MessageEntity;
 };
 
@@ -242,11 +244,6 @@ export type QueryGetParkourByTitleArgs = {
 
 
 export type QueryGetUserByEmailArgs = {
-  email: Scalars['String']['input'];
-};
-
-
-export type QueryGetUserFavByEmailArgs = {
   email: Scalars['String']['input'];
 };
 
@@ -391,12 +388,10 @@ export type GetListEpreuveQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetListEpreuveQuery = { __typename?: 'Query', getListEpreuve: Array<{ __typename?: 'EpreuveEntity', id: string, title: string }> };
 
-export type GetUserFavByEmailQueryVariables = Exact<{
-  email: Scalars['String']['input'];
-}>;
+export type GetUserFavByTokenQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetUserFavByEmailQuery = { __typename?: 'Query', getUserFavByEmail: Array<{ __typename?: 'JoinUserParkourEntity', parkour_id: string, note?: number | null, favoris: boolean, parkours: { __typename?: 'ParkourEntity', id: string, title: string } }> };
+export type GetUserFavByTokenQuery = { __typename?: 'Query', getUserFavByToken: Array<{ __typename?: 'JoinUserParkourEntity', parkour_id: string, note?: number | null, favoris: boolean, parkours: { __typename?: 'ParkourEntity', id: string, title: string } }> };
 
 export type GetParkourByIdQueryVariables = Exact<{
   getParkourByIdId: Scalars['Float']['input'];
@@ -417,12 +412,15 @@ export type GetAllParkourQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetAllParkourQuery = { __typename?: 'Query', getAllParkour: Array<{ __typename?: 'ParkourEntity', id: string, title: string, description?: string | null, time?: number | null, length?: number | null, difficulty?: Difficulty | null, city?: string | null, start: string, note?: number | null, nbVote?: number | null, images?: Array<{ __typename?: 'ImageParkourEntity', id: string, lien?: string | null }> | null, epreuves?: Array<{ __typename?: 'EpreuveEntity', id: string, title: string }> | null }> };
 
-export type GetUserByEmailQueryVariables = Exact<{
-  email: Scalars['String']['input'];
-}>;
+export type GetUserByTokenQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetUserByEmailQuery = { __typename?: 'Query', getUserByEmail: { __typename?: 'UserEntity', id: string, name: string, firstname: string, email: string, city?: string | null, codePostal?: string | null, phone?: string | null, parkours?: Array<{ __typename?: 'JoinUserParkourEntity', user_id: string, parkour_id: string, favoris: boolean, note?: number | null, parkours: { __typename?: 'ParkourEntity', id: string, title: string } }> | null } };
+export type GetUserByTokenQuery = { __typename?: 'Query', getUserByToken: { __typename?: 'UserEntity', id: string, name: string, firstname: string, email: string, city?: string | null, codePostal?: string | null, phone?: string | null, parkours?: Array<{ __typename?: 'JoinUserParkourEntity', user_id: string, parkour_id: string, favoris: boolean, note?: number | null, parkours: { __typename?: 'ParkourEntity', id: string, title: string } }> | null } };
+
+export type IsAdminQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type IsAdminQuery = { __typename?: 'Query', isAdmin: boolean };
 
 
 export const InscriptionDocument = gql`
@@ -1001,9 +999,9 @@ export type GetListEpreuveQueryHookResult = ReturnType<typeof useGetListEpreuveQ
 export type GetListEpreuveLazyQueryHookResult = ReturnType<typeof useGetListEpreuveLazyQuery>;
 export type GetListEpreuveSuspenseQueryHookResult = ReturnType<typeof useGetListEpreuveSuspenseQuery>;
 export type GetListEpreuveQueryResult = Apollo.QueryResult<GetListEpreuveQuery, GetListEpreuveQueryVariables>;
-export const GetUserFavByEmailDocument = gql`
-    query GetUserFavByEmail($email: String!) {
-  getUserFavByEmail(email: $email) {
+export const GetUserFavByTokenDocument = gql`
+    query GetUserFavByToken {
+  getUserFavByToken {
     parkour_id
     note
     favoris
@@ -1016,37 +1014,36 @@ export const GetUserFavByEmailDocument = gql`
     `;
 
 /**
- * __useGetUserFavByEmailQuery__
+ * __useGetUserFavByTokenQuery__
  *
- * To run a query within a React component, call `useGetUserFavByEmailQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetUserFavByEmailQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetUserFavByTokenQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserFavByTokenQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetUserFavByEmailQuery({
+ * const { data, loading, error } = useGetUserFavByTokenQuery({
  *   variables: {
- *      email: // value for 'email'
  *   },
  * });
  */
-export function useGetUserFavByEmailQuery(baseOptions: Apollo.QueryHookOptions<GetUserFavByEmailQuery, GetUserFavByEmailQueryVariables> & ({ variables: GetUserFavByEmailQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+export function useGetUserFavByTokenQuery(baseOptions?: Apollo.QueryHookOptions<GetUserFavByTokenQuery, GetUserFavByTokenQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetUserFavByEmailQuery, GetUserFavByEmailQueryVariables>(GetUserFavByEmailDocument, options);
+        return Apollo.useQuery<GetUserFavByTokenQuery, GetUserFavByTokenQueryVariables>(GetUserFavByTokenDocument, options);
       }
-export function useGetUserFavByEmailLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserFavByEmailQuery, GetUserFavByEmailQueryVariables>) {
+export function useGetUserFavByTokenLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserFavByTokenQuery, GetUserFavByTokenQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetUserFavByEmailQuery, GetUserFavByEmailQueryVariables>(GetUserFavByEmailDocument, options);
+          return Apollo.useLazyQuery<GetUserFavByTokenQuery, GetUserFavByTokenQueryVariables>(GetUserFavByTokenDocument, options);
         }
-export function useGetUserFavByEmailSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetUserFavByEmailQuery, GetUserFavByEmailQueryVariables>) {
+export function useGetUserFavByTokenSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetUserFavByTokenQuery, GetUserFavByTokenQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetUserFavByEmailQuery, GetUserFavByEmailQueryVariables>(GetUserFavByEmailDocument, options);
+          return Apollo.useSuspenseQuery<GetUserFavByTokenQuery, GetUserFavByTokenQueryVariables>(GetUserFavByTokenDocument, options);
         }
-export type GetUserFavByEmailQueryHookResult = ReturnType<typeof useGetUserFavByEmailQuery>;
-export type GetUserFavByEmailLazyQueryHookResult = ReturnType<typeof useGetUserFavByEmailLazyQuery>;
-export type GetUserFavByEmailSuspenseQueryHookResult = ReturnType<typeof useGetUserFavByEmailSuspenseQuery>;
-export type GetUserFavByEmailQueryResult = Apollo.QueryResult<GetUserFavByEmailQuery, GetUserFavByEmailQueryVariables>;
+export type GetUserFavByTokenQueryHookResult = ReturnType<typeof useGetUserFavByTokenQuery>;
+export type GetUserFavByTokenLazyQueryHookResult = ReturnType<typeof useGetUserFavByTokenLazyQuery>;
+export type GetUserFavByTokenSuspenseQueryHookResult = ReturnType<typeof useGetUserFavByTokenSuspenseQuery>;
+export type GetUserFavByTokenQueryResult = Apollo.QueryResult<GetUserFavByTokenQuery, GetUserFavByTokenQueryVariables>;
 export const GetParkourByIdDocument = gql`
     query GetParkourById($getParkourByIdId: Float!) {
   getParkourById(id: $getParkourByIdId) {
@@ -1217,9 +1214,9 @@ export type GetAllParkourQueryHookResult = ReturnType<typeof useGetAllParkourQue
 export type GetAllParkourLazyQueryHookResult = ReturnType<typeof useGetAllParkourLazyQuery>;
 export type GetAllParkourSuspenseQueryHookResult = ReturnType<typeof useGetAllParkourSuspenseQuery>;
 export type GetAllParkourQueryResult = Apollo.QueryResult<GetAllParkourQuery, GetAllParkourQueryVariables>;
-export const GetUserByEmailDocument = gql`
-    query GetUserByEmail($email: String!) {
-  getUserByEmail(email: $email) {
+export const GetUserByTokenDocument = gql`
+    query GetUserByToken {
+  getUserByToken {
     id
     name
     firstname
@@ -1242,34 +1239,70 @@ export const GetUserByEmailDocument = gql`
     `;
 
 /**
- * __useGetUserByEmailQuery__
+ * __useGetUserByTokenQuery__
  *
- * To run a query within a React component, call `useGetUserByEmailQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetUserByEmailQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetUserByTokenQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserByTokenQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetUserByEmailQuery({
+ * const { data, loading, error } = useGetUserByTokenQuery({
  *   variables: {
- *      email: // value for 'email'
  *   },
  * });
  */
-export function useGetUserByEmailQuery(baseOptions: Apollo.QueryHookOptions<GetUserByEmailQuery, GetUserByEmailQueryVariables> & ({ variables: GetUserByEmailQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+export function useGetUserByTokenQuery(baseOptions?: Apollo.QueryHookOptions<GetUserByTokenQuery, GetUserByTokenQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetUserByEmailQuery, GetUserByEmailQueryVariables>(GetUserByEmailDocument, options);
+        return Apollo.useQuery<GetUserByTokenQuery, GetUserByTokenQueryVariables>(GetUserByTokenDocument, options);
       }
-export function useGetUserByEmailLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserByEmailQuery, GetUserByEmailQueryVariables>) {
+export function useGetUserByTokenLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserByTokenQuery, GetUserByTokenQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetUserByEmailQuery, GetUserByEmailQueryVariables>(GetUserByEmailDocument, options);
+          return Apollo.useLazyQuery<GetUserByTokenQuery, GetUserByTokenQueryVariables>(GetUserByTokenDocument, options);
         }
-export function useGetUserByEmailSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetUserByEmailQuery, GetUserByEmailQueryVariables>) {
+export function useGetUserByTokenSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetUserByTokenQuery, GetUserByTokenQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetUserByEmailQuery, GetUserByEmailQueryVariables>(GetUserByEmailDocument, options);
+          return Apollo.useSuspenseQuery<GetUserByTokenQuery, GetUserByTokenQueryVariables>(GetUserByTokenDocument, options);
         }
-export type GetUserByEmailQueryHookResult = ReturnType<typeof useGetUserByEmailQuery>;
-export type GetUserByEmailLazyQueryHookResult = ReturnType<typeof useGetUserByEmailLazyQuery>;
-export type GetUserByEmailSuspenseQueryHookResult = ReturnType<typeof useGetUserByEmailSuspenseQuery>;
-export type GetUserByEmailQueryResult = Apollo.QueryResult<GetUserByEmailQuery, GetUserByEmailQueryVariables>;
+export type GetUserByTokenQueryHookResult = ReturnType<typeof useGetUserByTokenQuery>;
+export type GetUserByTokenLazyQueryHookResult = ReturnType<typeof useGetUserByTokenLazyQuery>;
+export type GetUserByTokenSuspenseQueryHookResult = ReturnType<typeof useGetUserByTokenSuspenseQuery>;
+export type GetUserByTokenQueryResult = Apollo.QueryResult<GetUserByTokenQuery, GetUserByTokenQueryVariables>;
+export const IsAdminDocument = gql`
+    query IsAdmin {
+  isAdmin
+}
+    `;
+
+/**
+ * __useIsAdminQuery__
+ *
+ * To run a query within a React component, call `useIsAdminQuery` and pass it any options that fit your needs.
+ * When your component renders, `useIsAdminQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useIsAdminQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useIsAdminQuery(baseOptions?: Apollo.QueryHookOptions<IsAdminQuery, IsAdminQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<IsAdminQuery, IsAdminQueryVariables>(IsAdminDocument, options);
+      }
+export function useIsAdminLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<IsAdminQuery, IsAdminQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<IsAdminQuery, IsAdminQueryVariables>(IsAdminDocument, options);
+        }
+export function useIsAdminSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<IsAdminQuery, IsAdminQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<IsAdminQuery, IsAdminQueryVariables>(IsAdminDocument, options);
+        }
+export type IsAdminQueryHookResult = ReturnType<typeof useIsAdminQuery>;
+export type IsAdminLazyQueryHookResult = ReturnType<typeof useIsAdminLazyQuery>;
+export type IsAdminSuspenseQueryHookResult = ReturnType<typeof useIsAdminSuspenseQuery>;
+export type IsAdminQueryResult = Apollo.QueryResult<IsAdminQuery, IsAdminQueryVariables>;

@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 export const GET_FAV_BY_EMAIL = gql`
-  query GetUserFavByEmail($email: String!) {
-    getUserFavByEmail(email: $email) {
+  query GetUserFavByToken {
+    getUserFavByToken {
       parkour_id
       note
       favoris
@@ -13,7 +13,3 @@ export const GET_FAV_BY_EMAIL = gql`
     }
   }
 `;
-
-// {
-//   "email": "bap2910@gmail.com"
-// }
