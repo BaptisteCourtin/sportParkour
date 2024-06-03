@@ -108,10 +108,6 @@ export class ParkourCreateEntity {
   city: string;
   @Field()
   start: string;
-  @Field({ nullable: true })
-  note: number;
-  @Field({ nullable: true })
-  nbVote: number;
   @Field(() => [Int], { nullable: true })
   epreuves: number[];
 }
@@ -132,12 +128,16 @@ export class ParkourUpdateEntity {
   city: string;
   @Field({ nullable: true })
   start: string;
+  @Field(() => [Int], { nullable: true })
+  epreuves: number[];
+}
+
+@InputType()
+export class ParkourUpdateNoteEntity {
   @Field({ nullable: true })
   note: number;
   @Field({ nullable: true })
   nbVote: number;
-  @Field(() => [Int], { nullable: true })
-  epreuves: number[];
 }
 
 export default ParkourEntity;

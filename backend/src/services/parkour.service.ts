@@ -64,6 +64,8 @@ class ParkourService {
     return newParkour.id;
   }
 
+  // ajouter modify note  + nbNotes
+
   async modify(id: number, data: ParkourUpdateEntity) {
     const parkour = await this.getById(id);
 
@@ -72,7 +74,6 @@ class ParkourService {
         (parkour as any)[key] = data[key];
       }
     }
-    console.log(parkour);
 
     // Gérer les relations avec epreuves
     if (data.epreuves !== null && data.epreuves.length > 0) {

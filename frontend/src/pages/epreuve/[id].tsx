@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import Link from "next/link";
 import { useRouter } from "next/router";
+import Link from "next/link";
 import { useGetEpreuveByIdLazyQuery, useIsAdminQuery } from "@/types/graphql";
 
 import Carousel from "react-material-ui-carousel";
@@ -12,7 +12,7 @@ const OneEpreuve = () => {
   const { id } = router.query;
 
   const {
-    data: dateIsAdmin,
+    data: dataIsAdmin,
     loading: loadingIsAdmin,
     error: errorIsAdmin,
   } = useIsAdminQuery();
@@ -27,7 +27,7 @@ const OneEpreuve = () => {
         //   console.log(data);
         // },
         onError(err: any) {
-          console.log("error", err);
+          console.error("error", err);
         },
       });
     }
@@ -42,7 +42,7 @@ const OneEpreuve = () => {
       ) : (
         data?.getEpreuveById && (
           <div>
-            {dateIsAdmin ? (
+            {dataIsAdmin ? (
               <Link href={`/admin/modifyEpreuve/${data.getEpreuveById.id}`}>
                 Modifier cette épreuve
               </Link>

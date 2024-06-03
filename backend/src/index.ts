@@ -97,7 +97,7 @@ async function main() {
               verify.payload.email
             );
           } catch (err) {
-            console.log(err);
+            console.error(err);
             //potentiellement gérer l'erreur, est ce que l'erreur est liée au fait que le token soit expiré? est ce qu'on le renouvelle? ou est ce autre chose? etc...
           }
         }

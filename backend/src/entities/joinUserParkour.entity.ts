@@ -43,8 +43,6 @@ export class JoinUserParkourEntity {
 @InputType()
 export class JoinUserParkourCreateEntity {
   @Field()
-  user_id: string;
-  @Field()
   parkour_id: number;
   @Field({ nullable: true })
   note: number;
@@ -54,8 +52,6 @@ export class JoinUserParkourCreateEntity {
 
 @InputType()
 export class JoinUserParkourUpdateEntity {
-  @Field()
-  user_id: string;
   @Field()
   parkour_id: number;
   @Field({ nullable: true })

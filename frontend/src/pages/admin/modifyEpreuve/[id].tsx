@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-
 import {
+  EpreuveUpdateEntity,
   useDeleteEpreuveMutation,
   useGetEpreuveByIdLazyQuery,
+  useModifyEpreuveMutation,
 } from "@/types/graphql";
 
 import Button from "@mui/material/Button";
@@ -15,9 +16,18 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { Snackbar } from "@mui/material";
 
-import Carousel from "react-material-ui-carousel";
-import { FaAngleRight } from "react-icons/fa6";
-import { FaAngleLeft } from "react-icons/fa6";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { object, string } from "yup";
+
+let modifyEpreuveSchema = object({
+  title: string().required("Veuillez entrer un titre"),
+  description: string(),
+  easyToDo: string(),
+  mediumToDo: string(),
+  hardToDo: string(),
+  videoLink: string(),
+});
 
 const modifyOneEpreuve = () => {
   const router = useRouter();
@@ -29,15 +39,61 @@ const modifyOneEpreuve = () => {
     if (router.isReady && id) {
       getEpreuve({
         variables: { getEpreuveByIdId: +id },
-        // onCompleted(data) {
-        //   console.log(data);
-        // },
+        onCompleted(data) {
+          setValue("title", data.getEpreuveById.title ?? "");
+          setValue("description", data.getEpreuveById.description ?? "");
+          setValue("easyToDo", data.getEpreuveById.easyToDo ?? "");
+          setValue("mediumToDo", data.getEpreuveById.mediumToDo ?? "");
+          setValue("hardToDo", data.getEpreuveById.hardToDo ?? "");
+          setValue("videoLink", data.getEpreuveById.videoLink ?? "");
+        },
         onError(err: any) {
-          console.log("error", err);
+          console.error("error", err);
         },
       });
     }
   }, [router.isReady]);
+
+  // --- MODIFY ---
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+  } = useForm({
+    resolver: yupResolver(modifyEpreuveSchema),
+    defaultValues: {
+      title: "",
+      description: "",
+      easyToDo: "",
+      mediumToDo: "",
+      hardToDo: "",
+      videoLink: "",
+    },
+  });
+
+  const [
+    modifyEpreuve,
+    { data: dataModify, loading: loadingModify, error: errorModify },
+  ] = useModifyEpreuveMutation({
+    fetchPolicy: "no-cache",
+  });
+
+  const handleModifyEpreuve = (dataForm: EpreuveUpdateEntity): void => {
+    if (dataForm.title && id) {
+      modifyEpreuve({
+        variables: { infos: dataForm, modifyEpreuveId: parseInt(id as string) },
+        onCompleted(data) {
+          if (data.modifyEpreuve.id) {
+            router.push(`/epreuve/${data.modifyEpreuve.id}`);
+          }
+        },
+        onError(error) {
+          console.error(error);
+        },
+      });
+    }
+  };
 
   // --- DELETE EPREUVE ---
   const [open, setOpen] = useState(false);
@@ -114,7 +170,6 @@ const modifyOneEpreuve = () => {
                     const nomEpreuve = formJson.nomEpreuve;
 
                     if (data.getEpreuveById.title == nomEpreuve) {
-                      console.log("OUI");
                       handleDeleteEpreuve(data.getEpreuveById.id);
 
                       if (errorDelete) {
@@ -170,53 +225,81 @@ const modifyOneEpreuve = () => {
               />
             </div>
 
-            <form action="">
-              <p>{data.getEpreuveById.title}</p>
-              <br />
-              <br />
-              <p>{data.getEpreuveById.description}</p>
-              <br />
-              <br />
-              {data.getEpreuveById.images &&
-                data.getEpreuveById.images.length > 0 && (
-                  <Carousel
-                    className="carrouselEpreuve"
-                    NextIcon={<FaAngleRight />}
-                    PrevIcon={<FaAngleLeft />}
-                    autoPlay={false}
-                    indicators={true}
-                    swipe={true}
-                    cycleNavigation={true}
-                    navButtonsAlwaysVisible={true}
-                    navButtonsAlwaysInvisible={false}
-                    fullHeightHover={true}
-                    animation="slide"
-                  >
-                    {data.getEpreuveById.images.map((image) => (
-                      <div className="imageContainer">
-                        <img src={image.lien as string} alt="" />
-                      </div>
-                    ))}
-                  </Carousel>
-                )}
-              <p>Débutant : {data.getEpreuveById.easyToDo}</p>
-              <br />
-              <br />
-              <p>Intermédiaire : {data.getEpreuveById.mediumToDo}</p>
-              <br />
-              <br />
-              <p>Confirmé : {data.getEpreuveById.hardToDo}</p>
-              <br />
-              <br />
-              {data.getEpreuveById.videoLink && (
-                <iframe
-                  width="1236"
-                  height="695"
-                  src={`https://www.youtube.com/embed/${
-                    data.getEpreuveById.videoLink.split("watch?v=")[1]
-                  }`}
-                ></iframe>
-              )}
+            <form onSubmit={handleSubmit(handleModifyEpreuve)}>
+              <div>
+                <label htmlFor="title">Le titre de l'épreuve</label>
+                <input
+                  {...register("title")}
+                  id="title"
+                  name="title"
+                  type="text"
+                  placeholder="Indiquez votre titre"
+                />
+                <p className="error">{errors?.title?.message}</p>
+              </div>
+              <div>
+                <label htmlFor="description">La description de l'épreuve</label>
+                <textarea
+                  {...register("description")}
+                  id="description"
+                  name="description"
+                  placeholder="La description de l'épreuve"
+                ></textarea>
+                <p className="error">{errors?.description?.message}</p>
+              </div>
+
+              <div>
+                <label htmlFor="easyToDo">Que faire (version débutant)</label>
+                <textarea
+                  {...register("easyToDo")}
+                  id="easyToDo"
+                  name="easyToDo"
+                  placeholder="Que faire (version débutant)"
+                ></textarea>
+                <p className="error">{errors?.easyToDo?.message}</p>
+              </div>
+              <div>
+                <label htmlFor="mediumToDo">
+                  Que faire (version intermédiaire)
+                </label>
+                <textarea
+                  {...register("mediumToDo")}
+                  id="mediumToDo"
+                  name="mediumToDo"
+                  placeholder="Que faire (version medium)"
+                ></textarea>
+                <p className="error">{errors?.mediumToDo?.message}</p>
+              </div>
+              <div>
+                <label htmlFor="hardToDo">Que faire (version confirmé)</label>
+                <textarea
+                  {...register("hardToDo")}
+                  id="hardToDo"
+                  name="hardToDo"
+                  placeholder="Que faire (version hard)"
+                ></textarea>
+                <p className="error">{errors?.hardToDo?.message}</p>
+              </div>
+
+              <div>
+                <label htmlFor="videoLink">Le lien video</label>
+                <input
+                  {...register("videoLink")}
+                  id="videoLink"
+                  name="videoLink"
+                  type="text"
+                  placeholder="Le lien video"
+                />
+                <p className="error">{errors?.videoLink?.message}</p>
+              </div>
+
+              <button type="submit" disabled={loading}>
+                Modifier l'épreuve
+              </button>
+
+              <div>
+                <span>{errorModify?.message}</span>
+              </div>
             </form>
           </>
         )

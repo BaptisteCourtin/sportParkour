@@ -1,15 +1,12 @@
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import {
-  GetEpreuveByIdQuery,
+  Difficulty,
+  ParkourUpdateEntity,
   useDeleteParkourMutation,
   useGetParkourByIdLazyQuery,
+  useModifyParkourMutation,
 } from "@/types/graphql";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
-import Carousel from "react-material-ui-carousel";
-
-import { FaAngleRight } from "react-icons/fa6";
-import { FaAngleLeft } from "react-icons/fa6";
 
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -18,7 +15,23 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+
 import { Snackbar } from "@mui/material";
+
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { array, mixed, number, object, string } from "yup";
+
+let modifyParkourSchema = object({
+  title: string().required("Veuillez entrer un titre"),
+  description: string(),
+  time: number(),
+  length: number(),
+  difficulty: mixed<Difficulty>().oneOf(Object.values(Difficulty)),
+  city: string(),
+  start: string(),
+  epreuves: array().of(string()),
+});
 
 const modifyOneParkour = () => {
   const router = useRouter();
@@ -30,15 +43,74 @@ const modifyOneParkour = () => {
     if (router.isReady && id) {
       getParkour({
         variables: { getParkourByIdId: +id },
-        // onCompleted(data) {
-        //   console.log(data);
-        // },
+        onCompleted(data) {
+          setValue("title", data.getParkourById.title ?? "");
+          setValue("description", data.getParkourById.description ?? "");
+
+          setValue("time", data.getParkourById.time ?? 0);
+          setValue("length", data.getParkourById.length ?? 0);
+          setValue("difficulty", data.getParkourById.difficulty ?? undefined);
+
+          setValue("city", data.getParkourById.city ?? "");
+          setValue("start", data.getParkourById.start ?? "");
+
+          // setValue("epreuves", data.getParkourById.epreuves ?? []);
+          setValue(
+            "epreuves",
+            data.getParkourById.epreuves
+              ? data.getParkourById.epreuves.map((epreuve) => epreuve.id)
+              : []
+          );
+        },
         onError(err: any) {
-          console.log("error", err);
+          console.error("error", err);
         },
       });
     }
   }, [router.isReady]);
+
+  // --- MODIFY PARKOUR ---
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+  } = useForm({
+    resolver: yupResolver(modifyParkourSchema),
+    defaultValues: {
+      title: "",
+      description: "",
+      time: 0,
+      length: 0,
+      difficulty: undefined,
+      city: "",
+      start: "",
+      epreuves: [],
+    },
+  });
+
+  const [
+    modifyParkour,
+    { data: dataModify, loading: loadingModify, error: errorModify },
+  ] = useModifyParkourMutation({
+    fetchPolicy: "no-cache",
+  });
+
+  const handleModifyParkour = (dataForm: ParkourUpdateEntity): void => {
+    if (dataForm.title && id) {
+      modifyParkour({
+        variables: { infos: dataForm, modifyParkourId: parseInt(id as string) },
+        onCompleted(data) {
+          if (data.modifyParkour.id) {
+            router.push(`/epreuve/${data.modifyParkour.id}`);
+          }
+        },
+        onError(error) {
+          console.error(error);
+        },
+      });
+    }
+  };
 
   // --- DELETE PARKOUR ---
   const [open, setOpen] = useState(false);
@@ -114,7 +186,6 @@ const modifyOneParkour = () => {
                     const nomParkour = formJson.nomParkour;
 
                     if (data.getParkourById.title == nomParkour) {
-                      console.log("OUI");
                       handleDeleteParkour(data.getParkourById.id);
 
                       if (errorDelete) {
@@ -168,76 +239,105 @@ const modifyOneParkour = () => {
                 }}
                 message={snackComment}
               />
-
-              {/* --- */}
             </div>
 
-            <form>
-              <p>titre : {data.getParkourById.title}</p>
-              <br />
-              <br />
-              <p>description : {data.getParkourById.description}</p>
-              <p>city : {data.getParkourById.city}</p>
-              <br />
-              <br />
-              <p>difficulty : {data.getParkourById.difficulty}</p>
-              <br />
-              <br />
-              <p>length : {data.getParkourById.length}</p>
-              <br />
-              <br />
-              <a
-                href={`https://www.google.fr/maps/place/${data.getParkourById.start}`}
-                target="blank"
-              >
-                {data.getParkourById.start}
-              </a>
-              <br />
-              <br />
-              <p>time : {data.getParkourById.time}</p>
-              <br />
-              <br />
-              <p>note : {data.getParkourById.note}</p>
-              <br />
-              <br />
-              <p>nbVote : {data.getParkourById.nbVote}</p>
-              <br />
-              <br />
-
-              {data.getParkourById.images &&
-                data.getParkourById.images.length > 0 && (
-                  <Carousel
-                    className="carrouselParkour"
-                    NextIcon={<FaAngleRight />}
-                    PrevIcon={<FaAngleLeft />}
-                    autoPlay={false}
-                    indicators={true}
-                    swipe={true}
-                    cycleNavigation={true}
-                    navButtonsAlwaysVisible={true}
-                    navButtonsAlwaysInvisible={false}
-                    fullHeightHover={true}
-                    animation="slide"
-                  >
-                    {data.getParkourById.images?.map((image) => (
-                      <div className="imageContainer">
-                        <img src={image.lien as string} alt="" />
-                      </div>
-                    ))}
-                  </Carousel>
-                )}
-
-              <br />
-              <br />
-              <div className="container-epreuves">
-                {data.getParkourById.epreuves?.map(
-                  (epreuve: GetEpreuveByIdQuery["getEpreuveById"]) => (
-                    <Link href={`/admin/modifyEpreuve/${epreuve.id}`}>
-                      {epreuve.title}
-                    </Link>
-                  )
-                )}
+            <form onSubmit={handleSubmit(handleModifyParkour)}>
+              <div>
+                <label htmlFor="title">Le titre de l'épreuve</label>
+                <input
+                  {...register("title")}
+                  id="title"
+                  name="title"
+                  type="text"
+                  placeholder="Indiquez votre titre"
+                />
+                <p className="error">{errors?.title?.message}</p>
               </div>
+              <div>
+                <label htmlFor="description">La description de l'épreuve</label>
+                <textarea
+                  {...register("description")}
+                  id="description"
+                  name="description"
+                  placeholder="La description de l'épreuve"
+                ></textarea>
+                <p className="error">{errors?.description?.message}</p>
+              </div>
+
+              <div>
+                <label htmlFor="time">le temps moyen</label>
+                <textarea
+                  {...register("time")}
+                  id="time"
+                  name="time"
+                  placeholder="le temps moyen"
+                ></textarea>
+                <p className="error">{errors?.time?.message}</p>
+              </div>
+              <div>
+                <label htmlFor="length">Longueur du parkour</label>
+                <textarea
+                  {...register("length")}
+                  id="length"
+                  name="length"
+                  placeholder="Longueur du parkour"
+                ></textarea>
+                <p className="error">{errors?.length?.message}</p>
+              </div>
+
+              <div>
+                <label htmlFor="difficulty">Difficultée</label>
+                <select id="difficulty" name="difficulty">
+                  <option value={Difficulty.Easy}>{Difficulty.Easy}</option>
+                  <option value={Difficulty.Medium}>{Difficulty.Medium}</option>
+                  <option value={Difficulty.Hard}>{Difficulty.Hard}</option>
+                </select>
+                <p className="error">{errors?.difficulty?.message}</p>
+              </div>
+
+              <div>
+                <label htmlFor="city">Ville de départ</label>
+                <input
+                  {...register("city")}
+                  id="city"
+                  name="city"
+                  type="text"
+                  placeholder="Ville de départ"
+                />
+                <p className="error">{errors?.city?.message}</p>
+              </div>
+              <div>
+                <label htmlFor="start">point gps de départ</label>
+                <input
+                  {...register("start")}
+                  id="start"
+                  name="start"
+                  type="text"
+                  placeholder="point gps de départ"
+                />
+                <p className="error">{errors?.start?.message}</p>
+              </div>
+
+              {/* modifier pour choose many avec recherche par title*/}
+              <div>
+                <label htmlFor="epreuves">Liste d'épreuves</label>
+                <input
+                  {...register("epreuves")}
+                  id="epreuves"
+                  name="epreuves"
+                  type="text"
+                  placeholder="Liste d'épreuves"
+                />
+                <p className="error">{errors?.epreuves?.message}</p>
+              </div>
+
+              <button type="submit" disabled={loading}>
+                Créer le parkour
+              </button>
+
+              {/* <div>
+                <span>{error?.message}</span>
+              </div> */}
             </form>
           </>
         )

@@ -29,3 +29,9 @@ export const IS_ADMIN = gql`
     isAdmin
   }
 `;
+
+export const IS_CLIENT = gql`
+  query IsClient {
+    isClient
+  }
+`;

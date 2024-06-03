@@ -81,11 +81,16 @@ options       |              |
 
 diagrammes
 
-create epreuve / parkour
+finir modify/create epreuve / parkour
 create image associées via service d'image
 
-mettre parkour en favoris
+modifier infos profil
+
 mettre une note 
+
+reset mot de passe
+
+ajouter un bouton modifier mon mdp dans profil => ça fait comme oublie mdp
 
 ------------------------------------------------------------------------------------------------------
 

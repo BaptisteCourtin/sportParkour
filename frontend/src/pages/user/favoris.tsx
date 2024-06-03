@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useRouter } from "next/router";
-import { useGetUserFavByTokenLazyQuery } from "@/types/graphql";
+import { useGetAllUserFavByTokenLazyQuery } from "@/types/graphql";
 
 import CardFavParkour from "@/components/parkour/cardFavParkour";
 
@@ -8,15 +8,15 @@ import CardFavParkour from "@/components/parkour/cardFavParkour";
 const favoris = () => {
   const router = useRouter();
 
-  const [getFav, { data, loading, error }] = useGetUserFavByTokenLazyQuery();
+  const [getFav, { data, loading, error }] = useGetAllUserFavByTokenLazyQuery();
 
   useEffect(() => {
     getFav({
-      onCompleted(data) {
-        console.log(data);
-      },
+      // onCompleted(data) {
+      //   console.log(data);
+      // },
       onError(err: any) {
-        console.log("error", err);
+        console.error("error", err);
       },
     });
   }, []);
@@ -24,7 +24,7 @@ const favoris = () => {
   return (
     <main className="favoris">
       <ul className="cardsFavParkour">
-        {data?.getUserFavByToken.map((parkour: any) => (
+        {data?.getAllUserFavByToken.map((parkour: any) => (
           <CardFavParkour parkour={parkour.parkours} key={parkour.parkour_id} />
         ))}
       </ul>

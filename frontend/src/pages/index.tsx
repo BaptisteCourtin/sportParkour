@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
-import CardParkour from "@/components/parkour/cardParkour";
 import { GetParkourByIdQuery, useGetAllParkourQuery } from "@/types/graphql";
+
+import CardParkour from "@/components/parkour/cardParkour";
 
 // appel à 20 parkours (les + proches de base)
 // les 20 + nouveaux

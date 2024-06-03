@@ -1,6 +1,6 @@
-import { useLogoutLazyQuery } from "@/types/graphql";
-import { useRouter } from "next/router";
 import React, { useEffect } from "react";
+import { useRouter } from "next/router";
+import { useLogoutLazyQuery } from "@/types/graphql";
 
 const logout = () => {
   const router = useRouter();

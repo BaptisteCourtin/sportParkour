@@ -28,6 +28,7 @@
     "@apollo/client": "^3.10.3",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@hookform/resolvers": "^3.4.2",
     "@mui/material": "^5.15.18",
     "@vis.gl/react-google-maps": "^1.0.1",
     "dotenv": "^16.4.5",
@@ -36,8 +37,10 @@
     "next": "14.2.3",
     "react": "^18",
     "react-dom": "^18",
+    "react-hook-form": "^7.51.5",
     "react-icons": "^5.2.1",
     "react-material-ui-carousel": "^3.4.2",
-    "sass": "^1.77.1"
+    "sass": "^1.77.1",
+    "yup": "^1.4.0"
   }
 }

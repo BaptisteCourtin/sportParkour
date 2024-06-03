@@ -15,7 +15,8 @@ export default class UserResolver {
     let result: UserEntity | null = null;
 
     const user = await new AuthService().getUserFromToken(token);
-    if (user) {
+    if (user.email) {
+      // pour la liaison parkour
       result = await new UserService().getByEmail(user.email);
     }
 
@@ -29,16 +30,29 @@ export default class UserResolver {
     return true;
   }
 
+  // le @Authorized vérifie déjà que on est client
+  @Authorized("CLIENT")
+  @Query(() => Boolean)
+  async isClient() {
+    return true;
+  }
+
   // ---
 
   // éviter le id et faire avec le token
   @Authorized("ADMIN", "CLIENT")
   @Mutation(() => UserEntity)
   async modifyUser(
-    @Arg("id") id: string,
-    @Arg("infos") infos: UserUpdateEntity
+    @Arg("infos") infos: UserUpdateEntity,
+    @Ctx() ctx: MyContext
   ) {
-    const result: UserEntity = await new UserService().modify(id, infos);
+    let token = ctx.req.cookies["tokenParkour"];
+    let result: UserEntity | null = null;
+
+    const user = await new AuthService().getUserFromToken(token);
+    if (user.email) {
+      result = await new UserService().modify(user.id, infos);
+    }
     return result;
   }
 

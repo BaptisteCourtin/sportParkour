@@ -1,41 +1,94 @@
-import React, { useEffect } from "react";
-import Link from "next/link";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 import {
   GetEpreuveByIdQuery,
+  useCreateFavJoinUserParkourMutation,
   useGetParkourByIdLazyQuery,
+  useGetUserFavByTokenAndIdParkourLazyQuery,
   useIsAdminQuery,
+  useIsClientQuery,
 } from "@/types/graphql";
 
 import Carousel from "react-material-ui-carousel";
 import { FaAngleRight } from "react-icons/fa6";
 import { FaAngleLeft } from "react-icons/fa6";
 
+// faire une snackbar avec le retour du like
 const OneParkour = () => {
   const router = useRouter();
   const { id } = router.query;
 
   const {
-    data: dateIsAdmin,
+    data: dataIsAdmin,
     loading: loadingIsAdmin,
     error: errorIsAdmin,
   } = useIsAdminQuery();
 
+  const {
+    data: dataIsClient,
+    loading: loadingIsClient,
+    error: errorIsClient,
+  } = useIsClientQuery();
+
+  // ---
+
   const [getParkour, { data, loading, error }] = useGetParkourByIdLazyQuery();
+
+  const [
+    getIsParkourFav,
+    {
+      data: dataIsParkourFav,
+      loading: loadingIsParkourFav,
+      error: errorIsParkourFav,
+    },
+  ] = useGetUserFavByTokenAndIdParkourLazyQuery();
 
   useEffect(() => {
     if (router.isReady && id) {
       getParkour({
         variables: { getParkourByIdId: +id },
-        // onCompleted(data) {
-        //   console.log(data);
-        // },
         onError(err: any) {
-          console.log("error", err);
+          console.error("error", err);
+        },
+      });
+
+      getIsParkourFav({
+        variables: { parkourId: +id },
+        onCompleted(data) {
+          setIsLiked(data.getUserFavByTokenAndIdParkour.favoris);
         },
       });
     }
   }, [router.isReady]);
+
+  // --- LIKE ---
+  const [isLiked, setIsLiked] = useState(false);
+
+  const [
+    createFav,
+    { data: dataCreateFav, loading: loadingCreateFav, error: errorCreateFav },
+  ] = useCreateFavJoinUserParkourMutation();
+
+  const handleLike = (isFav: boolean): void => {
+    if (id) {
+      const infos = {
+        parkour_id: parseInt(id as string),
+        note: dataIsParkourFav?.getUserFavByTokenAndIdParkour.note,
+        favoris: isFav,
+      };
+
+      createFav({
+        variables: { infos: infos },
+        onCompleted() {
+          setIsLiked(isFav);
+        },
+        onError(error) {
+          console.error(error);
+        },
+      });
+    }
+  };
 
   return (
     <main className="oneParkour">
@@ -46,10 +99,21 @@ const OneParkour = () => {
       ) : (
         data?.getParkourById && (
           <div>
-            {dateIsAdmin ? (
+            {dataIsAdmin ? (
               <Link href={`/admin/modifyParkour/${data.getParkourById.id}`}>
                 Modifier ce parkour
               </Link>
+            ) : null}
+            <br />
+            <br />
+            {dataIsClient && isLiked ? (
+              <button onClick={() => handleLike(false)}>
+                Supprimer des favoris
+              </button>
+            ) : dataIsClient && !isLiked ? (
+              <button onClick={() => handleLike(true)}>
+                Mettre en favoris
+              </button>
             ) : null}
             <br />
             <br />

@@ -1,14 +1,9 @@
 import React, { useState } from "react";
-
-import {
-  GetEpreuveByIdQuery,
-  useGetEpreuveByIdLazyQuery,
-  useGetListEpreuveQuery,
-} from "@/types/graphql";
+import { useRouter } from "next/router";
+import { GetEpreuveByIdQuery, useGetListEpreuveQuery } from "@/types/graphql";
 
 import CardEpreuve from "@/components/epreuve/cardEpreuve";
 import SearchBarEpreuve from "@/components/epreuve/searchBarEpreuve";
-import { useRouter } from "next/router";
 
 const allEpreuves = () => {
   const router = useRouter();

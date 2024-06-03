@@ -3,7 +3,6 @@ import datasource from "../lib/datasource";
 
 import JoinUserParkourEntity, {
   JoinUserParkourCreateEntity,
-  JoinUserParkourUpdateEntity,
 } from "../entities/joinUserParkour.entity";
 
 class JoinUserParkourService {
@@ -11,6 +10,23 @@ class JoinUserParkourService {
 
   constructor() {
     this.db = datasource.getRepository(JoinUserParkourEntity);
+  }
+
+  async getByUserIdAndParkourId(user_id: string, parkour_id: number) {
+    console.log(user_id, parkour_id);
+    const result: JoinUserParkourEntity | null = await this.db.findOne({
+      where: {
+        user_id: user_id,
+        parkour_id: parkour_id,
+      },
+      relations: ["parkours"],
+    });
+
+    if (!result) {
+      throw new Error("Pas de join User-Parkour avec cet id de parkour");
+    }
+
+    return result;
   }
 
   async getFavByEmail(email: string) {
@@ -61,11 +77,30 @@ class JoinUserParkourService {
 
   // ---
 
-  // fait aussi comme la modif
-  async create(data: JoinUserParkourCreateEntity) {
+  // fait aussi pour la modif
+  async create(userId: string, infos: JoinUserParkourCreateEntity) {
+    const data = {
+      user_id: userId,
+      parkour_id: infos.parkour_id,
+      note: infos.note,
+      favoris: infos.favoris,
+    };
     const newJoinUserParkour = this.db.create(data);
     await this.db.save(newJoinUserParkour);
-    return newJoinUserParkour;
+
+    const resultWithTitle = await this.getByUserIdAndParkourId(
+      userId,
+      newJoinUserParkour.parkour_id
+    );
+    return resultWithTitle;
+  }
+
+  async deleteByUserIdAndParkourId(user_id: string, parkours_id: number) {
+    const joinUserParkours = await this.getByUserIdAndParkourId(
+      user_id,
+      parkours_id
+    );
+    return await this.db.remove(joinUserParkours);
   }
 
   async deleteAllByUserId(user_id: string) {
