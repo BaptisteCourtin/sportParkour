@@ -53,8 +53,9 @@ const login = () => {
       <Link href="/auth/inscription">Inscription</Link>
 
       <form onSubmit={handleSubmit(handleAuthentification)}>
+        <h1>Authentification</h1>
         <div>
-          <label htmlFor="email">Your Email</label>
+          <label htmlFor="email">Votre Email</label>
           <input
             {...register("email")}
             id="email"
@@ -65,7 +66,7 @@ const login = () => {
           <p className="error">{errors?.email?.message}</p>
         </div>
         <div>
-          <label htmlFor="password">Your Password</label>
+          <label htmlFor="password">Votre Password</label>
           <input
             {...register("password")}
             id="password"

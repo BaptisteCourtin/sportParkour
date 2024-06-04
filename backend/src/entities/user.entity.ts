@@ -1,5 +1,6 @@
 import {
   BeforeInsert,
+  BeforeUpdate,
   Column,
   Entity,
   OneToMany,
@@ -15,6 +16,7 @@ import JoinUserParkourEntity from "./joinUserParkour.entity";
 @ObjectType()
 class UserEntity {
   @BeforeInsert()
+  @BeforeUpdate()
   protected async hashPassword() {
     this.password = await argon2.hash(this.password);
   }

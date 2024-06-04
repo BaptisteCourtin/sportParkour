@@ -84,7 +84,7 @@ export default class AuthResolver {
       let cookies = new Cookies(ctx.req, ctx.res);
       cookies.set("tokenParkour", token, { httpOnly: true }); // mettre à true = sécurité
 
-      returnMessage.message = "Salut! Viens parkourir le monde ?";
+      returnMessage.message = "Salut! Viens parkourir le monde !";
       returnMessage.success = true;
     } else {
       returnMessage.message =
@@ -105,8 +105,6 @@ export default class AuthResolver {
     if (ctx.user) {
       let cookies = new Cookies(ctx.req, ctx.res);
       cookies.set("tokenParkour"); //sans valeur, le cookie sera supprimé
-      cookies.set("emailUserParkour");
-      cookies.set("roleUserParkour");
     }
 
     const returnMessage = new MessageEntity();
