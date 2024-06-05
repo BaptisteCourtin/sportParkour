@@ -4,8 +4,6 @@
 - appel parkours getTopTwenty (20 premiers en fonction des filtres)
 
 - images => ajouter si principal ou non
-- get favoris
-- rename les fonctions
 
 - changer le get all parkours en get 20
 
@@ -30,7 +28,6 @@
 
 - figma
 - diagrammes
-- authoriser les routes seulement si token ok (connection)
 
 ##################################################################################################################
 

@@ -111,8 +111,8 @@ async function main() {
     httpServer.listen({ port: 4000 }, resolve)
   );
 
-  console.log("ENV : ", process.env.JWT_EXPIRATION_TIME);
-  console.log("ENV : ", process.env.SECRET_KEY);
+  // console.log("ENV : ", process.env.JWT_EXPIRATION_TIME);
+  // console.log("ENV : ", process.env.SECRET_KEY);
   console.log(`🚀 Server lancé sur http://localhost:4000/`);
 }
 

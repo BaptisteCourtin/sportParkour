@@ -1,33 +1,3 @@
-# services:
-#   backend:
-#     build: ./backend
-#     ports:
-#       - 4000:4000
-#     volumes:
-#       - ./backend/src:/app/src
-#       - ./backend/sportParkour.sqlite:/app/sportParkour.sqlite
-#     env_file:
-#       - ./.env
-#     healthcheck:
-#       test:
-#         - CMD-SHELL
-#         - "curl -f http://backend:4000/graphql?query=%7B__typename%7D -H 'Apollo-Require-Preflight: true' || exit 1"
-#       interval: 10s
-#       timeout: 30s
-#       retries: 5
-
-#   frontend:
-#     build: ./frontend
-#     ports:
-#       - 3000:3000
-#     volumes:
-#       - ./frontend/src:/app/src
-#     depends_on:
-#       backend:
-#         condition: service_healthy
-#     env_file:
-#       - ./.env
-
 services:
   backend:
     build: ./backend

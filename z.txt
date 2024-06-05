@@ -67,3 +67,5 @@ ajouter commentaire à la note + date de création OU de mise à jour
 - des tests back et front
 - intégration continue
 - déploiement
+
+- faire un backlog sur notion
