@@ -4,6 +4,8 @@ import { MessageEntity } from "../entities/message.entity";
 import UserService from "../services/user.service";
 import AuthService from "../services/auth.service";
 
+import Cookies from "cookies";
+
 import { MyContext } from "..";
 
 @Resolver()
@@ -59,8 +61,11 @@ export default class UserResolver {
   // éviter le id et faire avec le token
   @Authorized("ADMIN", "CLIENT")
   @Mutation(() => MessageEntity)
-  async deleteUser(@Arg("id") id: string) {
+  async deleteUser(@Arg("id") id: string, @Ctx() ctx: MyContext) {
     await new UserService().delete(id);
+
+    let cookies = new Cookies(ctx.req, ctx.res);
+    cookies.set("tokenParkour"); //sans valeur, le cookie sera supprimé
 
     const returnMessage = new MessageEntity();
     returnMessage.message = "Vous venez de vous désintégrer 🎆";

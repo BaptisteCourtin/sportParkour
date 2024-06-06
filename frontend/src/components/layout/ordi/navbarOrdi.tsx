@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 
-import DarkLight from "./DarkLight";
+import DarkLight from "../DarkLight";
 
 import { FaUser } from "react-icons/fa6";
 import { FaHouseChimney } from "react-icons/fa6";

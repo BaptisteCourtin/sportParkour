@@ -7,6 +7,8 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 
 import Layout from "../components/layout/Layout";
 
+import { Toaster } from "react-hot-toast";
+
 export default function MyApp({ Component, pageProps }: AppProps) {
   // pour l'authenthification
   const client = new ApolloClient({
@@ -25,6 +27,12 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         <link rel="icon" href="/Icon-White.svg" />
       </Head>
       <Layout>
+        <Toaster
+          position="bottom-center"
+          toastOptions={{
+            duration: 5000,
+          }}
+        />
         <Component {...pageProps} />
       </Layout>
     </ApolloProvider>

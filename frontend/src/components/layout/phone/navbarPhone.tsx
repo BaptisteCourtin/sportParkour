@@ -13,7 +13,13 @@ const navbarPhone = () => {
     <nav className="navbarPhone">
       <Link
         href="/user/profil"
-        className={router.pathname == "/user/profil" ? "active" : ""}
+        className={
+          router.pathname.startsWith("/user")
+            ? "active"
+            : router.pathname.startsWith("/auth")
+            ? "active"
+            : ""
+        }
       >
         <FaUser className="icon" />
         <p>Profil</p>

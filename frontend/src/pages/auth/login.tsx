@@ -10,6 +10,10 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { object, string } from "yup";
 
+import { toast } from "react-hot-toast";
+import TextField from "@mui/material/TextField";
+import { FaArrowRight } from "react-icons/fa6";
+
 let loginSchema = object({
   email: string()
     .email("votre email doit être valide")
@@ -38,11 +42,15 @@ const login = () => {
         variables: { infos: dataForm },
         onCompleted(data) {
           if (data.authentification.success) {
+            toast.success(data.authentification.message);
             router.push("/");
+          } else {
+            toast.success(data.authentification.message);
           }
         },
         onError(error) {
-          console.error(error);
+          console.log(error);
+          toast.error(error.message);
         },
       });
     }
@@ -50,38 +58,56 @@ const login = () => {
 
   return (
     <main className="auth">
-      <Link href="/auth/inscription">Inscription</Link>
+      <div className="imageTop">
+        <h1>UTILISEZ VOTRE ESPACE PERSONNEL</h1>
+      </div>
 
       <form onSubmit={handleSubmit(handleAuthentification)}>
-        <h1>Authentification</h1>
-        <div>
-          <label htmlFor="email">Votre Email</label>
-          <input
+        <div className="topForm">
+          <h2>CONNECTEZ VOUS</h2>
+          <Link className="inscr" href="/auth/inscription">
+            Vous voulez un compte ?
+          </Link>
+        </div>
+        <div className="champ">
+          <TextField
+            className="mui-input"
+            fullWidth
+            variant="outlined"
+            label="Votre email"
+            required
             {...register("email")}
             id="email"
             type="text"
             name="email"
-            placeholder="Indiquez votre email"
           />
           <p className="error">{errors?.email?.message}</p>
         </div>
-        <div>
-          <label htmlFor="password">Votre Password</label>
-          <input
+
+        <div className="champ">
+          <TextField
+            className="mui-input"
+            fullWidth
+            variant="outlined"
+            label="Votre mot de passe"
+            required
             {...register("password")}
             id="password"
             type="password"
             name="password"
-            placeholder="Indiquez votre mot de passe"
           />
           <p className="error">{errors?.password?.message}</p>
         </div>
+
+        <Link className="oublie" href="/auth/inscription">
+          Mot de passe oublié ?
+        </Link>
+
         <button type="submit" disabled={loading}>
-          Se connecter
+          SUIVANT <FaArrowRight />
         </button>
 
         <div>
-          <span>{data?.authentification.message}</span>
           <span>{error?.message}</span>
         </div>
       </form>

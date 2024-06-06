@@ -15,8 +15,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-
-import { Snackbar } from "@mui/material";
+import { toast } from "react-hot-toast";
 
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -102,11 +101,12 @@ const modifyOneParkour = () => {
         variables: { infos: dataForm, modifyParkourId: parseInt(id as string) },
         onCompleted(data) {
           if (data.modifyParkour.id) {
+            toast.success("GG, vous avez mis le parkour à jour 👌");
             router.push(`/epreuve/${data.modifyParkour.id}`);
           }
         },
         onError(error) {
-          console.error(error);
+          toast.error(error.message);
         },
       });
     }
@@ -130,33 +130,16 @@ const modifyOneParkour = () => {
     if (id) {
       deleteParkour({
         variables: { deleteParkourId: +id },
-        onCompleted() {
+        onCompleted(data) {
+          toast.success(data?.deleteParkour.message);
           router.push(`/`);
         },
         onError(error) {
-          console.error(error);
+          toast.error(error.message);
         },
       });
     }
   }
-
-  // --- SNACKBAR ---
-  const [openSnack, setOpenSnack] = useState(false);
-  const [snackComment, setSnackComment] = useState("");
-
-  const handleClickSnack = () => {
-    setOpenSnack(true);
-  };
-
-  const handleCloseSnack = (
-    event: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setOpenSnack(false);
-  };
 
   return (
     <main className="modifyOneParkour">
@@ -190,13 +173,11 @@ const modifyOneParkour = () => {
 
                       if (errorDelete) {
                         handleClickClose();
-                        setSnackComment(errorDelete?.message);
-                        handleClickSnack();
+                        toast.error(errorDelete?.message);
                       }
                     } else {
                       handleClickClose();
-                      setSnackComment("Le nom du parkour ne correspond pas");
-                      handleClickSnack();
+                      toast.error("Le nom du parkour ne correspond pas");
                     }
                   },
                 }}
@@ -226,20 +207,9 @@ const modifyOneParkour = () => {
                   <Button type="submit">Hop, ça dégage!</Button>
                 </DialogActions>
               </Dialog>
-
-              {/* --- */}
-
-              <Snackbar
-                open={openSnack}
-                autoHideDuration={3000}
-                onClose={handleCloseSnack}
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "center",
-                }}
-                message={snackComment}
-              />
             </div>
+
+            {/* --- */}
 
             <form onSubmit={handleSubmit(handleModifyParkour)}>
               <div>
@@ -331,13 +301,13 @@ const modifyOneParkour = () => {
                 <p className="error">{errors?.epreuves?.message}</p>
               </div>
 
-              <button type="submit" disabled={loading}>
-                Créer le parkour
+              <button type="submit" disabled={loadingModify}>
+                Modifier le parkour
               </button>
 
-              {/* <div>
-                <span>{error?.message}</span>
-              </div> */}
+              <div>
+                <span>{errorModify?.message}</span>
+              </div>
             </form>
           </>
         )

@@ -16,7 +16,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { Snackbar } from "@mui/material";
+import { toast } from "react-hot-toast";
 
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -34,6 +34,7 @@ let modifyUserSchema = object({
 // mettre les infos dans un form
 const profil = () => {
   const router = useRouter();
+  const [isModifMode, setIsModifMode] = useState(false);
 
   const {
     data: dataIsAdmin,
@@ -47,39 +48,19 @@ const profil = () => {
 
   useEffect(() => {
     getUser({
-      onCompleted(data) {
-        console.log(data);
-        setValue("email", data.getUserByToken.email ?? "");
-        setValue("name", data.getUserByToken.name ?? "");
-        setValue("firstname", data.getUserByToken.firstname ?? "");
-        setValue("city", data.getUserByToken.city ?? "");
-        setValue("codePostal", data.getUserByToken.codePostal ?? "");
-        setValue("phone", data.getUserByToken.phone ?? "");
-      },
       onError(err: any) {
         console.error("error", err);
       },
     });
-  }, []);
+  }, [isModifMode]);
 
   // --- MODIFY ---
-  const [isModifMode, setIsModifMode] = useState(false);
-
   const {
     register,
     handleSubmit,
     formState: { errors },
-    setValue,
   } = useForm({
     resolver: yupResolver(modifyUserSchema),
-    defaultValues: {
-      email: "",
-      name: "",
-      firstname: "",
-      city: "",
-      codePostal: "",
-      phone: "",
-    },
   });
 
   const [
@@ -96,11 +77,12 @@ const profil = () => {
         onCompleted(data) {
           if (data.modifyUser.id) {
             setIsModifMode(false);
+            toast.success("GG, vous avez été mis à jour 👌");
             router.push(`/user/profil`);
           }
         },
         onError(error) {
-          console.error(error);
+          toast.error(error.message);
         },
       });
     }
@@ -124,34 +106,16 @@ const profil = () => {
     if (id) {
       deleteUser({
         variables: { deleteUserId: id },
-        onCompleted() {
+        onCompleted(data) {
+          toast.success(data.deleteUser.message);
           router.push(`/`);
         },
         onError(error) {
-          console.error(error);
+          toast.success(error.message);
         },
       });
     }
   }
-
-  // --- SNACKBAR ---
-  const [openSnack, setOpenSnack] = useState(false);
-  const [snackComment, setSnackComment] = useState("");
-
-  const handleClickSnack = () => {
-    setOpenSnack(true);
-  };
-
-  const handleCloseSnack = (
-    event: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    setOpenSnack(false);
-  };
 
   return (
     <main className="profil">
@@ -164,7 +128,7 @@ const profil = () => {
           <>
             <div>
               <Button variant="outlined" onClick={handleClickOpen}>
-                Delete profil user {data.getUserByToken.id}
+                Supprimer votre profil
               </Button>
               <Dialog
                 open={open}
@@ -178,40 +142,38 @@ const profil = () => {
                     const formJson = Object.fromEntries(
                       (formData as any).entries()
                     );
-                    const nomUser = formJson.nomUser;
+                    const emailUser = formJson.emailUser;
 
-                    if (data.getUserByToken.name == nomUser) {
+                    if (data.getUserByToken.email == emailUser) {
                       handleDeleteUser(data.getUserByToken.id);
 
                       if (errorDelete) {
                         handleClickClose();
-                        setSnackComment(errorDelete?.message);
-                        handleClickSnack();
+                        toast.error(errorDelete?.message);
                       }
                     } else {
                       handleClickClose();
-                      setSnackComment("Le nom de l'user ne correspond pas");
-                      handleClickSnack();
+                      toast.error("L'email ne correspond pas");
                     }
                   },
                 }}
               >
-                <DialogTitle>Delete user {data.getUserByToken.id}</DialogTitle>
+                <DialogTitle>Vous êtes entrain de cous supprimer</DialogTitle>
                 <DialogContent>
                   <DialogContentText>
                     Pour supprimer cette user entrez son nom :
-                    {data.getUserByToken.name}
+                    {data.getUserByToken.email}
                   </DialogContentText>
                   <TextField
                     autoFocus
-                    required
-                    margin="dense"
-                    id="nomUser"
-                    name="nomUser"
-                    label="nom de l'user"
-                    type="nomUser"
                     fullWidth
                     variant="standard"
+                    required
+                    margin="dense"
+                    id="emailUser"
+                    name="emailUser"
+                    label="votre email"
+                    type="email"
                   />
                 </DialogContent>
                 <DialogActions>
@@ -219,22 +181,10 @@ const profil = () => {
                   <Button type="submit">Hop, ça dégage!</Button>
                 </DialogActions>
               </Dialog>
-
-              {/* --- */}
-
-              <Snackbar
-                open={openSnack}
-                autoHideDuration={3000}
-                onClose={handleCloseSnack}
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "center",
-                }}
-                message={snackComment}
-              />
             </div>
 
             {/* --- */}
+
             <div>
               <button onClick={() => setIsModifMode(!isModifMode)}>
                 {isModifMode
@@ -244,85 +194,106 @@ const profil = () => {
 
               {isModifMode ? (
                 <form onSubmit={handleSubmit(handleModifyUser)}>
-                  <div>
-                    <label htmlFor="email">Votre email</label>
-                    <input
+                  <div className="champ">
+                    <TextField
+                      className="mui-input"
+                      fullWidth
+                      variant="outlined"
+                      label="Votre email"
+                      defaultValue={data.getUserByToken.email}
+                      required
                       {...register("email")}
                       id="email"
-                      name="email"
                       type="text"
-                      placeholder="Indiquez votre email"
+                      name="email"
                     />
                     <p className="error">{errors?.email?.message}</p>
                   </div>
 
-                  <div>
-                    <label htmlFor="name">Votre nom</label>
-                    <input
+                  <div className="champ">
+                    <TextField
+                      className="mui-input"
+                      fullWidth
+                      variant="outlined"
+                      label="Votre nom"
+                      defaultValue={data.getUserByToken.name}
+                      required
                       {...register("name")}
                       id="name"
                       name="name"
                       type="text"
-                      placeholder="Indiquez votre nom"
                     />
                     <p className="error">{errors?.name?.message}</p>
                   </div>
 
-                  <div>
-                    <label htmlFor="firstname">Votre prénom</label>
-                    <input
+                  <div className="champ">
+                    <TextField
+                      className="mui-input"
+                      fullWidth
+                      variant="outlined"
+                      label="Votre prénom"
+                      defaultValue={data.getUserByToken.firstname}
+                      required
                       {...register("firstname")}
                       id="firstname"
                       name="firstname"
                       type="firstname"
-                      placeholder="Indiquez votre prénom"
                     />
                     <p className="error">{errors?.firstname?.message}</p>
                   </div>
 
-                  <div>
-                    <label htmlFor="city">Votre ville</label>
-                    <input
+                  <div className="champ">
+                    <TextField
+                      className="mui-input"
+                      fullWidth
+                      variant="outlined"
+                      label="Votre ville"
+                      defaultValue={data.getUserByToken.city}
                       {...register("city")}
                       id="city"
                       name="city"
                       type="text"
-                      placeholder="Indiquez votre ville"
                     />
                     <p className="error">{errors?.city?.message}</p>
                   </div>
 
-                  <div>
-                    <label htmlFor="codePostal">Votre code postal</label>
-                    <input
+                  <div className="champ">
+                    <TextField
+                      className="mui-input"
+                      fullWidth
+                      variant="outlined"
+                      label="Votre code postal"
+                      defaultValue={data.getUserByToken.codePostal}
                       {...register("codePostal")}
                       id="codePostal"
                       name="codePostal"
                       type="text"
-                      placeholder="Indiquez votre code postal"
                     />
                     <p className="error">{errors?.codePostal?.message}</p>
                   </div>
 
-                  <div>
-                    <label htmlFor="phone">Votre numéro de téléphone</label>
-                    <input
+                  <div className="champ">
+                    <TextField
+                      className="mui-input"
+                      fullWidth
+                      variant="outlined"
+                      label="Votre numéro de téléphone"
+                      defaultValue={data.getUserByToken.phone}
                       {...register("phone")}
                       id="phone"
                       name="phone"
                       type="text"
-                      placeholder="Indiquez votre numéro de téléphone"
                     />
                     <p className="error">{errors?.phone?.message}</p>
                   </div>
 
-                  <button type="submit" disabled={loading}>
+                  <button type="submit" disabled={loadingModify}>
                     Enregistrer les modifications
                   </button>
 
-                  {/* <div>
-                  <span>{error?.message}</span>
-                </div> */}
+                  <div>
+                    <span>{errorModify?.message}</span>
+                  </div>
                 </form>
               ) : (
                 <section>

@@ -6,6 +6,9 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { object, string } from "yup";
 
+import { toast } from "react-hot-toast";
+import TextField from "@mui/material/TextField";
+
 let createEpreuveSchema = object({
   title: string().required("Veuillez entrer un titre"),
   description: string(),
@@ -36,11 +39,14 @@ const createEpreuve = () => {
         variables: { infos: dataForm },
         onCompleted(data) {
           if (data.createEpreuve.id) {
+            toast.success(
+              `GG, vous avez créé l'épreuve ${data.createEpreuve.title}`
+            );
             router.push(`/epreuve/${data.createEpreuve.id}`);
           }
         },
         onError(error) {
-          console.error(error);
+          toast.error(error.message);
         },
       });
     }
@@ -51,67 +57,92 @@ const createEpreuve = () => {
       <h1>create epreuve</h1>
 
       <form onSubmit={handleSubmit(handleCreateEpreuve)}>
-        <div>
-          <label htmlFor="title">Le titre de l'épreuve</label>
-          <input
+        <div className="champ">
+          <TextField
+            className="mui-input"
+            fullWidth
+            variant="outlined"
+            label="Titre de l'épreuve"
+            required
             {...register("title")}
             id="title"
             name="title"
             type="text"
-            placeholder="Indiquez votre titre"
           />
           <p className="error">{errors?.title?.message}</p>
         </div>
-        <div>
-          <label htmlFor="description">La description de l'épreuve</label>
-          <textarea
+        <div className="champ">
+          <TextField
+            className="mui-input"
+            fullWidth
+            variant="outlined"
+            label="Description global"
+            multiline
+            rows={10}
             {...register("description")}
             id="description"
             name="description"
-            placeholder="La description de l'épreuve"
-          ></textarea>
+            type="text"
+          />
           <p className="error">{errors?.description?.message}</p>
         </div>
 
-        <div>
-          <label htmlFor="easyToDo">Que faire (version débutant)</label>
-          <textarea
+        <div className="champ">
+          <TextField
+            className="mui-input"
+            fullWidth
+            variant="outlined"
+            label="Que faire (version débutant)"
+            multiline
+            rows={6}
             {...register("easyToDo")}
             id="easyToDo"
             name="easyToDo"
-            placeholder="Que faire (version débutant)"
-          ></textarea>
+            type="text"
+          />
           <p className="error">{errors?.easyToDo?.message}</p>
         </div>
-        <div>
-          <label htmlFor="mediumToDo">Que faire (version intermédiaire)</label>
-          <textarea
+        <div className="champ">
+          <TextField
+            className="mui-input"
+            fullWidth
+            variant="outlined"
+            label="Que faire (version medium)"
+            multiline
+            rows={6}
             {...register("mediumToDo")}
             id="mediumToDo"
             name="mediumToDo"
-            placeholder="Que faire (version medium)"
-          ></textarea>
+            type="text"
+          />
           <p className="error">{errors?.mediumToDo?.message}</p>
         </div>
-        <div>
-          <label htmlFor="hardToDo">Que faire (version confirmé)</label>
-          <textarea
+        <div className="champ">
+          <TextField
+            className="mui-input"
+            fullWidth
+            variant="outlined"
+            label="Que faire (version hard)"
+            multiline
+            rows={6}
             {...register("hardToDo")}
             id="hardToDo"
             name="hardToDo"
-            placeholder="Que faire (version hard)"
-          ></textarea>
+            type="text"
+          />
           <p className="error">{errors?.hardToDo?.message}</p>
         </div>
 
-        <div>
-          <label htmlFor="videoLink">Le lien video</label>
-          <input
+        <div className="champ">
+          <TextField
+            className="mui-input"
+            fullWidth
+            variant="outlined"
+            label="Le lien video"
             {...register("videoLink")}
             id="videoLink"
             name="videoLink"
             type="text"
-            placeholder="Le lien video"
           />
           <p className="error">{errors?.videoLink?.message}</p>
         </div>

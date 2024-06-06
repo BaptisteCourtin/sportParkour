@@ -1,8 +1,10 @@
-import Footer from "./footer";
 import { useEffect, useState } from "react";
 
-import NavbarOrdi from "./navbarOrdi";
-import NavbarPhone from "./navbarPhone";
+import NavbarOrdi from "./ordi/navbarOrdi";
+import Footer from "./ordi/footer";
+
+import NavbarPhone from "./phone/navbarPhone";
+import HeaderPhone from "./phone/headerPhone";
 
 const Layout = ({ children }: React.PropsWithChildren<{}>) => {
   const [isDarkTheme, setIsDarkTheme] = useState(true);
@@ -24,6 +26,8 @@ const Layout = ({ children }: React.PropsWithChildren<{}>) => {
       {windowWidth > 800 ? (
         <NavbarOrdi isDarkTheme={isDarkTheme} setIsDarkTheme={setIsDarkTheme} />
       ) : null}
+
+      {windowWidth <= 800 ? <HeaderPhone /> : null}
 
       {/* nos pages = children*/}
       <div className="layoutChild">{children}</div>
