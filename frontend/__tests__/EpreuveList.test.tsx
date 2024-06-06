@@ -31,7 +31,7 @@ const mocksGetAllEpreuves: MockedResponse<{
   },
 ];
 
-describe("Liste des livres", () => {
+describe("Liste des epreuves", () => {
   it("récupération de liste et affichage des éléments", async () => {
     render(
       <MemoryRouterProvider url="/">

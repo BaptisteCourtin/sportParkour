@@ -102,10 +102,8 @@ export default class AuthResolver {
   // logout du user
   @Query(() => MessageEntity)
   async logout(@Ctx() ctx: MyContext) {
-    if (ctx.user) {
-      let cookies = new Cookies(ctx.req, ctx.res);
-      cookies.set("tokenParkour"); //sans valeur, le cookie sera supprimé
-    }
+    let cookies = new Cookies(ctx.req, ctx.res);
+    cookies.set("tokenParkour"); //sans valeur, le cookie sera supprimé
 
     const returnMessage = new MessageEntity();
     returnMessage.message =

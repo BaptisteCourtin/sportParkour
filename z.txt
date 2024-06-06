@@ -63,9 +63,6 @@ ajouter commentaire à la note + date de création OU de mise à jour
 
 - gérer les images (avec google cloud ?)
 - reset mdp
-
-- des tests back et front
-- intégration continue
 - déploiement
 
-- faire un backlog sur notion
+essayer de mettre le snackbar en global

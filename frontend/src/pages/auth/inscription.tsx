@@ -10,6 +10,10 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { object, string } from "yup";
 
+import { toast } from "react-hot-toast";
+import TextField from "@mui/material/TextField";
+import { FaArrowRight } from "react-icons/fa6";
+
 let authSchema = object({
   email: string()
     .email("votre email doit être valide")
@@ -48,11 +52,12 @@ const inscription = () => {
         variables: { infos: dataForm },
         onCompleted(data) {
           if (data.inscription.success) {
+            toast.success(data.inscription.message);
             router.push("/");
           }
         },
         onError(error) {
-          console.error(error);
+          toast.error(error.message);
         },
       });
     }
@@ -60,97 +65,123 @@ const inscription = () => {
 
   return (
     <main className="auth">
-      <Link href="/auth/login">Authentification</Link>
-
-      <h1>INSCRIPTION</h1>
+      <div className="imageTop">
+        <h1>POSSEDEZ UN COMPTE PARKOUR</h1>
+      </div>
 
       <form onSubmit={handleSubmit(handleInscription)}>
-        <div>
-          <label htmlFor="email">Votre email</label>
-          <input
-            {...register("email")}
-            id="email"
-            name="email"
-            type="text"
-            placeholder="Indiquez votre email"
-          />
-          <p className="error">{errors?.email?.message}</p>
+        <div className="topForm">
+          <h2>INSCRIPTION</h2>
+          <Link className="inscr" href="/auth/login">
+            Vous avez déjà un compte ?
+          </Link>
         </div>
 
-        <div>
-          <label htmlFor="password">Votre mot de passe</label>
-          <input
-            {...register("password")}
-            id="password"
-            name="password"
-            type="password"
-            placeholder="Indiquez votre mot de passe"
-          />
-          <p className="error">{errors?.password?.message}</p>
-        </div>
-
-        <div>
-          <label htmlFor="name">Votre nom</label>
-          <input
-            {...register("name")}
-            id="name"
-            name="name"
-            type="text"
-            placeholder="Indiquez votre nom"
-          />
-          <p className="error">{errors?.name?.message}</p>
-        </div>
-
-        <div>
-          <label htmlFor="firstname">Votre prénom</label>
-          <input
+        <div className="champ">
+          <TextField
+            className="mui-input"
+            fullWidth
+            variant="outlined"
+            label="Votre prénom"
+            required
             {...register("firstname")}
             id="firstname"
             name="firstname"
             type="firstname"
-            placeholder="Indiquez votre prénom"
           />
           <p className="error">{errors?.firstname?.message}</p>
         </div>
-
-        <div>
-          <label htmlFor="city">Votre ville</label>
-          <input
-            {...register("city")}
-            id="city"
-            name="city"
+        <div className="champ">
+          <TextField
+            className="mui-input"
+            fullWidth
+            variant="outlined"
+            label="Votre nom"
+            required
+            {...register("name")}
+            id="name"
+            name="name"
             type="text"
-            placeholder="Indiquez votre ville"
           />
-          <p className="error">{errors?.city?.message}</p>
+          <p className="error">{errors?.name?.message}</p>
         </div>
 
-        <div>
-          <label htmlFor="codePostal">Votre code postal</label>
-          <input
-            {...register("codePostal")}
-            id="codePostal"
-            name="codePostal"
-            type="text"
-            placeholder="Indiquez votre code postal"
-          />
-          <p className="error">{errors?.codePostal?.message}</p>
+        <div className="containerMiniChamp">
+          <div className="champ">
+            <TextField
+              className="mui-input"
+              fullWidth
+              variant="outlined"
+              label="Votre ville"
+              {...register("city")}
+              id="city"
+              name="city"
+              type="text"
+            />
+            <p className="error">{errors?.city?.message}</p>
+          </div>
+          <div className="champ">
+            <TextField
+              className="mui-input"
+              fullWidth
+              variant="outlined"
+              label="Votre code postal"
+              {...register("codePostal")}
+              id="codePostal"
+              name="codePostal"
+              type="text"
+            />
+            <p className="error">{errors?.codePostal?.message}</p>
+          </div>
         </div>
 
-        <div>
-          <label htmlFor="phone">Votre numéro de téléphone</label>
-          <input
+        <div className="champ">
+          <TextField
+            className="mui-input"
+            fullWidth
+            variant="outlined"
+            label="Votre numéro de téléphone"
             {...register("phone")}
             id="phone"
             name="phone"
             type="text"
-            placeholder="Indiquez votre numéro de téléphone"
           />
           <p className="error">{errors?.phone?.message}</p>
         </div>
 
+        <hr />
+
+        <div className="champ">
+          <TextField
+            className="mui-input"
+            fullWidth
+            variant="outlined"
+            label="Votre email"
+            required
+            {...register("email")}
+            id="email"
+            type="text"
+            name="email"
+          />
+          <p className="error">{errors?.email?.message}</p>
+        </div>
+        <div className="champ">
+          <TextField
+            className="mui-input"
+            fullWidth
+            variant="outlined"
+            label="Votre mot de passe"
+            required
+            {...register("password")}
+            id="password"
+            name="password"
+            type="password"
+          />
+          <p className="error">{errors?.password?.message}</p>
+        </div>
+
         <button type="submit" disabled={loading}>
-          S'inscrire
+          SUIVANT <FaArrowRight />
         </button>
 
         <div>

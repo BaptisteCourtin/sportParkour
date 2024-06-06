@@ -1,10 +1,12 @@
 import React from "react";
 import { useRouter } from "next/router";
+import { ParkourCreateEntity, useCreateParkourMutation } from "@/types/graphql";
+
+import { toast } from "react-hot-toast";
 
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { object, string } from "yup";
-import { ParkourCreateEntity, useCreateParkourMutation } from "@/types/graphql";
 
 let createParkourSchema = object({
   title: string().required("Veuillez entrer un titre"),
@@ -41,11 +43,14 @@ const createParkour = () => {
         variables: { infos: dataForm },
         onCompleted(data) {
           if (data.createParkour.id) {
+            toast.success(
+              `GG, vous avez créé l'épreuve ${data.createParkour.title}`
+            );
             router.push(`/parkour/${data.createParkour.id}`);
           }
         },
         onError(error) {
-          console.error(error);
+          toast.error(error.message);
         },
       });
     }

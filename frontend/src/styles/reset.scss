@@ -23,16 +23,74 @@ body {
   min-height: 100%;
 
   background: var(--back);
-  color: var(--color);
+  color: var(--text2);
 
-  font-size: 1rem;
+  font-size: var(--fs-base);
   font-family: "Instrument Sans", sans-serif;
 }
 
-button {
+button,
+.button {
   cursor: pointer;
   border: none;
-  color: var(--back);
+  color: var(--text1);
+
+  background-color: var(--blue);
+  font-weight: var(--fw-button);
+  padding: var(--padButton);
+  border-radius: var(--radiusButton);
+}
+
+// pour les formulaires
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: var(--gapForm);
+
+  .containerMiniChamp {
+    display: flex;
+    align-items: center;
+    gap: var(--gapForm);
+  }
+
+  .champ {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+
+    width: 100%;
+
+    .mui-input {
+      background-color: var(--back);
+      border-radius: var(--radius);
+
+      label {
+        color: var(--text2Trans);
+        font-style: italic;
+      }
+
+      input,
+      textarea {
+        color: var(--text2);
+
+        // pour éviter les couleurs du autofill
+        &:-webkit-autofill,
+        &:-webkit-autofill:hover,
+        &:-webkit-autofill:focus,
+        &:-webkit-autofill:active {
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: var(--text2);
+        }
+      }
+    }
+  }
+
+  hr {
+    width: 50%;
+    align-self: center;
+  }
 }
 
 a {
@@ -89,10 +147,10 @@ h4 {
   min-height: 100vh;
 
   background-color: var(--back);
-  color: var(--color);
+  color: var(--text2);
 
   .layoutChild {
-    padding: 2rem 2rem;
+    padding: var(--espace);
 
     width: 100%;
     max-width: 1360px;
@@ -101,14 +159,7 @@ h4 {
     flex-direction: column;
     flex: 1 0 0;
 
-    // main {
-    //   display: flex;
-    //   flex-direction: column;
-    //   align-items: center;
-    //   justify-content: center;
-
-    //   width: 100%;
-    // }
+    margin-bottom: 100px;
   }
 }
 

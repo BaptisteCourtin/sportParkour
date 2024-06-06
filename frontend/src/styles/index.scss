@@ -4,9 +4,10 @@
 // --- components ---
 @import "../components/epreuve/nameEpreuve.scss";
 
-@import "../components/layout/navbarOrdi.scss";
-@import "../components/layout/navbarPhone.scss";
-@import "../components/layout/footer.scss";
+@import "../components/layout/ordi/navbarOrdi.scss";
+@import "../components/layout/ordi/footer.scss";
+@import "../components/layout/phone/navbarPhone.scss";
+@import "../components/layout/phone/headerPhone.scss";
 @import "../components/layout/darkLight.scss";
 
 @import "../components/parkour/cardParkour.scss";

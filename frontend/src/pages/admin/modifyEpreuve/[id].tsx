@@ -14,7 +14,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { Snackbar } from "@mui/material";
+import { toast } from "react-hot-toast";
 
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -39,14 +39,6 @@ const modifyOneEpreuve = () => {
     if (router.isReady && id) {
       getEpreuve({
         variables: { getEpreuveByIdId: +id },
-        onCompleted(data) {
-          setValue("title", data.getEpreuveById.title ?? "");
-          setValue("description", data.getEpreuveById.description ?? "");
-          setValue("easyToDo", data.getEpreuveById.easyToDo ?? "");
-          setValue("mediumToDo", data.getEpreuveById.mediumToDo ?? "");
-          setValue("hardToDo", data.getEpreuveById.hardToDo ?? "");
-          setValue("videoLink", data.getEpreuveById.videoLink ?? "");
-        },
         onError(err: any) {
           console.error("error", err);
         },
@@ -54,22 +46,13 @@ const modifyOneEpreuve = () => {
     }
   }, [router.isReady]);
 
-  // --- MODIFY ---
+  // --- MODIFY EPREUVE ---
   const {
     register,
     handleSubmit,
     formState: { errors },
-    setValue,
   } = useForm({
     resolver: yupResolver(modifyEpreuveSchema),
-    defaultValues: {
-      title: "",
-      description: "",
-      easyToDo: "",
-      mediumToDo: "",
-      hardToDo: "",
-      videoLink: "",
-    },
   });
 
   const [
@@ -85,11 +68,12 @@ const modifyOneEpreuve = () => {
         variables: { infos: dataForm, modifyEpreuveId: parseInt(id as string) },
         onCompleted(data) {
           if (data.modifyEpreuve.id) {
+            toast.success("GG, vous avez mis l'épreuve à jour 👌");
             router.push(`/epreuve/${data.modifyEpreuve.id}`);
           }
         },
         onError(error) {
-          console.error(error);
+          toast.error(error.message);
         },
       });
     }
@@ -113,33 +97,16 @@ const modifyOneEpreuve = () => {
     if (id) {
       deleteEpreuve({
         variables: { deleteEpreuveId: +id },
-        onCompleted() {
+        onCompleted(data) {
+          toast.success(data.deleteEpreuve.message);
           router.push(`/epreuve/allEpreuves`);
         },
         onError(error) {
-          console.error(error);
+          toast.error(error.message);
         },
       });
     }
   }
-
-  // --- SNACKBAR ---
-  const [openSnack, setOpenSnack] = useState(false);
-  const [snackComment, setSnackComment] = useState("");
-
-  const handleClickSnack = () => {
-    setOpenSnack(true);
-  };
-
-  const handleCloseSnack = (
-    event: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setOpenSnack(false);
-  };
 
   return (
     <main className="modifyOneEpreuve">
@@ -174,13 +141,11 @@ const modifyOneEpreuve = () => {
 
                       if (errorDelete) {
                         handleClickClose();
-                        setSnackComment(errorDelete?.message);
-                        handleClickSnack();
+                        toast.error(errorDelete?.message);
                       }
                     } else {
                       handleClickClose();
-                      setSnackComment("Le nom de l'épreuve ne correspond pas");
-                      handleClickSnack();
+                      toast.error("Le nom de l'épreuve ne correspond pas");
                     }
                   },
                 }}
@@ -210,90 +175,108 @@ const modifyOneEpreuve = () => {
                   <Button type="submit">Hop, ça dégage!</Button>
                 </DialogActions>
               </Dialog>
-
-              {/* --- */}
-
-              <Snackbar
-                open={openSnack}
-                autoHideDuration={3000}
-                onClose={handleCloseSnack}
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "center",
-                }}
-                message={snackComment}
-              />
             </div>
 
+            {/* --- */}
+
             <form onSubmit={handleSubmit(handleModifyEpreuve)}>
-              <div>
-                <label htmlFor="title">Le titre de l'épreuve</label>
-                <input
+              <div className="champ">
+                <TextField
+                  className="mui-input"
+                  fullWidth
+                  variant="outlined"
+                  label="Titre de l'épreuve"
+                  defaultValue={data.getEpreuveById.title}
+                  required
                   {...register("title")}
                   id="title"
                   name="title"
                   type="text"
-                  placeholder="Indiquez votre titre"
                 />
                 <p className="error">{errors?.title?.message}</p>
               </div>
-              <div>
-                <label htmlFor="description">La description de l'épreuve</label>
-                <textarea
+              <div className="champ">
+                <TextField
+                  className="mui-input"
+                  fullWidth
+                  variant="outlined"
+                  label="Description global"
+                  defaultValue={data.getEpreuveById.description}
+                  multiline
+                  rows={10}
                   {...register("description")}
                   id="description"
                   name="description"
-                  placeholder="La description de l'épreuve"
-                ></textarea>
+                  type="text"
+                />
                 <p className="error">{errors?.description?.message}</p>
               </div>
 
-              <div>
-                <label htmlFor="easyToDo">Que faire (version débutant)</label>
-                <textarea
+              <div className="champ">
+                <TextField
+                  className="mui-input"
+                  fullWidth
+                  variant="outlined"
+                  label="Que faire (version débutant)"
+                  defaultValue={data.getEpreuveById.easyToDo}
+                  multiline
+                  rows={6}
                   {...register("easyToDo")}
                   id="easyToDo"
                   name="easyToDo"
-                  placeholder="Que faire (version débutant)"
-                ></textarea>
+                  type="text"
+                />
                 <p className="error">{errors?.easyToDo?.message}</p>
               </div>
-              <div>
-                <label htmlFor="mediumToDo">
-                  Que faire (version intermédiaire)
-                </label>
-                <textarea
+              <div className="champ">
+                <TextField
+                  className="mui-input"
+                  fullWidth
+                  variant="outlined"
+                  label="Que faire (version medium)"
+                  defaultValue={data.getEpreuveById.mediumToDo}
+                  multiline
+                  rows={6}
                   {...register("mediumToDo")}
                   id="mediumToDo"
                   name="mediumToDo"
-                  placeholder="Que faire (version medium)"
-                ></textarea>
+                  type="text"
+                />
                 <p className="error">{errors?.mediumToDo?.message}</p>
               </div>
-              <div>
-                <label htmlFor="hardToDo">Que faire (version confirmé)</label>
-                <textarea
+              <div className="champ">
+                <TextField
+                  className="mui-input"
+                  fullWidth
+                  variant="outlined"
+                  label="Que faire (version hard)"
+                  defaultValue={data.getEpreuveById.hardToDo}
+                  multiline
+                  rows={6}
                   {...register("hardToDo")}
                   id="hardToDo"
                   name="hardToDo"
-                  placeholder="Que faire (version hard)"
-                ></textarea>
+                  type="text"
+                />
                 <p className="error">{errors?.hardToDo?.message}</p>
               </div>
 
-              <div>
-                <label htmlFor="videoLink">Le lien video</label>
-                <input
+              <div className="champ">
+                <TextField
+                  className="mui-input"
+                  fullWidth
+                  variant="outlined"
+                  label="Le lien video"
+                  defaultValue={data.getEpreuveById.videoLink}
                   {...register("videoLink")}
                   id="videoLink"
                   name="videoLink"
                   type="text"
-                  placeholder="Le lien video"
                 />
                 <p className="error">{errors?.videoLink?.message}</p>
               </div>
 
-              <button type="submit" disabled={loading}>
+              <button type="submit" disabled={loadingModify}>
                 Modifier l'épreuve
               </button>
 
