@@ -48,15 +48,15 @@
     box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
 
     .sun {
-      color: white;
+      color: var(--white);
     }
 
     .moon {
-      color: black;
+      color: var(--black);
     }
 
     .ball {
-      background-color: black;
+      background-color: var(--black);
       transform: translateX(-10px);
     }
   }
@@ -68,11 +68,15 @@
     box-shadow: 3px 3px 5px rgba(255, 255, 255, 0.1);
 
     .sun {
-      color: white;
+      color: var(--white);
+    }
+
+    .moon {
+      color: var(--black);
     }
 
     .ball {
-      background-color: white;
+      background-color: var(--white);
       transform: translateX(35px);
     }
   }

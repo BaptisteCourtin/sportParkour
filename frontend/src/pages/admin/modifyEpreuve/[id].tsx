@@ -21,12 +21,20 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { object, string } from "yup";
 
 let modifyEpreuveSchema = object({
-  title: string().required("Veuillez entrer un titre"),
-  description: string(),
-  easyToDo: string(),
-  mediumToDo: string(),
-  hardToDo: string(),
-  videoLink: string(),
+  title: string()
+    .max(50, "Pas besoin d'avoir un titre aussi long")
+    .required("Veuillez entrer un titre"),
+  description: string().max(
+    1000,
+    "Pas besoin d'avoir une description aussi long"
+  ),
+  easyToDo: string().max(250, "Pas besoin d'avoir une description aussi long"),
+  mediumToDo: string().max(
+    250,
+    "Pas besoin d'avoir une description aussi long"
+  ),
+  hardToDo: string().max(250, "Pas besoin d'avoir une description aussi long"),
+  videoLink: string().max(300, "max 300, carcatères normalement ça suffit"),
 });
 
 const modifyOneEpreuve = () => {
@@ -79,6 +87,20 @@ const modifyOneEpreuve = () => {
     }
   };
 
+  // --- DEAL WITH LENGTH DURING MODIF ---
+  const [values, setValues] = useState({
+    title: "",
+    description: "",
+    easyToDo: "",
+    mediumToDo: "",
+    hardToDo: "",
+    videoLink: "",
+  });
+
+  const handleChangeAThing = (name: string, value: any) => {
+    setValues({ ...values, [name]: value });
+  };
+
   // --- DELETE EPREUVE ---
   const [open, setOpen] = useState(false);
 
@@ -117,6 +139,168 @@ const modifyOneEpreuve = () => {
       ) : (
         data?.getEpreuveById && (
           <>
+            <h1>MODIFIER L'ÉPREUVE</h1>
+            <form onSubmit={handleSubmit(handleModifyEpreuve)}>
+              <div className="champ">
+                <TextField
+                  className="mui-input"
+                  fullWidth
+                  variant="outlined"
+                  //
+                  label="Titre de l'épreuve"
+                  defaultValue={data.getEpreuveById.title}
+                  required
+                  {...register("title")}
+                  //
+                  id="title"
+                  name="title"
+                  type="text"
+                  //
+                  inputProps={{ maxLength: 50 }}
+                  onChange={(e) => handleChangeAThing("title", e.target.value)}
+                />
+                <span>
+                  {values.title.length > 0 ? `${values.title.length}/50` : ""}
+                </span>
+                <p className="error">{errors?.title?.message}</p>
+              </div>
+              <div className="champ">
+                <TextField
+                  className="mui-input"
+                  fullWidth
+                  variant="outlined"
+                  label="Description global"
+                  defaultValue={data.getEpreuveById.description}
+                  multiline
+                  rows={10}
+                  {...register("description")}
+                  id="description"
+                  name="description"
+                  type="text"
+                  inputProps={{ maxLength: 1000 }}
+                  onChange={(e) =>
+                    handleChangeAThing("description", e.target.value)
+                  }
+                />
+                <span>
+                  {values.description.length > 0
+                    ? `${values.description.length}/1000`
+                    : ""}
+                </span>
+                <p className="error">{errors?.description?.message}</p>
+              </div>
+
+              <div className="champ">
+                <TextField
+                  className="mui-input"
+                  fullWidth
+                  variant="outlined"
+                  label="Que faire (version débutant)"
+                  defaultValue={data.getEpreuveById.easyToDo}
+                  multiline
+                  rows={6}
+                  {...register("easyToDo")}
+                  id="easyToDo"
+                  name="easyToDo"
+                  type="text"
+                  inputProps={{ maxLength: 250 }}
+                  onChange={(e) =>
+                    handleChangeAThing("easyToDo", e.target.value)
+                  }
+                />
+                <span>
+                  {values.easyToDo.length > 0
+                    ? `${values.easyToDo.length}/250`
+                    : ""}
+                </span>
+                <p className="error">{errors?.easyToDo?.message}</p>
+              </div>
+              <div className="champ">
+                <TextField
+                  className="mui-input"
+                  fullWidth
+                  variant="outlined"
+                  label="Que faire (version medium)"
+                  defaultValue={data.getEpreuveById.mediumToDo}
+                  multiline
+                  rows={6}
+                  {...register("mediumToDo")}
+                  id="mediumToDo"
+                  name="mediumToDo"
+                  type="text"
+                  inputProps={{ maxLength: 250 }}
+                  onChange={(e) =>
+                    handleChangeAThing("mediumToDo", e.target.value)
+                  }
+                />
+                <span>
+                  {values.mediumToDo.length > 0
+                    ? `${values.mediumToDo.length}/250`
+                    : ""}
+                </span>
+                <p className="error">{errors?.mediumToDo?.message}</p>
+              </div>
+              <div className="champ">
+                <TextField
+                  className="mui-input"
+                  fullWidth
+                  variant="outlined"
+                  label="Que faire (version hard)"
+                  defaultValue={data.getEpreuveById.hardToDo}
+                  multiline
+                  rows={6}
+                  {...register("hardToDo")}
+                  id="hardToDo"
+                  name="hardToDo"
+                  type="text"
+                  inputProps={{ maxLength: 250 }}
+                  onChange={(e) =>
+                    handleChangeAThing("hardToDo", e.target.value)
+                  }
+                />
+                <span>
+                  {values.hardToDo.length > 0
+                    ? `${values.hardToDo.length}/250`
+                    : ""}
+                </span>
+                <p className="error">{errors?.hardToDo?.message}</p>
+              </div>
+
+              <div className="champ">
+                <TextField
+                  className="mui-input"
+                  fullWidth
+                  variant="outlined"
+                  label="Le lien video"
+                  defaultValue={data.getEpreuveById.videoLink}
+                  {...register("videoLink")}
+                  id="videoLink"
+                  name="videoLink"
+                  type="text"
+                  inputProps={{ maxLength: 300 }}
+                  onChange={(e) =>
+                    handleChangeAThing("videoLink", e.target.value)
+                  }
+                />
+                <span>
+                  {values.videoLink.length > 0
+                    ? `${values.videoLink.length}/300`
+                    : ""}
+                </span>
+                <p className="error">{errors?.videoLink?.message}</p>
+              </div>
+
+              <button type="submit" disabled={loadingModify}>
+                Enregistrer les modifications
+              </button>
+
+              <div>
+                <span>{errorModify?.message}</span>
+              </div>
+            </form>
+
+            {/* --- delete --- */}
+
             <div className="epreuveToDelete">
               <Button variant="outlined" onClick={handleClickOpen}>
                 Delete epreuve
@@ -176,114 +360,6 @@ const modifyOneEpreuve = () => {
                 </DialogActions>
               </Dialog>
             </div>
-
-            {/* --- */}
-
-            <form onSubmit={handleSubmit(handleModifyEpreuve)}>
-              <div className="champ">
-                <TextField
-                  className="mui-input"
-                  fullWidth
-                  variant="outlined"
-                  label="Titre de l'épreuve"
-                  defaultValue={data.getEpreuveById.title}
-                  required
-                  {...register("title")}
-                  id="title"
-                  name="title"
-                  type="text"
-                />
-                <p className="error">{errors?.title?.message}</p>
-              </div>
-              <div className="champ">
-                <TextField
-                  className="mui-input"
-                  fullWidth
-                  variant="outlined"
-                  label="Description global"
-                  defaultValue={data.getEpreuveById.description}
-                  multiline
-                  rows={10}
-                  {...register("description")}
-                  id="description"
-                  name="description"
-                  type="text"
-                />
-                <p className="error">{errors?.description?.message}</p>
-              </div>
-
-              <div className="champ">
-                <TextField
-                  className="mui-input"
-                  fullWidth
-                  variant="outlined"
-                  label="Que faire (version débutant)"
-                  defaultValue={data.getEpreuveById.easyToDo}
-                  multiline
-                  rows={6}
-                  {...register("easyToDo")}
-                  id="easyToDo"
-                  name="easyToDo"
-                  type="text"
-                />
-                <p className="error">{errors?.easyToDo?.message}</p>
-              </div>
-              <div className="champ">
-                <TextField
-                  className="mui-input"
-                  fullWidth
-                  variant="outlined"
-                  label="Que faire (version medium)"
-                  defaultValue={data.getEpreuveById.mediumToDo}
-                  multiline
-                  rows={6}
-                  {...register("mediumToDo")}
-                  id="mediumToDo"
-                  name="mediumToDo"
-                  type="text"
-                />
-                <p className="error">{errors?.mediumToDo?.message}</p>
-              </div>
-              <div className="champ">
-                <TextField
-                  className="mui-input"
-                  fullWidth
-                  variant="outlined"
-                  label="Que faire (version hard)"
-                  defaultValue={data.getEpreuveById.hardToDo}
-                  multiline
-                  rows={6}
-                  {...register("hardToDo")}
-                  id="hardToDo"
-                  name="hardToDo"
-                  type="text"
-                />
-                <p className="error">{errors?.hardToDo?.message}</p>
-              </div>
-
-              <div className="champ">
-                <TextField
-                  className="mui-input"
-                  fullWidth
-                  variant="outlined"
-                  label="Le lien video"
-                  defaultValue={data.getEpreuveById.videoLink}
-                  {...register("videoLink")}
-                  id="videoLink"
-                  name="videoLink"
-                  type="text"
-                />
-                <p className="error">{errors?.videoLink?.message}</p>
-              </div>
-
-              <button type="submit" disabled={loadingModify}>
-                Modifier l'épreuve
-              </button>
-
-              <div>
-                <span>{errorModify?.message}</span>
-              </div>
-            </form>
           </>
         )
       )}

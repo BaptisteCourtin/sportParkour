@@ -1,13 +1,25 @@
 import { useRouter } from "next/router";
-import { GetParkourByIdQuery, useGetAllParkourQuery } from "@/types/graphql";
+import {
+  GetParkourByIdQuery,
+  useGetAllParkourQuery,
+  useIsAdminQuery,
+} from "@/types/graphql";
 
 import CardParkour from "@/components/parkour/cardParkour";
+import TextField from "@mui/material/TextField";
+import Link from "next/link";
 
 // appel à 20 parkours (les + proches de base)
 // les 20 + nouveaux
 // favoris (???)
 export default function Home() {
   const router = useRouter();
+
+  const {
+    data: dataIsAdmin,
+    loading: loadingIsAdmin,
+    error: errorIsAdmin,
+  } = useIsAdminQuery();
 
   const { data, loading, error } = useGetAllParkourQuery({
     fetchPolicy: "no-cache",
@@ -39,28 +51,45 @@ export default function Home() {
 
   return (
     <main className="pageIndex">
-      <h1>Bonjour</h1>
+      {error ? (
+        <h2>une erreur... (déso)</h2>
+      ) : loading ? (
+        <h2>Chargement en cours</h2>
+      ) : (
+        data?.getAllParkour && (
+          <>
+            <h1>Bonjour</h1>
 
-      <form onSubmit={handleSearchById}>
-        <div>
-          <label htmlFor="idParkour">numéro du parkour :</label>
-          <input
-            id="idParkour"
-            name="idParkour"
-            type="number"
-            placeholder="numéro du parkour"
-          />
-        </div>
-        <button type="submit">Chercher</button>
-      </form>
+            {dataIsAdmin ? (
+              <Link href="/admin/createParkour">créer un parkour</Link>
+            ) : null}
 
-      <ul className="cardsParkoursUl">
-        {data?.getAllParkour.map(
-          (parkour: GetParkourByIdQuery["getParkourById"]) => (
-            <CardParkour parkour={parkour} key={parkour.id} />
-          )
-        )}
-      </ul>
+            <form className="chercheIdParkour" onSubmit={handleSearchById}>
+              <div>
+                <TextField
+                  className="mui-input"
+                  fullWidth
+                  variant="outlined"
+                  label="numéro du parkour"
+                  required
+                  id="idParkour"
+                  name="idParkour"
+                  type="number"
+                />
+              </div>
+              <button type="submit">Chercher par numéro</button>
+            </form>
+
+            <ul className="cardsParkoursUl">
+              {data?.getAllParkour.map(
+                (parkour: GetParkourByIdQuery["getParkourById"]) => (
+                  <CardParkour parkour={parkour} key={parkour.id} />
+                )
+              )}
+            </ul>
+          </>
+        )
+      )}
     </main>
   );
 }

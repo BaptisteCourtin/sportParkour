@@ -5,7 +5,6 @@ export const customAuthChecker: AuthChecker<MyContext> = (
   { context },
   roles
 ) => {
-  console.log(context.user);
   // Si aucun rôle n'est spécifié, on autorise l'accès
   if (roles.length === 0) return true;
 

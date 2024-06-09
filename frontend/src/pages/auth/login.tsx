@@ -16,9 +16,12 @@ import { FaArrowRight } from "react-icons/fa6";
 
 let loginSchema = object({
   email: string()
-    .email("votre email doit être valide")
+    .email("Votre email doit être valide")
     .required("Veuillez entrer votre email"),
-  password: string().required("Veuillez entrer votre mot de passe"),
+  password: string()
+    // .min(12, "Votre mot de passe fait au moins 12 caractères") // pour que je continue à utiliser 0000
+    .max(100, "Votre mot de passe fait moins de 100 caractères")
+    .required("Veuillez entrer votre mot de passe"),
 });
 
 // mettre le message de success en snackbar
@@ -80,6 +83,7 @@ const login = () => {
             id="email"
             type="text"
             name="email"
+            inputProps={{ maxLength: 255 }}
           />
           <p className="error">{errors?.email?.message}</p>
         </div>
@@ -95,6 +99,7 @@ const login = () => {
             id="password"
             type="password"
             name="password"
+            inputProps={{ maxLength: 100 }}
           />
           <p className="error">{errors?.password?.message}</p>
         </div>

@@ -5,4 +5,15 @@
   justify-content: center;
 
   width: 100%;
+  margin-top: 50px;
+
+  form.modifProfil {
+    max-width: 700px;
+    background-color: var(--middle);
+
+    margin-top: var(--espace);
+    padding: var(--espace);
+    border-radius: var(--radius);
+    border-top: var(--line) solid var(--blue);
+  }
 }

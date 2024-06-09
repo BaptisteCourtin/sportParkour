@@ -16,12 +16,23 @@ export const GET_FAV_BY_TOKEN_AND_ID_PARKOUR = gql`
 export const GET_FAV_BY_TOKEN = gql`
   query GetAllUserFavByToken {
     getAllUserFavByToken {
-      parkour_id
-      note
-      favoris
       parkours {
         id
         title
+        time
+        length
+        difficulty
+        city
+        note
+        nbVote
+        images {
+          id
+          lien
+        }
+        epreuves {
+          id
+          title
+        }
       }
     }
   }

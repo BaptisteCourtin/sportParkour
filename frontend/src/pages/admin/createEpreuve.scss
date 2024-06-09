@@ -5,4 +5,31 @@
   justify-content: center;
 
   width: 100%;
+  margin-top: 50px;
+
+  form {
+    width: calc(100% - 40px);
+    max-width: 700px;
+    background-color: var(--middle);
+
+    margin: var(--espace) 0;
+    padding: var(--espace);
+    border-radius: var(--radius);
+    border-top: var(--line) solid var(--blue);
+  }
+
+  .carrouselEpreuve {
+    width: 360px;
+    height: 340px;
+
+    .imageContainer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      img {
+        height: 300px;
+      }
+    }
+  }
 }

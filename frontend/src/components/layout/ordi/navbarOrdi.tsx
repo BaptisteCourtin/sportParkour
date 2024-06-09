@@ -1,28 +1,25 @@
 import React from "react";
 import Link from "next/link";
 
-import DarkLight from "../DarkLight";
+import DarkLight from "@/pages/user/options/DarkLight";
 
 import { FaUser } from "react-icons/fa6";
-import { FaHouseChimney } from "react-icons/fa6";
+import { FaHouse } from "react-icons/fa6";
 import { FaMapLocationDot } from "react-icons/fa6";
-import { FaMedal } from "react-icons/fa6";
+import { FaFlagCheckered } from "react-icons/fa6";
 import { useRouter } from "next/router";
 
 const navbarOrdi = ({ isDarkTheme, setIsDarkTheme }: any) => {
-  // link page user + logo user
-  // link page all epreuves
-
   const router = useRouter();
 
   return (
-    <header className="navbarOrdi">
+    <header className="navbarOrdi elementsNavigation">
       <nav className="navbar">
         <Link href="/">
           {isDarkTheme ? (
-            <img src="/Full-Black.svg" alt="logo" className="logo" />
-          ) : (
             <img src="/Full-White.svg" alt="logo" className="logo" />
+          ) : (
+            <img src="/Full-Black.svg" alt="logo" className="logo" />
           )}
         </Link>
 
@@ -34,7 +31,7 @@ const navbarOrdi = ({ isDarkTheme, setIsDarkTheme }: any) => {
 
           <Link href="/" className={router.pathname == "/" ? "active" : ""}>
             <span className="icon">
-              <FaHouseChimney />
+              <FaHouse />
             </span>
           </Link>
 
@@ -54,7 +51,7 @@ const navbarOrdi = ({ isDarkTheme, setIsDarkTheme }: any) => {
             }
           >
             <span className="icon">
-              <FaMedal />
+              <FaFlagCheckered />
             </span>
           </Link>
 

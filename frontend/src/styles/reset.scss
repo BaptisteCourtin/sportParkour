@@ -46,12 +46,12 @@ form {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  gap: var(--gapForm);
+  gap: var(--gap);
 
   .containerMiniChamp {
     display: flex;
     align-items: center;
-    gap: var(--gapForm);
+    gap: var(--gap);
   }
 
   .champ {
@@ -90,6 +90,7 @@ form {
   hr {
     width: 50%;
     align-self: center;
+    margin: 10px 0;
   }
 }
 
@@ -149,8 +150,12 @@ h4 {
   background-color: var(--back);
   color: var(--text2);
 
+  .elementsNavigation {
+    z-index: 10;
+  }
+
   .layoutChild {
-    padding: var(--espace);
+    padding: var(--espace); // permet de ne pas coller le bord
 
     width: 100%;
     max-width: 1360px;

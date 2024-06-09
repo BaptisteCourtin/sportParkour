@@ -1,9 +1,9 @@
 import { registerEnumType } from "type-graphql";
 
 export enum Difficulty {
-  EASY = "facile",
-  MEDIUM = "moyen",
-  HARD = "difficile",
+  facile = "EASY",
+  moyen = "MEDIUM",
+  difficile = "HARD",
 }
 
 registerEnumType(Difficulty, {

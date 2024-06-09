@@ -20,7 +20,10 @@
 
     .return {
       margin-left: calc(2 * var(--espace));
-      font-size: var(--fs-h2);
+      background-color: var(--blue);
+      padding: 5px;
+      font-size: var(--fs-h1);
+      border-radius: var(--radius);
     }
 
     .gear {

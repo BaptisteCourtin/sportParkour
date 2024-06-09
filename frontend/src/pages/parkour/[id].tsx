@@ -3,16 +3,28 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import {
   GetEpreuveByIdQuery,
-  useCreateFavJoinUserParkourMutation,
+  useFavJoinUserParkourMutation,
   useGetParkourByIdLazyQuery,
   useGetUserFavByTokenAndIdParkourLazyQuery,
   useIsAdminQuery,
   useIsClientQuery,
+  useNoteJoinUserParkourMutation,
 } from "@/types/graphql";
+
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import { toast } from "react-hot-toast";
 
 import Carousel from "react-material-ui-carousel";
 import { FaAngleRight } from "react-icons/fa6";
 import { FaAngleLeft } from "react-icons/fa6";
+import Rating from "@mui/material/Rating";
+import favoris from "../user/favoris";
 
 // faire une snackbar avec le retour du like
 const OneParkour = () => {
@@ -31,9 +43,11 @@ const OneParkour = () => {
     error: errorIsClient,
   } = useIsClientQuery();
 
-  // ---
+  // --- GET INFOS PARKOUR ---
 
   const [getParkour, { data, loading, error }] = useGetParkourByIdLazyQuery();
+
+  // --- GET INFOS JOIN-USER-PARKOUR ---
 
   const [
     getIsParkourFav,
@@ -62,25 +76,25 @@ const OneParkour = () => {
     }
   }, [router.isReady]);
 
-  // --- LIKE ---
+  // --- MODIF LIKE ---
   const [isLiked, setIsLiked] = useState(false);
 
   const [
     createFav,
     { data: dataCreateFav, loading: loadingCreateFav, error: errorCreateFav },
-  ] = useCreateFavJoinUserParkourMutation();
+  ] = useFavJoinUserParkourMutation();
 
   const handleLike = (isFav: boolean): void => {
     if (id) {
       const infos = {
         parkour_id: parseInt(id as string),
-        note: dataIsParkourFav?.getUserFavByTokenAndIdParkour.note,
         favoris: isFav,
       };
 
       createFav({
         variables: { infos: infos },
-        onCompleted() {
+        onCompleted(data) {
+          toast.success(data.favJoinUserParkour.message);
           setIsLiked(isFav);
         },
         onError(error) {
@@ -89,6 +103,45 @@ const OneParkour = () => {
       });
     }
   };
+
+  // --- MODIF NOTE ---
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClickClose = () => {
+    setOpen(false);
+  };
+
+  const [
+    createNote,
+    { data: dataNote, loading: loadingNote, error: errorNote },
+  ] = useNoteJoinUserParkourMutation();
+
+  function handleNote(noteThisParkour: number): void {
+    if (id) {
+      createNote({
+        variables: {
+          infos: {
+            parkour_id: +id,
+            note: +noteThisParkour,
+          },
+        },
+        onCompleted(data) {
+          toast.success(data.noteJoinUserParkour.message);
+          handleClickClose();
+        },
+        onError(error) {
+          toast.error(error.message);
+        },
+      });
+    }
+  }
+
+  // --- DEAL WITH LENGTH DURING COMMENT ---
+  const [comment, setComment] = useState("");
 
   return (
     <main className="oneParkour">
@@ -104,6 +157,80 @@ const OneParkour = () => {
                 Modifier ce parkour
               </Link>
             ) : null}
+
+            {dataIsClient ? (
+              <div className="supp">
+                <Button variant="outlined" onClick={handleClickOpen}>
+                  Mettre une note à ce parkour
+                </Button>
+                <Dialog
+                  open={open}
+                  onClose={handleClickClose}
+                  PaperProps={{
+                    component: "form",
+                    onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
+                      event.preventDefault();
+
+                      const formData = new FormData(event.currentTarget);
+                      const formJson = Object.fromEntries(
+                        (formData as any).entries()
+                      );
+                      const noteThisParkour = formJson.noteThisParkour;
+                      const commentThisParkour = formJson.commentThisParkour;
+
+                      // if une note => handlePutNote
+                      if (noteThisParkour) {
+                        handleNote(noteThisParkour);
+
+                        if (errorNote) {
+                          handleClickClose();
+                          toast.error(errorNote.message);
+                        }
+                      } else {
+                        toast.error("Il faut mettre une note");
+                      }
+                    },
+                  }}
+                >
+                  <DialogTitle>Note</DialogTitle>
+                  <DialogContent>
+                    <DialogContentText>
+                      Mettez une note à ce parkour
+                    </DialogContentText>
+                    <Rating
+                      id="noteThisParkour"
+                      name="noteThisParkour"
+                      precision={0.5}
+                      defaultValue={
+                        dataIsParkourFav?.getUserFavByTokenAndIdParkour
+                          .note as number
+                      }
+                    />
+                    <TextField
+                      fullWidth
+                      variant="standard"
+                      margin="dense"
+                      label="Votre commentaire"
+                      multiline
+                      rows={10}
+                      id="commentThisParkour"
+                      name="commentThisParkour"
+                      type="text"
+                      inputProps={{ maxLength: 250 }}
+                      onChange={(e) => setComment(e.target.value)}
+                    />
+                    <span>
+                      {comment.length > 0 ? `${comment.length}/250` : ""}
+                    </span>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={handleClickClose}>En fait, non</Button>
+                    <Button type="submit">Hop, c'est mis!</Button>
+                  </DialogActions>
+                </Dialog>
+              </div>
+            ) : null}
+
             <br />
             <br />
             {dataIsClient && isLiked ? (

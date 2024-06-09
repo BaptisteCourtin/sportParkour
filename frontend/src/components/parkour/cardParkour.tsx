@@ -1,17 +1,24 @@
 import { GetParkourByIdQuery } from "@/types/graphql";
+import Rating from "@mui/material/Rating";
 import Link from "next/link";
 import React from "react";
+
+import { FaLocationDot } from "react-icons/fa6";
+import { FaPersonRunning } from "react-icons/fa6";
+import { FaStopwatch } from "react-icons/fa6";
+import { FaArrowUpRightDots } from "react-icons/fa6";
+import { FaCircleArrowRight } from "react-icons/fa6";
 
 const cardParkour = ({
   parkour,
 }: {
   parkour: GetParkourByIdQuery["getParkourById"];
 }) => {
-  // mettre un icon pour dire de cliquer sur la ville
-
   return (
     <Link href={`/parkour/${parkour.id}`} className="cardParkour">
-      <h3>{parkour.title}</h3>
+      <h3>
+        <FaLocationDot /> {parkour.title}
+      </h3>
 
       {parkour.images && parkour.images[0] && parkour.images[0].lien ? (
         <img src={parkour.images[0].lien} alt="" />
@@ -23,16 +30,39 @@ const cardParkour = ({
       )}
 
       <div className="infos">
-        <div className="difficulty">
-          <p>{parkour.time} min</p>
-          <p>{parkour.length} km</p>
-          <p>{parkour.difficulty}</p>
-        </div>
-
-        <p>{parkour.city}</p>
-
-        <p>{parkour.epreuves?.length} épreuves</p>
+        <p>
+          <FaStopwatch /> {parkour.time} min
+        </p>
+        <p>
+          <FaPersonRunning /> {parkour.length} km
+        </p>
+        <p>
+          <FaArrowUpRightDots /> {parkour.difficulty}
+        </p>
       </div>
+
+      <hr />
+
+      <p>{parkour.city}</p>
+
+      <div className="bottomCardParkour">
+        <p>{parkour.epreuves?.length} épreuves</p>
+        {parkour.note ? (
+          <div className="rating">
+            <Rating
+              defaultValue={parseFloat(parkour.note.toFixed(1))}
+              precision={0.1}
+              readOnly
+            />
+            <span className="nbVote">{parkour.nbVote} votes</span>
+          </div>
+        ) : (
+          <p>Nouveau</p>
+        )}
+        <p></p>
+      </div>
+
+      <FaCircleArrowRight className="fleche" />
     </Link>
   );
 };

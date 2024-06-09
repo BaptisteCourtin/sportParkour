@@ -56,7 +56,7 @@ class UserEntity {
   email: string;
 
   @Field({ nullable: true })
-  @Column({ type: "varchar", length: 200, nullable: true })
+  @Column({ type: "varchar", length: 50, nullable: true })
   city: string;
 
   @Field({ nullable: true })

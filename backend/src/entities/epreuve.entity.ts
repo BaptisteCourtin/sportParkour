@@ -22,7 +22,7 @@ class EpreuveEntity {
   title: string;
 
   @Field({ nullable: true })
-  @Column({ type: "varchar", length: 750, nullable: true })
+  @Column({ type: "varchar", length: 1000, nullable: true })
   description: string;
 
   @Field({ nullable: true })
@@ -38,7 +38,7 @@ class EpreuveEntity {
   hardToDo: string;
 
   @Field({ nullable: true })
-  @Column({ type: "varchar", length: 250, nullable: true })
+  @Column({ type: "varchar", length: 300, nullable: true })
   videoLink: string;
 
   @Field(() => [ImageEpreuveEntity], { nullable: true })

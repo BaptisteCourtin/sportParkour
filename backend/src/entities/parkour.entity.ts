@@ -59,7 +59,7 @@ class ParkourEntity {
   start: string;
 
   @Field({ nullable: true })
-  @Column({ nullable: true })
+  @Column("decimal", { precision: 3, scale: 2, unsigned: true, nullable: true })
   note: number;
 
   @Field({ nullable: true })

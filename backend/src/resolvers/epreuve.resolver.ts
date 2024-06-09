@@ -6,8 +6,6 @@ import EpreuveEntity, {
 import EpreuveService from "../services/epreuve.service";
 import { MessageEntity } from "../entities/message.entity";
 
-import { MyContext } from "..";
-
 @Resolver()
 export default class EpreuveResolver {
   @Query(() => EpreuveEntity)
@@ -26,7 +24,7 @@ export default class EpreuveResolver {
 
   // utilise le get by ids mais sans parametre => all
   @Query(() => [EpreuveEntity])
-  async getListEpreuve(@Ctx() ctx: MyContext) {
+  async getListEpreuve() {
     const result: EpreuveEntity[] = await new EpreuveService().getListByIds();
     return result;
   }

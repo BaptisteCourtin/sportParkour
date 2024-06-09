@@ -21,8 +21,8 @@ export class JoinUserParkourEntity {
   // scale = the number of digits to the right of the decimal point
   @Field({ nullable: true })
   @Column("decimal", { precision: 3, scale: 2, unsigned: true, nullable: true })
-  @Min(0, { message: "La valeur minimale est 0." })
-  @Max(5, { message: "La valeur maximale est 5." })
+  @Min(0, { message: "La valeur minimale est 0" })
+  @Max(5, { message: "La valeur maximale est 5" })
   note: number;
 
   @Field()
@@ -45,19 +45,25 @@ export class JoinUserParkourCreateEntity {
   @Field()
   parkour_id: number;
   @Field({ nullable: true })
+  favoris: boolean;
+  @Field({ nullable: true })
   note: number;
+}
+
+@InputType()
+export class JoinUserParkourFavEntity {
   @Field()
+  parkour_id: number;
+  @Field({ nullable: true })
   favoris: boolean;
 }
 
 @InputType()
-export class JoinUserParkourUpdateEntity {
+export class JoinUserParkourNoteEntity {
   @Field()
   parkour_id: number;
   @Field({ nullable: true })
   note: number;
-  @Field()
-  favoris: boolean;
 }
 
 export default JoinUserParkourEntity;

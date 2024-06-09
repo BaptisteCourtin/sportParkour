@@ -12,7 +12,7 @@ import { FaLinkedin } from "react-icons/fa6";
 
 const footer = () => {
   return (
-    <footer>
+    <footer className="elementsNavigation">
       <div className="wrap">
         <nav>
           <section>

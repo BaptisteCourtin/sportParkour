@@ -13,11 +13,10 @@ export default class UserResolver {
   @Authorized("ADMIN", "CLIENT")
   @Query(() => UserEntity)
   async getUserByToken(@Ctx() ctx: MyContext) {
-    let token = ctx.req.cookies["tokenParkour"];
+    let user: UserEntity | null = ctx.user;
     let result: UserEntity | null = null;
 
-    const user = await new AuthService().getUserFromToken(token);
-    if (user.email) {
+    if (user?.email) {
       // pour la liaison parkour
       result = await new UserService().getByEmail(user.email);
     }
@@ -48,13 +47,13 @@ export default class UserResolver {
     @Arg("infos") infos: UserUpdateEntity,
     @Ctx() ctx: MyContext
   ) {
-    let token = ctx.req.cookies["tokenParkour"];
+    let user: UserEntity | null = ctx.user;
     let result: UserEntity | null = null;
 
-    const user = await new AuthService().getUserFromToken(token);
-    if (user.email) {
+    if (user?.email) {
       result = await new UserService().modify(user.id, infos);
     }
+
     return result;
   }
 

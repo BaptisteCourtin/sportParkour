@@ -20,6 +20,8 @@ pour ModifyParkour =>
 on ne peux pas supprimer une epreuve si elle est relier à un parkour
 on peux supprimer un parkour si y'a une relation avec epreuve, ça supprime aussi les relations
 
+pas de tri par NOUVEAU, des annonces en haut de page ?
+
 ------------------------------------------------------------------------------------------------------
 
 https://api-adresse.data.gouv.fr/search/?q=caen&postcode=14000&type=municipality
@@ -44,16 +46,16 @@ options       |              |
 
 dernier diagramme
 
-finir modify/create epreuve / parkour
+finir modify/create epreuve/parkour
 create image associées via service d'image
-
-modifier infos profil
 
 mettre une note 
 
 reset mot de passe
 
 ajouter un bouton modifier mon mdp dans profil => ça fait comme oublie mdp
+
+gérer image de couverture
 
 ------------------------------------------------------------------------------------------------------
 
@@ -65,4 +67,5 @@ ajouter commentaire à la note + date de création OU de mise à jour
 - reset mdp
 - déploiement
 
-essayer de mettre le snackbar en global
+- navbar phone sans link valable
+- dark light dans un context

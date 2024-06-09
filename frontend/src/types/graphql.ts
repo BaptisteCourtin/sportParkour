@@ -19,9 +19,9 @@ export type Scalars = {
 
 /** Difficulty enum */
 export enum Difficulty {
-  Easy = 'EASY',
-  Hard = 'HARD',
-  Medium = 'MEDIUM'
+  Difficile = 'difficile',
+  Facile = 'facile',
+  Moyen = 'moyen'
 }
 
 export type EpreuveCreateEntity = {
@@ -69,12 +69,6 @@ export type ImageParkourEntity = {
   lien?: Maybe<Scalars['String']['output']>;
 };
 
-export type JoinUserParkourCreateEntity = {
-  favoris: Scalars['Boolean']['input'];
-  note?: InputMaybe<Scalars['Float']['input']>;
-  parkour_id: Scalars['Float']['input'];
-};
-
 export type JoinUserParkourEntity = {
   __typename?: 'JoinUserParkourEntity';
   favoris: Scalars['Boolean']['output'];
@@ -83,6 +77,16 @@ export type JoinUserParkourEntity = {
   parkours: ParkourEntity;
   user_id: Scalars['ID']['output'];
   users: UserEntity;
+};
+
+export type JoinUserParkourFavEntity = {
+  favoris?: InputMaybe<Scalars['Boolean']['input']>;
+  parkour_id: Scalars['Float']['input'];
+};
+
+export type JoinUserParkourNoteEntity = {
+  note?: InputMaybe<Scalars['Float']['input']>;
+  parkour_id: Scalars['Float']['input'];
 };
 
 export type MessageEntity = {
@@ -94,31 +98,21 @@ export type MessageEntity = {
 export type Mutation = {
   __typename?: 'Mutation';
   createEpreuve: EpreuveEntity;
-  createFavJoinUserParkour: MessageEntity;
-  createNoteJoinUserParkour: MessageEntity;
   createParkour: ParkourEntity;
   deleteEpreuve: MessageEntity;
   deleteParkour: MessageEntity;
   deleteUser: MessageEntity;
+  favJoinUserParkour: MessageEntity;
   inscription: MessageEntity;
   modifyEpreuve: EpreuveEntity;
   modifyParkour: ParkourEntity;
   modifyUser: UserEntity;
+  noteJoinUserParkour: MessageEntity;
 };
 
 
 export type MutationCreateEpreuveArgs = {
   infos: EpreuveCreateEntity;
-};
-
-
-export type MutationCreateFavJoinUserParkourArgs = {
-  infos: JoinUserParkourCreateEntity;
-};
-
-
-export type MutationCreateNoteJoinUserParkourArgs = {
-  infos: JoinUserParkourCreateEntity;
 };
 
 
@@ -142,6 +136,11 @@ export type MutationDeleteUserArgs = {
 };
 
 
+export type MutationFavJoinUserParkourArgs = {
+  infos: JoinUserParkourFavEntity;
+};
+
+
 export type MutationInscriptionArgs = {
   infos: UserInputRegisterEntity;
 };
@@ -161,6 +160,11 @@ export type MutationModifyParkourArgs = {
 
 export type MutationModifyUserArgs = {
   infos: UserUpdateEntity;
+};
+
+
+export type MutationNoteJoinUserParkourArgs = {
+  infos: JoinUserParkourNoteEntity;
 };
 
 export type ParkourCreateEntity = {
@@ -321,19 +325,19 @@ export type DeleteEpreuveMutationVariables = Exact<{
 
 export type DeleteEpreuveMutation = { __typename?: 'Mutation', deleteEpreuve: { __typename?: 'MessageEntity', message: string, success: boolean } };
 
-export type CreateFavJoinUserParkourMutationVariables = Exact<{
-  infos: JoinUserParkourCreateEntity;
+export type FavJoinUserParkourMutationVariables = Exact<{
+  infos: JoinUserParkourFavEntity;
 }>;
 
 
-export type CreateFavJoinUserParkourMutation = { __typename?: 'Mutation', createFavJoinUserParkour: { __typename?: 'MessageEntity', message: string, success: boolean } };
+export type FavJoinUserParkourMutation = { __typename?: 'Mutation', favJoinUserParkour: { __typename?: 'MessageEntity', message: string, success: boolean } };
 
-export type CreateNoteJoinUserParkourMutationVariables = Exact<{
-  infos: JoinUserParkourCreateEntity;
+export type NoteJoinUserParkourMutationVariables = Exact<{
+  infos: JoinUserParkourNoteEntity;
 }>;
 
 
-export type CreateNoteJoinUserParkourMutation = { __typename?: 'Mutation', createNoteJoinUserParkour: { __typename?: 'MessageEntity', message: string, success: boolean } };
+export type NoteJoinUserParkourMutation = { __typename?: 'Mutation', noteJoinUserParkour: { __typename?: 'MessageEntity', message: string, success: boolean } };
 
 export type CreateParkourMutationVariables = Exact<{
   infos: ParkourCreateEntity;
@@ -412,7 +416,7 @@ export type GetUserFavByTokenAndIdParkourQuery = { __typename?: 'Query', getUser
 export type GetAllUserFavByTokenQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllUserFavByTokenQuery = { __typename?: 'Query', getAllUserFavByToken: Array<{ __typename?: 'JoinUserParkourEntity', parkour_id: string, note?: number | null, favoris: boolean, parkours: { __typename?: 'ParkourEntity', id: string, title: string } }> };
+export type GetAllUserFavByTokenQuery = { __typename?: 'Query', getAllUserFavByToken: Array<{ __typename?: 'JoinUserParkourEntity', parkours: { __typename?: 'ParkourEntity', id: string, title: string, time?: number | null, length?: number | null, difficulty?: Difficulty | null, city?: string | null, note?: number | null, nbVote?: number | null, images?: Array<{ __typename?: 'ImageParkourEntity', id: string, lien?: string | null }> | null, epreuves?: Array<{ __typename?: 'EpreuveEntity', id: string, title: string }> | null } }> };
 
 export type GetParkourByIdQueryVariables = Exact<{
   getParkourByIdId: Scalars['Float']['input'];
@@ -604,74 +608,74 @@ export function useDeleteEpreuveMutation(baseOptions?: Apollo.MutationHookOption
 export type DeleteEpreuveMutationHookResult = ReturnType<typeof useDeleteEpreuveMutation>;
 export type DeleteEpreuveMutationResult = Apollo.MutationResult<DeleteEpreuveMutation>;
 export type DeleteEpreuveMutationOptions = Apollo.BaseMutationOptions<DeleteEpreuveMutation, DeleteEpreuveMutationVariables>;
-export const CreateFavJoinUserParkourDocument = gql`
-    mutation CreateFavJoinUserParkour($infos: JoinUserParkourCreateEntity!) {
-  createFavJoinUserParkour(infos: $infos) {
+export const FavJoinUserParkourDocument = gql`
+    mutation FavJoinUserParkour($infos: JoinUserParkourFavEntity!) {
+  favJoinUserParkour(infos: $infos) {
     message
     success
   }
 }
     `;
-export type CreateFavJoinUserParkourMutationFn = Apollo.MutationFunction<CreateFavJoinUserParkourMutation, CreateFavJoinUserParkourMutationVariables>;
+export type FavJoinUserParkourMutationFn = Apollo.MutationFunction<FavJoinUserParkourMutation, FavJoinUserParkourMutationVariables>;
 
 /**
- * __useCreateFavJoinUserParkourMutation__
+ * __useFavJoinUserParkourMutation__
  *
- * To run a mutation, you first call `useCreateFavJoinUserParkourMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateFavJoinUserParkourMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useFavJoinUserParkourMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useFavJoinUserParkourMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [createFavJoinUserParkourMutation, { data, loading, error }] = useCreateFavJoinUserParkourMutation({
+ * const [favJoinUserParkourMutation, { data, loading, error }] = useFavJoinUserParkourMutation({
  *   variables: {
  *      infos: // value for 'infos'
  *   },
  * });
  */
-export function useCreateFavJoinUserParkourMutation(baseOptions?: Apollo.MutationHookOptions<CreateFavJoinUserParkourMutation, CreateFavJoinUserParkourMutationVariables>) {
+export function useFavJoinUserParkourMutation(baseOptions?: Apollo.MutationHookOptions<FavJoinUserParkourMutation, FavJoinUserParkourMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateFavJoinUserParkourMutation, CreateFavJoinUserParkourMutationVariables>(CreateFavJoinUserParkourDocument, options);
+        return Apollo.useMutation<FavJoinUserParkourMutation, FavJoinUserParkourMutationVariables>(FavJoinUserParkourDocument, options);
       }
-export type CreateFavJoinUserParkourMutationHookResult = ReturnType<typeof useCreateFavJoinUserParkourMutation>;
-export type CreateFavJoinUserParkourMutationResult = Apollo.MutationResult<CreateFavJoinUserParkourMutation>;
-export type CreateFavJoinUserParkourMutationOptions = Apollo.BaseMutationOptions<CreateFavJoinUserParkourMutation, CreateFavJoinUserParkourMutationVariables>;
-export const CreateNoteJoinUserParkourDocument = gql`
-    mutation CreateNoteJoinUserParkour($infos: JoinUserParkourCreateEntity!) {
-  createNoteJoinUserParkour(infos: $infos) {
+export type FavJoinUserParkourMutationHookResult = ReturnType<typeof useFavJoinUserParkourMutation>;
+export type FavJoinUserParkourMutationResult = Apollo.MutationResult<FavJoinUserParkourMutation>;
+export type FavJoinUserParkourMutationOptions = Apollo.BaseMutationOptions<FavJoinUserParkourMutation, FavJoinUserParkourMutationVariables>;
+export const NoteJoinUserParkourDocument = gql`
+    mutation NoteJoinUserParkour($infos: JoinUserParkourNoteEntity!) {
+  noteJoinUserParkour(infos: $infos) {
     message
     success
   }
 }
     `;
-export type CreateNoteJoinUserParkourMutationFn = Apollo.MutationFunction<CreateNoteJoinUserParkourMutation, CreateNoteJoinUserParkourMutationVariables>;
+export type NoteJoinUserParkourMutationFn = Apollo.MutationFunction<NoteJoinUserParkourMutation, NoteJoinUserParkourMutationVariables>;
 
 /**
- * __useCreateNoteJoinUserParkourMutation__
+ * __useNoteJoinUserParkourMutation__
  *
- * To run a mutation, you first call `useCreateNoteJoinUserParkourMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateNoteJoinUserParkourMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useNoteJoinUserParkourMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useNoteJoinUserParkourMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [createNoteJoinUserParkourMutation, { data, loading, error }] = useCreateNoteJoinUserParkourMutation({
+ * const [noteJoinUserParkourMutation, { data, loading, error }] = useNoteJoinUserParkourMutation({
  *   variables: {
  *      infos: // value for 'infos'
  *   },
  * });
  */
-export function useCreateNoteJoinUserParkourMutation(baseOptions?: Apollo.MutationHookOptions<CreateNoteJoinUserParkourMutation, CreateNoteJoinUserParkourMutationVariables>) {
+export function useNoteJoinUserParkourMutation(baseOptions?: Apollo.MutationHookOptions<NoteJoinUserParkourMutation, NoteJoinUserParkourMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateNoteJoinUserParkourMutation, CreateNoteJoinUserParkourMutationVariables>(CreateNoteJoinUserParkourDocument, options);
+        return Apollo.useMutation<NoteJoinUserParkourMutation, NoteJoinUserParkourMutationVariables>(NoteJoinUserParkourDocument, options);
       }
-export type CreateNoteJoinUserParkourMutationHookResult = ReturnType<typeof useCreateNoteJoinUserParkourMutation>;
-export type CreateNoteJoinUserParkourMutationResult = Apollo.MutationResult<CreateNoteJoinUserParkourMutation>;
-export type CreateNoteJoinUserParkourMutationOptions = Apollo.BaseMutationOptions<CreateNoteJoinUserParkourMutation, CreateNoteJoinUserParkourMutationVariables>;
+export type NoteJoinUserParkourMutationHookResult = ReturnType<typeof useNoteJoinUserParkourMutation>;
+export type NoteJoinUserParkourMutationResult = Apollo.MutationResult<NoteJoinUserParkourMutation>;
+export type NoteJoinUserParkourMutationOptions = Apollo.BaseMutationOptions<NoteJoinUserParkourMutation, NoteJoinUserParkourMutationVariables>;
 export const CreateParkourDocument = gql`
     mutation CreateParkour($infos: ParkourCreateEntity!) {
   createParkour(infos: $infos) {
@@ -1136,12 +1140,23 @@ export type GetUserFavByTokenAndIdParkourQueryResult = Apollo.QueryResult<GetUse
 export const GetAllUserFavByTokenDocument = gql`
     query GetAllUserFavByToken {
   getAllUserFavByToken {
-    parkour_id
-    note
-    favoris
     parkours {
       id
       title
+      time
+      length
+      difficulty
+      city
+      note
+      nbVote
+      images {
+        id
+        lien
+      }
+      epreuves {
+        id
+        title
+      }
     }
   }
 }

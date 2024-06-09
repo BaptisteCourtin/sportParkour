@@ -2,8 +2,8 @@ import { gql } from "@apollo/client";
 
 // fait aussi la modif
 export const CREATE_FAV_JOIN_USER_PARKOUR = gql`
-  mutation CreateFavJoinUserParkour($infos: JoinUserParkourCreateEntity!) {
-    createFavJoinUserParkour(infos: $infos) {
+  mutation FavJoinUserParkour($infos: JoinUserParkourFavEntity!) {
+    favJoinUserParkour(infos: $infos) {
       message
       success
     }
@@ -13,14 +13,13 @@ export const CREATE_FAV_JOIN_USER_PARKOUR = gql`
 // {
 //   "infos": {
 //     "parkour_id": 3,
-//     "note": 1.5 | null,
 //     "favoris": false
 //   }
 // }
 
 export const CREATE_NOTE_JOIN_USER_PARKOUR = gql`
-  mutation CreateNoteJoinUserParkour($infos: JoinUserParkourCreateEntity!) {
-    createNoteJoinUserParkour(infos: $infos) {
+  mutation NoteJoinUserParkour($infos: JoinUserParkourNoteEntity!) {
+    noteJoinUserParkour(infos: $infos) {
       message
       success
     }
@@ -30,7 +29,6 @@ export const CREATE_NOTE_JOIN_USER_PARKOUR = gql`
 // {
 //   "infos": {
 //     "parkour_id": 3,
-//     "note": 1.5 | null,
-//     "favoris": false
+//     "note": 1.5
 //   }
 // }

@@ -26,14 +26,12 @@ const Layout = ({ children }: React.PropsWithChildren<{}>) => {
       {windowWidth > 800 ? (
         <NavbarOrdi isDarkTheme={isDarkTheme} setIsDarkTheme={setIsDarkTheme} />
       ) : null}
-
       {windowWidth <= 800 ? <HeaderPhone /> : null}
 
       {/* nos pages = children*/}
       <div className="layoutChild">{children}</div>
 
       {windowWidth <= 800 ? <NavbarPhone /> : null}
-
       {windowWidth > 800 ? <Footer /> : null}
     </div>
   );

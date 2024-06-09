@@ -3,6 +3,8 @@ import datasource from "../lib/datasource";
 
 import JoinUserParkourEntity, {
   JoinUserParkourCreateEntity,
+  JoinUserParkourFavEntity,
+  JoinUserParkourNoteEntity,
 } from "../entities/joinUserParkour.entity";
 
 class JoinUserParkourService {
@@ -13,7 +15,6 @@ class JoinUserParkourService {
   }
 
   async getByUserIdAndParkourId(user_id: string, parkour_id: number) {
-    console.log(user_id, parkour_id);
     const result: JoinUserParkourEntity | null = await this.db.findOne({
       where: {
         user_id: user_id,
@@ -29,13 +30,28 @@ class JoinUserParkourService {
     return result;
   }
 
+  async isUserIdAndParkourIdExist(user_id: string, parkour_id: number) {
+    const result: JoinUserParkourEntity | null = await this.db.findOne({
+      where: {
+        user_id: user_id,
+        parkour_id: parkour_id,
+      },
+    });
+
+    if (result == null) {
+      return false;
+    }
+
+    return true;
+  }
+
   async getFavByEmail(email: string) {
     const allFav: JoinUserParkourEntity[] | null = await this.db.find({
       where: {
         users: { email: email },
         favoris: true,
       },
-      relations: ["parkours"], // Charge les relations 'parkours' => JoinUserParkourEntity ET 'parkours.parkours' => l'netity parkour pour le title
+      relations: ["parkours.epreuves", "parkours.images"], // Charge les relations 'parkours' => JoinUserParkourEntity ET 'parkours.parkours' => l'netity parkour pour le title
     });
 
     if (!allFav) {
@@ -77,22 +93,51 @@ class JoinUserParkourService {
 
   // ---
 
-  // fait aussi pour la modif
-  async create(userId: string, infos: JoinUserParkourCreateEntity) {
-    const data = {
+  async create(userId: string, data: Partial<JoinUserParkourCreateEntity>) {
+    const infos = {
       user_id: userId,
-      parkour_id: infos.parkour_id,
-      note: infos.note,
-      favoris: infos.favoris,
+      parkour_id: data.parkour_id,
+      favoris: data.favoris,
+      note: data.note,
     };
-    const newJoinUserParkour = this.db.create(data);
+
+    const newJoinUserParkour = this.db.create(infos);
+    console.log(newJoinUserParkour);
+
     await this.db.save(newJoinUserParkour);
 
-    const resultWithTitle = await this.getByUserIdAndParkourId(
+    const result = await this.getByUserIdAndParkourId(
       userId,
       newJoinUserParkour.parkour_id
     );
-    return resultWithTitle;
+
+    return result;
+  }
+
+  // delete la note n'est pas prévu
+  async modify(userId: string, infos: Partial<JoinUserParkourCreateEntity>) {
+    const joinUserParkour = await this.getByUserIdAndParkourId(
+      userId,
+      infos.parkour_id as number
+    );
+
+    console.log("TEST", joinUserParkour.favoris, infos);
+    console.log(infos.note);
+    if (
+      infos.favoris == false &&
+      joinUserParkour.note == null &&
+      infos.note == undefined
+    ) {
+      // delete
+      return await this.deleteByUserIdAndParkourId(
+        userId,
+        infos.parkour_id as number
+      );
+    } else {
+      // modify
+      const modifyJoinUserParkour = this.db.merge(joinUserParkour, infos);
+      return await this.db.save(modifyJoinUserParkour);
+    }
   }
 
   async deleteByUserIdAndParkourId(user_id: string, parkours_id: number) {

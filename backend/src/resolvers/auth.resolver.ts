@@ -15,10 +15,7 @@ import Cookies from "cookies";
 export default class AuthResolver {
   // enregistrement du user (la première fois)
   @Mutation(() => MessageEntity)
-  async inscription(
-    @Arg("infos") infos: UserInputRegisterEntity,
-    @Ctx() ctx: MyContext
-  ) {
+  async inscription(@Arg("infos") infos: UserInputRegisterEntity) {
     let user = await new AuthentService().findUserByEmail(infos.email);
 
     // vérification email
@@ -34,9 +31,6 @@ export default class AuthResolver {
       returnMessage.message =
         "Bien joué! Vous avez maintenant un compte chez nous!";
       returnMessage.success = true;
-      // authentifie directement le user
-      // const authInfos = { email: infos.email, password: infos.password };
-      // this.authentification(authInfos, ctx);
     } else {
       returnMessage.message =
         "Euuuuuuh petit problème... Je suis confu 😕 (aïe)";
