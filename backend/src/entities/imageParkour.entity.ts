@@ -13,6 +13,10 @@ class ImageParkourEntity {
   @Column({ type: "varchar", length: 250, nullable: true })
   lien: string;
 
+  @Field()
+  @Column({ default: false })
+  isCouverture: boolean;
+
   @Field(() => ParkourEntity)
   @ManyToOne(() => ParkourEntity, {
     onDelete: "CASCADE",

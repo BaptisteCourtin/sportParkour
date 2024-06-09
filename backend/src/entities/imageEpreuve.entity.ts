@@ -13,6 +13,10 @@ class ImageEpreuveEntity {
   @Column({ type: "varchar", length: 250, nullable: true })
   lien: string;
 
+  @Field()
+  @Column({ default: false })
+  isCouverture: boolean;
+
   @Field(() => EpreuveEntity)
   @ManyToOne(() => EpreuveEntity, {
     onDelete: "CASCADE",

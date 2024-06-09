@@ -8,6 +8,7 @@ import JoinUserParkourService from "../services/joinUserParkour.service";
 import { MyContext } from "..";
 import { MessageEntity } from "../entities/message.entity";
 import UserEntity from "../entities/user.entity";
+import ParkourService from "../services/parkour.service";
 
 @Resolver()
 export default class JoinUserParkourResolver {
@@ -113,11 +114,28 @@ export default class JoinUserParkourResolver {
       };
 
       if (isExist == false) {
-        // create
+        // create note
         result = await new JoinUserParkourService().create(user.id, data);
+        // change la note du parkour + ajoute 1 au nbVote
+        await new ParkourService().addOneVoteByParkourId(
+          result.parkour_id,
+          result.note
+        );
       } else {
-        // modify
+        // obliger de le faire en premier pour pouvoir récupérer l'ancienne note
+        const joinUserParkour =
+          await new JoinUserParkourService().getByUserIdAndParkourId(
+            user.id,
+            infos.parkour_id
+          );
+        // modify note
         result = await new JoinUserParkourService().modify(user.id, data);
+        // change la note du parkour sans ajouter 1 au nbVote
+        await new ParkourService().changeOneVoteByParkourId(
+          joinUserParkour.note,
+          result.parkour_id,
+          result.note
+        );
       }
     }
     const returnMessage = new MessageEntity();

@@ -8,9 +8,11 @@ import { FaHouse } from "react-icons/fa6";
 import { FaMapLocationDot } from "react-icons/fa6";
 import { FaFlagCheckered } from "react-icons/fa6";
 import { useRouter } from "next/router";
+import { useDarkLightContext } from "@/context/themeContext";
 
-const navbarOrdi = ({ isDarkTheme, setIsDarkTheme }: any) => {
+const navbarOrdi = () => {
   const router = useRouter();
+  const { isDarkTheme, toggleTheme } = useDarkLightContext();
 
   return (
     <header className="navbarOrdi elementsNavigation">
@@ -24,10 +26,7 @@ const navbarOrdi = ({ isDarkTheme, setIsDarkTheme }: any) => {
         </Link>
 
         <div className="links">
-          <DarkLight
-            isDarkTheme={isDarkTheme}
-            setIsDarkTheme={setIsDarkTheme}
-          />
+          <DarkLight />
 
           <Link href="/" className={router.pathname == "/" ? "active" : ""}>
             <span className="icon">

@@ -14,13 +14,17 @@ const cardParkour = ({
 }: {
   parkour: GetParkourByIdQuery["getParkourById"];
 }) => {
+  const couvertureImage = parkour.images?.find((image) => image.isCouverture);
+
   return (
     <Link href={`/parkour/${parkour.id}`} className="cardParkour">
       <h3>
         <FaLocationDot /> {parkour.title}
       </h3>
 
-      {parkour.images && parkour.images[0] && parkour.images[0].lien ? (
+      {couvertureImage ? (
+        <img src={couvertureImage.lien as string} alt="" />
+      ) : parkour.images && parkour.images[0] && parkour.images[0].lien ? (
         <img src={parkour.images[0].lien} alt="" />
       ) : (
         <img

@@ -24,9 +24,7 @@ import Carousel from "react-material-ui-carousel";
 import { FaAngleRight } from "react-icons/fa6";
 import { FaAngleLeft } from "react-icons/fa6";
 import Rating from "@mui/material/Rating";
-import favoris from "../user/favoris";
 
-// faire une snackbar avec le retour du like
 const OneParkour = () => {
   const router = useRouter();
   const { id } = router.query;
@@ -43,12 +41,8 @@ const OneParkour = () => {
     error: errorIsClient,
   } = useIsClientQuery();
 
-  // --- GET INFOS PARKOUR ---
-
+  // --- GET INFOS PARKOUR && INFOS JOIN-USER-PARKOUR ---
   const [getParkour, { data, loading, error }] = useGetParkourByIdLazyQuery();
-
-  // --- GET INFOS JOIN-USER-PARKOUR ---
-
   const [
     getIsParkourFav,
     {
@@ -71,6 +65,7 @@ const OneParkour = () => {
         variables: { parkourId: +id },
         onCompleted(data) {
           setIsLiked(data.getUserFavByTokenAndIdParkour.favoris);
+          setMyNote(data.getUserFavByTokenAndIdParkour.note as number);
         },
       });
     }
@@ -105,6 +100,7 @@ const OneParkour = () => {
   };
 
   // --- MODIF NOTE ---
+  const [myNote, setMyNote] = useState(0);
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -131,6 +127,7 @@ const OneParkour = () => {
         },
         onCompleted(data) {
           toast.success(data.noteJoinUserParkour.message);
+          setMyNote(+noteThisParkour);
           handleClickClose();
         },
         onError(error) {
@@ -201,10 +198,7 @@ const OneParkour = () => {
                       id="noteThisParkour"
                       name="noteThisParkour"
                       precision={0.5}
-                      defaultValue={
-                        dataIsParkourFav?.getUserFavByTokenAndIdParkour
-                          .note as number
-                      }
+                      defaultValue={myNote}
                     />
                     <TextField
                       fullWidth
@@ -290,11 +284,17 @@ const OneParkour = () => {
                   fullHeightHover={true}
                   animation="slide"
                 >
-                  {data.getParkourById.images?.map((image) => (
-                    <div className="imageContainer">
-                      <img src={image.lien as string} alt="" />
-                    </div>
-                  ))}
+                  {data.getParkourById.images
+                    ?.slice()
+                    .sort(function compare(a: any, b: any) {
+                      if (a.isCouverture > b.isCouverture) return -1;
+                      return 1;
+                    })
+                    .map((image) => (
+                      <div className="imageContainer">
+                        <img src={image.lien as string} alt="" />
+                      </div>
+                    ))}
                 </Carousel>
               )}
 

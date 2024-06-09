@@ -4,6 +4,7 @@ import datasource from "../lib/datasource";
 import ParkourEntity, {
   ParkourCreateEntity,
   ParkourUpdateEntity,
+  ParkourUpdateNoteEntity,
 } from "../entities/parkour.entity";
 import EpreuveEntity from "../entities/epreuve.entity";
 
@@ -64,7 +65,42 @@ class ParkourService {
     return newParkour.id;
   }
 
-  // ajouter modify note  + nbNotes
+  async addOneVoteByParkourId(parkour_id: number, note: number) {
+    const parkour = await this.getById(parkour_id);
+
+    const newNbVote = parkour.nbVote + 1;
+    const newNote = (parkour.note * parkour.nbVote + note) / newNbVote;
+
+    const data: ParkourUpdateNoteEntity = {
+      nbVote: newNbVote,
+      note: newNote,
+    };
+
+    const newInfos = this.db.merge(parkour, data);
+    console.log(newInfos);
+    return await this.db.save(newInfos);
+  }
+
+  async changeOneVoteByParkourId(
+    ancienneNoteUser: number,
+    parkour_id: number,
+    newNoteUser: number
+  ) {
+    const parkour = await this.getById(parkour_id);
+
+    const newNoteParkour =
+      (parkour.note * parkour.nbVote - ancienneNoteUser + newNoteUser) /
+      parkour.nbVote;
+
+    const data: ParkourUpdateNoteEntity = {
+      nbVote: parkour.nbVote,
+      note: newNoteParkour,
+    };
+
+    const newInfos = this.db.merge(parkour, data);
+    console.log(newInfos);
+    return await this.db.save(newInfos);
+  }
 
   async modify(id: number, data: ParkourUpdateEntity) {
     const parkour = await this.getById(id);

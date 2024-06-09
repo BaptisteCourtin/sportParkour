@@ -13,6 +13,7 @@ export const GET_EPREUVE_BY_ID = gql`
       images {
         id
         lien
+        isCouverture
       }
     }
   }

@@ -5,7 +5,7 @@ const options = () => {
   return (
     <div>
       <p>OPTIONS</p>
-      {/* <DarkLight isDarkTheme={isDarkTheme} setIsDarkTheme={setIsDarkTheme} /> */}
+      <DarkLight />
     </div>
   );
 };

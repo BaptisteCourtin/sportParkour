@@ -5,9 +5,10 @@ import Footer from "./ordi/footer";
 
 import NavbarPhone from "./phone/navbarPhone";
 import HeaderPhone from "./phone/headerPhone";
+import { useDarkLightContext } from "@/context/themeContext";
 
 const Layout = ({ children }: React.PropsWithChildren<{}>) => {
-  const [isDarkTheme, setIsDarkTheme] = useState(true);
+  const { isDarkTheme, toggleTheme } = useDarkLightContext();
 
   // savoir la taille de l'écran (en temps réel)
   const [windowWidth, setWindowWidth] = useState(0);
@@ -23,9 +24,7 @@ const Layout = ({ children }: React.PropsWithChildren<{}>) => {
 
   return (
     <div className={`layoutFlex ${isDarkTheme ? "darkTheme" : "lightTheme"}`}>
-      {windowWidth > 800 ? (
-        <NavbarOrdi isDarkTheme={isDarkTheme} setIsDarkTheme={setIsDarkTheme} />
-      ) : null}
+      {windowWidth > 800 ? <NavbarOrdi /> : null}
       {windowWidth <= 800 ? <HeaderPhone /> : null}
 
       {/* nos pages = children*/}

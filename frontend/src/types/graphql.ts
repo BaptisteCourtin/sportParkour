@@ -59,6 +59,7 @@ export type ImageEpreuveEntity = {
   __typename?: 'ImageEpreuveEntity';
   id: Scalars['ID']['output'];
   id_epreuve: EpreuveEntity;
+  isCouverture: Scalars['Boolean']['output'];
   lien?: Maybe<Scalars['String']['output']>;
 };
 
@@ -66,6 +67,7 @@ export type ImageParkourEntity = {
   __typename?: 'ImageParkourEntity';
   id: Scalars['ID']['output'];
   id_parkour: ParkourEntity;
+  isCouverture: Scalars['Boolean']['output'];
   lien?: Maybe<Scalars['String']['output']>;
 };
 
@@ -392,7 +394,7 @@ export type GetEpreuveByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetEpreuveByIdQuery = { __typename?: 'Query', getEpreuveById: { __typename?: 'EpreuveEntity', id: string, title: string, description?: string | null, easyToDo?: string | null, mediumToDo?: string | null, hardToDo?: string | null, videoLink?: string | null, images?: Array<{ __typename?: 'ImageEpreuveEntity', id: string, lien?: string | null }> | null } };
+export type GetEpreuveByIdQuery = { __typename?: 'Query', getEpreuveById: { __typename?: 'EpreuveEntity', id: string, title: string, description?: string | null, easyToDo?: string | null, mediumToDo?: string | null, hardToDo?: string | null, videoLink?: string | null, images?: Array<{ __typename?: 'ImageEpreuveEntity', id: string, lien?: string | null, isCouverture: boolean }> | null } };
 
 export type GetListEpreuveByTitleQueryVariables = Exact<{
   title?: InputMaybe<Scalars['String']['input']>;
@@ -423,19 +425,19 @@ export type GetParkourByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetParkourByIdQuery = { __typename?: 'Query', getParkourById: { __typename?: 'ParkourEntity', id: string, title: string, description?: string | null, time?: number | null, length?: number | null, difficulty?: Difficulty | null, city?: string | null, start: string, note?: number | null, nbVote?: number | null, images?: Array<{ __typename?: 'ImageParkourEntity', id: string, lien?: string | null }> | null, epreuves?: Array<{ __typename?: 'EpreuveEntity', id: string, title: string }> | null } };
+export type GetParkourByIdQuery = { __typename?: 'Query', getParkourById: { __typename?: 'ParkourEntity', id: string, title: string, description?: string | null, time?: number | null, length?: number | null, difficulty?: Difficulty | null, city?: string | null, start: string, note?: number | null, nbVote?: number | null, images?: Array<{ __typename?: 'ImageParkourEntity', id: string, lien?: string | null, isCouverture: boolean }> | null, epreuves?: Array<{ __typename?: 'EpreuveEntity', id: string, title: string }> | null } };
 
 export type GetParkourByTitleQueryVariables = Exact<{
   title: Scalars['String']['input'];
 }>;
 
 
-export type GetParkourByTitleQuery = { __typename?: 'Query', getParkourByTitle: { __typename?: 'ParkourEntity', id: string, title: string, description?: string | null, time?: number | null, length?: number | null, difficulty?: Difficulty | null, city?: string | null, start: string, note?: number | null, nbVote?: number | null, images?: Array<{ __typename?: 'ImageParkourEntity', id: string, lien?: string | null }> | null, epreuves?: Array<{ __typename?: 'EpreuveEntity', id: string, title: string }> | null } };
+export type GetParkourByTitleQuery = { __typename?: 'Query', getParkourByTitle: { __typename?: 'ParkourEntity', id: string, title: string, description?: string | null, time?: number | null, length?: number | null, difficulty?: Difficulty | null, city?: string | null, start: string, note?: number | null, nbVote?: number | null, images?: Array<{ __typename?: 'ImageParkourEntity', id: string, lien?: string | null, isCouverture: boolean }> | null, epreuves?: Array<{ __typename?: 'EpreuveEntity', id: string, title: string }> | null } };
 
 export type GetAllParkourQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllParkourQuery = { __typename?: 'Query', getAllParkour: Array<{ __typename?: 'ParkourEntity', id: string, title: string, description?: string | null, time?: number | null, length?: number | null, difficulty?: Difficulty | null, city?: string | null, start: string, note?: number | null, nbVote?: number | null, images?: Array<{ __typename?: 'ImageParkourEntity', id: string, lien?: string | null }> | null, epreuves?: Array<{ __typename?: 'EpreuveEntity', id: string, title: string }> | null }> };
+export type GetAllParkourQuery = { __typename?: 'Query', getAllParkour: Array<{ __typename?: 'ParkourEntity', id: string, title: string, description?: string | null, time?: number | null, length?: number | null, difficulty?: Difficulty | null, city?: string | null, start: string, note?: number | null, nbVote?: number | null, images?: Array<{ __typename?: 'ImageParkourEntity', id: string, lien?: string | null, isCouverture: boolean }> | null, epreuves?: Array<{ __typename?: 'EpreuveEntity', id: string, title: string }> | null }> };
 
 export type GetUserByTokenQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -978,6 +980,7 @@ export const GetEpreuveByIdDocument = gql`
     images {
       id
       lien
+      isCouverture
     }
   }
 }
@@ -1209,6 +1212,7 @@ export const GetParkourByIdDocument = gql`
     images {
       id
       lien
+      isCouverture
     }
     epreuves {
       id
@@ -1266,6 +1270,7 @@ export const GetParkourByTitleDocument = gql`
     images {
       id
       lien
+      isCouverture
     }
     epreuves {
       id
@@ -1323,6 +1328,7 @@ export const GetAllParkourDocument = gql`
     images {
       id
       lien
+      isCouverture
     }
     epreuves {
       id

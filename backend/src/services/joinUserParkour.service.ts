@@ -1,10 +1,8 @@
-import { In, Repository } from "typeorm";
+import { Repository } from "typeorm";
 import datasource from "../lib/datasource";
 
 import JoinUserParkourEntity, {
   JoinUserParkourCreateEntity,
-  JoinUserParkourFavEntity,
-  JoinUserParkourNoteEntity,
 } from "../entities/joinUserParkour.entity";
 
 class JoinUserParkourService {

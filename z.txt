@@ -49,13 +49,9 @@ dernier diagramme
 finir modify/create epreuve/parkour
 create image associées via service d'image
 
-mettre une note 
-
 reset mot de passe
 
 ajouter un bouton modifier mon mdp dans profil => ça fait comme oublie mdp
-
-gérer image de couverture
 
 ------------------------------------------------------------------------------------------------------
 
@@ -68,4 +64,12 @@ ajouter commentaire à la note + date de création OU de mise à jour
 - déploiement
 
 - navbar phone sans link valable
-- dark light dans un context
+
+------------------------------------------------------------------------------------------------------
+
+Pour les images de couverture => 
+    un seul isCouverture possible par parkour,
+    en front on regarde si il y a un true 
+        on met celui qui est à true
+        si pas de true on s'en fout
+

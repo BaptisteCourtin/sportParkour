@@ -16,6 +16,7 @@ export const GET_PARKOUR_BY_ID = gql`
       images {
         id
         lien
+        isCouverture
       }
       epreuves {
         id
@@ -45,6 +46,7 @@ export const GET_PARKOUR_BY_TITLE = gql`
       images {
         id
         lien
+        isCouverture
       }
       epreuves {
         id
@@ -74,6 +76,7 @@ export const GET_ALL_PARKOUR = gql`
       images {
         id
         lien
+        isCouverture
       }
       epreuves {
         id
