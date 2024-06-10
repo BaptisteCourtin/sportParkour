@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 const politiqueDeConfidentialite = () => {
@@ -5,7 +6,7 @@ const politiqueDeConfidentialite = () => {
     <main className="pagesInfos pdc">
       <h1>POLITIQUE DE CONFIDENTIALITÉ</h1>
 
-      <h2>[parkour.com]</h2>
+      <h2>En vigueur au 01/08/2024</h2>
 
       <h3>ARTICLE 1 : PRÉAMBULE</h3>
       <p>
@@ -31,10 +32,16 @@ const politiqueDeConfidentialite = () => {
       </ul>
       <p>
         Cette politique complète les mentions légales et les Conditions
-        Générales d’Utilisation consultables par les utilisateurs à l’adresse
-        suivante : [Insérer l’URL permettant d'accéder aux Conditions Générales
-        d’Utilisation et aux mentions Légales]
+        Générales d’Utilisation consultables par les utilisateurs ci-après :
       </p>
+      <ul>
+        <li>
+          <Link href="/cgu">- les CGU</Link>
+        </li>
+        <li>
+          <Link href="/mentionsLegales">- les mentions légales</Link>
+        </li>
+      </ul>
 
       <h3>
         ARTICLE 2 : PRINCIPES RELATIFS À LA COLLECTE ET AU TRAITEMENT DES
@@ -122,42 +129,50 @@ const politiqueDeConfidentialite = () => {
       <h4>Article 3.1 : Données collectées</h4>
       <p>
         Les données personnelles collectées dans le cadre de notre activité sont
-        les suivantes : [Listez les données collectées lors de l’utilisation du
-        site] La collecte et le traitement de ces données répond à la (aux)
-        finalité(s) suivante(s) : [Préciser la/les raison(s) pour
-        laquelle/lesquelles la collecte de données personnelles est nécessaire
-        dans le cadre de votre activité] exemple : gestion de contrat, gestion
-        de l’espace client, suivi de la qualité des services, envoi de
-        newsletter, etc.
+        les suivantes :
+      </p>
+      <ul>
+        <li>- nom</li>
+        <li>- prénom</li>
+        <li>- dresse email</li>
+      </ul>
+      <p>
+        Et possiblement, suivant si l'utilisateur les renseignes lors de son
+        inscriptions ou dans son espace personel :
+      </p>
+      <ul>
+        <li>- ville</li>
+        <li>- code postal</li>
+        <li>- numéro de téléphone</li>
+      </ul>
+      <p>
+        La collecte et le traitement de ces données répond à la (aux)
+        finalité(s) suivante(s) : gestion de l’espace client, suivi de la
+        qualité des services, envoi de newsletter, etc.
       </p>
 
       <h4>Article 3.2 : Mode de collecte des données</h4>
       <p>
-        Lorsque vous utilisez notre site, sont automatiquement collectées les
-        données suivantes : [Liste des données automatiquement collectées lors
-        de la simple visite de l’utilisateur sur le site] D’autres données
-        personnelles sont collectées lorsque vous effectuez les opérations
-        suivantes sur la plateforme : [Lister les données personnelles
-        collectées, et préciser la finalité de la collecte]
+        Lorsque vous utilisez notre site des données personnelles sont
+        collectées lorsque vous effectuez les opérations suivantes sur la
+        plateforme : inscription, authentification
         <br />
         <br />
         Elles sont conservées par le responsable du traitement dans des
-        conditions raisonnables de sécurité, pour une durée de : [Indiquer la
-        durée de conservation prévue] La société est susceptible de conserver
-        certaines données à caractère personnel au-delà des délais annoncés
-        ci-dessus afin de remplir ses obligations légales ou réglementaires.
+        conditions raisonnables de sécurité, pour une durée indéterminée. La
+        société est susceptible de conserver certaines données à caractère
+        personnel au-delà des délais annoncés ci-dessus afin de remplir ses
+        obligations légales ou réglementaires.
       </p>
 
       <h4>Article 3.3 : Hébergement des données </h4>
+      <p>Le site parkour.com est hébergé par : ______________________ .</p>
+
+      <h4>Article 3.4 :Utilisation des cookies </h4>
       <p>
-        Le site [nom du site web] est hébergé par : [Dénomination sociale de
-        l’entreprise Adresse du siège social Contact (adresse email et/ou numéro
-        de téléphone)] [Dans le cas ou les données personnelles collectées par
-        l’entreprise seraient partagées avec des tiers, insérer une clause
-        “Article 3.4 : Transmission des données à des tiers” : “Les données
-        peuvent être transmises à nos partenaires, ci-après énumérés :”] [Si le
-        site est concerné par l’utilisation de cookies, préciser leur
-        utilisation dans un Article 3.5 : Politique en matière de “cookies”]
+        Le site parkour.com utilise les cookies afin d'identifier ses clients et
+        leurs permettres d'accéder à leurs espace personnel, ainsi qu'à toute
+        fonction pour laquelle il faut un compte pour y avoir accès
       </p>
 
       <h3>
@@ -166,26 +181,24 @@ const politiqueDeConfidentialite = () => {
       </h3>
       <h4>Article 4.1 : Le responsable du traitement des données</h4>
       <p>
-        Les données à caractère personnelles sont collectées par [raison ou
-        dénomination sociale de l’entreprise], [forme juridique] au capital de
-        [montant du capital social], dont le numéro d’immatriculation est le
-        [indiquez votre numéro RCS]. Le responsable du traitement des données à
-        caractère personnel peut être contacté de la manière suivante :
+        Les données à caractère personnelles sont collectées par ParkourCorp,
+        ParkourCorp au capital de 2€, dont le numéro d’immatriculation est le
+        010203040506070809. Le responsable du traitement des données à caractère
+        personnel peut être contacté de la manière suivante :
       </p>
       <ul>
         <li>
-          Par courrier à l’adresse : [indiquez l’adresse du siège social] ;
+          Par courrier à l’adresse : 20 rue de la brasserie, 44100 Nantes,
+          appartement 408
         </li>
-        <li>Par téléphone, au [numéro de téléphone] ; </li>
-        <li>Par mail : [email du responsable du traitement des données]. </li>
+        <li>Par téléphone, au 06 14 54 50 64</li>
+        <li>Par mail : kevin75du75@gmail.com </li>
       </ul>
 
       <h4>Article 4.2 : Le délégué à la protection des données</h4>
-
       <p>
         Le délégué à la protection des données de l’entreprise ou du responsable
-        est : [Indiquez l’identité, l’adresse, le numéro de téléphone et/ou
-        l’adresse email du DPO] Si vous estimez, après nous avoir contactés, que
+        est : Baptiste Courtin. Si vous estimez, après nous avoir contactés, que
         vos droits “Informatique et Libertés”, ne sont pas respectés, vous
         pouvez adresser une information à la CNIL.
       </p>
@@ -222,14 +235,14 @@ const politiqueDeConfidentialite = () => {
       </ul>
 
       <p>
-        Pour exercer vos droits, veuillez adresser votre courrier à [Nom et
-        adresse de l’entreprise] ou par mail à [Insérer l’adresse e-mail du
-        Délégué à la protection des données] Afin que le responsable du
-        traitement des données puisse faire droit à sa demande, l’utilisateur
-        peut être tenu de lui communiquer certaines informations telles que :
-        ses noms et prénoms, son adresse e-mail ainsi que son numéro de compte,
-        d’espace personnel ou d’abonné. Consultez le site cnil.fr pour plus
-        d’informations sur vos droits.
+        Pour exercer vos droits, veuillez adresser votre courrier à ParkourCorp,
+        20 rue de la brasserie, 44100 Nantes, appartement 408. Ou par mail à
+        kevin75du75@gmail.com. Afin que le responsable du traitement des données
+        puisse faire droit à sa demande, l’utilisateur peut être tenu de lui
+        communiquer certaines informations telles que : ses noms et prénoms, son
+        adresse e-mail ainsi que son numéro de compte, d’espace personnel ou
+        d’abonné. Consultez le site cnil.fr pour plus d’informations sur vos
+        droits.
       </p>
 
       <h3>
@@ -237,17 +250,16 @@ const politiqueDeConfidentialite = () => {
         CONFIDENTIALITÉ
       </h3>
       <p>
-        L’éditeur du site [Nom du site] se réserve le droit de pouvoir modifier
-        la présente Politique à tout moment afin d’assurer aux utilisateurs du
-        site sa conformité avec le droit en vigueur. Les éventuelles
-        modifications ne sauraient avoir d’incidence sur les achats
-        antérieurement effectués sur le site, lesquels restent soumis à la
-        Politique en vigueur au moment de l’achat et telle qu’acceptée par
-        l’utilisateur lors de la validation de l’achat. L’utilisateur est invité
-        à prendre connaissance de cette Politique à chaque fois qu’il utilise
-        nos services, sans qu’il soit nécessaire de l’en prévenir formellement.
-        La présente politique, éditée le [date de mise en ligne], a été mise à
-        jour le [date de modification de la politique].
+        L’éditeur du site parkour.com se réserve le droit de pouvoir modifier la
+        présente Politique à tout moment afin d’assurer aux utilisateurs du site
+        sa conformité avec le droit en vigueur. Les éventuelles modifications ne
+        sauraient avoir d’incidence sur les achats antérieurement effectués sur
+        le site, lesquels restent soumis à la Politique en vigueur au moment de
+        l’achat et telle qu’acceptée par l’utilisateur lors de la validation de
+        l’achat. L’utilisateur est invité à prendre connaissance de cette
+        Politique à chaque fois qu’il utilise nos services, sans qu’il soit
+        nécessaire de l’en prévenir formellement. La présente politique, éditée
+        le 01/08/2024, a été mise à jour le 01/08/2024.
       </p>
     </main>
   );

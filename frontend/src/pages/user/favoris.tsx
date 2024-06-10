@@ -12,9 +12,6 @@ const favoris = () => {
 
   useEffect(() => {
     getFav({
-      onCompleted(data) {
-        console.log(data);
-      },
       onError(err: any) {
         console.error("error", err);
       },

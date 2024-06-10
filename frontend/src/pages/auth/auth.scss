@@ -71,6 +71,13 @@
       font-size: var(--fs-mini);
     }
 
+    .legale {
+      display: flex;
+      flex-direction: column;
+      text-decoration: underline;
+      font-size: var(--fs-mini);
+    }
+
     button {
       align-self: flex-end;
     }

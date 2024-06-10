@@ -77,7 +77,6 @@ class ParkourService {
     };
 
     const newInfos = this.db.merge(parkour, data);
-    console.log(newInfos);
     return await this.db.save(newInfos);
   }
 
@@ -98,7 +97,6 @@ class ParkourService {
     };
 
     const newInfos = this.db.merge(parkour, data);
-    console.log(newInfos);
     return await this.db.save(newInfos);
   }
 

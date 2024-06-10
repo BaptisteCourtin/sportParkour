@@ -119,8 +119,6 @@ class JoinUserParkourService {
       infos.parkour_id as number
     );
 
-    console.log("TEST", joinUserParkour.favoris, infos);
-    console.log(infos.note);
     if (
       infos.favoris == false &&
       joinUserParkour.note == null &&

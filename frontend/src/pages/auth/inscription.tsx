@@ -13,6 +13,8 @@ import { object, string } from "yup";
 import { toast } from "react-hot-toast";
 import TextField from "@mui/material/TextField";
 import { FaArrowRight } from "react-icons/fa6";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
 
 let authSchema = object({
   email: string()
@@ -254,6 +256,19 @@ const inscription = () => {
             {values.password.length > 0 ? `${values.password.length}/100` : ""}
           </span>
           <p className="error">{errors?.password?.message}</p>
+        </div>
+
+        <FormControlLabel
+          required
+          control={<Checkbox />}
+          label="j'accepte les CGU"
+        />
+        <div className="legale">
+          <Link href="/cgu">Voir les CGU</Link>
+          <Link href="/mentionsLegales">Voir les mentions légales</Link>
+          <Link href="/politiquueDeConfidentialite">
+            Voir la politique de confidentialité
+          </Link>
         </div>
 
         <button type="submit" disabled={loading}>

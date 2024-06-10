@@ -35,14 +35,14 @@ const cgu = () => {
       </p>
       <ul>
         <li>Domicilié : 20 rue de la brasserie à Nantes</li>
-        <li>Numéro de téléphone : 06 19 41 21 56</li>
+        <li>Numéro de téléphone : 06 14 54 50 64</li>
         <li>Adresse e-mail : kevin75du75@gmail.com</li>
       </ul>
-      {/* <p>
+      <p>
         L'hébergeur du site parkour.com est la société _______________, dont le
         siège social est situé au _______________, avec le numéro de téléphone :
         _______________.
-      </p> */}
+      </p>
 
       <h3>ARTICLE 2 : ACCÈS AU SITE</h3>
       <p>
@@ -51,7 +51,7 @@ const cgu = () => {
       </p>
       <ul>
         <li>- création de compte client</li>
-        <li>- visualisation de parcours sportifs en France</li>
+        <li>- visualisation de parcours sportifs</li>
         <li>
           - visualisation d'épreuves sportive faisant parties de ces parcours
         </li>
@@ -75,14 +75,17 @@ const cgu = () => {
         création de compte. Tout Utilisateur membre régulièrement inscrit pourra
         également solliciter sa désinscription en se rendant à la page dédiée
         sur son espace personnel. Celle-ci sera effective dans un délai
-        raisonnable. Tout événement dû à un cas de force majeure ayant pour
-        conséquence un dysfonctionnement du site ou serveur et sous réserve de
-        toute interruption ou modification en cas de maintenance, n'engage pas
-        la responsabilité de parkour.com. Dans ces cas, l’Utilisateur accepte
-        ainsi ne pas tenir rigueur à l’éditeur de toute interruption ou
-        suspension de service, même sans préavis. L'Utilisateur a la possibilité
-        de contacter le site par messagerie électronique à l’adresse email de
-        l’éditeur communiqué à l’ARTICLE 1.
+        raisonnable.
+        <br />
+        <br />
+        Tout événement dû à un cas de force majeure ayant pour conséquence un
+        dysfonctionnement du site ou serveur et sous réserve de toute
+        interruption ou modification en cas de maintenance, n'engage pas la
+        responsabilité de parkour.com. Dans ces cas, l’Utilisateur accepte ainsi
+        ne pas tenir rigueur à l’éditeur de toute interruption ou suspension de
+        service, même sans préavis. L'Utilisateur a la possibilité de contacter
+        le site par messagerie électronique à l’adresse email de l’éditeur
+        communiqué à l’ARTICLE 1.
       </p>
 
       <h3>ARTICLE 3 : COLLECTE DES DONNÉES</h3>
@@ -108,14 +111,16 @@ const cgu = () => {
         toute reproduction, publication, copie des différents contenus. Il
         s'engage à une utilisation des contenus du site dans un cadre
         strictement privé, toute utilisation à des fins commerciales et
-        publicitaires est strictement interdite. Toute représentation totale ou
-        partielle de ce site par quelque procédé que ce soit, sans
-        l’autorisation expresse de l’exploitant du site Internet constituerait
-        une contrefaçon sanctionnée par l’article L 335-2 et suivants du Code de
-        la propriété intellectuelle. Il est rappelé conformément à l’article
-        L122-5 du Code de propriété intellectuelle que l’Utilisateur qui
-        reproduit, copie ou publie le contenu protégé doit citer l’auteur et sa
-        source.
+        publicitaires est strictement interdite.
+        <br />
+        <br />
+        Toute représentation totale ou partielle de ce site par quelque procédé
+        que ce soit, sans l’autorisation expresse de l’exploitant du site
+        Internet constituerait une contrefaçon sanctionnée par l’article L 335-2
+        et suivants du Code de la propriété intellectuelle. Il est rappelé
+        conformément à l’article L122-5 du Code de propriété intellectuelle que
+        l’Utilisateur qui reproduit, copie ou publie le contenu protégé doit
+        citer l’auteur et sa source.
       </p>
 
       <h3>ARTICLE 5 : RESPONSABILITÉ</h3>

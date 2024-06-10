@@ -9,7 +9,7 @@ const mentionsLegales = () => {
         Conformément aux dispositions des Articles 6-III et 19 de la Loi
         n°2004-575 du 21 juin 2004 pour la Confiance dans l’économie numérique,
         dite L.C.E.N., il est porté à la connaissance des utilisateurs et
-        visiteurs, ci-après l""Utilisateur", du site parkour.com , ci-après le
+        visiteurs, ci-après l'"Utilisateur", du site parkour.com , ci-après le
         "Site", les présentes mentions légales.
         <br />
         <br />
@@ -25,8 +25,8 @@ const mentionsLegales = () => {
       <p>
         L’édition et la direction de la publication du Site est assurée par
         Courtin Baptiste, domiciliée 20 rue de la brasserie, 44100, Nantes, dont
-        le numéro de téléphone est 0614545064, et l'adresse e-mail
-        kevin75du75@gmail.com. ci-après l'"Editeur".
+        le numéro de téléphone est "06 14 54 50 64", et l'adresse e-mail
+        "kevin75du75@gmail.com". ci-après l'"Editeur".
       </p>
 
       <h3>ARTICLE 2 - L'HEBERGEUR</h3>

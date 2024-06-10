@@ -18,10 +18,10 @@ const footer = () => {
           <section>
             <h4>CONTACT</h4>
             <a
-              href="https://www.google.com/maps/place/Wild+Code+School+-+Formation+d%C3%A9veloppeur+web,+data+analyst,+analyste+cybers%C3%A9curit%C3%A9/@48.8688545,2.4034931,17z/data=!3m2!4b1!5s0x47e66d9bebbd073f:0xe59d9cab917bdad8!4m6!3m5!1s0x47e671e4f9ed9097:0x21f0557e9b283397!8m2!3d48.8688545!4d2.406068!16s%2Fg%2F11fy11pqtq?entry=ttu"
+              href="https://www.google.fr/maps/place/20+Rue+de+la+Brasserie,+44100+Nantes/@47.2086777,-1.5763371,17"
               target="_blank"
             >
-              <FaMapLocationDot /> 44 Rue Alphonse Penaud, 75020 Paris
+              <FaMapLocationDot /> 20 rue de la brasserie, 44100 Nantes
             </a>
             <a href="mailto:kevin75du75@gmail.com" target="_blank">
               <FaEnvelope /> kevin75du75@gmail.com

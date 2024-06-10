@@ -32,10 +32,6 @@ import Cookies from "cookies";
 import { jwtVerify } from "jose";
 import { customAuthChecker } from "./lib/authChecker";
 
-// pour pouvoir récupérer le cookie et l'utiliser pour prendre l'email
-import cookieParser from "cookie-parser";
-app.use(cookieParser());
-
 // ---------------------------------------------
 // ---------------------------------------------
 // ---------------------------------------------

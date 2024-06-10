@@ -94,7 +94,6 @@ const profil = () => {
   });
 
   const handleModifyUser = (dataForm: UserUpdateEntity): void => {
-    console.log(dataForm);
     if (dataForm.email && dataForm.name && dataForm.firstname) {
       modifyUser({
         variables: { infos: dataForm },
