@@ -143,7 +143,7 @@ const OneParkour = () => {
   return (
     <main className="oneParkour">
       {error ? (
-        <h2>une erreur... (déso)</h2>
+        <h2>une erreur... (déso) : {error.message}</h2>
       ) : loading ? (
         <h2>Chargement en cours</h2>
       ) : (

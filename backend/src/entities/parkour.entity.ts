@@ -26,7 +26,7 @@ class ParkourEntity {
   title: string;
 
   @Field({ nullable: true })
-  @Column({ type: "varchar", length: 50, nullable: true })
+  @Column({ type: "varchar", length: 1000, nullable: true })
   description: string;
 
   @Field({ nullable: true })
@@ -50,7 +50,7 @@ class ParkourEntity {
   difficulty: Difficulty;
 
   @Field({ nullable: true })
-  @Column({ type: "varchar", length: 40, nullable: true })
+  @Column({ type: "varchar", length: 50, nullable: true })
   city: string;
 
   // 49.421015, -1.388178
@@ -63,7 +63,7 @@ class ParkourEntity {
   note: number;
 
   @Field({ nullable: true })
-  @Column({ nullable: true })
+  @Column({ unsigned: true, nullable: true })
   nbVote: number;
 
   @Field(() => [ImageParkourEntity], { nullable: true })

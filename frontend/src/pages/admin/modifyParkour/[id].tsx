@@ -4,6 +4,7 @@ import {
   Difficulty,
   ParkourUpdateEntity,
   useDeleteParkourMutation,
+  useGetListEpreuveByTitleQuery,
   useGetParkourByIdLazyQuery,
   useModifyParkourMutation,
 } from "@/types/graphql";
@@ -19,17 +20,37 @@ import { toast } from "react-hot-toast";
 
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { array, mixed, number, object, string } from "yup";
+import { mixed, number, object, string } from "yup";
+import Autocomplete from "@mui/material/Autocomplete";
+import { FaCheck } from "react-icons/fa6";
+import FormControl from "@mui/material/FormControl";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import InputLabel from "@mui/material/InputLabel";
 
 let modifyParkourSchema = object({
-  title: string().required("Veuillez entrer un titre"),
-  description: string(),
-  time: number(),
-  length: number(),
+  title: string()
+    .max(50, "Pas besoin d'avoir un titre aussi long")
+    .required("Veuillez entrer un titre"),
+  description: string().max(
+    1000,
+    "Pas besoin d'avoir une description aussi long"
+  ),
+
+  time: number()
+    .min(0, "Remonter dans le temps n'ai pas une option")
+    .max(600, "Si ça dure plus longtemps, contacte les admins")
+    .required("Veuillez entrer le temps moyen pour finir ce parkour"),
+  length: number()
+    .min(0, "Marcher en arrière est dangereux pour votre santée")
+    .max(60, "Si ça dure plus longtemps, contacte les admins")
+    .required("Veuillez entrer la longueur du parkour"),
   difficulty: mixed<Difficulty>().oneOf(Object.values(Difficulty)),
-  city: string(),
-  start: string(),
-  epreuves: array().of(string()),
+
+  city: string().max(50, "Une ville, pas un lieu-dit paumé"),
+  start: string()
+    .max(20, "20 caractères ça suffit")
+    .required("Veuillez entrer un point de départ"),
 });
 
 const modifyOneParkour = () => {
@@ -43,23 +64,12 @@ const modifyOneParkour = () => {
       getParkour({
         variables: { getParkourByIdId: +id },
         onCompleted(data) {
-          setValue("title", data.getParkourById.title ?? "");
-          setValue("description", data.getParkourById.description ?? "");
-
-          setValue("time", data.getParkourById.time ?? 0);
-          setValue("length", data.getParkourById.length ?? 0);
-          setValue("difficulty", data.getParkourById.difficulty ?? undefined);
-
-          setValue("city", data.getParkourById.city ?? "");
-          setValue("start", data.getParkourById.start ?? "");
-
-          // setValue("epreuves", data.getParkourById.epreuves ?? []);
-          setValue(
-            "epreuves",
-            data.getParkourById.epreuves
-              ? data.getParkourById.epreuves.map((epreuve) => epreuve.id)
-              : []
+          const selectedIds = data.getParkourById.epreuves?.map(
+            (option: { id: string }) => parseInt(option.id)
           );
+          selectedIds
+            ? setSelectedEpreuveIds(selectedIds)
+            : setSelectedEpreuveIds([]);
         },
         onError(err: any) {
           console.error("error", err);
@@ -73,19 +83,8 @@ const modifyOneParkour = () => {
     register,
     handleSubmit,
     formState: { errors },
-    setValue,
   } = useForm({
     resolver: yupResolver(modifyParkourSchema),
-    defaultValues: {
-      title: "",
-      description: "",
-      time: 0,
-      length: 0,
-      difficulty: undefined,
-      city: "",
-      start: "",
-      epreuves: [],
-    },
   });
 
   const [
@@ -95,14 +94,25 @@ const modifyOneParkour = () => {
     fetchPolicy: "no-cache",
   });
 
+  const [choosenDificulty, setChoosenDifficulty] = useState<Difficulty>();
+
   const handleModifyParkour = (dataForm: ParkourUpdateEntity): void => {
-    if (dataForm.title && id) {
+    const dataAggregate: ParkourUpdateEntity = {
+      ...dataForm,
+      difficulty: choosenDificulty,
+      epreuves: selectedEpreuveIds,
+    };
+
+    if (dataAggregate.title && id) {
       modifyParkour({
-        variables: { infos: dataForm, modifyParkourId: parseInt(id as string) },
+        variables: {
+          infos: dataAggregate,
+          modifyParkourId: parseInt(id as string),
+        },
         onCompleted(data) {
           if (data.modifyParkour.id) {
             toast.success("GG, vous avez mis le parkour à jour 👌");
-            router.push(`/epreuve/${data.modifyParkour.id}`);
+            router.push(`/parkour/${data.modifyParkour.id}`);
           }
         },
         onError(error) {
@@ -141,6 +151,35 @@ const modifyOneParkour = () => {
     }
   }
 
+  // --- DEAL WITH LENGTH DURING MODIF ---
+  const [values, setValues] = useState({
+    title: "",
+    description: "",
+    city: "",
+    start: "",
+  });
+
+  const handleChangeAThing = (name: string, value: any) => {
+    setValues({ ...values, [name]: value });
+  };
+
+  // --- DEAL WITH IDS EPREUVES ---
+  const {
+    data: dataEpreuves,
+    loading: loadingEpreuves,
+    error: errorEpreuves,
+  } = useGetListEpreuveByTitleQuery({
+    fetchPolicy: "no-cache",
+  });
+
+  const [selectedEpreuveIds, setSelectedEpreuveIds] = useState<number[]>([]);
+  const handleEpreuveSelection = (value: any) => {
+    const selectedIds = value.map((option: { id: string }) =>
+      parseInt(option.id)
+    );
+    setSelectedEpreuveIds(selectedIds);
+  };
+
   return (
     <main className="modifyOneParkour">
       {error ? (
@@ -150,6 +189,201 @@ const modifyOneParkour = () => {
       ) : (
         data?.getParkourById && (
           <>
+            <h1>MODIFIER LE PARKOUR</h1>
+            <form onSubmit={handleSubmit(handleModifyParkour)}>
+              <div>
+                <TextField
+                  className="mui-input"
+                  fullWidth
+                  variant="outlined"
+                  label="Titre du parkour"
+                  defaultValue={data.getParkourById.title}
+                  required
+                  {...register("title")}
+                  id="title"
+                  name="title"
+                  type="text"
+                  inputProps={{ maxLength: 50 }}
+                  onChange={(e) => handleChangeAThing("title", e.target.value)}
+                />
+                <span>
+                  {values.title.length > 0 ? `${values.title.length}/50` : ""}
+                </span>
+                <p className="error">{errors?.title?.message}</p>
+              </div>
+              <div>
+                <TextField
+                  className="mui-input"
+                  fullWidth
+                  variant="outlined"
+                  label="Description"
+                  defaultValue={data.getParkourById.description}
+                  multiline
+                  rows={10}
+                  {...register("description")}
+                  id="description"
+                  name="description"
+                  type="text"
+                  inputProps={{ maxLength: 1000 }}
+                  onChange={(e) =>
+                    handleChangeAThing("description", e.target.value)
+                  }
+                />
+                <span>
+                  {values.description.length > 0
+                    ? `${values.description.length}/1000`
+                    : ""}
+                </span>
+                <p className="error">{errors?.description?.message}</p>
+              </div>
+
+              <div>
+                <TextField
+                  className="mui-input"
+                  fullWidth
+                  variant="outlined"
+                  label="temps moyen pour finir le parkour"
+                  defaultValue={data.getParkourById.time}
+                  required
+                  {...register("time")}
+                  InputProps={{ inputProps: { max: 600 } }}
+                  id="time"
+                  name="time"
+                  type="number"
+                />
+                <p className="error">{errors?.time?.message}</p>
+              </div>
+              <div>
+                <TextField
+                  className="mui-input"
+                  fullWidth
+                  variant="outlined"
+                  label="longueur du parkour"
+                  defaultValue={data.getParkourById.length}
+                  required
+                  {...register("length")}
+                  InputProps={{ inputProps: { max: 60 } }}
+                  id="length"
+                  name="length"
+                  type="number"
+                />
+                <p className="error">{errors?.length?.message}</p>
+              </div>
+
+              <div>
+                <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+                  <InputLabel id="demo-simple-select-standard-label">
+                    Difficultée
+                  </InputLabel>
+                  <Select
+                    className="mui-input"
+                    fullWidth
+                    variant="outlined"
+                    id="difficulty"
+                    name="difficulty"
+                    label="Difficultée"
+                    defaultValue={data.getParkourById.difficulty}
+                    onChange={(e) =>
+                      setChoosenDifficulty(e.target.value as Difficulty)
+                    }
+                  >
+                    <MenuItem value="">
+                      <em>None</em>
+                    </MenuItem>
+                    <MenuItem value="facile">{Difficulty.Facile}</MenuItem>
+                    <MenuItem value="moyen">{Difficulty.Moyen}</MenuItem>
+                    <MenuItem value="difficile">
+                      {Difficulty.Difficile}
+                    </MenuItem>
+                  </Select>
+                </FormControl>
+                <p className="error">{errors?.difficulty?.message}</p>
+              </div>
+
+              <div>
+                <TextField
+                  className="mui-input"
+                  fullWidth
+                  variant="outlined"
+                  label="Ville de départ"
+                  defaultValue={data.getParkourById.city}
+                  {...register("city")}
+                  id="city"
+                  name="city"
+                  type="text"
+                  inputProps={{ maxLength: 50 }}
+                  onChange={(e) => handleChangeAThing("city", e.target.value)}
+                />
+                <span>
+                  {values.city.length > 0 ? `${values.city.length}/50` : ""}
+                </span>
+                <p className="error">{errors?.city?.message}</p>
+              </div>
+              <div>
+                <TextField
+                  className="mui-input"
+                  fullWidth
+                  variant="outlined"
+                  label="Point gps de départ"
+                  defaultValue={data.getParkourById.start}
+                  required
+                  {...register("start")}
+                  id="start"
+                  name="start"
+                  type="text"
+                  inputProps={{ maxLength: 20 }}
+                  onChange={(e) => handleChangeAThing("start", e.target.value)}
+                />
+                <span>
+                  {values.start.length > 0 ? `${values.start.length}/20` : ""}
+                </span>
+                <p className="error">{errors?.start?.message}</p>
+              </div>
+
+              <div>
+                <Autocomplete
+                  sx={{ width: 300 }}
+                  id="epreuves"
+                  className="titleBar"
+                  multiple
+                  loading={loadingEpreuves}
+                  disableCloseOnSelect
+                  defaultValue={data.getParkourById.epreuves as any}
+                  // on change
+                  onChange={(e, value, detail) => handleEpreuveSelection(value)}
+                  // pour rechercher dans le back
+                  options={dataEpreuves?.getListEpreuveByTitle ?? []}
+                  // render qui veut un string
+                  getOptionLabel={(option) => option.title}
+                  // pour le style autour
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      variant="outlined"
+                      label="Recherche une épreuve par titre"
+                    />
+                  )}
+                  // pour la liste déroulante
+                  renderOption={(props, option, { selected }) => (
+                    <li {...props} key={option.id} value={option.id}>
+                      {option.title}
+                      {selected ? <FaCheck /> : null}
+                    </li>
+                  )}
+                />
+              </div>
+
+              <button type="submit" disabled={loadingModify}>
+                Modifier le parkour
+              </button>
+
+              <div>
+                <span>{errorModify?.message}</span>
+              </div>
+            </form>
+
+            {/* --- */}
+
             <div className="parkourToDelete">
               <Button variant="outlined" onClick={handleClickOpen}>
                 Delete parkour {data.getParkourById.id}
@@ -208,107 +442,6 @@ const modifyOneParkour = () => {
                 </DialogActions>
               </Dialog>
             </div>
-
-            {/* --- */}
-
-            <form onSubmit={handleSubmit(handleModifyParkour)}>
-              <div>
-                <label htmlFor="title">Le titre de l'épreuve</label>
-                <input
-                  {...register("title")}
-                  id="title"
-                  name="title"
-                  type="text"
-                  placeholder="Indiquez votre titre"
-                />
-                <p className="error">{errors?.title?.message}</p>
-              </div>
-              <div>
-                <label htmlFor="description">La description de l'épreuve</label>
-                <textarea
-                  {...register("description")}
-                  id="description"
-                  name="description"
-                  placeholder="La description de l'épreuve"
-                ></textarea>
-                <p className="error">{errors?.description?.message}</p>
-              </div>
-
-              <div>
-                <label htmlFor="time">le temps moyen</label>
-                <textarea
-                  {...register("time")}
-                  id="time"
-                  name="time"
-                  placeholder="le temps moyen"
-                ></textarea>
-                <p className="error">{errors?.time?.message}</p>
-              </div>
-              <div>
-                <label htmlFor="length">Longueur du parkour</label>
-                <textarea
-                  {...register("length")}
-                  id="length"
-                  name="length"
-                  placeholder="Longueur du parkour"
-                ></textarea>
-                <p className="error">{errors?.length?.message}</p>
-              </div>
-
-              <div>
-                <label htmlFor="difficulty">Difficultée</label>
-                <select id="difficulty" name="difficulty">
-                  <option value={Difficulty.Easy}>{Difficulty.Easy}</option>
-                  <option value={Difficulty.Medium}>{Difficulty.Medium}</option>
-                  <option value={Difficulty.Hard}>{Difficulty.Hard}</option>
-                </select>
-                <p className="error">{errors?.difficulty?.message}</p>
-              </div>
-
-              <div>
-                <label htmlFor="city">Ville de départ</label>
-                <input
-                  {...register("city")}
-                  id="city"
-                  name="city"
-                  type="text"
-                  placeholder="Ville de départ"
-                />
-                <p className="error">{errors?.city?.message}</p>
-              </div>
-              <div>
-                <label htmlFor="start">point gps de départ</label>
-                <input
-                  {...register("start")}
-                  id="start"
-                  name="start"
-                  type="text"
-                  placeholder="point gps de départ"
-                />
-                <p className="error">{errors?.start?.message}</p>
-              </div>
-
-              {/* modifier pour choose many avec recherche par title*/}
-              <div>
-                <label htmlFor="epreuves">Liste d'épreuves</label>
-                <input
-                  {...register("epreuves")}
-                  id="epreuves"
-                  name="epreuves"
-                  type="text"
-                  placeholder="Liste d'épreuves"
-                />
-                <p className="error">{errors?.epreuves?.message}</p>
-              </div>
-
-              <button type="submit" disabled={loadingModify}>
-                Modifier le parkour
-              </button>
-
-              <div>
-                <span>{errorModify?.message}</span>
-              </div>
-            </form>
           </>
         )
       )}
