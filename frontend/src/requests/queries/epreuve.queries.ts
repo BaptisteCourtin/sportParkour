@@ -23,9 +23,18 @@ export const GET_EPREUVE_BY_ID = gql`
 //   "getEpreuveByIdId": 12
 // }
 
-export const GET_LIST_EPREUVE_BY_SEARCH = gql`
-  query GetListEpreuveByTitle($title: String) {
-    getListEpreuveByTitle(title: $title) {
+export const GET_LIST_EPREUVE = gql`
+  query GetListEpreuve {
+    getListEpreuve {
+      id
+      title
+    }
+  }
+`;
+
+export const GET_TOP20_EPREUVE_BY_SEARCH = gql`
+  query GetListTop20EpreuveByTitle($title: String) {
+    getListTop20EpreuveByTitle(title: $title) {
       id
       title
     }
@@ -35,12 +44,3 @@ export const GET_LIST_EPREUVE_BY_SEARCH = gql`
 // {
 //   "title": "dita"
 // }
-
-export const GET_LIST_EPREUVE = gql`
-  query GetListEpreuve {
-    getListEpreuve {
-      id
-      title
-    }
-  }
-`;

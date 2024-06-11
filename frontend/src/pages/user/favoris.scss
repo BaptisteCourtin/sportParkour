@@ -7,11 +7,31 @@
   width: 100%;
   margin-top: 50px;
 
+  form {
+    background-color: var(--middle);
+
+    margin: var(--espace) 0;
+    padding: var(--espace);
+    border-radius: var(--radius);
+    border-top: var(--line) solid var(--blue);
+
+    label {
+      color: var(--text2Trans);
+      font-style: italic;
+      padding: 0 var(--espace) 0 0;
+    }
+
+    svg {
+      fill: var(--text2);
+    }
+  }
+
   .cardsFavParkour {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
     gap: var(--gap);
   }
 }

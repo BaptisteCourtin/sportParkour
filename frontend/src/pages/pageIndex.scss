@@ -7,19 +7,103 @@
 
   width: 100%;
 
-  .chercheIdParkour {
+  form {
+    background-color: var(--middle);
+
+    margin: var(--espace) 0;
+    padding: var(--espace);
+    border-radius: var(--radius);
+    border-top: var(--line) solid var(--blue);
+
+    label {
+      color: var(--text2Trans);
+      font-style: italic;
+      padding: 0 var(--espace) 0 0;
+    }
+
+    svg {
+      fill: var(--text2);
+    }
+  }
+
+  .formSearchParkour {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: var(--gap);
+
+    background-color: var(--middle);
+
+    margin: var(--espace) 0;
+    padding: var(--espace);
+    border-radius: var(--radius);
+    border-top: var(--line) solid var(--blue);
+
+    .champ {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      width: 100%;
+
+      &.difficulty {
+        color: var(--text2);
+
+        label {
+          color: var(--text2Trans);
+          font-style: italic;
+          padding: 0 var(--espace) 0 0;
+        }
+
+        svg {
+          fill: var(--text2);
+        }
+      }
+
+      &.searchNote {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: var(--gap);
+      }
+
+      .mui-input {
+        background-color: var(--back);
+        color: var(--text2);
+        border-radius: var(--radius);
+
+        label {
+          color: var(--text2Trans);
+          font-style: italic;
+          padding: 0 var(--espace) 0 0;
+        }
+
+        input,
+        textarea {
+          color: var(--text2);
+
+          // pour éviter les couleurs du autofill
+          &:-webkit-autofill,
+          &:-webkit-autofill:hover,
+          &:-webkit-autofill:focus,
+          &:-webkit-autofill:active {
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: var(--text2);
+          }
+        }
+      }
+    }
   }
 
   .cardsParkoursUl {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
     gap: var(--gap);
   }
 }

@@ -14,20 +14,23 @@ export default class EpreuveResolver {
     return result;
   }
 
-  @Query(() => [EpreuveEntity])
-  async getListEpreuveByTitle(@Arg("title", { nullable: true }) title: string) {
-    const result: EpreuveEntity[] = await new EpreuveService().getListByTitle(
-      title
-    );
-    return result;
-  }
-
   // utilise le get by ids mais sans parametre => all
   @Query(() => [EpreuveEntity])
   async getListEpreuve() {
     const result: EpreuveEntity[] = await new EpreuveService().getListByIds();
     return result;
   }
+
+  // pour les search auto-complete
+  @Query(() => [EpreuveEntity])
+  async getListTop20EpreuveByTitle(
+    @Arg("title", { nullable: true }) title: string
+  ) {
+    const result: EpreuveEntity[] =
+      await new EpreuveService().getListTop20ByTitle(title);
+    return result;
+  }
+
   // ---
 
   @Authorized("ADMIN")

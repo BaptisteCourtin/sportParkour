@@ -214,9 +214,10 @@ export type Query = {
   getAllUserFavByToken: Array<JoinUserParkourEntity>;
   getEpreuveById: EpreuveEntity;
   getListEpreuve: Array<EpreuveEntity>;
-  getListEpreuveByTitle: Array<EpreuveEntity>;
+  getListTop20EpreuveByTitle: Array<EpreuveEntity>;
   getParkourById: ParkourEntity;
-  getParkourByTitle: ParkourEntity;
+  getTop20ParkourBySearch: Array<ParkourEntity>;
+  getTop20ParkourByTitle: Array<ParkourEntity>;
   getUserByToken: UserEntity;
   getUserFavByTokenAndIdParkour: JoinUserParkourEntity;
   isAdmin: Scalars['Boolean']['output'];
@@ -235,7 +236,7 @@ export type QueryGetEpreuveByIdArgs = {
 };
 
 
-export type QueryGetListEpreuveByTitleArgs = {
+export type QueryGetListTop20EpreuveByTitleArgs = {
   title?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -245,8 +246,20 @@ export type QueryGetParkourByIdArgs = {
 };
 
 
-export type QueryGetParkourByTitleArgs = {
-  title: Scalars['String']['input'];
+export type QueryGetTop20ParkourBySearchArgs = {
+  city?: InputMaybe<Scalars['String']['input']>;
+  difficulty?: InputMaybe<Scalars['String']['input']>;
+  lengthMax?: InputMaybe<Scalars['Float']['input']>;
+  lengthMin?: InputMaybe<Scalars['Float']['input']>;
+  noteMin?: InputMaybe<Scalars['Float']['input']>;
+  startPage: Scalars['Float']['input'];
+  timeMax?: InputMaybe<Scalars['Float']['input']>;
+  timeMin?: InputMaybe<Scalars['Float']['input']>;
+};
+
+
+export type QueryGetTop20ParkourByTitleArgs = {
+  title?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -396,17 +409,17 @@ export type GetEpreuveByIdQueryVariables = Exact<{
 
 export type GetEpreuveByIdQuery = { __typename?: 'Query', getEpreuveById: { __typename?: 'EpreuveEntity', id: string, title: string, description?: string | null, easyToDo?: string | null, mediumToDo?: string | null, hardToDo?: string | null, videoLink?: string | null, images?: Array<{ __typename?: 'ImageEpreuveEntity', id: string, lien?: string | null, isCouverture: boolean }> | null } };
 
-export type GetListEpreuveByTitleQueryVariables = Exact<{
-  title?: InputMaybe<Scalars['String']['input']>;
-}>;
-
-
-export type GetListEpreuveByTitleQuery = { __typename?: 'Query', getListEpreuveByTitle: Array<{ __typename?: 'EpreuveEntity', id: string, title: string }> };
-
 export type GetListEpreuveQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetListEpreuveQuery = { __typename?: 'Query', getListEpreuve: Array<{ __typename?: 'EpreuveEntity', id: string, title: string }> };
+
+export type GetListTop20EpreuveByTitleQueryVariables = Exact<{
+  title?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type GetListTop20EpreuveByTitleQuery = { __typename?: 'Query', getListTop20EpreuveByTitle: Array<{ __typename?: 'EpreuveEntity', id: string, title: string }> };
 
 export type GetUserFavByTokenAndIdParkourQueryVariables = Exact<{
   parkourId: Scalars['Float']['input'];
@@ -427,17 +440,26 @@ export type GetParkourByIdQueryVariables = Exact<{
 
 export type GetParkourByIdQuery = { __typename?: 'Query', getParkourById: { __typename?: 'ParkourEntity', id: string, title: string, description?: string | null, time?: number | null, length?: number | null, difficulty?: Difficulty | null, city?: string | null, start: string, note?: number | null, nbVote?: number | null, images?: Array<{ __typename?: 'ImageParkourEntity', id: string, lien?: string | null, isCouverture: boolean }> | null, epreuves?: Array<{ __typename?: 'EpreuveEntity', id: string, title: string }> | null } };
 
-export type GetParkourByTitleQueryVariables = Exact<{
-  title: Scalars['String']['input'];
+export type GetListTop20ParkourByTitleQueryVariables = Exact<{
+  title?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
-export type GetParkourByTitleQuery = { __typename?: 'Query', getParkourByTitle: { __typename?: 'ParkourEntity', id: string, title: string, description?: string | null, time?: number | null, length?: number | null, difficulty?: Difficulty | null, city?: string | null, start: string, note?: number | null, nbVote?: number | null, images?: Array<{ __typename?: 'ImageParkourEntity', id: string, lien?: string | null, isCouverture: boolean }> | null, epreuves?: Array<{ __typename?: 'EpreuveEntity', id: string, title: string }> | null } };
+export type GetListTop20ParkourByTitleQuery = { __typename?: 'Query', getTop20ParkourByTitle: Array<{ __typename?: 'ParkourEntity', id: string, title: string }> };
 
-export type GetAllParkourQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetTop20ParkourBySearchQueryVariables = Exact<{
+  startPage: Scalars['Float']['input'];
+  noteMin?: InputMaybe<Scalars['Float']['input']>;
+  difficulty?: InputMaybe<Scalars['String']['input']>;
+  lengthMax?: InputMaybe<Scalars['Float']['input']>;
+  lengthMin?: InputMaybe<Scalars['Float']['input']>;
+  timeMax?: InputMaybe<Scalars['Float']['input']>;
+  timeMin?: InputMaybe<Scalars['Float']['input']>;
+  city?: InputMaybe<Scalars['String']['input']>;
+}>;
 
 
-export type GetAllParkourQuery = { __typename?: 'Query', getAllParkour: Array<{ __typename?: 'ParkourEntity', id: string, title: string, description?: string | null, time?: number | null, length?: number | null, difficulty?: Difficulty | null, city?: string | null, start: string, note?: number | null, nbVote?: number | null, images?: Array<{ __typename?: 'ImageParkourEntity', id: string, lien?: string | null, isCouverture: boolean }> | null, epreuves?: Array<{ __typename?: 'EpreuveEntity', id: string, title: string }> | null }> };
+export type GetTop20ParkourBySearchQuery = { __typename?: 'Query', getTop20ParkourBySearch: Array<{ __typename?: 'ParkourEntity', id: string, title: string, time?: number | null, length?: number | null, difficulty?: Difficulty | null, city?: string | null, note?: number | null, nbVote?: number | null, images?: Array<{ __typename?: 'ImageParkourEntity', id: string, lien?: string | null, isCouverture: boolean }> | null, epreuves?: Array<{ __typename?: 'EpreuveEntity', id: string, title: string }> | null }> };
 
 export type GetUserByTokenQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1018,47 +1040,6 @@ export type GetEpreuveByIdQueryHookResult = ReturnType<typeof useGetEpreuveByIdQ
 export type GetEpreuveByIdLazyQueryHookResult = ReturnType<typeof useGetEpreuveByIdLazyQuery>;
 export type GetEpreuveByIdSuspenseQueryHookResult = ReturnType<typeof useGetEpreuveByIdSuspenseQuery>;
 export type GetEpreuveByIdQueryResult = Apollo.QueryResult<GetEpreuveByIdQuery, GetEpreuveByIdQueryVariables>;
-export const GetListEpreuveByTitleDocument = gql`
-    query GetListEpreuveByTitle($title: String) {
-  getListEpreuveByTitle(title: $title) {
-    id
-    title
-  }
-}
-    `;
-
-/**
- * __useGetListEpreuveByTitleQuery__
- *
- * To run a query within a React component, call `useGetListEpreuveByTitleQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetListEpreuveByTitleQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetListEpreuveByTitleQuery({
- *   variables: {
- *      title: // value for 'title'
- *   },
- * });
- */
-export function useGetListEpreuveByTitleQuery(baseOptions?: Apollo.QueryHookOptions<GetListEpreuveByTitleQuery, GetListEpreuveByTitleQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetListEpreuveByTitleQuery, GetListEpreuveByTitleQueryVariables>(GetListEpreuveByTitleDocument, options);
-      }
-export function useGetListEpreuveByTitleLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetListEpreuveByTitleQuery, GetListEpreuveByTitleQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetListEpreuveByTitleQuery, GetListEpreuveByTitleQueryVariables>(GetListEpreuveByTitleDocument, options);
-        }
-export function useGetListEpreuveByTitleSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetListEpreuveByTitleQuery, GetListEpreuveByTitleQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetListEpreuveByTitleQuery, GetListEpreuveByTitleQueryVariables>(GetListEpreuveByTitleDocument, options);
-        }
-export type GetListEpreuveByTitleQueryHookResult = ReturnType<typeof useGetListEpreuveByTitleQuery>;
-export type GetListEpreuveByTitleLazyQueryHookResult = ReturnType<typeof useGetListEpreuveByTitleLazyQuery>;
-export type GetListEpreuveByTitleSuspenseQueryHookResult = ReturnType<typeof useGetListEpreuveByTitleSuspenseQuery>;
-export type GetListEpreuveByTitleQueryResult = Apollo.QueryResult<GetListEpreuveByTitleQuery, GetListEpreuveByTitleQueryVariables>;
 export const GetListEpreuveDocument = gql`
     query GetListEpreuve {
   getListEpreuve {
@@ -1099,6 +1080,47 @@ export type GetListEpreuveQueryHookResult = ReturnType<typeof useGetListEpreuveQ
 export type GetListEpreuveLazyQueryHookResult = ReturnType<typeof useGetListEpreuveLazyQuery>;
 export type GetListEpreuveSuspenseQueryHookResult = ReturnType<typeof useGetListEpreuveSuspenseQuery>;
 export type GetListEpreuveQueryResult = Apollo.QueryResult<GetListEpreuveQuery, GetListEpreuveQueryVariables>;
+export const GetListTop20EpreuveByTitleDocument = gql`
+    query GetListTop20EpreuveByTitle($title: String) {
+  getListTop20EpreuveByTitle(title: $title) {
+    id
+    title
+  }
+}
+    `;
+
+/**
+ * __useGetListTop20EpreuveByTitleQuery__
+ *
+ * To run a query within a React component, call `useGetListTop20EpreuveByTitleQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetListTop20EpreuveByTitleQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetListTop20EpreuveByTitleQuery({
+ *   variables: {
+ *      title: // value for 'title'
+ *   },
+ * });
+ */
+export function useGetListTop20EpreuveByTitleQuery(baseOptions?: Apollo.QueryHookOptions<GetListTop20EpreuveByTitleQuery, GetListTop20EpreuveByTitleQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetListTop20EpreuveByTitleQuery, GetListTop20EpreuveByTitleQueryVariables>(GetListTop20EpreuveByTitleDocument, options);
+      }
+export function useGetListTop20EpreuveByTitleLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetListTop20EpreuveByTitleQuery, GetListTop20EpreuveByTitleQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetListTop20EpreuveByTitleQuery, GetListTop20EpreuveByTitleQueryVariables>(GetListTop20EpreuveByTitleDocument, options);
+        }
+export function useGetListTop20EpreuveByTitleSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetListTop20EpreuveByTitleQuery, GetListTop20EpreuveByTitleQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetListTop20EpreuveByTitleQuery, GetListTop20EpreuveByTitleQueryVariables>(GetListTop20EpreuveByTitleDocument, options);
+        }
+export type GetListTop20EpreuveByTitleQueryHookResult = ReturnType<typeof useGetListTop20EpreuveByTitleQuery>;
+export type GetListTop20EpreuveByTitleLazyQueryHookResult = ReturnType<typeof useGetListTop20EpreuveByTitleLazyQuery>;
+export type GetListTop20EpreuveByTitleSuspenseQueryHookResult = ReturnType<typeof useGetListTop20EpreuveByTitleSuspenseQuery>;
+export type GetListTop20EpreuveByTitleQueryResult = Apollo.QueryResult<GetListTop20EpreuveByTitleQuery, GetListTop20EpreuveByTitleQueryVariables>;
 export const GetUserFavByTokenAndIdParkourDocument = gql`
     query GetUserFavByTokenAndIdParkour($parkourId: Float!) {
   getUserFavByTokenAndIdParkour(parkourId: $parkourId) {
@@ -1254,75 +1276,65 @@ export type GetParkourByIdQueryHookResult = ReturnType<typeof useGetParkourByIdQ
 export type GetParkourByIdLazyQueryHookResult = ReturnType<typeof useGetParkourByIdLazyQuery>;
 export type GetParkourByIdSuspenseQueryHookResult = ReturnType<typeof useGetParkourByIdSuspenseQuery>;
 export type GetParkourByIdQueryResult = Apollo.QueryResult<GetParkourByIdQuery, GetParkourByIdQueryVariables>;
-export const GetParkourByTitleDocument = gql`
-    query GetParkourByTitle($title: String!) {
-  getParkourByTitle(title: $title) {
+export const GetListTop20ParkourByTitleDocument = gql`
+    query GetListTop20ParkourByTitle($title: String) {
+  getTop20ParkourByTitle(title: $title) {
     id
     title
-    description
-    time
-    length
-    difficulty
-    city
-    start
-    note
-    nbVote
-    images {
-      id
-      lien
-      isCouverture
-    }
-    epreuves {
-      id
-      title
-    }
   }
 }
     `;
 
 /**
- * __useGetParkourByTitleQuery__
+ * __useGetListTop20ParkourByTitleQuery__
  *
- * To run a query within a React component, call `useGetParkourByTitleQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetParkourByTitleQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetListTop20ParkourByTitleQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetListTop20ParkourByTitleQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetParkourByTitleQuery({
+ * const { data, loading, error } = useGetListTop20ParkourByTitleQuery({
  *   variables: {
  *      title: // value for 'title'
  *   },
  * });
  */
-export function useGetParkourByTitleQuery(baseOptions: Apollo.QueryHookOptions<GetParkourByTitleQuery, GetParkourByTitleQueryVariables> & ({ variables: GetParkourByTitleQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+export function useGetListTop20ParkourByTitleQuery(baseOptions?: Apollo.QueryHookOptions<GetListTop20ParkourByTitleQuery, GetListTop20ParkourByTitleQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetParkourByTitleQuery, GetParkourByTitleQueryVariables>(GetParkourByTitleDocument, options);
+        return Apollo.useQuery<GetListTop20ParkourByTitleQuery, GetListTop20ParkourByTitleQueryVariables>(GetListTop20ParkourByTitleDocument, options);
       }
-export function useGetParkourByTitleLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetParkourByTitleQuery, GetParkourByTitleQueryVariables>) {
+export function useGetListTop20ParkourByTitleLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetListTop20ParkourByTitleQuery, GetListTop20ParkourByTitleQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetParkourByTitleQuery, GetParkourByTitleQueryVariables>(GetParkourByTitleDocument, options);
+          return Apollo.useLazyQuery<GetListTop20ParkourByTitleQuery, GetListTop20ParkourByTitleQueryVariables>(GetListTop20ParkourByTitleDocument, options);
         }
-export function useGetParkourByTitleSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetParkourByTitleQuery, GetParkourByTitleQueryVariables>) {
+export function useGetListTop20ParkourByTitleSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetListTop20ParkourByTitleQuery, GetListTop20ParkourByTitleQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetParkourByTitleQuery, GetParkourByTitleQueryVariables>(GetParkourByTitleDocument, options);
+          return Apollo.useSuspenseQuery<GetListTop20ParkourByTitleQuery, GetListTop20ParkourByTitleQueryVariables>(GetListTop20ParkourByTitleDocument, options);
         }
-export type GetParkourByTitleQueryHookResult = ReturnType<typeof useGetParkourByTitleQuery>;
-export type GetParkourByTitleLazyQueryHookResult = ReturnType<typeof useGetParkourByTitleLazyQuery>;
-export type GetParkourByTitleSuspenseQueryHookResult = ReturnType<typeof useGetParkourByTitleSuspenseQuery>;
-export type GetParkourByTitleQueryResult = Apollo.QueryResult<GetParkourByTitleQuery, GetParkourByTitleQueryVariables>;
-export const GetAllParkourDocument = gql`
-    query GetAllParkour {
-  getAllParkour {
+export type GetListTop20ParkourByTitleQueryHookResult = ReturnType<typeof useGetListTop20ParkourByTitleQuery>;
+export type GetListTop20ParkourByTitleLazyQueryHookResult = ReturnType<typeof useGetListTop20ParkourByTitleLazyQuery>;
+export type GetListTop20ParkourByTitleSuspenseQueryHookResult = ReturnType<typeof useGetListTop20ParkourByTitleSuspenseQuery>;
+export type GetListTop20ParkourByTitleQueryResult = Apollo.QueryResult<GetListTop20ParkourByTitleQuery, GetListTop20ParkourByTitleQueryVariables>;
+export const GetTop20ParkourBySearchDocument = gql`
+    query GetTop20ParkourBySearch($startPage: Float!, $noteMin: Float, $difficulty: String, $lengthMax: Float, $lengthMin: Float, $timeMax: Float, $timeMin: Float, $city: String) {
+  getTop20ParkourBySearch(
+    startPage: $startPage
+    noteMin: $noteMin
+    difficulty: $difficulty
+    lengthMax: $lengthMax
+    lengthMin: $lengthMin
+    timeMax: $timeMax
+    timeMin: $timeMin
+    city: $city
+  ) {
     id
     title
-    description
     time
     length
     difficulty
     city
-    start
     note
     nbVote
     images {
@@ -1339,36 +1351,44 @@ export const GetAllParkourDocument = gql`
     `;
 
 /**
- * __useGetAllParkourQuery__
+ * __useGetTop20ParkourBySearchQuery__
  *
- * To run a query within a React component, call `useGetAllParkourQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetAllParkourQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetTop20ParkourBySearchQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTop20ParkourBySearchQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetAllParkourQuery({
+ * const { data, loading, error } = useGetTop20ParkourBySearchQuery({
  *   variables: {
+ *      startPage: // value for 'startPage'
+ *      noteMin: // value for 'noteMin'
+ *      difficulty: // value for 'difficulty'
+ *      lengthMax: // value for 'lengthMax'
+ *      lengthMin: // value for 'lengthMin'
+ *      timeMax: // value for 'timeMax'
+ *      timeMin: // value for 'timeMin'
+ *      city: // value for 'city'
  *   },
  * });
  */
-export function useGetAllParkourQuery(baseOptions?: Apollo.QueryHookOptions<GetAllParkourQuery, GetAllParkourQueryVariables>) {
+export function useGetTop20ParkourBySearchQuery(baseOptions: Apollo.QueryHookOptions<GetTop20ParkourBySearchQuery, GetTop20ParkourBySearchQueryVariables> & ({ variables: GetTop20ParkourBySearchQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetAllParkourQuery, GetAllParkourQueryVariables>(GetAllParkourDocument, options);
+        return Apollo.useQuery<GetTop20ParkourBySearchQuery, GetTop20ParkourBySearchQueryVariables>(GetTop20ParkourBySearchDocument, options);
       }
-export function useGetAllParkourLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllParkourQuery, GetAllParkourQueryVariables>) {
+export function useGetTop20ParkourBySearchLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTop20ParkourBySearchQuery, GetTop20ParkourBySearchQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetAllParkourQuery, GetAllParkourQueryVariables>(GetAllParkourDocument, options);
+          return Apollo.useLazyQuery<GetTop20ParkourBySearchQuery, GetTop20ParkourBySearchQueryVariables>(GetTop20ParkourBySearchDocument, options);
         }
-export function useGetAllParkourSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetAllParkourQuery, GetAllParkourQueryVariables>) {
+export function useGetTop20ParkourBySearchSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetTop20ParkourBySearchQuery, GetTop20ParkourBySearchQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetAllParkourQuery, GetAllParkourQueryVariables>(GetAllParkourDocument, options);
+          return Apollo.useSuspenseQuery<GetTop20ParkourBySearchQuery, GetTop20ParkourBySearchQueryVariables>(GetTop20ParkourBySearchDocument, options);
         }
-export type GetAllParkourQueryHookResult = ReturnType<typeof useGetAllParkourQuery>;
-export type GetAllParkourLazyQueryHookResult = ReturnType<typeof useGetAllParkourLazyQuery>;
-export type GetAllParkourSuspenseQueryHookResult = ReturnType<typeof useGetAllParkourSuspenseQuery>;
-export type GetAllParkourQueryResult = Apollo.QueryResult<GetAllParkourQuery, GetAllParkourQueryVariables>;
+export type GetTop20ParkourBySearchQueryHookResult = ReturnType<typeof useGetTop20ParkourBySearchQuery>;
+export type GetTop20ParkourBySearchLazyQueryHookResult = ReturnType<typeof useGetTop20ParkourBySearchLazyQuery>;
+export type GetTop20ParkourBySearchSuspenseQueryHookResult = ReturnType<typeof useGetTop20ParkourBySearchSuspenseQuery>;
+export type GetTop20ParkourBySearchQueryResult = Apollo.QueryResult<GetTop20ParkourBySearchQuery, GetTop20ParkourBySearchQueryVariables>;
 export const GetUserByTokenDocument = gql`
     query GetUserByToken {
   getUserByToken {

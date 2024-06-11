@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { SyntheticEvent, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import {
   Difficulty,
   ParkourCreateEntity,
   useCreateParkourMutation,
-  useGetListEpreuveByTitleQuery,
+  useGetListTop20EpreuveByTitleLazyQuery,
 } from "@/types/graphql";
 
 import { toast } from "react-hot-toast";
@@ -100,13 +100,21 @@ const createParkour = () => {
   };
 
   // --- DEAL WITH IDS EPREUVES ---
-  const {
-    data: dataEpreuves,
-    loading: loadingEpreuves,
-    error: errorEpreuves,
-  } = useGetListEpreuveByTitleQuery({
-    fetchPolicy: "no-cache",
-  });
+  const [
+    getListEpreuvesByTitle,
+    { data: dataEpreuves, loading: loadingEpreuves, error: errorEpreuves },
+  ] = useGetListTop20EpreuveByTitleLazyQuery();
+
+  const handleSearchTitle = (
+    e: SyntheticEvent<Element, Event>,
+    value: string
+  ) => {
+    getListEpreuvesByTitle({ variables: { title: value as string } });
+  };
+
+  useEffect(() => {
+    getListEpreuvesByTitle();
+  }, []);
 
   const [selectedEpreuveIds, setSelectedEpreuveIds] = useState<number[]>([]);
 
@@ -122,7 +130,7 @@ const createParkour = () => {
       <h1>create parkour</h1>
 
       <form onSubmit={handleSubmit(handleCreateParkour)}>
-        <div>
+        <div className="champ">
           <TextField
             className="mui-input"
             fullWidth
@@ -141,7 +149,7 @@ const createParkour = () => {
           </span>
           <p className="error">{errors?.title?.message}</p>
         </div>
-        <div>
+        <div className="champ">
           <TextField
             className="mui-input"
             fullWidth
@@ -164,132 +172,138 @@ const createParkour = () => {
           <p className="error">{errors?.description?.message}</p>
         </div>
 
-        <div>
-          <TextField
-            className="mui-input"
-            fullWidth
-            variant="outlined"
-            label="temps moyen pour finir le parkour"
-            required
-            {...register("time")}
-            InputProps={{ inputProps: { max: 600 } }}
-            id="time"
-            name="time"
-            type="number"
-          />
-          <p className="error">{errors?.time?.message}</p>
-        </div>
-        <div>
-          <TextField
-            className="mui-input"
-            fullWidth
-            variant="outlined"
-            label="longueur du parkour"
-            required
-            {...register("length")}
-            InputProps={{ inputProps: { max: 60 } }}
-            id="length"
-            name="length"
-            type="number"
-          />
-          <p className="error">{errors?.length?.message}</p>
-        </div>
-
-        <div>
-          <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-            <InputLabel id="demo-simple-select-standard-label">
-              Difficultée
-            </InputLabel>
-            <Select
+        <div className="containerMiniChamp">
+          <div className="champ">
+            <TextField
               className="mui-input"
               fullWidth
               variant="outlined"
-              id="difficulty"
-              name="difficulty"
-              label="Difficultée"
-              onChange={(e) =>
-                setChoosenDifficulty(e.target.value as Difficulty)
-              }
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              <MenuItem value="facile">{Difficulty.Facile}</MenuItem>
-              <MenuItem value="moyen">{Difficulty.Moyen}</MenuItem>
-              <MenuItem value="difficile">{Difficulty.Difficile}</MenuItem>
-            </Select>
-          </FormControl>
-          <p className="error">{errors?.difficulty?.message}</p>
+              label="temps moyen pour finir le parkour"
+              required
+              {...register("time")}
+              InputProps={{ inputProps: { max: 600 } }}
+              id="time"
+              name="time"
+              type="number"
+            />
+            <p className="error">{errors?.time?.message}</p>
+          </div>
+          <div className="champ">
+            <TextField
+              className="mui-input"
+              fullWidth
+              variant="outlined"
+              label="longueur du parkour"
+              required
+              {...register("length")}
+              InputProps={{ inputProps: { max: 60 } }}
+              id="length"
+              name="length"
+              type="number"
+            />
+            <p className="error">{errors?.length?.message}</p>
+          </div>
         </div>
 
-        <div>
-          <TextField
-            className="mui-input"
-            fullWidth
-            variant="outlined"
-            label="Ville de départ"
-            {...register("city")}
-            id="city"
-            name="city"
-            type="text"
-            inputProps={{ maxLength: 50 }}
-            onChange={(e) => handleChangeAThing("city", e.target.value)}
-          />
-          <span>
-            {values.city.length > 0 ? `${values.city.length}/50` : ""}
-          </span>
-          <p className="error">{errors?.city?.message}</p>
-        </div>
-        <div>
-          <TextField
-            className="mui-input"
-            fullWidth
-            variant="outlined"
-            label="Point gps de départ"
-            required
-            {...register("start")}
-            id="start"
-            name="start"
-            type="text"
-            inputProps={{ maxLength: 20 }}
-            onChange={(e) => handleChangeAThing("start", e.target.value)}
-          />
-          <span>
-            {values.start.length > 0 ? `${values.start.length}/20` : ""}
-          </span>
-          <p className="error">{errors?.start?.message}</p>
+        <div className="containerMiniChamp">
+          <div className="champ">
+            <TextField
+              className="mui-input"
+              fullWidth
+              variant="outlined"
+              label="Ville de départ"
+              {...register("city")}
+              id="city"
+              name="city"
+              type="text"
+              inputProps={{ maxLength: 50 }}
+              onChange={(e) => handleChangeAThing("city", e.target.value)}
+            />
+            <span>
+              {values.city.length > 0 ? `${values.city.length}/50` : ""}
+            </span>
+            <p className="error">{errors?.city?.message}</p>
+          </div>
+          <div className="champ">
+            <TextField
+              className="mui-input"
+              fullWidth
+              variant="outlined"
+              label="Point gps de départ"
+              required
+              {...register("start")}
+              id="start"
+              name="start"
+              type="text"
+              inputProps={{ maxLength: 20 }}
+              onChange={(e) => handleChangeAThing("start", e.target.value)}
+            />
+            <span>
+              {values.start.length > 0 ? `${values.start.length}/20` : ""}
+            </span>
+            <p className="error">{errors?.start?.message}</p>
+          </div>
         </div>
 
-        <div>
-          <Autocomplete
-            sx={{ width: 300 }}
-            id="epreuves"
-            className="titleBar"
-            multiple
-            loading={loadingEpreuves}
-            disableCloseOnSelect
-            // on change
-            onChange={(e, value, detail) => handleEpreuveSelection(value)}
-            // pour rechercher dans le back
-            options={dataEpreuves?.getListEpreuveByTitle ?? []}
-            // render qui veut un string
-            getOptionLabel={(option) => option.title}
-            // pour le style autour
-            renderInput={(params) => (
-              <TextField
-                {...params}
+        <div className="containerFlexChamp">
+          <div className="champ">
+            <FormControl sx={{ m: 1, minWidth: 150 }}>
+              <InputLabel id="demo-simple-select-autowidth-label">
+                Difficultée
+              </InputLabel>
+              <Select
+                className="mui-input"
                 variant="outlined"
-                label="Recherche une épreuve par titre"
-              />
-            )}
-            // pour la liste déroulante
-            renderOption={(props, option, { selected }) => (
-              <li {...props} key={option.id} value={option.id}>
-                {option.title}
-                {selected ? <FaCheck /> : null}
-              </li>
-            )}
-          />
+                id="difficulty"
+                name="difficulty"
+                label="Difficultée"
+                onChange={(e) =>
+                  setChoosenDifficulty(e.target.value as Difficulty)
+                }
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                <MenuItem value="facile">{Difficulty.Facile}</MenuItem>
+                <MenuItem value="moyen">{Difficulty.Moyen}</MenuItem>
+                <MenuItem value="difficile">{Difficulty.Difficile}</MenuItem>
+              </Select>
+            </FormControl>
+            <p className="error">{errors?.difficulty?.message}</p>
+          </div>
+
+          <div className="champ">
+            <Autocomplete
+              id="epreuves"
+              className="mui-input titleBar"
+              multiple
+              fullWidth
+              loading={loadingEpreuves}
+              disableCloseOnSelect
+              // on change
+              onInputChange={handleSearchTitle}
+              onChange={(e, value, detail) => handleEpreuveSelection(value)}
+              // pour rechercher dans le back
+              options={dataEpreuves?.getListTop20EpreuveByTitle ?? []}
+              // render qui veut un string
+              getOptionLabel={(option) => option.title}
+              // pour le style autour
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  variant="outlined"
+                  label="Recherche une épreuve par titre"
+                />
+              )}
+              // pour la liste déroulante
+              renderOption={(props, option, { selected }) => (
+                <li {...props} key={option.id} value={option.id}>
+                  {option.title}
+                  {selected ? <FaCheck /> : null}
+                </li>
+              )}
+            />
+          </div>
         </div>
 
         <button type="submit" disabled={loading}>

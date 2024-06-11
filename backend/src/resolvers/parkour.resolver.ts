@@ -14,15 +14,39 @@ export default class ParkourResolver {
     return result;
   }
 
-  @Query(() => ParkourEntity)
-  async getParkourByTitle(@Arg("title") title: string) {
-    const result = await new ParkourService().getByTitle(title);
+  // pour le search auto-complete
+  @Query(() => [ParkourEntity])
+  async getTop20ParkourByTitle(
+    @Arg("title", { nullable: true }) title: string
+  ) {
+    const result: ParkourEntity[] =
+      await new ParkourService().getListTop20ByTitle(title);
     return result;
   }
 
+  // pour le search et pagination
   @Query(() => [ParkourEntity])
-  async getAllParkour() {
-    const result: ParkourEntity[] = await new ParkourService().getAll();
+  async getTop20ParkourBySearch(
+    @Arg("startPage") startPage: number,
+    @Arg("city", { nullable: true }) city: string,
+    @Arg("timeMin", { nullable: true }) timeMin: number,
+    @Arg("timeMax", { nullable: true }) timeMax: number,
+    @Arg("lengthMin", { nullable: true }) lengthMin: number,
+    @Arg("lengthMax", { nullable: true }) lengthMax: number,
+    @Arg("difficulty", { nullable: true }) difficulty: string,
+    @Arg("noteMin", { nullable: true }) noteMin: number
+  ) {
+    const result: ParkourEntity[] =
+      await new ParkourService().getTop20ParkourBySearch(
+        startPage,
+        city,
+        timeMin,
+        timeMax,
+        lengthMin,
+        lengthMax,
+        difficulty,
+        noteMin
+      );
     return result;
   }
 

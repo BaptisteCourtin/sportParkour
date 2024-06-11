@@ -30,17 +30,46 @@ export const GET_PARKOUR_BY_ID = gql`
 //   "getParkourByIdId": 7
 // }
 
-export const GET_PARKOUR_BY_TITLE = gql`
-  query GetParkourByTitle($title: String!) {
-    getParkourByTitle(title: $title) {
+export const GET_TOP20_PARKOUR_BY_SEARCH_TITLE = gql`
+  query GetListTop20ParkourByTitle($title: String) {
+    getTop20ParkourByTitle(title: $title) {
       id
       title
-      description
+    }
+  }
+`;
+
+// {
+//   "title": "dita"
+// }
+
+export const GET_TOP20_PARKOUR_BY_SEARCH = gql`
+  query GetTop20ParkourBySearch(
+    $startPage: Float!
+    $noteMin: Float
+    $difficulty: String
+    $lengthMax: Float
+    $lengthMin: Float
+    $timeMax: Float
+    $timeMin: Float
+    $city: String
+  ) {
+    getTop20ParkourBySearch(
+      startPage: $startPage
+      noteMin: $noteMin
+      difficulty: $difficulty
+      lengthMax: $lengthMax
+      lengthMin: $lengthMin
+      timeMax: $timeMax
+      timeMin: $timeMin
+      city: $city
+    ) {
+      id
+      title
       time
       length
       difficulty
       city
-      start
       note
       nbVote
       images {
@@ -57,31 +86,12 @@ export const GET_PARKOUR_BY_TITLE = gql`
 `;
 
 // {
-//   "title": "nisi exercitationem quaerat"
+//   "startPage": 0,
+//   "noteMin": null,
+//   "difficulty": null,
+//   "lengthMax": null,
+//   "lengthMin": null,
+//   "timeMax": null,
+//   "timeMin": null,
+//   "city": null
 // }
-
-export const GET_ALL_PARKOUR = gql`
-  query GetAllParkour {
-    getAllParkour {
-      id
-      title
-      description
-      time
-      length
-      difficulty
-      city
-      start
-      note
-      nbVote
-      images {
-        id
-        lien
-        isCouverture
-      }
-      epreuves {
-        id
-        title
-      }
-    }
-  }
-`;

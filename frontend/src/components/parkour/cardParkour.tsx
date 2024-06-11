@@ -12,7 +12,7 @@ import { FaCircleArrowRight } from "react-icons/fa6";
 const cardParkour = ({
   parkour,
 }: {
-  parkour: GetParkourByIdQuery["getParkourById"];
+  parkour: Omit<GetParkourByIdQuery, "start" | "description">["getParkourById"];
 }) => {
   const couvertureImage = parkour.images?.find((image) => image.isCouverture);
 
@@ -58,7 +58,9 @@ const cardParkour = ({
               precision={0.1}
               readOnly
             />
-            <span className="nbVote">{parkour.nbVote} votes</span>
+            <span className="nbVote">
+              {parkour.note.toFixed(1)} sur {parkour.nbVote} votes
+            </span>
           </div>
         ) : (
           <p>Nouveau</p>

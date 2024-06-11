@@ -50,10 +50,47 @@ form {
 
   .containerMiniChamp {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: var(--gap);
   }
 
+  // parkour enum + multiple choose
+  .containerFlexChamp {
+    display: flex;
+    align-items: center;
+    gap: var(--gap);
+
+    .champ {
+      &:nth-child(1) {
+        flex: 1;
+        color: var(--text2);
+
+        label {
+          color: var(--text2Trans);
+          font-style: italic;
+          padding: 0 var(--espace) 0 0;
+        }
+      }
+
+      .MuiChip-deletable {
+        border: 1px solid var(--text2);
+
+        svg {
+          fill: var(--text2);
+        }
+
+        span {
+          color: var(--text2);
+        }
+      }
+    }
+
+    svg {
+      fill: var(--text2);
+    }
+  }
+
+  // text de base
   .champ {
     display: flex;
     flex-direction: column;
@@ -64,11 +101,13 @@ form {
 
     .mui-input {
       background-color: var(--back);
+      color: var(--text2);
       border-radius: var(--radius);
 
       label {
         color: var(--text2Trans);
         font-style: italic;
+        padding: 0 var(--espace) 0 0;
       }
 
       input,
@@ -92,6 +131,14 @@ form {
     align-self: center;
     margin: 10px 0;
   }
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin: 0;
 }
 
 a {
@@ -158,7 +205,7 @@ h4 {
     padding: var(--espace); // permet de ne pas coller le bord
 
     width: 100%;
-    max-width: 1360px;
+    max-width: 1370px;
 
     display: flex;
     flex-direction: column;

@@ -23,9 +23,6 @@ const OneEpreuve = () => {
     if (router.isReady && id) {
       getEpreuve({
         variables: { getEpreuveByIdId: +id },
-        // onCompleted(data) {
-        //   console.log(data);
-        // },
         onError(err: any) {
           console.error("error", err);
         },

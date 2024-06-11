@@ -48,10 +48,14 @@ const allEpreuves = () => {
               <Link href="/admin/createEpreuve">créer une épreuve</Link>
             ) : null}
 
-            <SearchBarEpreuve />
+            <form>
+              <div className="champ">
+                <SearchBarEpreuve />
+              </div>
+            </form>
 
-            <form className="chercheIdEpreuve" onSubmit={handleSearchById}>
-              <div>
+            <form onSubmit={handleSearchById}>
+              <div className="champ">
                 <TextField
                   className="mui-input"
                   fullWidth

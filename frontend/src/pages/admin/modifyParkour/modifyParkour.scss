@@ -6,6 +6,17 @@
 
   width: 100%;
 
+  form {
+    width: 100%;
+    max-width: 700px;
+    background-color: var(--middle);
+
+    margin: var(--espace) 0;
+    padding: var(--espace);
+    border-radius: var(--radius);
+    border-top: var(--line) solid var(--blue);
+  }
+
   .carrouselParkour {
     width: 360px;
     height: 340px;

@@ -1,17 +1,50 @@
 import { useRouter } from "next/router";
 import {
-  GetParkourByIdQuery,
-  useGetAllParkourQuery,
+  Difficulty,
+  useGetTop20ParkourBySearchLazyQuery,
   useIsAdminQuery,
 } from "@/types/graphql";
 
 import CardParkour from "@/components/parkour/cardParkour";
 import TextField from "@mui/material/TextField";
 import Link from "next/link";
+import SearchBarParkour from "@/components/parkour/searchBarParkour";
+import Stack from "@mui/material/Stack";
+import Pagination from "@mui/material/Pagination";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { mixed, number, object, string } from "yup";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import Rating from "@mui/material/Rating";
+import Slider from "@mui/material/Slider";
 
-// appel à 20 parkours (les + proches de base)
-// les 20 + nouveaux
-// favoris (???)
+let createSearchByAllSchema = object({
+  city: string().max(50, "Une ville, pas un lieu-dit paumé"),
+  timeMin: number()
+    .min(0, "Remonter dans le temps n'ai pas une option")
+    .max(600, "Tu va déjà avoir mal à ce niveau"),
+  timeMax: number()
+    .min(0, "Remonter dans le temps n'ai pas une option")
+    .max(600, "Tu va déjà avoir mal à ce niveau"),
+  lengthMin: number()
+    .min(0, "Marcher en arrière est dangereux pour votre santée")
+    .max(60, "Tu va déjà avoir mal à ce niveau"),
+  lengthMax: number()
+    .min(0, "Marcher en arrière est dangereux pour votre santée")
+    .max(60, "Tu va déjà avoir mal à ce niveau"),
+  difficulty: mixed<Difficulty>().oneOf(Object.values(Difficulty)),
+  noteMin: number()
+    .min(
+      0,
+      "Nous enlevons de notre site les parkours avec moins de 0 étoiles (c fo)"
+    )
+    .max(5, "5/5 c'est déjà bien. Non?"),
+});
+
 export default function Home() {
   const router = useRouter();
 
@@ -21,25 +54,127 @@ export default function Home() {
     error: errorIsAdmin,
   } = useIsAdminQuery();
 
-  const { data, loading, error } = useGetAllParkourQuery({
-    fetchPolicy: "no-cache",
+  // --- PAGINATION ---
+  const [page, setPage] = useState(1);
+  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value);
+  };
+
+  // --- SEARCH BY ALL ---
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(createSearchByAllSchema),
   });
 
-  // const [
-  //   getParkourById,
-  //   { data: dataById, loading: loadingById, error: errorById },
-  // ] = useGetParkourLazyQuery({
-  //   fetchPolicy: "no-cache",
-  // });
+  const [get20Parkour, { data, loading, error }] =
+    useGetTop20ParkourBySearchLazyQuery();
 
-  // const [
-  //   getParkourByName,
-  //   { data: dataByName, loading: loadingByName, error: errorByName },
-  // ] = useGetParkourLazyQuery({
-  //   fetchPolicy: "no-cache",
-  // });
+  // --- VALUES SEARCH BY ALL ---
 
-  // --- GET BY ID ---
+  const minDistance = 10;
+  const [choosenCity, setChoosenChoosenCity] = useState("");
+  const [choosenDificulty, setChoosenDifficulty] = useState<Difficulty | "">(
+    ""
+  );
+  const [valueLength, setValueLength] = useState<number[]>([0, 60]);
+  const [valueTime, setValueTime] = useState<number[]>([0, 600]);
+  const [choosenNoteMin, setChoosenNoteMin] = useState(0);
+
+  const handleChangeLength = (
+    event: Event,
+    newValue: number | number[],
+    activeThumb: number
+  ) => {
+    if (!Array.isArray(newValue)) {
+      return;
+    }
+
+    if (newValue[1] - newValue[0] < minDistance) {
+      if (activeThumb === 0) {
+        const clamped = Math.min(newValue[0], 60 - minDistance);
+        setValueLength([clamped, clamped + minDistance]);
+      } else {
+        const clamped = Math.max(newValue[1], minDistance);
+        setValueLength([clamped - minDistance, clamped]);
+      }
+    } else {
+      setValueLength(newValue as number[]);
+    }
+  };
+
+  const handleChangeTime = (
+    event: Event,
+    newValue: number | number[],
+    activeThumb: number
+  ) => {
+    if (!Array.isArray(newValue)) {
+      return;
+    }
+
+    if (newValue[1] - newValue[0] < minDistance) {
+      if (activeThumb === 0) {
+        const clamped = Math.min(newValue[0], 600 - minDistance);
+        setValueTime([clamped, clamped + minDistance]);
+      } else {
+        const clamped = Math.max(newValue[1], minDistance);
+        setValueTime([clamped - minDistance, clamped]);
+      }
+    } else {
+      setValueTime(newValue as number[]);
+    }
+  };
+
+  // --- REQUEST SEARCH BY ALL ---
+
+  const makeTheRequest = () => {
+    // console.log(
+    //   (page - 1) * 20,
+    //   choosenCity.toLowerCase(),
+    //   valueTime[0],
+    //   valueTime[1],
+    //   valueLength[0],
+    //   valueLength[1],
+    //   choosenDificulty,
+    //   choosenNoteMin
+    // );
+    get20Parkour({
+      variables: {
+        startPage: (page - 1) * 20,
+        city: choosenCity,
+        timeMin: valueTime[0],
+        timeMax: valueTime[1],
+        lengthMin: valueLength[0],
+        lengthMax: valueLength[1],
+        difficulty: choosenDificulty,
+        noteMin: choosenNoteMin,
+      },
+      onError(err: any) {
+        console.error("error", err);
+      },
+    });
+  };
+
+  const handleSearchByAll = () => {
+    setPage(1);
+    makeTheRequest();
+  };
+
+  useEffect(() => {
+    makeTheRequest();
+  }, [page]);
+
+  const resetChoosen = () => {
+    setChoosenChoosenCity("");
+    setChoosenDifficulty("");
+    setValueLength([0, 60]);
+    setValueTime([0, 600]);
+    setChoosenNoteMin(0);
+  };
+
+  // --- SEARCH BY ID ---
   const handleSearchById = (e: React.MouseEvent<HTMLFormElement>): void => {
     e.preventDefault();
 
@@ -56,7 +191,7 @@ export default function Home() {
       ) : loading ? (
         <h2>Chargement en cours</h2>
       ) : (
-        data?.getAllParkour && (
+        data?.getTop20ParkourBySearch && (
           <>
             <h1>Bonjour</h1>
 
@@ -64,8 +199,14 @@ export default function Home() {
               <Link href="/admin/createParkour">créer un parkour</Link>
             ) : null}
 
-            <form className="chercheIdParkour" onSubmit={handleSearchById}>
-              <div>
+            <form>
+              <div className="champ">
+                <SearchBarParkour />
+              </div>
+            </form>
+
+            <form onSubmit={handleSearchById}>
+              <div className="champ">
                 <TextField
                   className="mui-input"
                   fullWidth
@@ -80,13 +221,118 @@ export default function Home() {
               <button type="submit">Chercher par numéro</button>
             </form>
 
+            {/* --- */}
+
+            <section className="formSearchParkour">
+              <div className="champ">
+                <TextField
+                  className="mui-input"
+                  fullWidth
+                  variant="outlined"
+                  label="Ville de départ"
+                  {...register("city")}
+                  id="city"
+                  name="city"
+                  type="text"
+                  inputProps={{ maxLength: 50 }}
+                  value={choosenCity}
+                  onChange={(e) => setChoosenChoosenCity(e.target.value)}
+                />
+              </div>
+
+              <div className="champ difficulty">
+                <FormControl sx={{ m: 1, minWidth: 150 }}>
+                  <InputLabel id="demo-simple-select-autowidth-label">
+                    Difficultée
+                  </InputLabel>
+                  <Select
+                    className="mui-input"
+                    variant="outlined"
+                    id="difficulty"
+                    name="difficulty"
+                    label="Difficultée"
+                    value={choosenDificulty}
+                    onChange={(e) =>
+                      setChoosenDifficulty(e.target.value as Difficulty)
+                    }
+                  >
+                    <MenuItem value="">
+                      <em>None</em>
+                    </MenuItem>
+                    <MenuItem value="EASY">{Difficulty.Facile}</MenuItem>
+                    <MenuItem value="MEDIUM">{Difficulty.Moyen}</MenuItem>
+                    <MenuItem value="HARD">{Difficulty.Difficile}</MenuItem>
+                  </Select>
+                </FormControl>
+              </div>
+
+              <div className="champ">
+                <label>distance :</label>
+                <Slider
+                  sx={{ width: 300 }}
+                  value={valueLength}
+                  onChange={handleChangeLength}
+                  valueLabelDisplay="auto"
+                  disableSwap
+                  step={5}
+                  min={0}
+                  max={60}
+                />
+              </div>
+              <div className="champ">
+                <label>temps :</label>
+                <Slider
+                  sx={{ width: 300 }}
+                  value={valueTime}
+                  onChange={handleChangeTime}
+                  valueLabelDisplay="auto"
+                  disableSwap
+                  step={10}
+                  min={0}
+                  max={600}
+                />
+              </div>
+
+              <div className="champ searchNote">
+                <Rating
+                  id="searchNoteMin"
+                  name="searchNoteMin"
+                  precision={0.5}
+                  defaultValue={0}
+                  value={choosenNoteMin}
+                  onChange={(event, newValue) => {
+                    setChoosenNoteMin(newValue as number);
+                  }}
+                />
+                <button onClick={() => setChoosenNoteMin(0)}>
+                  reset note voulue
+                </button>
+              </div>
+              <button
+                disabled={loading}
+                onClick={handleSubmit(handleSearchByAll)}
+              >
+                Chercher
+              </button>
+            </section>
+
+            <button onClick={() => resetChoosen()}>reset la recherche</button>
+
             <ul className="cardsParkoursUl">
-              {data?.getAllParkour.map(
-                (parkour: GetParkourByIdQuery["getParkourById"]) => (
-                  <CardParkour parkour={parkour} key={parkour.id} />
-                )
-              )}
+              {data?.getTop20ParkourBySearch.map((parkour: any) => (
+                <CardParkour parkour={parkour} key={parkour.id} />
+              ))}
             </ul>
+
+            <Stack spacing={2}>
+              <Pagination
+                count={10}
+                page={page}
+                onChange={handleChange}
+                variant="outlined"
+                shape="rounded"
+              />
+            </Stack>
           </>
         )
       )}

@@ -6,6 +6,8 @@ import FormControl from "@mui/material/FormControl";
 import NativeSelect from "@mui/material/NativeSelect";
 
 import CardFavParkour from "@/components/parkour/cardFavParkour";
+import Select from "@mui/material/Select";
+import { MenuItem } from "@mui/material";
 
 const favoris = () => {
   const [getFav, { data, loading, error }] = useGetAllUserFavByTokenLazyQuery();
@@ -22,20 +24,37 @@ const favoris = () => {
 
   return (
     <main className="favoris">
-      <FormControl className="containerInputTri">
-        <InputLabel htmlFor="tri">Trier par :</InputLabel>
-        <NativeSelect onChange={(event) => setTri(event.target.value)}>
-          <option value="default">Par défaut</option>
-          <option value="noteDecroissant">note décroissant</option>
-          <option value="noteCroissant">note croissant</option>
-          <option value="nomAZ">nom A-Z</option>
-          <option value="nomZA">nom Z-A</option>
-          <option value="tempsDecroissant">temps décroissant</option>
-          <option value="tempsCroissant">temps croissant</option>
-          <option value="longueurDecroissant">longueur décroissant</option>
-          <option value="longueurCroissant">longueur croissant</option>
-        </NativeSelect>
-      </FormControl>
+      <form>
+        <div className="champ">
+          <FormControl
+            className="containerInputTri"
+            sx={{ m: 1, minWidth: 250 }}
+          >
+            <InputLabel htmlFor="tri">Trier par :</InputLabel>
+            <Select
+              className="mui-input"
+              variant="outlined"
+              id="difficulty"
+              name="difficulty"
+              label="Difficultée"
+              value={tri}
+              onChange={(event) => setTri(event.target.value as string)}
+            >
+              <MenuItem value="default">Par défaut</MenuItem>
+              <MenuItem value="noteDecroissant">note décroissant</MenuItem>
+              <MenuItem value="noteCroissant">note croissant</MenuItem>
+              <MenuItem value="nomAZ">nom A-Z</MenuItem>
+              <MenuItem value="nomZA">nom Z-A</MenuItem>
+              <MenuItem value="tempsDecroissant">temps décroissant</MenuItem>
+              <MenuItem value="tempsCroissant">temps croissant</MenuItem>
+              <MenuItem value="longueurDecroissant">
+                longueur décroissant
+              </MenuItem>
+              <MenuItem value="longueurCroissant">longueur croissant</MenuItem>
+            </Select>
+          </FormControl>
+        </div>
+      </form>
 
       <ul className="cardsFavParkour">
         {data?.getAllUserFavByToken

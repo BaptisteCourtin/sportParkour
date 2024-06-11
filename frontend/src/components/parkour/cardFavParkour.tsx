@@ -58,7 +58,9 @@ const cardFavParkour = ({
               precision={0.1}
               readOnly
             />
-            <span className="nbVote">{parkour.nbVote} votes</span>
+            <span className="nbVote">
+              {parkour.note.toFixed(1)} sur {parkour.nbVote} votes
+            </span>
           </div>
         ) : (
           <p>Nouveau</p>

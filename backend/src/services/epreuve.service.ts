@@ -24,19 +24,6 @@ class EpreuveService {
     return epreuve;
   }
 
-  async getListByTitle(title?: string) {
-    const listEpreuves: EpreuveEntity[] | null = await this.db.find({
-      where: title ? [{ title: Like(`%${title}%`) }] : undefined,
-      relations: ["images"],
-    });
-
-    if (!listEpreuves) {
-      throw new Error("Pas d'épreuve portant ce nom");
-    }
-
-    return listEpreuves;
-  }
-
   async getListByIds(ids?: number[]) {
     const listEpreuves: EpreuveEntity[] | null = await this.db.find({
       where: {
@@ -46,6 +33,20 @@ class EpreuveService {
 
     if (!listEpreuves) {
       throw new Error("Pas d'epreuves");
+    }
+
+    return listEpreuves;
+  }
+
+  async getListTop20ByTitle(title?: string) {
+    const listEpreuves: EpreuveEntity[] | null = await this.db.find({
+      where: title ? [{ title: Like(`%${title}%`) }] : undefined,
+      relations: ["images"],
+      take: 20,
+    });
+
+    if (!listEpreuves) {
+      throw new Error("Pas d'épreuve portant ce nom");
     }
 
     return listEpreuves;

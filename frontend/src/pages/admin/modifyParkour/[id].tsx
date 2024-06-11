@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { SyntheticEvent, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import {
   Difficulty,
   ParkourUpdateEntity,
   useDeleteParkourMutation,
-  useGetListEpreuveByTitleQuery,
+  useGetListTop20EpreuveByTitleLazyQuery,
   useGetParkourByIdLazyQuery,
   useModifyParkourMutation,
 } from "@/types/graphql";
@@ -164,13 +164,21 @@ const modifyOneParkour = () => {
   };
 
   // --- DEAL WITH IDS EPREUVES ---
-  const {
-    data: dataEpreuves,
-    loading: loadingEpreuves,
-    error: errorEpreuves,
-  } = useGetListEpreuveByTitleQuery({
-    fetchPolicy: "no-cache",
-  });
+  const [
+    getListEpreuvesByTitle,
+    { data: dataEpreuves, loading: loadingEpreuves, error: errorEpreuves },
+  ] = useGetListTop20EpreuveByTitleLazyQuery();
+
+  const handleSearchTitle = (
+    e: SyntheticEvent<Element, Event>,
+    value: string
+  ) => {
+    getListEpreuvesByTitle({ variables: { title: value as string } });
+  };
+
+  useEffect(() => {
+    getListEpreuvesByTitle();
+  }, []);
 
   const [selectedEpreuveIds, setSelectedEpreuveIds] = useState<number[]>([]);
   const handleEpreuveSelection = (value: any) => {
@@ -344,15 +352,16 @@ const modifyOneParkour = () => {
                 <Autocomplete
                   sx={{ width: 300 }}
                   id="epreuves"
-                  className="titleBar"
                   multiple
                   loading={loadingEpreuves}
                   disableCloseOnSelect
+                  // valeur de base (repris de la bdd) (sous forme d'épreuve)
                   defaultValue={data.getParkourById.epreuves as any}
                   // on change
+                  onInputChange={handleSearchTitle}
                   onChange={(e, value, detail) => handleEpreuveSelection(value)}
                   // pour rechercher dans le back
-                  options={dataEpreuves?.getListEpreuveByTitle ?? []}
+                  options={dataEpreuves?.getListTop20EpreuveByTitle ?? []}
                   // render qui veut un string
                   getOptionLabel={(option) => option.title}
                   // pour le style autour

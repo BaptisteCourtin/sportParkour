@@ -50,7 +50,19 @@ class ParkourEntity {
   difficulty: Difficulty;
 
   @Field({ nullable: true })
-  @Column({ type: "varchar", length: 50, nullable: true })
+  @Column({
+    type: "varchar",
+    length: 50,
+    nullable: true,
+    transformer: {
+      from(value: string) {
+        return value.toLowerCase();
+      },
+      to(value: string) {
+        return value.toLowerCase();
+      },
+    },
+  })
   city: string;
 
   // 49.421015, -1.388178
