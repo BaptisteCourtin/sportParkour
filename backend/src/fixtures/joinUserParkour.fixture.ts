@@ -6,7 +6,6 @@ import ParkourEntity from "../entities/parkour.entity";
 
 export async function createJoinUserParkour(
   dataSource: DataSource,
-  numJoinUserParkours: number,
   users: UserEntity[],
   parkours: ParkourEntity[]
 ) {
@@ -15,20 +14,27 @@ export async function createJoinUserParkour(
   );
 
   const joinUserParkours = [];
-  for (let i = 0; i < numJoinUserParkours; i++) {
-    const idUser = Math.floor(Math.random() * users.length);
-    const idParkour = Math.floor(Math.random() * parkours.length);
+  // user
+  for (let i = 0; i < users.length; i++) {
+    // parkour
+    const parkoursTab: Number[] = [];
+    for (let j = 0; j < Math.floor(Math.random() * 5); j++) {
+      const idParkour = Math.floor(Math.random() * parkours.length);
 
-    const joinUserParkour = new JoinUserParkourEntity();
-    (joinUserParkour.user_id = users[idUser].id),
-      (joinUserParkour.parkour_id = parkours[idParkour].id),
-      (joinUserParkour.note = faker.number.float({
-        min: 0,
-        max: 5,
-        multipleOf: 0.25,
-      })),
-      (joinUserParkour.favoris = faker.datatype.boolean()),
-      joinUserParkours.push(joinUserParkour);
+      if (!parkoursTab.includes(idParkour)) {
+        const joinUserParkour = new JoinUserParkourEntity();
+        joinUserParkour.user_id = users[i].id;
+        joinUserParkour.parkour_id = parkours[idParkour].id;
+        joinUserParkour.note = faker.number.float({
+          min: 0,
+          max: 5,
+          multipleOf: 0.25,
+        });
+        joinUserParkour.favoris = faker.datatype.boolean();
+        joinUserParkours.push(joinUserParkour);
+        parkoursTab.push(idParkour);
+      }
+    }
   }
 
   return await joinUserParkourRepository.save(joinUserParkours);

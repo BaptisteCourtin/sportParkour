@@ -41,6 +41,7 @@ class EpreuveEntity {
   @Column({ type: "varchar", length: 300, nullable: true })
   videoLink: string;
 
+  // pas besoin de join column en many to one
   @Field(() => [ImageEpreuveEntity], { nullable: true })
   @OneToMany(() => ImageEpreuveEntity, (img) => img.id_epreuve, {
     nullable: true,

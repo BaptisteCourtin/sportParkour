@@ -73,3 +73,10 @@ Pour les images de couverture =>
         on met celui qui est à true
         si pas de true on s'en fout
 
+------------------------------------------------------------------------------------------------------
+
+vérifier enlevage de note quand on supp un user
+  - enlève les notes au parkour ?
+  - rien sur la note du parkour ?
+
+changer la longueur de la pigination avec un count parkour à chaque requetes

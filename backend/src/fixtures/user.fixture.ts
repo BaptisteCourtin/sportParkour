@@ -11,16 +11,16 @@ export async function createUsers(dataSource: DataSource, numUsers: number) {
   const users = [];
   for (let i = 0; i < numUsers; i++) {
     const user = new UserEntity();
-    (user.id = faker.string.uuid()),
-      (user.password = faker.internet.password()),
-      (user.name = faker.person.lastName()),
-      (user.firstname = faker.person.firstName()),
-      (user.email = faker.internet.email()),
-      (user.city = faker.location.city()),
-      (user.codePostal = faker.location.zipCode()),
-      (user.phone = "06" + faker.string.numeric({ length: 8 })),
-      (user.role = Role.CLIENT),
-      users.push(user);
+    user.id = faker.string.uuid();
+    user.password = faker.internet.password();
+    user.name = faker.person.lastName();
+    user.firstname = faker.person.firstName();
+    user.email = faker.internet.email();
+    user.city = faker.location.city();
+    user.codePostal = faker.location.zipCode();
+    user.phone = "06" + faker.string.numeric({ length: 8 });
+    user.role = Role.CLIENT;
+    users.push(user);
   }
 
   return await userRepository.save(users);
