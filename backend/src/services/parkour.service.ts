@@ -29,6 +29,14 @@ class ParkourService {
     return parkour;
   }
 
+  async getAllForMap() {
+    const parkour = await this.db.find({});
+    if (!parkour) {
+      throw new Error("Pas de parkours en stock");
+    }
+    return parkour;
+  }
+
   async getListTop20ByTitle(title?: string) {
     const listParkours: ParkourEntity[] | null = await this.db.find({
       where: title ? [{ title: Like(`%${title}%`) }] : undefined,

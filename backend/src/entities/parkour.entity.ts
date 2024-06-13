@@ -71,11 +71,17 @@ class ParkourEntity {
   start: string;
 
   @Field({ nullable: true })
-  @Column("decimal", { precision: 3, scale: 2, unsigned: true, nullable: true })
+  @Column("decimal", {
+    precision: 3,
+    scale: 2,
+    unsigned: true,
+    nullable: true,
+    default: 0,
+  })
   note: number;
 
   @Field({ nullable: true })
-  @Column({ unsigned: true, nullable: true })
+  @Column({ unsigned: true, nullable: true, default: 0 })
   nbVote: number;
 
   @Field(() => [ImageParkourEntity], { nullable: true })

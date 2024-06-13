@@ -28,28 +28,35 @@ export async function createEpreuves(
 
   const epreuves = [];
   for (let i = 0; i < numEpreuves; i++) {
+    // ---------------------------------------------------------------------------------
+
     // video
     const idVideo = Math.floor(Math.random() * tabVideo.length);
+
+    // ---------------------------------------------------------------------------------
 
     // images
     const imagesEpreuve: ImageEpreuveEntity[] = [];
     for (let j = 0; j < Math.floor(Math.random() * 5); j++) {
       // isCouverture
       let isCouverture = false;
-      if (j == 1) {
+      if (j == 0) {
         isCouverture = true;
       }
 
       // create image
       const image = new ImageEpreuveEntity();
       image.id = indexImage;
-      indexImage++;
       image.lien = faker.image.url();
       image.isCouverture = isCouverture;
+
       imagesEpreuve.push(image);
+      indexImage++;
     }
     // met les images en bdd
     await imageEpreuveRepository.save(imagesEpreuve);
+
+    // ---------------------------------------------------------------------------------
 
     // création épreuve
     const epreuve = new EpreuveEntity();
@@ -62,6 +69,9 @@ export async function createEpreuves(
     epreuve.videoLink = faker.lorem.paragraphs({ min: 1, max: 3 }, "<br/>\n");
     epreuve.videoLink = tabVideo[idVideo];
     epreuve.images = imagesEpreuve;
+
+    // ---------------------------------------------------------------------------------
+
     epreuves.push(epreuve);
   }
 

@@ -210,7 +210,7 @@ export type ParkourUpdateEntity = {
 export type Query = {
   __typename?: 'Query';
   authentification: MessageEntity;
-  getAllParkour: Array<ParkourEntity>;
+  getAllParkourForMap: Array<ParkourEntity>;
   getAllUserFavByToken: Array<JoinUserParkourEntity>;
   getEpreuveById: EpreuveEntity;
   getListEpreuve: Array<EpreuveEntity>;
@@ -439,6 +439,11 @@ export type GetParkourByIdQueryVariables = Exact<{
 
 
 export type GetParkourByIdQuery = { __typename?: 'Query', getParkourById: { __typename?: 'ParkourEntity', id: string, title: string, description?: string | null, time?: number | null, length?: number | null, difficulty?: Difficulty | null, city?: string | null, start: string, note?: number | null, nbVote?: number | null, images?: Array<{ __typename?: 'ImageParkourEntity', id: string, lien?: string | null, isCouverture: boolean }> | null, epreuves?: Array<{ __typename?: 'EpreuveEntity', id: string, title: string }> | null } };
+
+export type GetAllParkourForMapQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllParkourForMapQuery = { __typename?: 'Query', getAllParkourForMap: Array<{ __typename?: 'ParkourEntity', id: string, title: string, start: string }> };
 
 export type GetListTop20ParkourByTitleQueryVariables = Exact<{
   title?: InputMaybe<Scalars['String']['input']>;
@@ -1276,6 +1281,47 @@ export type GetParkourByIdQueryHookResult = ReturnType<typeof useGetParkourByIdQ
 export type GetParkourByIdLazyQueryHookResult = ReturnType<typeof useGetParkourByIdLazyQuery>;
 export type GetParkourByIdSuspenseQueryHookResult = ReturnType<typeof useGetParkourByIdSuspenseQuery>;
 export type GetParkourByIdQueryResult = Apollo.QueryResult<GetParkourByIdQuery, GetParkourByIdQueryVariables>;
+export const GetAllParkourForMapDocument = gql`
+    query GetAllParkourForMap {
+  getAllParkourForMap {
+    id
+    title
+    start
+  }
+}
+    `;
+
+/**
+ * __useGetAllParkourForMapQuery__
+ *
+ * To run a query within a React component, call `useGetAllParkourForMapQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllParkourForMapQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllParkourForMapQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllParkourForMapQuery(baseOptions?: Apollo.QueryHookOptions<GetAllParkourForMapQuery, GetAllParkourForMapQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllParkourForMapQuery, GetAllParkourForMapQueryVariables>(GetAllParkourForMapDocument, options);
+      }
+export function useGetAllParkourForMapLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllParkourForMapQuery, GetAllParkourForMapQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllParkourForMapQuery, GetAllParkourForMapQueryVariables>(GetAllParkourForMapDocument, options);
+        }
+export function useGetAllParkourForMapSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetAllParkourForMapQuery, GetAllParkourForMapQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetAllParkourForMapQuery, GetAllParkourForMapQueryVariables>(GetAllParkourForMapDocument, options);
+        }
+export type GetAllParkourForMapQueryHookResult = ReturnType<typeof useGetAllParkourForMapQuery>;
+export type GetAllParkourForMapLazyQueryHookResult = ReturnType<typeof useGetAllParkourForMapLazyQuery>;
+export type GetAllParkourForMapSuspenseQueryHookResult = ReturnType<typeof useGetAllParkourForMapSuspenseQuery>;
+export type GetAllParkourForMapQueryResult = Apollo.QueryResult<GetAllParkourForMapQuery, GetAllParkourForMapQueryVariables>;
 export const GetListTop20ParkourByTitleDocument = gql`
     query GetListTop20ParkourByTitle($title: String) {
   getTop20ParkourByTitle(title: $title) {

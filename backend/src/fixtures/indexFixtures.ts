@@ -4,8 +4,6 @@ import { createUsers } from "./user.fixture";
 import { createEpreuves } from "./epreuve.fixture";
 import { createParkours } from "./parkour.fixture";
 
-import { createJoinUserParkour } from "./joinUserParkour.fixture";
-
 // const numberEpreuve = 5;
 // const numberParkour = 5;
 // const numberUser = 5;
@@ -25,15 +23,14 @@ async function indexFixtures() {
     // Insérer les données de test pour chaque entité
     const epreuves = await createEpreuves(dataSource, numberEpreuve); // epreuves et imagesEpreuves
 
+    const users = await createUsers(dataSource, numberUser); // utilisateurs
+
     const parkours = await createParkours(
       dataSource,
       numberParkour,
       epreuves,
-      numberUser
-    ); // crée aussi les joinParkourEpreuve
-    const users = await createUsers(dataSource, numberUser); // crée les utilisateurs
-
-    await createJoinUserParkour(dataSource, users, parkours); // crée les likes et notes
+      users
+    ); // parkours, joinParkourEpreuve, imageParkour, joinUserParkour
 
     console.log("Données de test insérées avec succès !");
   } catch (error) {
@@ -44,6 +41,3 @@ async function indexFixtures() {
 }
 
 indexFixtures();
-function useState(arg0: number): [any, any] {
-  throw new Error("Function not implemented.");
-}

@@ -14,6 +14,12 @@ export default class ParkourResolver {
     return result;
   }
 
+  @Query(() => [ParkourEntity])
+  async getAllParkourForMap() {
+    const result = await new ParkourService().getAllForMap();
+    return result;
+  }
+
   // pour le search auto-complete
   @Query(() => [ParkourEntity])
   async getTop20ParkourByTitle(

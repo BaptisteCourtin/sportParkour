@@ -1,12 +1,15 @@
 import React from "react";
-import { GetParkourByIdQuery, useGetAllParkourQuery } from "@/types/graphql";
+import {
+  GetParkourByIdQuery,
+  useGetAllParkourForMapQuery,
+} from "@/types/graphql";
 
 import { APIProvider, Map } from "@vis.gl/react-google-maps";
 import PoiMarker from "@/components/parkour/poiMarker";
 
 // mettre la clé api dans un .env
 const parkourMap = () => {
-  const { data, loading, error } = useGetAllParkourQuery({
+  const { data, loading, error } = useGetAllParkourForMapQuery({
     fetchPolicy: "no-cache",
   });
 
@@ -14,7 +17,7 @@ const parkourMap = () => {
     <main className="parkourMap">
       <APIProvider
         apiKey={process.env.NEXT_PUBLIC_MAPS_API_KEY as string}
-        // onLoad={() => console.log("Maps API has loaded.")}
+        onLoad={() => console.log("Maps API has loaded.")}
       >
         <Map
           className="map"
@@ -23,7 +26,7 @@ const parkourMap = () => {
           mapId="da37f3254c6a6d1c"
           id="map"
         >
-          {data?.getAllParkour.map(
+          {data?.getAllParkourForMap.map(
             (poi: GetParkourByIdQuery["getParkourById"]) => (
               <PoiMarker poi={poi} />
             )

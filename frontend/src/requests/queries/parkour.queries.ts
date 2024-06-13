@@ -30,6 +30,16 @@ export const GET_PARKOUR_BY_ID = gql`
 //   "getParkourByIdId": 7
 // }
 
+export const GET_ALL_PARKOUR_FOR_MAP = gql`
+  query GetAllParkourForMap {
+    getAllParkourForMap {
+      id
+      title
+      start
+    }
+  }
+`;
+
 export const GET_TOP20_PARKOUR_BY_SEARCH_TITLE = gql`
   query GetListTop20ParkourByTitle($title: String) {
     getTop20ParkourByTitle(title: $title) {
