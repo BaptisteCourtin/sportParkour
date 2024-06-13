@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import {
   Difficulty,
+  useGetTheParkourTotalLazyQuery,
   useGetTop20ParkourBySearchLazyQuery,
   useIsAdminQuery,
 } from "@/types/graphql";
@@ -72,6 +73,11 @@ export default function Home() {
   const [get20Parkour, { data, loading, error }] =
     useGetTop20ParkourBySearchLazyQuery();
 
+  const [
+    getTheParkourTotal,
+    { data: dataTotal, loading: loadingTotal, error: errorTotal },
+  ] = useGetTheParkourTotalLazyQuery();
+
   // --- VALUES SEARCH BY ALL ---
 
   const minDistance = 10;
@@ -82,6 +88,7 @@ export default function Home() {
   const [valueLength, setValueLength] = useState<number[]>([0, 60]);
   const [valueTime, setValueTime] = useState<number[]>([0, 600]);
   const [choosenNoteMin, setChoosenNoteMin] = useState(0);
+  const [tri, setTri] = useState("id_DESC");
 
   const handleChangeLength = (
     event: Event,
@@ -142,8 +149,25 @@ export default function Home() {
     // );
     get20Parkour({
       variables: {
+        triParField: tri.split("_")[0],
+        triParSort: tri.split("_")[1],
         startPage: (page - 1) * 20,
-        city: choosenCity,
+        city: choosenCity.toLowerCase(),
+        timeMin: valueTime[0],
+        timeMax: valueTime[1],
+        lengthMin: valueLength[0],
+        lengthMax: valueLength[1],
+        difficulty: choosenDificulty,
+        noteMin: choosenNoteMin,
+      },
+      onError(err: any) {
+        console.error("error", err);
+      },
+    });
+
+    getTheParkourTotal({
+      variables: {
+        city: choosenCity.toLowerCase(),
         timeMin: valueTime[0],
         timeMax: valueTime[1],
         lengthMin: valueLength[0],
@@ -172,6 +196,7 @@ export default function Home() {
     setValueLength([0, 60]);
     setValueTime([0, 600]);
     setChoosenNoteMin(0);
+    setTri("id_DESC");
   };
 
   // --- SEARCH BY ID ---
@@ -308,15 +333,63 @@ export default function Home() {
                   reset note voulue
                 </button>
               </div>
+
+              <div className="champ">
+                <FormControl
+                  className="containerInputTri"
+                  sx={{ m: 1, minWidth: 250 }}
+                >
+                  <InputLabel htmlFor="tri">Trier par :</InputLabel>
+                  <Select
+                    className="mui-input"
+                    variant="outlined"
+                    id="orderParkour"
+                    name="orderParkour"
+                    label="Difficultée"
+                    value={tri}
+                    onChange={(event) => setTri(event.target.value as string)}
+                  >
+                    <MenuItem value="id_DESC">Par défaut</MenuItem>
+                    <MenuItem value="note_DESC">note décroissant</MenuItem>
+                    <MenuItem value="note_ASC">note croissant</MenuItem>
+                    <MenuItem value="title_ASC">nom A-Z</MenuItem>
+                    <MenuItem value="title_DESC">nom Z-A</MenuItem>
+                    <MenuItem value="time_DESC">temps décroissant</MenuItem>
+                    <MenuItem value="time_ASC">temps croissant</MenuItem>
+                    <MenuItem value="length_DESC">
+                      longueur décroissant
+                    </MenuItem>
+                    <MenuItem value="length_ASC">longueur croissant</MenuItem>
+                  </Select>
+                </FormControl>
+              </div>
+
               <button
                 disabled={loading}
                 onClick={handleSubmit(handleSearchByAll)}
               >
                 Chercher
               </button>
+              <button onClick={() => resetChoosen()}>reset la recherche</button>
             </section>
 
-            <button onClick={() => resetChoosen()}>reset la recherche</button>
+            {/* --- */}
+
+            {dataTotal?.getTheParkourTotal ? (
+              <Stack spacing={2}>
+                <Pagination
+                  count={Math.ceil(dataTotal?.getTheParkourTotal / 20)}
+                  page={page}
+                  onChange={handleChange}
+                  variant="outlined"
+                  shape="rounded"
+                />
+              </Stack>
+            ) : (
+              ""
+            )}
+
+            {/* --- */}
 
             <ul className="cardsParkoursUl">
               {data?.getTop20ParkourBySearch.map((parkour: any) => (
@@ -324,15 +397,21 @@ export default function Home() {
               ))}
             </ul>
 
-            <Stack spacing={2}>
-              <Pagination
-                count={10}
-                page={page}
-                onChange={handleChange}
-                variant="outlined"
-                shape="rounded"
-              />
-            </Stack>
+            {/* --- */}
+
+            {dataTotal?.getTheParkourTotal ? (
+              <Stack spacing={2}>
+                <Pagination
+                  count={Math.ceil(dataTotal?.getTheParkourTotal / 20)}
+                  page={page}
+                  onChange={handleChange}
+                  variant="outlined"
+                  shape="rounded"
+                />
+              </Stack>
+            ) : (
+              ""
+            )}
           </>
         )
       )}

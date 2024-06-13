@@ -2,7 +2,6 @@ import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from "type-graphql";
 import UserEntity, { UserUpdateEntity } from "../entities/user.entity";
 import { MessageEntity } from "../entities/message.entity";
 import UserService from "../services/user.service";
-import AuthService from "../services/auth.service";
 
 import Cookies from "cookies";
 
@@ -16,9 +15,9 @@ export default class UserResolver {
     let user: UserEntity | null = ctx.user;
     let result: UserEntity | null = null;
 
-    if (user?.email) {
+    if (user?.id) {
       // pour la liaison parkour
-      result = await new UserService().getByEmail(user.email);
+      result = await new UserService().getById(user.id);
     }
 
     return result;

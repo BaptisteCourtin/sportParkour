@@ -216,6 +216,7 @@ export type Query = {
   getListEpreuve: Array<EpreuveEntity>;
   getListTop20EpreuveByTitle: Array<EpreuveEntity>;
   getParkourById: ParkourEntity;
+  getTheParkourTotal: Scalars['Float']['output'];
   getTop20ParkourBySearch: Array<ParkourEntity>;
   getTop20ParkourByTitle: Array<ParkourEntity>;
   getUserByToken: UserEntity;
@@ -246,6 +247,17 @@ export type QueryGetParkourByIdArgs = {
 };
 
 
+export type QueryGetTheParkourTotalArgs = {
+  city?: InputMaybe<Scalars['String']['input']>;
+  difficulty?: InputMaybe<Scalars['String']['input']>;
+  lengthMax?: InputMaybe<Scalars['Float']['input']>;
+  lengthMin?: InputMaybe<Scalars['Float']['input']>;
+  noteMin?: InputMaybe<Scalars['Float']['input']>;
+  timeMax?: InputMaybe<Scalars['Float']['input']>;
+  timeMin?: InputMaybe<Scalars['Float']['input']>;
+};
+
+
 export type QueryGetTop20ParkourBySearchArgs = {
   city?: InputMaybe<Scalars['String']['input']>;
   difficulty?: InputMaybe<Scalars['String']['input']>;
@@ -255,6 +267,8 @@ export type QueryGetTop20ParkourBySearchArgs = {
   startPage: Scalars['Float']['input'];
   timeMax?: InputMaybe<Scalars['Float']['input']>;
   timeMin?: InputMaybe<Scalars['Float']['input']>;
+  triParField: Scalars['String']['input'];
+  triParSort: Scalars['String']['input'];
 };
 
 
@@ -453,6 +467,8 @@ export type GetListTop20ParkourByTitleQueryVariables = Exact<{
 export type GetListTop20ParkourByTitleQuery = { __typename?: 'Query', getTop20ParkourByTitle: Array<{ __typename?: 'ParkourEntity', id: string, title: string }> };
 
 export type GetTop20ParkourBySearchQueryVariables = Exact<{
+  triParField: Scalars['String']['input'];
+  triParSort: Scalars['String']['input'];
   startPage: Scalars['Float']['input'];
   noteMin?: InputMaybe<Scalars['Float']['input']>;
   difficulty?: InputMaybe<Scalars['String']['input']>;
@@ -465,6 +481,19 @@ export type GetTop20ParkourBySearchQueryVariables = Exact<{
 
 
 export type GetTop20ParkourBySearchQuery = { __typename?: 'Query', getTop20ParkourBySearch: Array<{ __typename?: 'ParkourEntity', id: string, title: string, time?: number | null, length?: number | null, difficulty?: Difficulty | null, city?: string | null, note?: number | null, nbVote?: number | null, images?: Array<{ __typename?: 'ImageParkourEntity', id: string, lien?: string | null, isCouverture: boolean }> | null, epreuves?: Array<{ __typename?: 'EpreuveEntity', id: string, title: string }> | null }> };
+
+export type GetTheParkourTotalQueryVariables = Exact<{
+  noteMin?: InputMaybe<Scalars['Float']['input']>;
+  difficulty?: InputMaybe<Scalars['String']['input']>;
+  lengthMax?: InputMaybe<Scalars['Float']['input']>;
+  lengthMin?: InputMaybe<Scalars['Float']['input']>;
+  timeMax?: InputMaybe<Scalars['Float']['input']>;
+  timeMin?: InputMaybe<Scalars['Float']['input']>;
+  city?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type GetTheParkourTotalQuery = { __typename?: 'Query', getTheParkourTotal: number };
 
 export type GetUserByTokenQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1364,8 +1393,10 @@ export type GetListTop20ParkourByTitleLazyQueryHookResult = ReturnType<typeof us
 export type GetListTop20ParkourByTitleSuspenseQueryHookResult = ReturnType<typeof useGetListTop20ParkourByTitleSuspenseQuery>;
 export type GetListTop20ParkourByTitleQueryResult = Apollo.QueryResult<GetListTop20ParkourByTitleQuery, GetListTop20ParkourByTitleQueryVariables>;
 export const GetTop20ParkourBySearchDocument = gql`
-    query GetTop20ParkourBySearch($startPage: Float!, $noteMin: Float, $difficulty: String, $lengthMax: Float, $lengthMin: Float, $timeMax: Float, $timeMin: Float, $city: String) {
+    query GetTop20ParkourBySearch($triParField: String!, $triParSort: String!, $startPage: Float!, $noteMin: Float, $difficulty: String, $lengthMax: Float, $lengthMin: Float, $timeMax: Float, $timeMin: Float, $city: String) {
   getTop20ParkourBySearch(
+    triParField: $triParField
+    triParSort: $triParSort
     startPage: $startPage
     noteMin: $noteMin
     difficulty: $difficulty
@@ -1408,6 +1439,8 @@ export const GetTop20ParkourBySearchDocument = gql`
  * @example
  * const { data, loading, error } = useGetTop20ParkourBySearchQuery({
  *   variables: {
+ *      triParField: // value for 'triParField'
+ *      triParSort: // value for 'triParSort'
  *      startPage: // value for 'startPage'
  *      noteMin: // value for 'noteMin'
  *      difficulty: // value for 'difficulty'
@@ -1435,6 +1468,58 @@ export type GetTop20ParkourBySearchQueryHookResult = ReturnType<typeof useGetTop
 export type GetTop20ParkourBySearchLazyQueryHookResult = ReturnType<typeof useGetTop20ParkourBySearchLazyQuery>;
 export type GetTop20ParkourBySearchSuspenseQueryHookResult = ReturnType<typeof useGetTop20ParkourBySearchSuspenseQuery>;
 export type GetTop20ParkourBySearchQueryResult = Apollo.QueryResult<GetTop20ParkourBySearchQuery, GetTop20ParkourBySearchQueryVariables>;
+export const GetTheParkourTotalDocument = gql`
+    query GetTheParkourTotal($noteMin: Float, $difficulty: String, $lengthMax: Float, $lengthMin: Float, $timeMax: Float, $timeMin: Float, $city: String) {
+  getTheParkourTotal(
+    noteMin: $noteMin
+    difficulty: $difficulty
+    lengthMax: $lengthMax
+    lengthMin: $lengthMin
+    timeMax: $timeMax
+    timeMin: $timeMin
+    city: $city
+  )
+}
+    `;
+
+/**
+ * __useGetTheParkourTotalQuery__
+ *
+ * To run a query within a React component, call `useGetTheParkourTotalQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTheParkourTotalQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTheParkourTotalQuery({
+ *   variables: {
+ *      noteMin: // value for 'noteMin'
+ *      difficulty: // value for 'difficulty'
+ *      lengthMax: // value for 'lengthMax'
+ *      lengthMin: // value for 'lengthMin'
+ *      timeMax: // value for 'timeMax'
+ *      timeMin: // value for 'timeMin'
+ *      city: // value for 'city'
+ *   },
+ * });
+ */
+export function useGetTheParkourTotalQuery(baseOptions?: Apollo.QueryHookOptions<GetTheParkourTotalQuery, GetTheParkourTotalQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTheParkourTotalQuery, GetTheParkourTotalQueryVariables>(GetTheParkourTotalDocument, options);
+      }
+export function useGetTheParkourTotalLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTheParkourTotalQuery, GetTheParkourTotalQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTheParkourTotalQuery, GetTheParkourTotalQueryVariables>(GetTheParkourTotalDocument, options);
+        }
+export function useGetTheParkourTotalSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetTheParkourTotalQuery, GetTheParkourTotalQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetTheParkourTotalQuery, GetTheParkourTotalQueryVariables>(GetTheParkourTotalDocument, options);
+        }
+export type GetTheParkourTotalQueryHookResult = ReturnType<typeof useGetTheParkourTotalQuery>;
+export type GetTheParkourTotalLazyQueryHookResult = ReturnType<typeof useGetTheParkourTotalLazyQuery>;
+export type GetTheParkourTotalSuspenseQueryHookResult = ReturnType<typeof useGetTheParkourTotalSuspenseQuery>;
+export type GetTheParkourTotalQueryResult = Apollo.QueryResult<GetTheParkourTotalQuery, GetTheParkourTotalQueryVariables>;
 export const GetUserByTokenDocument = gql`
     query GetUserByToken {
   getUserByToken {

@@ -34,9 +34,9 @@ const favoris = () => {
             <Select
               className="mui-input"
               variant="outlined"
-              id="difficulty"
-              name="difficulty"
-              label="Difficultée"
+              id="orderFavorite"
+              name="orderFavorite"
+              label="Trier par :"
               value={tri}
               onChange={(event) => setTri(event.target.value as string)}
             >

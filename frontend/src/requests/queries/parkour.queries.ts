@@ -55,6 +55,8 @@ export const GET_TOP20_PARKOUR_BY_SEARCH_TITLE = gql`
 
 export const GET_TOP20_PARKOUR_BY_SEARCH = gql`
   query GetTop20ParkourBySearch(
+    $triParField: String!
+    $triParSort: String!
     $startPage: Float!
     $noteMin: Float
     $difficulty: String
@@ -65,6 +67,8 @@ export const GET_TOP20_PARKOUR_BY_SEARCH = gql`
     $city: String
   ) {
     getTop20ParkourBySearch(
+      triParField: $triParField
+      triParSort: $triParSort
       startPage: $startPage
       noteMin: $noteMin
       difficulty: $difficulty
@@ -96,6 +100,8 @@ export const GET_TOP20_PARKOUR_BY_SEARCH = gql`
 `;
 
 // {
+//   "triParField": "note",
+//   "triParSort": "ASC",
 //   "startPage": 0,
 //   "noteMin": null,
 //   "difficulty": null,
@@ -105,3 +111,25 @@ export const GET_TOP20_PARKOUR_BY_SEARCH = gql`
 //   "timeMin": null,
 //   "city": null
 // }
+
+export const GET_THE_PARKOUR_TOTAL = gql`
+  query GetTheParkourTotal(
+    $noteMin: Float
+    $difficulty: String
+    $lengthMax: Float
+    $lengthMin: Float
+    $timeMax: Float
+    $timeMin: Float
+    $city: String
+  ) {
+    getTheParkourTotal(
+      noteMin: $noteMin
+      difficulty: $difficulty
+      lengthMax: $lengthMax
+      lengthMin: $lengthMin
+      timeMax: $timeMax
+      timeMin: $timeMin
+      city: $city
+    )
+  }
+`;

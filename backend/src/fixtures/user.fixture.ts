@@ -12,7 +12,7 @@ export async function createUsers(dataSource: DataSource, numUsers: number) {
   for (let i = 0; i < numUsers; i++) {
     const user = new UserEntity();
     user.id = faker.string.uuid();
-    user.password = faker.internet.password();
+    user.password = "0000";
     user.name = faker.person.lastName();
     user.firstname = faker.person.firstName();
     user.email = faker.internet.email();

@@ -28,11 +28,11 @@ export async function createParkours(
     // difficulté
     const difficultyNumber = Math.floor(Math.random() * 3);
     let thisDifficulty = Difficulty.facile;
-    if (difficultyNumber == 1) {
+    if (difficultyNumber == 0) {
       thisDifficulty = Difficulty.facile;
-    } else if (difficultyNumber == 2) {
+    } else if (difficultyNumber == 1) {
       thisDifficulty = Difficulty.moyen;
-    } else if (difficultyNumber == 3) {
+    } else if (difficultyNumber == 2) {
       thisDifficulty = Difficulty.difficile;
     }
 

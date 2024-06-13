@@ -14,22 +14,22 @@ class UserService {
   async getById(id: string) {
     const user = await this.db.findOne({
       where: { id },
-      relations: ["parkours.parkours"], // Charge les relations 'parkours' => JoinUserParkourEntity ET 'parkours.parkours' => l'netity parkour pour le title
+      relations: ["parkours"], // Charge les relations 'parkours' => JoinUserParkourEntity ET 'parkours.parkours' => l'netity parkour pour le title
     });
-    if (!user) {
-      throw new Error("Vous n'existez pas ? 🤔 bizarre...");
-    }
-    return user;
-  }
 
-  async getByEmail(email: string) {
-    const user = await this.db.findOne({
-      where: { email: email },
-      relations: ["parkours.parkours"], // Charge les relations 'parkours' => JoinUserParkourEntity ET 'parkours.parkours' => l'netity parkour pour le title
-    });
     if (!user) {
       throw new Error("Vous n'existez pas ? 🤔 bizarre...");
     }
+
+    // Vérifier si la relation "parkours" existe
+    if (user.parkours && user.parkours.length > 0) {
+      // Charger la relation imbriquée "parkours.parkours" uniquement si "parkours" existe
+      await this.db.findOne({
+        where: { id },
+        relations: ["parkours.parkours"], // Charge les relations 'parkours' => JoinUserParkourEntity ET 'parkours.parkours' => l'netity parkour pour le title
+      });
+    }
+
     return user;
   }
 

@@ -30,9 +30,11 @@ export default class ParkourResolver {
     return result;
   }
 
-  // pour le search et pagination
+  // pour le search
   @Query(() => [ParkourEntity])
   async getTop20ParkourBySearch(
+    @Arg("triParField") triParField: string,
+    @Arg("triParSort") triParSort: string,
     @Arg("startPage") startPage: number,
     @Arg("city", { nullable: true }) city: string,
     @Arg("timeMin", { nullable: true }) timeMin: number,
@@ -44,6 +46,9 @@ export default class ParkourResolver {
   ) {
     const result: ParkourEntity[] =
       await new ParkourService().getTop20ParkourBySearch(
+        triParField,
+        triParSort,
+
         startPage,
         city,
         timeMin,
@@ -53,6 +58,29 @@ export default class ParkourResolver {
         difficulty,
         noteMin
       );
+    return result;
+  }
+
+  // pagination
+  @Query(() => Number)
+  async getTheParkourTotal(
+    @Arg("city", { nullable: true }) city: string,
+    @Arg("timeMin", { nullable: true }) timeMin: number,
+    @Arg("timeMax", { nullable: true }) timeMax: number,
+    @Arg("lengthMin", { nullable: true }) lengthMin: number,
+    @Arg("lengthMax", { nullable: true }) lengthMax: number,
+    @Arg("difficulty", { nullable: true }) difficulty: string,
+    @Arg("noteMin", { nullable: true }) noteMin: number
+  ) {
+    const result: Number = await new ParkourService().getTheTotal(
+      city,
+      timeMin,
+      timeMax,
+      lengthMin,
+      lengthMax,
+      difficulty,
+      noteMin
+    );
     return result;
   }
 

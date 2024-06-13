@@ -1,4 +1,12 @@
-import { Between, LessThan, Like, MoreThan, Repository } from "typeorm";
+import {
+  Between,
+  LessThan,
+  LessThanOrEqual,
+  Like,
+  MoreThan,
+  MoreThanOrEqual,
+  Repository,
+} from "typeorm";
 import datasource from "../lib/datasource";
 
 import ParkourEntity, {
@@ -51,6 +59,9 @@ class ParkourService {
   }
 
   async getTop20ParkourBySearch(
+    triParField: string,
+    triParSort: string,
+
     startPage?: number,
     city?: string,
     timeMin?: number,
@@ -60,16 +71,64 @@ class ParkourService {
     difficulty?: string,
     noteMin?: number
   ) {
-    console.log(
-      startPage,
-      city,
-      timeMin,
-      timeMax,
-      lengthMin,
-      lengthMax,
-      difficulty,
-      noteMin
-    );
+    const whereConditions: any = {};
+
+    if (city) {
+      whereConditions.city = Like(`%${city}%`);
+    }
+    if (timeMin && timeMax) {
+      whereConditions.time = Between(timeMin, timeMax);
+    } else {
+      if (timeMin) {
+        whereConditions.time = MoreThanOrEqual(timeMin);
+      }
+      if (timeMax) {
+        whereConditions.time = LessThanOrEqual(timeMax);
+      }
+    }
+    if (lengthMin && lengthMax) {
+      whereConditions.length = Between(lengthMin, lengthMax);
+    } else {
+      if (lengthMin) {
+        whereConditions.length = MoreThanOrEqual(lengthMin);
+      }
+      if (lengthMax) {
+        whereConditions.length = LessThanOrEqual(lengthMax);
+      }
+    }
+    if (difficulty) {
+      whereConditions.difficulty = difficulty;
+    }
+    if (noteMin) {
+      whereConditions.note = MoreThanOrEqual(noteMin);
+    }
+
+    const listParkours: ParkourEntity[] | null = await this.db.find({
+      where: whereConditions,
+      relations: ["images", "epreuves"],
+      order: {
+        [triParField]: triParSort,
+      },
+      skip: startPage,
+      take: 20,
+    });
+
+    if (!listParkours) {
+      throw new Error("Pas de parkour avec cette recherche");
+    }
+
+    return listParkours;
+  }
+
+  async getTheTotal(
+    city?: string,
+    timeMin?: number,
+    timeMax?: number,
+    lengthMin?: number,
+    lengthMax?: number,
+    difficulty?: string,
+    noteMin?: number
+  ) {
     const whereConditions: any = {};
 
     if (city) {
@@ -99,21 +158,18 @@ class ParkourService {
       whereConditions.difficulty = difficulty;
     }
     if (noteMin) {
-      whereConditions.note = MoreThan(noteMin);
+      whereConditions.note = MoreThanOrEqual(noteMin);
     }
 
-    const listParkours: ParkourEntity[] | null = await this.db.find({
+    const totalCount: number | null = await this.db.count({
       where: whereConditions,
-      relations: ["images", "epreuves"],
-      skip: startPage,
-      take: 20,
     });
 
-    if (!listParkours) {
-      throw new Error("Pas de parkour portant ce nom");
+    if (!totalCount || totalCount == 0) {
+      throw new Error("Aucun parkour");
     }
 
-    return listParkours;
+    return totalCount;
   }
 
   // ---
