@@ -31,6 +31,7 @@ import AuthService from "./services/auth.service";
 import Cookies from "cookies";
 import { jwtVerify } from "jose";
 import { customAuthChecker } from "./lib/authChecker";
+import ResetPasswordResolver from "./resolvers/resetPassword.resolver";
 
 // ---------------------------------------------
 // ---------------------------------------------
@@ -55,6 +56,7 @@ async function main() {
       UserResolver,
       AuthResolver,
       JoinUserParkourResolver,
+      ResetPasswordResolver,
     ],
     validate: false,
     authChecker: customAuthChecker,

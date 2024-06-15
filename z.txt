@@ -79,7 +79,7 @@ vérifier enlevage de note quand on supp un user
   - enlève les notes au parkour ?
   - rien sur la note du parkour ?
 
-changer la longueur de la pagination avec un count parkour à chaque requetes
+------------------------------------------------------------------------------------------------------
 
 DROP TABLE epreuve;
 DROP TABLE image_epreuve;
@@ -88,3 +88,8 @@ DROP TABLE image_parkour;
 DROP TABLE join_parkour_epreuve;
 DROP TABLE user;
 DROP TABLE join_user_parkour;
+
+
+refaire les 
+ if (router.isReady) {
+      const token = router.query.token;

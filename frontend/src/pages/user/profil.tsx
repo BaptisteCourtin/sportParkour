@@ -4,7 +4,6 @@ import Link from "next/link";
 import {
   useDeleteUserMutation,
   useGetUserByTokenLazyQuery,
-  useIsAdminQuery,
   useIsClientQuery,
   useModifyUserMutation,
   UserUpdateEntity,
@@ -71,6 +70,9 @@ const profil = () => {
 
   useEffect(() => {
     getUser({
+      onCompleted(data) {
+        console.log(data);
+      },
       onError(err: any) {
         console.error("error", err);
       },
@@ -158,7 +160,7 @@ const profil = () => {
   return (
     <main className="profil">
       {error ? (
-        <h2>une erreur... (déso)</h2>
+        <h2>une erreur... (déso) : {error.message}</h2>
       ) : loading ? (
         <h2>Chargement en cours</h2>
       ) : (
@@ -172,164 +174,180 @@ const profil = () => {
                 ? "Arreter de modifier mon profil"
                 : "Modifier mon profil"}
             </button>
-
             {isModifMode ? (
               // --- modif ---
-              <form
-                className="modifProfil"
-                onSubmit={handleSubmit(handleModifyUser)}
-              >
-                <div className="champ">
-                  <TextField
-                    className="mui-input"
-                    fullWidth
-                    variant="outlined"
-                    label="Votre prénom"
-                    defaultValue={data.getUserByToken.firstname}
-                    required
-                    {...register("firstname")}
-                    id="firstname"
-                    name="firstname"
-                    type="firstname"
-                    inputProps={{ maxLength: 100 }}
-                    onChange={(e) =>
-                      handleChangeAThing("firstname", e.target.value)
-                    }
-                  />
-                  <span>
-                    {values.firstname.length > 0
-                      ? `${values.firstname.length}/100`
-                      : ""}
-                  </span>
-                  <p className="error">{errors?.firstname?.message}</p>
-                </div>
-
-                <div className="champ">
-                  <TextField
-                    className="mui-input"
-                    fullWidth
-                    variant="outlined"
-                    label="Votre nom"
-                    defaultValue={data.getUserByToken.name}
-                    required
-                    {...register("name")}
-                    id="name"
-                    name="name"
-                    type="text"
-                    inputProps={{ maxLength: 100 }}
-                    onChange={(e) => handleChangeAThing("name", e.target.value)}
-                  />
-                  <span>
-                    {values.name.length > 0 ? `${values.name.length}/100` : ""}
-                  </span>
-                  <p className="error">{errors?.name?.message}</p>
-                </div>
-
-                <div className="containerMiniChamp">
+              <>
+                <form
+                  className="modifProfil"
+                  onSubmit={handleSubmit(handleModifyUser)}
+                >
                   <div className="champ">
                     <TextField
                       className="mui-input"
                       fullWidth
                       variant="outlined"
-                      label="Votre ville"
-                      defaultValue={data.getUserByToken.city}
-                      {...register("city")}
-                      id="city"
-                      name="city"
-                      type="text"
-                      inputProps={{ maxLength: 50 }}
+                      label="Votre prénom"
+                      defaultValue={data.getUserByToken.firstname}
+                      required
+                      {...register("firstname")}
+                      id="firstname"
+                      name="firstname"
+                      type="firstname"
+                      inputProps={{ maxLength: 100 }}
                       onChange={(e) =>
-                        handleChangeAThing("city", e.target.value)
+                        handleChangeAThing("firstname", e.target.value)
                       }
                     />
                     <span>
-                      {values.city.length > 0 ? `${values.city.length}/50` : ""}
-                    </span>
-                    <p className="error">{errors?.city?.message}</p>
-                  </div>
-
-                  <div className="champ">
-                    <TextField
-                      className="mui-input"
-                      fullWidth
-                      variant="outlined"
-                      label="Votre code postal"
-                      defaultValue={data.getUserByToken.codePostal}
-                      {...register("codePostal")}
-                      id="codePostal"
-                      name="codePostal"
-                      type="text"
-                      inputProps={{ maxLength: 5 }}
-                      onChange={(e) =>
-                        handleChangeAThing("codePostal", e.target.value)
-                      }
-                    />
-                    <span>
-                      {values.codePostal.length > 0
-                        ? `${values.codePostal.length}/5`
+                      {values.firstname.length > 0
+                        ? `${values.firstname.length}/100`
                         : ""}
                     </span>
-                    <p className="error">{errors?.codePostal?.message}</p>
+                    <p className="error">{errors?.firstname?.message}</p>
                   </div>
-                </div>
 
-                <div className="champ">
-                  <TextField
-                    className="mui-input"
-                    fullWidth
-                    variant="outlined"
-                    label="Votre numéro de téléphone"
-                    defaultValue={data.getUserByToken.phone}
-                    {...register("phone")}
-                    id="phone"
-                    name="phone"
-                    type="text"
-                    inputProps={{ maxLength: 10 }}
-                    onChange={(e) =>
-                      handleChangeAThing("phone", e.target.value)
-                    }
-                  />
-                  <span>
-                    {values.phone.length > 0 ? `${values.phone.length}/10` : ""}
-                  </span>
-                  <p className="error">{errors?.phone?.message}</p>
-                </div>
+                  <div className="champ">
+                    <TextField
+                      className="mui-input"
+                      fullWidth
+                      variant="outlined"
+                      label="Votre nom"
+                      defaultValue={data.getUserByToken.name}
+                      required
+                      {...register("name")}
+                      id="name"
+                      name="name"
+                      type="text"
+                      inputProps={{ maxLength: 100 }}
+                      onChange={(e) =>
+                        handleChangeAThing("name", e.target.value)
+                      }
+                    />
+                    <span>
+                      {values.name.length > 0
+                        ? `${values.name.length}/100`
+                        : ""}
+                    </span>
+                    <p className="error">{errors?.name?.message}</p>
+                  </div>
 
-                <hr />
+                  <div className="containerMiniChamp">
+                    <div className="champ">
+                      <TextField
+                        className="mui-input"
+                        fullWidth
+                        variant="outlined"
+                        label="Votre ville"
+                        defaultValue={data.getUserByToken.city}
+                        {...register("city")}
+                        id="city"
+                        name="city"
+                        type="text"
+                        inputProps={{ maxLength: 50 }}
+                        onChange={(e) =>
+                          handleChangeAThing("city", e.target.value)
+                        }
+                      />
+                      <span>
+                        {values.city.length > 0
+                          ? `${values.city.length}/50`
+                          : ""}
+                      </span>
+                      <p className="error">{errors?.city?.message}</p>
+                    </div>
 
-                <div className="champ">
-                  <TextField
-                    className="mui-input"
-                    fullWidth
-                    variant="outlined"
-                    label="Votre email"
-                    defaultValue={data.getUserByToken.email}
-                    required
-                    {...register("email")}
-                    id="email"
-                    type="text"
-                    name="email"
-                    inputProps={{ maxLength: 255 }}
-                    onChange={(e) =>
-                      handleChangeAThing("email", e.target.value)
-                    }
-                  />
-                  <span>
-                    {values.email.length > 0
-                      ? `${values.email.length}/255`
-                      : ""}
-                  </span>
-                  <p className="error">{errors?.email?.message}</p>
-                </div>
+                    <div className="champ">
+                      <TextField
+                        className="mui-input"
+                        fullWidth
+                        variant="outlined"
+                        label="Votre code postal"
+                        defaultValue={data.getUserByToken.codePostal}
+                        {...register("codePostal")}
+                        id="codePostal"
+                        name="codePostal"
+                        type="text"
+                        inputProps={{ maxLength: 5 }}
+                        onChange={(e) =>
+                          handleChangeAThing("codePostal", e.target.value)
+                        }
+                      />
+                      <span>
+                        {values.codePostal.length > 0
+                          ? `${values.codePostal.length}/5`
+                          : ""}
+                      </span>
+                      <p className="error">{errors?.codePostal?.message}</p>
+                    </div>
+                  </div>
 
-                <button type="submit" disabled={loadingModify}>
-                  Enregistrer
-                </button>
+                  <div className="champ">
+                    <TextField
+                      className="mui-input"
+                      fullWidth
+                      variant="outlined"
+                      label="Votre numéro de téléphone"
+                      defaultValue={data.getUserByToken.phone}
+                      {...register("phone")}
+                      id="phone"
+                      name="phone"
+                      type="text"
+                      inputProps={{ maxLength: 10 }}
+                      onChange={(e) =>
+                        handleChangeAThing("phone", e.target.value)
+                      }
+                    />
+                    <span>
+                      {values.phone.length > 0
+                        ? `${values.phone.length}/10`
+                        : ""}
+                    </span>
+                    <p className="error">{errors?.phone?.message}</p>
+                  </div>
 
-                <div>
-                  <span>{errorModify?.message}</span>
-                </div>
-              </form>
+                  <hr />
+
+                  <div className="champ">
+                    <TextField
+                      className="mui-input"
+                      fullWidth
+                      variant="outlined"
+                      label="Votre email"
+                      defaultValue={data.getUserByToken.email}
+                      required
+                      {...register("email")}
+                      id="email"
+                      type="text"
+                      name="email"
+                      inputProps={{ maxLength: 255 }}
+                      onChange={(e) =>
+                        handleChangeAThing("email", e.target.value)
+                      }
+                    />
+                    <span>
+                      {values.email.length > 0
+                        ? `${values.email.length}/255`
+                        : ""}
+                    </span>
+                    <p className="error">{errors?.email?.message}</p>
+                  </div>
+
+                  <button type="submit" disabled={loadingModify}>
+                    Enregistrer
+                  </button>
+
+                  <div>
+                    <span>{errorModify?.message}</span>
+                  </div>
+                </form>
+
+                <Link
+                  className="oublie"
+                  href="/auth/resetPassword/resetPassword"
+                >
+                  Modifier mon mot de passe
+                </Link>
+              </>
             ) : (
               // --- profil ---
               <section className="seeProfil">
@@ -353,17 +371,11 @@ const profil = () => {
                 <p>phone : {data.getUserByToken.phone}</p>
               </section>
             )}
-
-            {/* --- button --- */}
-
+            {/* --- favoris --- */}
             {dataIsClient ? (
               <Link href="/user/favoris">mes favoris</Link>
             ) : null}
-
-            <Link href="/user/logout">se déconnecter</Link>
-
             {/* --- supp --- */}
-
             <div className="supp">
               <Button variant="outlined" onClick={handleClickOpen}>
                 Supprimer votre profil
@@ -423,6 +435,7 @@ const profil = () => {
           </>
         )
       )}
+      <Link href="/user/logout">se déconnecter</Link>
     </main>
   );
 };

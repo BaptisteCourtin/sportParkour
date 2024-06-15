@@ -11,10 +11,10 @@
 
 # lancer le projet
 
+- tout lancer => aller en global et lancer la commande => npm run dev
+
 - le back => aller dans le dossier backend et lancer la commande => npm run start
 - le front => aller dans le dossier frontend et lancer la commande => npm run dev
-
-- tout lancer => aller en global et lancer la commande => npm run dev
 
 # technos utilisées
 

@@ -104,7 +104,7 @@ const login = () => {
           <p className="error">{errors?.password?.message}</p>
         </div>
 
-        <Link className="oublie" href="/auth/inscription">
+        <Link className="oublie" href="/auth/resetPassword/resetPassword">
           Mot de passe oublié ?
         </Link>
 
