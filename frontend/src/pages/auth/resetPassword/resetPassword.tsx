@@ -9,6 +9,8 @@ function ResetByEmail() {
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData) as { email: string };
 
+    console.log(data.email);
+
     resetPassword({
       variables: { email: data.email },
       onCompleted(data) {
@@ -26,7 +28,7 @@ function ResetByEmail() {
         {!data?.resetPassword.resetToken ? (
           <form onSubmit={handleSubmit}>
             <input name="email" placeholder="Indiquez votre email" />
-            <input type="submit" />
+            <button type="submit" disabled={loading} />
           </form>
         ) : (
           <div>

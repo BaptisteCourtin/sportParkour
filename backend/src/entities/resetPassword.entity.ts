@@ -25,7 +25,7 @@ export default class ResetPasswordEntity {
     const mailer = new Mailer(
       this.user.email,
       "Réinitialisation de mot de passe",
-      `${process.env.FRONT_LINK!}/auth/resetPassword/${this.resetToken}`
+      `${process.env.FRONT_LINK}/auth/resetPassword/${this.resetToken}`
     );
     await mailer.sender();
   }

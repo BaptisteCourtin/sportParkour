@@ -1,6 +1,6 @@
 # BACK
 
-- appel parkours getAllByPostalCode (chercher dans la bdd avec les 2 premiers chiffres)
+- appel parkours getAllByPostalCode (chercher dans la bdd avec les 2 premiers chiffres) ?
 
 ##################################################################################################################
 
@@ -8,13 +8,21 @@
 
 - page user
 
-  - les derniers parkours fait
   - les notes données
+  - les derniers parkours fait ?
 
 - un truc sur la navbar ordi pour dire où on est
 
-- page auth et page profil => ajouter le reset password
-- page inscription et page profil => ajouter un check strong password
+- page réinit mdp
+
+  - pouvoir voir le mdp (oeil)
+  - ajouter un check strong password (maj, min, chiffre, nb carac)
+  - verify password (réécrire le mdp)
+
+- page inscription et page profil
+  - pouvoir voir le mdp (oeil)
+  - ajouter un check strong password (maj, min, chiffre, nb carac)
+  - verify password (réécrire le mdp)
 
 ##################################################################################################################
 

@@ -12,7 +12,7 @@ class UserService {
   }
 
   async getById(id: string) {
-    const user = await this.db.findOne({
+    const user: UserEntity | null = await this.db.findOne({
       where: { id },
       relations: ["parkours"], // Charge les relations 'parkours' => JoinUserParkourEntity ET 'parkours.parkours' => l'netity parkour pour le title
     });
@@ -24,12 +24,21 @@ class UserService {
     // Vérifier si la relation "parkours" existe
     if (user.parkours && user.parkours.length > 0) {
       // Charger la relation imbriquée "parkours.parkours" uniquement si "parkours" existe
-      await this.db.findOne({
+      const userWithParkours = await this.db.findOne({
         where: { id },
-        relations: ["parkours.parkours"], // Charge les relations 'parkours' => JoinUserParkourEntity ET 'parkours.parkours' => l'netity parkour pour le title
+        relations: ["parkours.parkours"], // Charge les relations 'parkours' => JoinUserParkourEntity ET 'parkours.parkours' => l'entity parkour pour le title
       });
+
+      if (!user) {
+        throw new Error("Alors..., c'est la merde.");
+      }
+
+      if (userWithParkours) {
+        return userWithParkours;
+      }
     }
 
+    // si pas de parkours relier au user => on renvoie user
     return user;
   }
 

@@ -54,6 +54,8 @@ export default class ResetPasswordResolver {
           user
         );
 
+        console.log("userModified", userModified);
+
         await new ResetPasswordService().deleteResetToken(data.token);
 
         message.message = "Votre mot de passe a été changé, reconnectez vous";

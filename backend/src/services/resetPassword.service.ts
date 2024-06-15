@@ -4,12 +4,16 @@ import User from "../entities/user.entity";
 import ResetPasswordEntity from "../entities/resetPassword.entity";
 import UserService from "./user.service";
 import { uuid } from "uuidv4";
+import AuthService from "./auth.service";
+import UserEntity from "../entities/user.entity";
 
 export default class ResetPasswordService {
   db: Repository<ResetPasswordEntity>;
+  dbUser: Repository<UserEntity>;
 
   constructor() {
     this.db = datasource.getRepository(ResetPasswordEntity);
+    this.dbUser = datasource.getRepository(UserEntity);
   }
 
   async createResetToken(email: string) {
@@ -60,12 +64,12 @@ export default class ResetPasswordService {
   }
 
   async changePassword(password: string, user: User) {
-    const data = {
-      ...user,
-      password: password,
-    };
+    const editedUser = this.dbUser.create({ ...user });
+    editedUser.password = password;
 
-    return await await new UserService().modify(user.id, data);
+    console.log(editedUser);
+
+    return await this.dbUser.save(editedUser);
   }
 
   async deleteResetToken(token: string) {
