@@ -6,6 +6,7 @@ import UserEntity from "../entities/user.entity";
 import JoinUserParkourEntity from "../entities/joinUserParkour.entity";
 import ImageEpreuveEntity from "../entities/imageEpreuve.entity";
 import ImageParkourEntity from "../entities/imageParkour.entity";
+import ResetPasswordEntity from "../entities/resetPassword.entity";
 
 // -----------
 // AVEC DOCKER
@@ -25,6 +26,7 @@ import ImageParkourEntity from "../entities/imageParkour.entity";
 //     JoinUserParkourEntity,
 //     ImageEpreuveEntity,
 //     ImageParkourEntity,
+//     ResetPasswordEntity,
 //   ], // mettre les entities ici
 //   synchronize: true, //à ne pas utiliser en production
 //   logging: ["error", "query"], //à ne pas utiliser en production
@@ -44,6 +46,7 @@ export default new DataSource({
     JoinUserParkourEntity,
     ImageEpreuveEntity,
     ImageParkourEntity,
+    ResetPasswordEntity,
   ], // mettre les entities
   synchronize: true, //à ne pas utiliser en production
   logging: ["error", "query"], //à ne pas utiliser en production

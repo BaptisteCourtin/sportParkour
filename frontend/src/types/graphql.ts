@@ -15,6 +15,7 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
+  DateTimeISO: { input: any; output: any; }
 };
 
 /** Difficulty enum */
@@ -99,6 +100,7 @@ export type MessageEntity = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  changePassword: MessageEntity;
   createEpreuve: EpreuveEntity;
   createParkour: ParkourEntity;
   deleteEpreuve: MessageEntity;
@@ -110,6 +112,12 @@ export type Mutation = {
   modifyParkour: ParkourEntity;
   modifyUser: UserEntity;
   noteJoinUserParkour: MessageEntity;
+  resetPassword: ResetPasswordEntity;
+};
+
+
+export type MutationChangePasswordArgs = {
+  data: ResetPasswordUpdateEntity;
 };
 
 
@@ -169,6 +177,11 @@ export type MutationNoteJoinUserParkourArgs = {
   infos: JoinUserParkourNoteEntity;
 };
 
+
+export type MutationResetPasswordArgs = {
+  email: Scalars['String']['input'];
+};
+
 export type ParkourCreateEntity = {
   city?: InputMaybe<Scalars['String']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
@@ -210,6 +223,7 @@ export type ParkourUpdateEntity = {
 export type Query = {
   __typename?: 'Query';
   authentification: MessageEntity;
+  checkResetToken: MessageEntity;
   getAllParkourForMap: Array<ParkourEntity>;
   getAllUserFavByToken: Array<JoinUserParkourEntity>;
   getEpreuveById: EpreuveEntity;
@@ -229,6 +243,11 @@ export type Query = {
 
 export type QueryAuthentificationArgs = {
   infos: UserInputAuthEntity;
+};
+
+
+export type QueryCheckResetTokenArgs = {
+  token: Scalars['String']['input'];
 };
 
 
@@ -279,6 +298,19 @@ export type QueryGetTop20ParkourByTitleArgs = {
 
 export type QueryGetUserFavByTokenAndIdParkourArgs = {
   parkourId: Scalars['Float']['input'];
+};
+
+export type ResetPasswordEntity = {
+  __typename?: 'ResetPasswordEntity';
+  expirationDate: Scalars['DateTimeISO']['output'];
+  id: Scalars['String']['output'];
+  resetToken: Scalars['String']['output'];
+  user: UserEntity;
+};
+
+export type ResetPasswordUpdateEntity = {
+  password: Scalars['String']['input'];
+  token: Scalars['String']['input'];
 };
 
 /** Role enum */
@@ -390,6 +422,20 @@ export type DeleteParkourMutationVariables = Exact<{
 
 export type DeleteParkourMutation = { __typename?: 'Mutation', deleteParkour: { __typename?: 'MessageEntity', message: string, success: boolean } };
 
+export type ResetPasswordMutationVariables = Exact<{
+  email: Scalars['String']['input'];
+}>;
+
+
+export type ResetPasswordMutation = { __typename?: 'Mutation', resetPassword: { __typename?: 'ResetPasswordEntity', id: string, resetToken: string, expirationDate: any } };
+
+export type ChangePasswordMutationVariables = Exact<{
+  data: ResetPasswordUpdateEntity;
+}>;
+
+
+export type ChangePasswordMutation = { __typename?: 'Mutation', changePassword: { __typename?: 'MessageEntity', message: string, success: boolean } };
+
 export type ModifyUserMutationVariables = Exact<{
   infos: UserUpdateEntity;
 }>;
@@ -494,6 +540,13 @@ export type GetTheParkourTotalQueryVariables = Exact<{
 
 
 export type GetTheParkourTotalQuery = { __typename?: 'Query', getTheParkourTotal: number };
+
+export type CheckResetTokenQueryVariables = Exact<{
+  token: Scalars['String']['input'];
+}>;
+
+
+export type CheckResetTokenQuery = { __typename?: 'Query', checkResetToken: { __typename?: 'MessageEntity', message: string, success: boolean } };
 
 export type GetUserByTokenQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -869,6 +922,75 @@ export function useDeleteParkourMutation(baseOptions?: Apollo.MutationHookOption
 export type DeleteParkourMutationHookResult = ReturnType<typeof useDeleteParkourMutation>;
 export type DeleteParkourMutationResult = Apollo.MutationResult<DeleteParkourMutation>;
 export type DeleteParkourMutationOptions = Apollo.BaseMutationOptions<DeleteParkourMutation, DeleteParkourMutationVariables>;
+export const ResetPasswordDocument = gql`
+    mutation ResetPassword($email: String!) {
+  resetPassword(email: $email) {
+    id
+    resetToken
+    expirationDate
+  }
+}
+    `;
+export type ResetPasswordMutationFn = Apollo.MutationFunction<ResetPasswordMutation, ResetPasswordMutationVariables>;
+
+/**
+ * __useResetPasswordMutation__
+ *
+ * To run a mutation, you first call `useResetPasswordMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useResetPasswordMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [resetPasswordMutation, { data, loading, error }] = useResetPasswordMutation({
+ *   variables: {
+ *      email: // value for 'email'
+ *   },
+ * });
+ */
+export function useResetPasswordMutation(baseOptions?: Apollo.MutationHookOptions<ResetPasswordMutation, ResetPasswordMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ResetPasswordMutation, ResetPasswordMutationVariables>(ResetPasswordDocument, options);
+      }
+export type ResetPasswordMutationHookResult = ReturnType<typeof useResetPasswordMutation>;
+export type ResetPasswordMutationResult = Apollo.MutationResult<ResetPasswordMutation>;
+export type ResetPasswordMutationOptions = Apollo.BaseMutationOptions<ResetPasswordMutation, ResetPasswordMutationVariables>;
+export const ChangePasswordDocument = gql`
+    mutation ChangePassword($data: ResetPasswordUpdateEntity!) {
+  changePassword(data: $data) {
+    message
+    success
+  }
+}
+    `;
+export type ChangePasswordMutationFn = Apollo.MutationFunction<ChangePasswordMutation, ChangePasswordMutationVariables>;
+
+/**
+ * __useChangePasswordMutation__
+ *
+ * To run a mutation, you first call `useChangePasswordMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useChangePasswordMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [changePasswordMutation, { data, loading, error }] = useChangePasswordMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useChangePasswordMutation(baseOptions?: Apollo.MutationHookOptions<ChangePasswordMutation, ChangePasswordMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ChangePasswordMutation, ChangePasswordMutationVariables>(ChangePasswordDocument, options);
+      }
+export type ChangePasswordMutationHookResult = ReturnType<typeof useChangePasswordMutation>;
+export type ChangePasswordMutationResult = Apollo.MutationResult<ChangePasswordMutation>;
+export type ChangePasswordMutationOptions = Apollo.BaseMutationOptions<ChangePasswordMutation, ChangePasswordMutationVariables>;
 export const ModifyUserDocument = gql`
     mutation ModifyUser($infos: UserUpdateEntity!) {
   modifyUser(infos: $infos) {
@@ -1520,6 +1642,47 @@ export type GetTheParkourTotalQueryHookResult = ReturnType<typeof useGetTheParko
 export type GetTheParkourTotalLazyQueryHookResult = ReturnType<typeof useGetTheParkourTotalLazyQuery>;
 export type GetTheParkourTotalSuspenseQueryHookResult = ReturnType<typeof useGetTheParkourTotalSuspenseQuery>;
 export type GetTheParkourTotalQueryResult = Apollo.QueryResult<GetTheParkourTotalQuery, GetTheParkourTotalQueryVariables>;
+export const CheckResetTokenDocument = gql`
+    query CheckResetToken($token: String!) {
+  checkResetToken(token: $token) {
+    message
+    success
+  }
+}
+    `;
+
+/**
+ * __useCheckResetTokenQuery__
+ *
+ * To run a query within a React component, call `useCheckResetTokenQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCheckResetTokenQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCheckResetTokenQuery({
+ *   variables: {
+ *      token: // value for 'token'
+ *   },
+ * });
+ */
+export function useCheckResetTokenQuery(baseOptions: Apollo.QueryHookOptions<CheckResetTokenQuery, CheckResetTokenQueryVariables> & ({ variables: CheckResetTokenQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CheckResetTokenQuery, CheckResetTokenQueryVariables>(CheckResetTokenDocument, options);
+      }
+export function useCheckResetTokenLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CheckResetTokenQuery, CheckResetTokenQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CheckResetTokenQuery, CheckResetTokenQueryVariables>(CheckResetTokenDocument, options);
+        }
+export function useCheckResetTokenSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<CheckResetTokenQuery, CheckResetTokenQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<CheckResetTokenQuery, CheckResetTokenQueryVariables>(CheckResetTokenDocument, options);
+        }
+export type CheckResetTokenQueryHookResult = ReturnType<typeof useCheckResetTokenQuery>;
+export type CheckResetTokenLazyQueryHookResult = ReturnType<typeof useCheckResetTokenLazyQuery>;
+export type CheckResetTokenSuspenseQueryHookResult = ReturnType<typeof useCheckResetTokenSuspenseQuery>;
+export type CheckResetTokenQueryResult = Apollo.QueryResult<CheckResetTokenQuery, CheckResetTokenQueryVariables>;
 export const GetUserByTokenDocument = gql`
     query GetUserByToken {
   getUserByToken {

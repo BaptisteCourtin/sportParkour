@@ -33,6 +33,18 @@ class UserService {
     return user;
   }
 
+  async getByEmail(email: string) {
+    const user = await this.db.findOne({
+      where: { email: email },
+    });
+
+    if (!user) {
+      throw new Error("Vous n'existez pas ? 🤔 bizarre...");
+    }
+
+    return user;
+  }
+
   // ---
 
   async modify(id: string, data: UserUpdateEntity) {
