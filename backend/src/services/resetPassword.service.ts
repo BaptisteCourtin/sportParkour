@@ -67,8 +67,6 @@ export default class ResetPasswordService {
     const editedUser = this.dbUser.create({ ...user });
     editedUser.password = password;
 
-    console.log(editedUser);
-
     return await this.dbUser.save(editedUser);
   }
 

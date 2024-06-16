@@ -16,7 +16,7 @@ dotenv.config({
   path: "../.env",
 });
 
-@Entity("resetPassword")
+@Entity("reset_password")
 @ObjectType()
 export default class ResetPasswordEntity {
   @AfterInsert()

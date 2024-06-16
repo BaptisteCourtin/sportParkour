@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import {
@@ -13,6 +13,10 @@ import { object, string } from "yup";
 import { toast } from "react-hot-toast";
 import TextField from "@mui/material/TextField";
 import { FaArrowRight } from "react-icons/fa6";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
+import { FaEye } from "react-icons/fa6";
+import { FaEyeSlash } from "react-icons/fa6";
 
 let loginSchema = object({
   email: string()
@@ -52,12 +56,14 @@ const login = () => {
           }
         },
         onError(error) {
-          console.log(error);
           toast.error(error.message);
         },
       });
     }
   };
+
+  // --- SEE PASSWORDS ---
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <main className="auth">
@@ -97,9 +103,18 @@ const login = () => {
             required
             {...register("password")}
             id="password"
-            type="password"
+            type={showPassword ? "text" : "password"}
             name="password"
             inputProps={{ maxLength: 100 }}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton onClick={() => setShowPassword(!showPassword)}>
+                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
           <p className="error">{errors?.password?.message}</p>
         </div>

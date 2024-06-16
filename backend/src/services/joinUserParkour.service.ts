@@ -100,7 +100,6 @@ class JoinUserParkourService {
     };
 
     const newJoinUserParkour = this.db.create(infos);
-    console.log(newJoinUserParkour);
 
     await this.db.save(newJoinUserParkour);
 

@@ -41,30 +41,6 @@ favoris       | options      |
 note          |              |
 options       |              |
 
-
-------------------------------------------------------------------------------------------------------
-
-dernier diagramme
-
-finir modify/create epreuve/parkour
-create image associées via service d'image
-
-reset mot de passe
-
-ajouter un bouton modifier mon mdp dans profil => ça fait comme oublie mdp
-
-------------------------------------------------------------------------------------------------------
-
-ajouter commentaire à la note + date de création OU de mise à jour
-
-------------------------------------------------------------------------------------------------------
-
-- gérer les images (avec google cloud ?)
-- reset mdp
-- déploiement
-
-- navbar phone sans link valable
-
 ------------------------------------------------------------------------------------------------------
 
 Pour les images de couverture => 
@@ -88,8 +64,4 @@ DROP TABLE image_parkour;
 DROP TABLE join_parkour_epreuve;
 DROP TABLE user;
 DROP TABLE join_user_parkour;
-
-
-refaire les 
- if (router.isReady) {
-      const token = router.query.token;
+DROP TABLE reset_password

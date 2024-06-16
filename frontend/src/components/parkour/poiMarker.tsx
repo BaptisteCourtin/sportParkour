@@ -25,7 +25,7 @@ const PoiMarker = ({ poi }: { poi: GetParkourByIdQuery["getParkourById"] }) => {
     if (marker === activeMarkerId) {
       return;
     }
-    console.log("marker clicked: ", marker);
+    // console.log("marker clicked: ", marker);
     setActiveMarkerId(marker);
   };
 

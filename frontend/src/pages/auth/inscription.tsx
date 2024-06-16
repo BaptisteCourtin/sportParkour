@@ -8,13 +8,18 @@ import {
 
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { object, string } from "yup";
+import { object, ref, string } from "yup";
 
 import { toast } from "react-hot-toast";
 import TextField from "@mui/material/TextField";
 import { FaArrowRight } from "react-icons/fa6";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
+
+import { FaEye } from "react-icons/fa6";
+import { FaEyeSlash } from "react-icons/fa6";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
 
 let authSchema = object({
   email: string()
@@ -24,7 +29,15 @@ let authSchema = object({
   password: string()
     .min(12, "Utilisez un mot de passe avec au moins 12 caractères")
     .max(100, "Utilisez un mot de passe avec au maximum 100 caractères")
+    .matches(/[A-Z]/, "Utilisez au moins une majuscule")
+    .matches(/[a-z]/, "Utilisez au moins une minuscule")
+    .matches(/[0-9]/, "Utilisez au moins un chiffre")
+    .matches(/[!@#$%^&*(),.?":{}|<>]/, "Utilisez au moins un caractère spécial")
     .required("Veuillez entrer votre mot de passe"),
+  password2: string()
+    .oneOf([ref("password")], "Les mots de passe ne correspondent pas")
+    .required("Veuillez confirmer votre mot de passe"),
+
   name: string().max(100).required("Veuillez entrer votre nom"),
   firstname: string().max(100).required("Veuillez entrer votre prénom"),
 
@@ -51,7 +64,13 @@ let authSchema = object({
     ),
 });
 
-// mettre le message de success en snackbar
+interface UserInputRegisterWith2PasswordsEntity
+  extends UserInputRegisterEntity {
+  password2: string;
+}
+
+// -----------------------------------------------------------------------------------
+
 const inscription = () => {
   const router = useRouter();
 
@@ -65,26 +84,24 @@ const inscription = () => {
 
   const [inscription, { data, loading, error }] = useInscriptionMutation();
 
-  const handleInscription = (dataForm: UserInputRegisterEntity): void => {
-    if (
-      dataForm.email &&
-      dataForm.password &&
-      dataForm.name &&
-      dataForm.firstname
-    ) {
-      inscription({
-        variables: { infos: dataForm },
-        onCompleted(data) {
-          if (data.inscription.success) {
-            toast.success(data.inscription.message);
-            router.push("/");
-          }
-        },
-        onError(error) {
-          toast.error(error.message);
-        },
-      });
-    }
+  const handleInscription = (
+    dataForm: UserInputRegisterWith2PasswordsEntity
+  ): void => {
+    // les vérifs sont faites avec yup
+    const { password2, ...data } = dataForm;
+
+    inscription({
+      variables: { infos: data },
+      onCompleted(data) {
+        if (data.inscription.success) {
+          toast.success(data.inscription.message);
+          router.push("/");
+        }
+      },
+      onError(error) {
+        toast.error(error.message);
+      },
+    });
   };
 
   // --- DEAL WITH LENGTH DURING MODIF ---
@@ -96,11 +113,16 @@ const inscription = () => {
     phone: "",
     email: "",
     password: "",
+    password2: "",
   });
 
   const handleChangeAThing = (name: string, value: any) => {
     setValues({ ...values, [name]: value });
   };
+
+  // --- SEE PASSWORDS ---
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword2, setShowPassword2] = useState(false);
 
   return (
     <main className="auth">
@@ -248,14 +270,53 @@ const inscription = () => {
             {...register("password")}
             id="password"
             name="password"
-            type="password"
+            type={showPassword ? "text" : "password"}
             inputProps={{ maxLength: 100 }}
             onChange={(e) => handleChangeAThing("password", e.target.value)}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton onClick={() => setShowPassword(!showPassword)}>
+                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
           <span>
             {values.password.length > 0 ? `${values.password.length}/100` : ""}
           </span>
           <p className="error">{errors?.password?.message}</p>
+        </div>
+        <div className="champ">
+          <TextField
+            className="mui-input"
+            fullWidth
+            variant="outlined"
+            label="Réécrivez votre mot de passe"
+            required
+            {...register("password2")}
+            id="password2"
+            name="password2"
+            type={showPassword2 ? "text" : "password"}
+            inputProps={{ maxLength: 100 }}
+            onChange={(e) => handleChangeAThing("password2", e.target.value)}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton onClick={() => setShowPassword2(!showPassword2)}>
+                    {showPassword2 ? <FaEyeSlash /> : <FaEye />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+          <span>
+            {values.password2.length > 0
+              ? `${values.password2.length}/100`
+              : ""}
+          </span>
+          <p className="error">{errors?.password2?.message}</p>
         </div>
 
         <FormControlLabel
@@ -264,9 +325,9 @@ const inscription = () => {
           label="j'accepte les CGU"
         />
         <div className="legale">
-          <Link href="/cgu">Voir les CGU</Link>
-          <Link href="/mentionsLegales">Voir les mentions légales</Link>
-          <Link href="/politiquueDeConfidentialite">
+          <Link href="/infos/cgu">Voir les CGU</Link>
+          <Link href="/infos/mentionsLegales">Voir les mentions légales</Link>
+          <Link href="/infos/politiqueDeConfidentialite">
             Voir la politique de confidentialité
           </Link>
         </div>

@@ -1,41 +1,88 @@
 import { useResetPasswordMutation } from "@/types/graphql";
+import { yupResolver } from "@hookform/resolvers/yup";
+import TextField from "@mui/material/TextField";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import { object, string } from "yup";
+
+let EmailResetPasswordSchema = object({
+  email: string()
+    .max(255)
+    .email("Votre email doit être valide")
+    .required("Veuillez entrer votre email"),
+});
+
+interface EmailResetPasswordFormData {
+  email: string;
+}
+
+// -----------------------------------------------------------------------------------
 
 function ResetByEmail() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(EmailResetPasswordSchema),
+  });
+
   const [resetPassword, { data, loading, error }] = useResetPasswordMutation();
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const data = Object.fromEntries(formData) as { email: string };
-
-    console.log(data.email);
-
+  const handleEmailResetPassword = ({
+    email,
+  }: EmailResetPasswordFormData): void => {
     resetPassword({
-      variables: { email: data.email },
-      onCompleted(data) {
-        console.log(data.resetPassword.resetToken);
-      },
+      variables: { email: email },
       onError(error) {
         toast.error(error.message);
       },
     });
   };
 
+  // --- DEAL WITH LENGTH DURING MODIF ---
+  const [values, setValues] = useState({
+    email: "",
+  });
+
+  const handleChangeAThing = (name: string, value: any) => {
+    setValues({ ...values, [name]: value });
+  };
+
   return (
     <main>
-      <div>
-        {!data?.resetPassword.resetToken ? (
-          <form onSubmit={handleSubmit}>
-            <input name="email" placeholder="Indiquez votre email" />
-            <button type="submit" disabled={loading} />
-          </form>
-        ) : (
-          <div>
-            <p>Vérifiez vos emails</p>
+      {/* pas encore de data de la mutation */}
+      {!data?.resetPassword.resetToken ? (
+        <form onSubmit={handleSubmit(handleEmailResetPassword)}>
+          <div className="champ">
+            <TextField
+              className="mui-input"
+              fullWidth
+              variant="outlined"
+              label="Votre email"
+              required
+              {...register("email")}
+              id="email"
+              name="email"
+              type="text"
+              inputProps={{ maxLength: 255 }}
+              onChange={(e) => handleChangeAThing("email", e.target.value)}
+            />
+            <span>
+              {values.email.length > 0 ? `${values.email.length}/255` : ""}
+            </span>
+            <p className="error">{errors?.email?.message}</p>
           </div>
-        )}
-      </div>
+          <button type="submit" disabled={loading}>
+            M'envoyer un email
+          </button>
+        </form>
+      ) : (
+        <div>
+          <p>Vérifiez vos emails</p>
+        </div>
+      )}
     </main>
   );
 }
