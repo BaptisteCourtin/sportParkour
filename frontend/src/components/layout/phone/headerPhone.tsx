@@ -1,8 +1,7 @@
 import React from "react";
-import Link from "next/link";
 import { FaArrowLeft } from "react-icons/fa6";
-import { FaGear } from "react-icons/fa6";
 import router from "next/router";
+import DarkLightPhone from "./darkLightPhone";
 
 const headerPhone = () => {
   return (
@@ -10,7 +9,7 @@ const headerPhone = () => {
       <i></i>
       <div className="buttonHeaderPhone">
         <FaArrowLeft className="return" onClick={() => router.back()} />
-        <FaGear className="gear" />
+        <DarkLightPhone />
       </div>
     </div>
   );

@@ -28,7 +28,7 @@ const parkourMap = () => {
         >
           {data?.getAllParkourForMap.map(
             (poi: GetParkourByIdQuery["getParkourById"]) => (
-              <PoiMarker poi={poi} />
+              <PoiMarker poi={poi} key={poi.id} />
             )
           )}
         </Map>

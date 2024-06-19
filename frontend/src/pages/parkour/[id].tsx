@@ -210,11 +210,11 @@ const OneParkour = () => {
                       id="commentThisParkour"
                       name="commentThisParkour"
                       type="text"
-                      inputProps={{ maxLength: 250 }}
+                      inputProps={{ maxLength: 500 }}
                       onChange={(e) => setComment(e.target.value)}
                     />
                     <span>
-                      {comment.length > 0 ? `${comment.length}/250` : ""}
+                      {comment.length > 0 ? `${comment.length}/500` : ""}
                     </span>
                   </DialogContent>
                   <DialogActions>

@@ -14,6 +14,7 @@ export default class ParkourResolver {
     return result;
   }
 
+  // possiblement changer
   @Query(() => [ParkourEntity])
   async getAllParkourForMap() {
     const result = await new ParkourService().getAllForMap();
@@ -86,6 +87,7 @@ export default class ParkourResolver {
 
   // ---
 
+  // changer le result en message
   @Authorized("ADMIN")
   @Mutation(() => ParkourEntity)
   async createParkour(@Arg("infos") infos: ParkourCreateEntity) {
@@ -97,6 +99,7 @@ export default class ParkourResolver {
     return result;
   }
 
+  // changer le result en message
   @Authorized("ADMIN")
   @Mutation(() => ParkourEntity)
   async modifyParkour(

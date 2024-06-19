@@ -66,17 +66,6 @@ const planDuSite = () => {
         <br />
         <br />
 
-        <h3>Les options du site</h3>
-        <li>
-          <Link href="/options/options">
-            <FaCaretRight />
-            Les options du site
-          </Link>
-        </li>
-
-        <br />
-        <br />
-
         <h3>les infos</h3>
         <li>
           <FaCaretRight />

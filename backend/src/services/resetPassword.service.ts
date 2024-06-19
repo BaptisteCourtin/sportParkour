@@ -4,7 +4,6 @@ import User from "../entities/user.entity";
 import ResetPasswordEntity from "../entities/resetPassword.entity";
 import UserService from "./user.service";
 import { uuid } from "uuidv4";
-import AuthService from "./auth.service";
 import UserEntity from "../entities/user.entity";
 
 export default class ResetPasswordService {
@@ -15,6 +14,30 @@ export default class ResetPasswordService {
     this.db = datasource.getRepository(ResetPasswordEntity);
     this.dbUser = datasource.getRepository(UserEntity);
   }
+
+  async findResetToken(token: string) {
+    const resetToken = await this.db.findOne({
+      where: { resetToken: token },
+      relations: { user: true },
+    });
+
+    return resetToken;
+  }
+
+  async checkResetTokenValidity(token: string) {
+    let result = false;
+
+    const resetToken = await this.findResetToken(token);
+    if (resetToken) {
+      const dateToken = resetToken.expirationDate;
+      const date = Date.now();
+      result = dateToken.getTime() > date; // vérifie la date d'expiration
+    }
+
+    return result; // true / false
+  }
+
+  // ---
 
   async createResetToken(email: string) {
     const user = await new UserService().getByEmail(email);
@@ -39,28 +62,6 @@ export default class ResetPasswordService {
 
     const newResetToken = this.db.create(resetToken);
     return await this.db.save(newResetToken);
-  }
-
-  async findResetToken(token: string) {
-    const resetToken = await this.db.findOne({
-      where: { resetToken: token },
-      relations: { user: true },
-    });
-
-    return resetToken;
-  }
-
-  async checkResetTokenValidity(token: string) {
-    let result = false;
-
-    const resetToken = await this.findResetToken(token);
-    if (resetToken) {
-      const dateToken = resetToken.expirationDate;
-      const date = Date.now();
-      result = dateToken.getTime() > date; // vérifie la date d'expiration
-    }
-
-    return result; // true / false
   }
 
   async changePassword(password: string, user: User) {

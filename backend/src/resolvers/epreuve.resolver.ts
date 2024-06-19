@@ -33,6 +33,7 @@ export default class EpreuveResolver {
 
   // ---
 
+  // changer le result en message
   @Authorized("ADMIN")
   @Mutation(() => EpreuveEntity)
   async createEpreuve(@Arg("infos") infos: EpreuveCreateEntity) {
@@ -45,6 +46,7 @@ export default class EpreuveResolver {
     return result;
   }
 
+  // changer le result en message
   @Authorized("ADMIN")
   @Mutation(() => EpreuveEntity)
   async modifyEpreuve(

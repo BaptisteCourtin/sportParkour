@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 
-import DarkLight from "@/pages/options/DarkLight";
+import DarkLight from "@/components/layout/ordi/darkLightOrdi";
 
 import { FaUser } from "react-icons/fa6";
 import { FaHouse } from "react-icons/fa6";

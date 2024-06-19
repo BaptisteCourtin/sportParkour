@@ -5,6 +5,7 @@ footer {
 
   width: 100%;
   height: 15rem;
+  z-index: 9;
 
   .wrap {
     display: flex;
@@ -60,8 +61,13 @@ footer {
 
 @media screen and (max-width: 800px) {
   footer {
-    height: 30rem;
+    height: 36rem;
+
     .wrap {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+
       nav {
         flex-direction: column;
         gap: 2rem;

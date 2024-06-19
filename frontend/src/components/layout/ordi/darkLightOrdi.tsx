@@ -8,7 +8,9 @@ const DarkLight = () => {
   const { isDarkTheme, toggleTheme } = useDarkLightContext();
 
   return (
-    <div className={`toggle-mode ${isDarkTheme ? "darkTheme" : "lightTheme"}`}>
+    <div
+      className={`darkLightOrdi ${isDarkTheme ? "darkTheme" : "lightTheme"}`}
+    >
       <input type="checkbox" id="toggle" onClick={() => toggleTheme()} />
       <label className="toggle" htmlFor="toggle">
         <FaSun className="icon sun" />

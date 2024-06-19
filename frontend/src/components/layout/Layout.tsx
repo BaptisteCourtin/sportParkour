@@ -31,7 +31,7 @@ const Layout = ({ children }: React.PropsWithChildren<{}>) => {
       <div className="layoutChild">{children}</div>
 
       {windowWidth <= 800 ? <NavbarPhone /> : null}
-      {windowWidth > 800 ? <Footer /> : null}
+      <Footer />
     </div>
   );
 };

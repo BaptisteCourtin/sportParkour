@@ -9,6 +9,7 @@ import { MyContext } from "..";
 
 @Resolver()
 export default class UserResolver {
+  // afficher infos user page profil
   @Authorized("ADMIN", "CLIENT")
   @Query(() => UserEntity)
   async getUserByToken(@Ctx() ctx: MyContext) {
@@ -39,7 +40,6 @@ export default class UserResolver {
 
   // ---
 
-  // éviter le id et faire avec le token
   @Authorized("ADMIN", "CLIENT")
   @Mutation(() => UserEntity)
   async modifyUser(
@@ -56,7 +56,6 @@ export default class UserResolver {
     return result;
   }
 
-  // éviter le id et faire avec le token
   @Authorized("ADMIN", "CLIENT")
   @Mutation(() => MessageEntity)
   async deleteUser(@Arg("id") id: string, @Ctx() ctx: MyContext) {

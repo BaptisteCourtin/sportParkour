@@ -38,14 +38,14 @@ export default class ResetPasswordEntity {
   @Column()
   resetToken: string;
 
+  @Field()
+  @Column({ type: "datetime" })
+  expirationDate: Date;
+
   @Field(() => User)
   @OneToOne(() => User)
   @JoinColumn()
   user: User;
-
-  @Field()
-  @Column({ type: "datetime" })
-  expirationDate: Date;
 }
 
 @InputType()

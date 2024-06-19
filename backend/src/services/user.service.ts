@@ -42,6 +42,7 @@ class UserService {
     return user;
   }
 
+  // pour le reset password
   async getByEmail(email: string) {
     const user = await this.db.findOne({
       where: { email: email },
