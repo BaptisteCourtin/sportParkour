@@ -2,6 +2,7 @@ import React, { SyntheticEvent, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import {
   Difficulty,
+  EpreuveEntity,
   ParkourUpdateEntity,
   useDeleteParkourMutation,
   useGetListTop20EpreuveByTitleLazyQuery,
@@ -70,6 +71,8 @@ const modifyOneParkour = () => {
           selectedIds
             ? setSelectedEpreuveIds(selectedIds)
             : setSelectedEpreuveIds([]);
+
+          setChooseEpreuves(data.getParkourById.epreuves as EpreuveEntity[]);
         },
         onError(err: any) {
           console.error("error", err);
@@ -181,11 +184,16 @@ const modifyOneParkour = () => {
   }, []);
 
   const [selectedEpreuveIds, setSelectedEpreuveIds] = useState<number[]>([]);
+  const [chooseEpreuves, setChooseEpreuves] = useState<EpreuveEntity[]>([]);
+
   const handleEpreuveSelection = (value: any) => {
     const selectedIds = value.map((option: { id: string }) =>
       parseInt(option.id)
     );
     setSelectedEpreuveIds(selectedIds);
+
+    // Ajout des nouvelles épreuves tout en gardant les anciennes
+    setChooseEpreuves(value);
   };
 
   return (
@@ -356,7 +364,7 @@ const modifyOneParkour = () => {
                   loading={loadingEpreuves}
                   disableCloseOnSelect
                   // valeur de base (repris de la bdd) (sous forme d'épreuve)
-                  defaultValue={data.getParkourById.epreuves as any}
+                  value={chooseEpreuves}
                   // on change
                   onInputChange={handleSearchTitle}
                   onChange={(e, value, detail) => handleEpreuveSelection(value)}

@@ -21,6 +21,7 @@ import { toast } from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { object, string } from "yup";
+import SearchBarCommuneName from "@/components/user/searchBarCommuneName";
 
 let modifyUserSchema = object({
   email: string()
@@ -30,7 +31,6 @@ let modifyUserSchema = object({
   name: string().max(100).required("Veuillez entrer votre nom"),
   firstname: string().max(100).required("Veuillez entrer votre prénom"),
 
-  city: string().max(50),
   codePostal: string()
     .max(5, "un code postal comprend 5 chiffres")
     .test("len", "un code postal comprend 5 chiffres", (val) => {
@@ -39,6 +39,7 @@ let modifyUserSchema = object({
       }
       return val.length == 0 || val.length == 5;
     }),
+
   phone: string()
     .max(10, "tapez votre numéro sans espace et sans le +33")
     .test(
@@ -70,6 +71,14 @@ const profil = () => {
 
   useEffect(() => {
     getUser({
+      onCompleted(data) {
+        setSelectedCommuneName(
+          data.getUserByToken.city ? data.getUserByToken.city : ""
+        );
+        setSelectedCommuneCodePostal(
+          data.getUserByToken.codePostal ? data.getUserByToken.codePostal : ""
+        );
+      },
       onError(err: any) {
         console.error("error", err);
       },
@@ -94,8 +103,17 @@ const profil = () => {
 
   const handleModifyUser = (dataForm: UserUpdateEntity): void => {
     if (dataForm.email && dataForm.name && dataForm.firstname) {
+      const { codePostal, ...data } = dataForm;
+      const infos = {
+        city: selectedCommuneName,
+        codePostal: selectedCommuneCodePostal,
+        ...data,
+      };
+
+      console.log(infos);
+
       modifyUser({
-        variables: { infos: dataForm },
+        variables: { infos: infos },
         onCompleted(data) {
           if (data.modifyUser.id) {
             setIsModifMode(false);
@@ -114,8 +132,6 @@ const profil = () => {
   const [values, setValues] = useState({
     firstname: "",
     name: "",
-    city: "",
-    codePostal: "",
     phone: "",
     email: "",
     password: "",
@@ -153,6 +169,11 @@ const profil = () => {
       });
     }
   }
+
+  // --- API COMMUNES ---
+  const [selectedCommuneName, setSelectedCommuneName] = useState("");
+  const [selectedCommuneCodePostal, setSelectedCommuneCodePostal] =
+    useState("");
 
   return (
     <main className="profil">
@@ -230,27 +251,13 @@ const profil = () => {
 
                   <div className="containerMiniChamp">
                     <div className="champ">
-                      <TextField
-                        className="mui-input"
-                        fullWidth
-                        variant="outlined"
-                        label="Votre ville"
-                        defaultValue={data.getUserByToken.city}
-                        {...register("city")}
-                        id="city"
-                        name="city"
-                        type="text"
-                        inputProps={{ maxLength: 50 }}
-                        onChange={(e) =>
-                          handleChangeAThing("city", e.target.value)
+                      <SearchBarCommuneName
+                        userValue={selectedCommuneName}
+                        setSelectedCommuneName={setSelectedCommuneName}
+                        setSelectedCommuneCodePostal={
+                          setSelectedCommuneCodePostal
                         }
                       />
-                      <span>
-                        {values.city.length > 0
-                          ? `${values.city.length}/50`
-                          : ""}
-                      </span>
-                      <p className="error">{errors?.city?.message}</p>
                     </div>
 
                     <div className="champ">
@@ -259,21 +266,15 @@ const profil = () => {
                         fullWidth
                         variant="outlined"
                         label="Votre code postal"
-                        defaultValue={data.getUserByToken.codePostal}
+                        value={selectedCommuneCodePostal}
                         {...register("codePostal")}
                         id="codePostal"
                         name="codePostal"
                         type="text"
-                        inputProps={{ maxLength: 5 }}
-                        onChange={(e) =>
-                          handleChangeAThing("codePostal", e.target.value)
-                        }
+                        InputProps={{
+                          readOnly: true,
+                        }}
                       />
-                      <span>
-                        {values.codePostal.length > 0
-                          ? `${values.codePostal.length}/5`
-                          : ""}
-                      </span>
                       <p className="error">{errors?.codePostal?.message}</p>
                     </div>
                   </div>
