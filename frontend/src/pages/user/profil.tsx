@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { useForm } from "react-hook-form";
+import { object, string } from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+
 import {
   useDeleteUserMutation,
   useGetUserByTokenLazyQuery,
@@ -16,29 +20,18 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+
 import { toast } from "react-hot-toast";
 
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { object, string } from "yup";
 import SearchBarCommuneName from "@/components/user/searchBarCommuneName";
 
 let modifyUserSchema = object({
   email: string()
-    .max(255)
     .email("Votre email doit être valide")
+    .max(255)
     .required("Veuillez entrer votre email"),
   name: string().max(100).required("Veuillez entrer votre nom"),
   firstname: string().max(100).required("Veuillez entrer votre prénom"),
-
-  codePostal: string()
-    .max(5, "un code postal comprend 5 chiffres")
-    .test("len", "un code postal comprend 5 chiffres", (val) => {
-      if (val == undefined) {
-        return true;
-      }
-      return val.length == 0 || val.length == 5;
-    }),
 
   phone: string()
     .max(10, "tapez votre numéro sans espace et sans le +33")
@@ -102,30 +95,26 @@ const profil = () => {
   });
 
   const handleModifyUser = (dataForm: UserUpdateEntity): void => {
-    if (dataForm.email && dataForm.name && dataForm.firstname) {
-      const { codePostal, ...data } = dataForm;
-      const infos = {
-        city: selectedCommuneName,
-        codePostal: selectedCommuneCodePostal,
-        ...data,
-      };
+    const { codePostal, ...data } = dataForm;
+    const infos = {
+      city: selectedCommuneName,
+      codePostal: selectedCommuneCodePostal,
+      ...data,
+    };
 
-      console.log(infos);
-
-      modifyUser({
-        variables: { infos: infos },
-        onCompleted(data) {
-          if (data.modifyUser.id) {
-            setIsModifMode(false);
-            toast.success("GG, vous avez été mis à jour 👌");
-            router.push(`/user/profil`);
-          }
-        },
-        onError(error) {
-          toast.error(error.message);
-        },
-      });
-    }
+    modifyUser({
+      variables: { infos: infos },
+      onCompleted(data) {
+        if (data.modifyUser.success) {
+          setIsModifMode(false);
+          toast.success(data.modifyUser.message);
+          router.push(`/user/profil`);
+        }
+      },
+      onError(error) {
+        toast.error(error.message);
+      },
+    });
   };
 
   // --- DEAL WITH LENGTH DURING MODIF ---
@@ -158,7 +147,6 @@ const profil = () => {
   function handleDeleteUser(id: string): void {
     if (id) {
       deleteUser({
-        variables: { deleteUserId: id },
         onCompleted(data) {
           toast.success(data.deleteUser.message);
           router.push(`/`);
@@ -267,7 +255,6 @@ const profil = () => {
                         variant="outlined"
                         label="Votre code postal"
                         value={selectedCommuneCodePostal}
-                        {...register("codePostal")}
                         id="codePostal"
                         name="codePostal"
                         type="text"
@@ -275,7 +262,6 @@ const profil = () => {
                           readOnly: true,
                         }}
                       />
-                      <p className="error">{errors?.codePostal?.message}</p>
                     </div>
                   </div>
 

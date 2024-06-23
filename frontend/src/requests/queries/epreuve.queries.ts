@@ -23,18 +23,22 @@ export const GET_EPREUVE_BY_ID = gql`
 //   "getEpreuveByIdId": 12
 // }
 
-export const GET_LIST_EPREUVE = gql`
-  query GetListEpreuve {
-    getListEpreuve {
+export const GET_ALL_EPREUVE = gql`
+  query GetAllEpreuve {
+    getAllEpreuve {
       id
       title
+      images {
+        id
+        lien
+      }
     }
   }
 `;
 
-export const GET_TOP20_EPREUVE_BY_SEARCH = gql`
-  query GetListTop20EpreuveByTitle($title: String) {
-    getListTop20EpreuveByTitle(title: $title) {
+export const GET_TOP20_EPREUVE_BY_TITLE = gql`
+  query GetTop20EpreuveByTitle($title: String) {
+    getTop20EpreuveByTitle(title: $title) {
       id
       title
     }

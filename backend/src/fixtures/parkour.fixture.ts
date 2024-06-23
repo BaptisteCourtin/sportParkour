@@ -5,7 +5,10 @@ import { Difficulty } from "../enum/difficulty.enum";
 import EpreuveEntity from "../entities/epreuve.entity";
 import ImageParkourEntity from "../entities/imageParkour.entity";
 import UserEntity from "../entities/user.entity";
-import JoinUserParkourEntity from "../entities/joinUserParkour.entity";
+import JoinUserParkourEntity, {
+  JoinUserParkourFavorisEntity,
+} from "../entities/joinUserParkourFavoris.entity";
+import JoinUserParkourNoteEntity from "../entities/joinUserParkourNote.entity";
 
 export async function createParkours(
   dataSource: DataSource,
@@ -15,8 +18,8 @@ export async function createParkours(
 ) {
   const parkourRepository = dataSource.getRepository(ParkourEntity);
   const imageParkourRepository = dataSource.getRepository(ImageParkourEntity);
-  const joinUserParkourRepository = dataSource.getRepository(
-    JoinUserParkourEntity
+  const joinUserParkourNoteRepository = dataSource.getRepository(
+    JoinUserParkourNoteEntity
   );
 
   let indexImage = 1;
@@ -103,11 +106,11 @@ export async function createParkours(
 
     // ---------------------------------------------------------------------------------
 
-    // note et favoris (besoin de faire après la création du parkour pour la foreign-key)
-    const joinUserParkours = [];
+    // note (besoin de faire après la création du parkour pour la foreign-key)
+    const joinUserParkoursNotes = [];
     let noteTotalThisParkour: number = 0;
     let nbVoteThisParkour: number = 0;
-    let usersTab: number[] = [];
+    let usersTabForNote: number[] = [];
     for (
       let k = 0;
       k < Math.floor(Math.random() * (users.length / 2 + 3));
@@ -115,26 +118,29 @@ export async function createParkours(
     ) {
       const idUser = Math.floor(Math.random() * users.length);
 
-      if (!usersTab.includes(idUser)) {
-        const joinUserParkour = new JoinUserParkourEntity();
+      if (!usersTabForNote.includes(idUser)) {
+        const joinUserParkourNote = new JoinUserParkourNoteEntity();
         const thisNote = faker.number.float({
           min: 0,
           max: 5,
           multipleOf: 0.25,
         });
 
-        joinUserParkour.user_id = users[idUser].id;
-        joinUserParkour.parkour_id = parkour.id;
-        joinUserParkour.note = thisNote;
-        joinUserParkour.favoris = faker.datatype.boolean();
-        joinUserParkours.push(joinUserParkour);
+        joinUserParkourNote.user_id = users[idUser].id;
+        joinUserParkourNote.parkour_id = parkour.id;
+        joinUserParkourNote.note = thisNote;
+        joinUserParkourNote.commentaire = faker.lorem.paragraphs(
+          { min: 1, max: 3 },
+          "<br/>\n"
+        );
+        joinUserParkoursNotes.push(joinUserParkourNote);
 
         noteTotalThisParkour += thisNote;
         nbVoteThisParkour += 1;
-        usersTab.push(idUser);
+        usersTabForNote.push(idUser);
       }
     }
-    await joinUserParkourRepository.save(joinUserParkours);
+    await joinUserParkourNoteRepository.save(joinUserParkoursNotes);
 
     // ---------------------------------------------------------------------------------
 
@@ -157,4 +163,6 @@ export async function createParkours(
       nbVote: parkour.nbVote,
     });
   }
+
+  return parkours;
 }

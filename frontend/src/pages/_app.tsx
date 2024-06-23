@@ -1,7 +1,6 @@
 // ON PEUT IMPORT LE CSS QUE ICI
 import "@/styles/index.scss";
 
-import { createContext, useState } from "react";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
@@ -9,6 +8,7 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import Layout from "../components/layout/Layout";
 
 import { Toaster } from "react-hot-toast";
+
 import { DarkLightProvider } from "@/context/themeContext";
 
 export default function MyApp({ Component, pageProps }: AppProps) {

@@ -13,6 +13,7 @@ import EpreuveEntity from "./epreuve.entity";
 import ImageParkourEntity from "./imageParkour.entity";
 
 import { Difficulty } from "../enum/difficulty.enum";
+import JoinUserParkourNoteEntity from "./joinUserParkourNote.entity";
 
 @Entity("parkour")
 @ObjectType()
@@ -55,11 +56,11 @@ class ParkourEntity {
     length: 50,
     nullable: true,
     transformer: {
-      from(value: string) {
-        return value.toLowerCase();
+      from(value: string | null): string | null {
+        return value ? value.toLowerCase() : null;
       },
-      to(value: string) {
-        return value.toLowerCase();
+      to(value: string | null): string | null {
+        return value ? value.toLowerCase() : null;
       },
     },
   })
@@ -84,11 +85,19 @@ class ParkourEntity {
   @Column({ unsigned: true, nullable: true, default: 0 })
   nbVote: number;
 
+  // ---
+
   @Field(() => [ImageParkourEntity], { nullable: true })
   @OneToMany(() => ImageParkourEntity, (img) => img.id_parkour, {
     nullable: true,
   })
   images: ImageParkourEntity[];
+
+  @Field(() => [JoinUserParkourNoteEntity], { nullable: true })
+  @OneToMany(() => JoinUserParkourNoteEntity, (notes) => notes.parkour, {
+    nullable: true,
+  })
+  notesParkours: JoinUserParkourNoteEntity[];
 
   @Field(() => [EpreuveEntity], { nullable: true })
   @ManyToMany(() => EpreuveEntity, {

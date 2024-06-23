@@ -1,4 +1,5 @@
 import React, { SyntheticEvent, useEffect, useState } from "react";
+
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 
@@ -15,6 +16,7 @@ interface TypeCommune {
   code: string;
 }
 
+// userValue = commune sélectionné (seulement le nom)
 const SearchBarCommuneName = ({
   userValue,
   setSelectedCommuneName,
@@ -24,11 +26,12 @@ const SearchBarCommuneName = ({
   setSelectedCommuneName: any;
   setSelectedCommuneCodePostal: any;
 }) => {
-  const [selectedCommune, setSelectedCommune] = useState(null);
+  const [selectedCommune, setSelectedCommune] = useState(null); // commune selectionné (entité complète)
   const [communesPossibles, setCommunesPossibles] = useState<
     Array<TypeCommune>
-  >([]);
+  >([]); // les possibilitées dans le menu déroulant
 
+  // appel l'api
   const fetchCommuneByName = async (
     e?: SyntheticEvent<Element, Event> | null,
     nomCommuneVoulu?: string,
@@ -43,6 +46,7 @@ const SearchBarCommuneName = ({
       }
       const data = await response.json();
 
+      // un objet par code postal
       const options: TypeCommune[] = data.flatMap(
         (commune: TypeCommuneByName) => {
           return commune.codesPostaux.map((codePostal) => ({
@@ -54,24 +58,31 @@ const SearchBarCommuneName = ({
       );
 
       setCommunesPossibles(options);
+      console.log(options);
 
       if (nomCommuneVoulu && isStart) {
-        const communeTrouvee = data[0];
-        setSelectedCommune(communeTrouvee || null);
+        // trouver celle avec le même vrai nom
+        const communeTrouvee = data.find(
+          (objet: TypeCommuneByName) => objet.nom === nomCommuneVoulu
+        );
+        setSelectedCommune(communeTrouvee || null); // que dans ce composant (ne va pas changer le code postal)
       }
     } catch (error) {
       console.error(error);
     }
   };
 
+  // pour afficher de base
   useEffect(() => {
     if (userValue) {
       fetchCommuneByName(null, userValue, true);
     }
   }, [userValue]);
 
+  // quand on clique sur une commune
   function handlerChangeCommune(value: TypeCommune | null): void {
-    // console.log("VALUE", value);
+    console.log(value);
+
     if (value != null) {
       setSelectedCommuneName(value?.nom);
       setSelectedCommuneCodePostal(value?.codePostal);

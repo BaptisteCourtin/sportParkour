@@ -1,16 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
-import {
-  GetEpreuveByIdQuery,
-  useGetListEpreuveQuery,
-  useIsAdminLazyQuery,
-  useIsAdminQuery,
-} from "@/types/graphql";
+import Link from "next/link";
+
+import { useGetAllEpreuveQuery, useIsAdminQuery } from "@/types/graphql";
+
+import TextField from "@mui/material/TextField";
 
 import CardEpreuve from "@/components/epreuve/cardEpreuve";
 import SearchBarEpreuve from "@/components/epreuve/searchBarEpreuve";
-import TextField from "@mui/material/TextField";
-import Link from "next/link";
 
 const allEpreuves = () => {
   const router = useRouter();
@@ -22,7 +19,7 @@ const allEpreuves = () => {
     error: errorIsAdmin,
   } = useIsAdminQuery();
 
-  const { data, loading, error } = useGetListEpreuveQuery({
+  const { data, loading, error } = useGetAllEpreuveQuery({
     fetchPolicy: "no-cache",
   });
 
@@ -42,7 +39,7 @@ const allEpreuves = () => {
       ) : loading ? (
         <h2>Chargement en cours</h2>
       ) : (
-        data?.getListEpreuve && (
+        data?.getAllEpreuve && (
           <>
             {dataIsAdmin ? (
               <Link href="/admin/createEpreuve">créer une épreuve</Link>
@@ -79,7 +76,7 @@ const allEpreuves = () => {
             </div>
 
             <ul className="cardsEpreuvesUl">
-              {data?.getListEpreuve
+              {data?.getAllEpreuve
                 .slice() // car graphql nous renvoie un tableau en lecture seule
                 .sort(function compare(a: any, b: any) {
                   if (tri === "Titre A-Z") {
@@ -91,7 +88,7 @@ const allEpreuves = () => {
                   }
                   return 0;
                 })
-                .map((epreuve: GetEpreuveByIdQuery["getEpreuveById"]) => (
+                .map((epreuve: any) => (
                   <CardEpreuve epreuve={epreuve} key={epreuve.id} />
                 ))}
             </ul>

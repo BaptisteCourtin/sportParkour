@@ -1,10 +1,10 @@
 import { gql } from "@apollo/client";
 
-export const GET_FAV_BY_TOKEN_AND_ID_PARKOUR = gql`
-  query GetUserFavByTokenAndIdParkour($parkourId: Float!) {
-    getUserFavByTokenAndIdParkour(parkourId: $parkourId) {
+export const GET_NOTE_BY_TOKEN_AND_ID_PARKOUR = gql`
+  query GetUserNoteByTokenAndParkourId($parkourId: Float!) {
+    getUserNoteByTokenAndParkourId(parkourId: $parkourId) {
       note
-      favoris
+      commentaire
     }
   }
 `;
@@ -13,10 +13,12 @@ export const GET_FAV_BY_TOKEN_AND_ID_PARKOUR = gql`
 //   "parkourId": 3
 // }
 
-export const GET_FAV_BY_TOKEN = gql`
-  query GetAllUserFavByToken {
-    getAllUserFavByToken {
-      parkours {
+export const GET__ALL_NOTE_BY_TOKEN = gql`
+  query GetAllUserNoteByToken {
+    getAllUserNoteByToken {
+      note
+      commentaire
+      parkour {
         id
         title
         time

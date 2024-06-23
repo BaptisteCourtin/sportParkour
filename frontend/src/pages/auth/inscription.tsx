@@ -1,25 +1,27 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useForm } from "react-hook-form";
+import { object, ref, string } from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+
 import {
   UserInputRegisterEntity,
   useInscriptionMutation,
 } from "@/types/graphql";
 
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { object, ref, string } from "yup";
-
-import { toast } from "react-hot-toast";
 import TextField from "@mui/material/TextField";
-import { FaArrowRight } from "react-icons/fa6";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-
-import { FaEye } from "react-icons/fa6";
-import { FaEyeSlash } from "react-icons/fa6";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
+
+import { toast } from "react-hot-toast";
+import { FaEye } from "react-icons/fa6";
+import { FaEyeSlash } from "react-icons/fa6";
+import { FaArrowRight } from "react-icons/fa6";
+
+import SearchBarCommuneName from "@/components/user/searchBarCommuneName";
 
 let authSchema = object({
   email: string()
@@ -41,15 +43,6 @@ let authSchema = object({
   name: string().max(100).required("Veuillez entrer votre nom"),
   firstname: string().max(100).required("Veuillez entrer votre prénom"),
 
-  city: string().max(50),
-  codePostal: string()
-    .max(5, "un code postal comprend 5 chiffres")
-    .test("len", "un code postal comprend 5 chiffres", (val) => {
-      if (val == undefined) {
-        return true;
-      }
-      return val.length == 0 || val.length == 5;
-    }),
   phone: string()
     .max(10, "tapez votre numéro sans espace et sans le +33")
     .test(
@@ -87,11 +80,15 @@ const inscription = () => {
   const handleInscription = (
     dataForm: UserInputRegisterWith2PasswordsEntity
   ): void => {
-    // les vérifs sont faites avec yup
-    const { password2, ...data } = dataForm;
+    const { password2, codePostal, ...data } = dataForm;
+    const infos = {
+      city: selectedCommuneName,
+      codePostal: selectedCommuneCodePostal,
+      ...data,
+    };
 
     inscription({
-      variables: { infos: data },
+      variables: { infos: infos },
       onCompleted(data) {
         if (data.inscription.success) {
           toast.success(data.inscription.message);
@@ -108,8 +105,6 @@ const inscription = () => {
   const [values, setValues] = useState({
     firstname: "",
     name: "",
-    city: "",
-    codePostal: "",
     phone: "",
     email: "",
     password: "",
@@ -123,6 +118,11 @@ const inscription = () => {
   // --- SEE PASSWORDS ---
   const [showPassword, setShowPassword] = useState(false);
   const [showPassword2, setShowPassword2] = useState(false);
+
+  // --- API COMMUNES ---
+  const [selectedCommuneName, setSelectedCommuneName] = useState("");
+  const [selectedCommuneCodePostal, setSelectedCommuneCodePostal] =
+    useState("");
 
   return (
     <main className="auth">
@@ -181,42 +181,27 @@ const inscription = () => {
 
         <div className="containerMiniChamp">
           <div className="champ">
-            <TextField
-              className="mui-input"
-              fullWidth
-              variant="outlined"
-              label="Votre ville"
-              {...register("city")}
-              id="city"
-              name="city"
-              type="text"
-              inputProps={{ maxLength: 50 }}
-              onChange={(e) => handleChangeAThing("city", e.target.value)}
+            <SearchBarCommuneName
+              userValue={selectedCommuneName}
+              setSelectedCommuneName={setSelectedCommuneName}
+              setSelectedCommuneCodePostal={setSelectedCommuneCodePostal}
             />
-            <span>
-              {values.city.length > 0 ? `${values.city.length}/50` : ""}
-            </span>
-            <p className="error">{errors?.city?.message}</p>
           </div>
+
           <div className="champ">
             <TextField
               className="mui-input"
               fullWidth
               variant="outlined"
               label="Votre code postal"
-              {...register("codePostal")}
+              value={selectedCommuneCodePostal}
               id="codePostal"
               name="codePostal"
               type="text"
-              inputProps={{ maxLength: 5 }}
-              onChange={(e) => handleChangeAThing("codePostal", e.target.value)}
+              InputProps={{
+                readOnly: true,
+              }}
             />
-            <span>
-              {values.codePostal.length > 0
-                ? `${values.codePostal.length}/5`
-                : ""}
-            </span>
-            <p className="error">{errors?.codePostal?.message}</p>
           </div>
         </div>
 

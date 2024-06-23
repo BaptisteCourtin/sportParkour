@@ -18,9 +18,23 @@ export const GET_PARKOUR_BY_ID = gql`
         lien
         isCouverture
       }
+      notesParkours {
+        note
+        commentaire
+        user {
+          id
+          name
+          firstname
+        }
+      }
       epreuves {
         id
         title
+        images {
+          id
+          lien
+          isCouverture
+        }
       }
     }
   }
@@ -40,7 +54,7 @@ export const GET_ALL_PARKOUR_FOR_MAP = gql`
   }
 `;
 
-export const GET_TOP20_PARKOUR_BY_SEARCH_TITLE = gql`
+export const GET_TOP20_PARKOUR_BY_TITLE = gql`
   query GetListTop20ParkourByTitle($title: String) {
     getTop20ParkourByTitle(title: $title) {
       id
@@ -89,11 +103,9 @@ export const GET_TOP20_PARKOUR_BY_SEARCH = gql`
       images {
         id
         lien
-        isCouverture
       }
       epreuves {
         id
-        title
       }
     }
   }
@@ -113,7 +125,7 @@ export const GET_TOP20_PARKOUR_BY_SEARCH = gql`
 // }
 
 export const GET_THE_PARKOUR_TOTAL = gql`
-  query GetTheParkourTotal(
+  query GetTheParkourTotalForSearch(
     $noteMin: Float
     $difficulty: String
     $lengthMax: Float
@@ -122,7 +134,7 @@ export const GET_THE_PARKOUR_TOTAL = gql`
     $timeMin: Float
     $city: String
   ) {
-    getTheParkourTotal(
+    getTheParkourTotalForSearch(
       noteMin: $noteMin
       difficulty: $difficulty
       lengthMax: $lengthMax
@@ -133,3 +145,13 @@ export const GET_THE_PARKOUR_TOTAL = gql`
     )
   }
 `;
+
+// {
+//   "noteMin": null,
+//   "difficulty": null,
+//   "lengthMax": null,
+//   "lengthMin": null,
+//   "timeMax": null,
+//   "timeMin": null,
+//   "city": null
+// }

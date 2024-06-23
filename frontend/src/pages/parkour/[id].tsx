@@ -3,12 +3,14 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import {
   GetEpreuveByIdQuery,
-  useFavJoinUserParkourMutation,
+  useCreateJoinUserParkourFavorisMutation,
   useGetParkourByIdLazyQuery,
-  useGetUserFavByTokenAndIdParkourLazyQuery,
+  useGetUserFavByTokenAndParkourIdLazyQuery,
   useIsAdminQuery,
   useIsClientQuery,
-  useNoteJoinUserParkourMutation,
+  useCreateJoinUserParkourNoteMutation,
+  useGetUserNoteByTokenAndParkourIdLazyQuery,
+  useDeleteJoinUserParkourFavorisMutation,
 } from "@/types/graphql";
 
 import Button from "@mui/material/Button";
@@ -18,12 +20,12 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { toast } from "react-hot-toast";
+import Rating from "@mui/material/Rating";
 
 import Carousel from "react-material-ui-carousel";
+import { toast } from "react-hot-toast";
 import { FaAngleRight } from "react-icons/fa6";
 import { FaAngleLeft } from "react-icons/fa6";
-import Rating from "@mui/material/Rating";
 
 const OneParkour = () => {
   const router = useRouter();
@@ -50,7 +52,16 @@ const OneParkour = () => {
       loading: loadingIsParkourFav,
       error: errorIsParkourFav,
     },
-  ] = useGetUserFavByTokenAndIdParkourLazyQuery();
+  ] = useGetUserFavByTokenAndParkourIdLazyQuery();
+
+  const [
+    getParkourNote,
+    {
+      data: dataIsParkourNote,
+      loading: loadingIsParkourNote,
+      error: errorIsParkourNote,
+    },
+  ] = useGetUserNoteByTokenAndParkourIdLazyQuery();
 
   useEffect(() => {
     if (router.isReady && id) {
@@ -64,8 +75,17 @@ const OneParkour = () => {
       getIsParkourFav({
         variables: { parkourId: +id },
         onCompleted(data) {
-          setIsLiked(data.getUserFavByTokenAndIdParkour.favoris);
-          setMyNote(data.getUserFavByTokenAndIdParkour.note as number);
+          setIsLiked(data.getUserFavByTokenAndParkourId);
+        },
+      });
+
+      getParkourNote({
+        variables: { parkourId: +id },
+        onCompleted(data) {
+          setMyNote(data.getUserNoteByTokenAndParkourId.note as number);
+          setMyComment(
+            data.getUserNoteByTokenAndParkourId.commentaire as string
+          );
         },
       });
     }
@@ -77,30 +97,44 @@ const OneParkour = () => {
   const [
     createFav,
     { data: dataCreateFav, loading: loadingCreateFav, error: errorCreateFav },
-  ] = useFavJoinUserParkourMutation();
+  ] = useCreateJoinUserParkourFavorisMutation();
+
+  const [
+    deleteFav,
+    { data: dataDeleteFav, loading: loadingDeleteFav, error: errorDeleteFav },
+  ] = useDeleteJoinUserParkourFavorisMutation();
 
   const handleLike = (isFav: boolean): void => {
     if (id) {
-      const infos = {
-        parkour_id: parseInt(id as string),
-        favoris: isFav,
-      };
-
-      createFav({
-        variables: { infos: infos },
-        onCompleted(data) {
-          toast.success(data.favJoinUserParkour.message);
-          setIsLiked(isFav);
-        },
-        onError(error) {
-          console.error(error);
-        },
-      });
+      if (isFav) {
+        createFav({
+          variables: { idParkour: parseInt(id as string) },
+          onCompleted(data) {
+            toast.success(data.createJoinUserParkourFavoris.message);
+            setIsLiked(!isLiked);
+          },
+          onError(error) {
+            console.error(error);
+          },
+        });
+      } else {
+        deleteFav({
+          variables: { idParkour: parseInt(id as string) },
+          onCompleted(data) {
+            toast.success(data.deleteJoinUserParkourFavoris.message);
+            setIsLiked(!isLiked);
+          },
+          onError(error) {
+            console.error(error);
+          },
+        });
+      }
     }
   };
 
   // --- MODIF NOTE ---
   const [myNote, setMyNote] = useState(0);
+  const [myComment, setMyComment] = useState("");
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -114,20 +148,25 @@ const OneParkour = () => {
   const [
     createNote,
     { data: dataNote, loading: loadingNote, error: errorNote },
-  ] = useNoteJoinUserParkourMutation();
+  ] = useCreateJoinUserParkourNoteMutation();
 
-  function handleNote(noteThisParkour: number): void {
+  function handleNote(
+    noteThisParkour: number,
+    commentThisParkour: string
+  ): void {
     if (id) {
       createNote({
         variables: {
           infos: {
             parkour_id: +id,
             note: +noteThisParkour,
+            commentaire: commentThisParkour,
           },
         },
         onCompleted(data) {
-          toast.success(data.noteJoinUserParkour.message);
+          toast.success(data.createJoinUserParkourNote.message);
           setMyNote(+noteThisParkour);
+          setMyComment(commentThisParkour);
           handleClickClose();
         },
         onError(error) {
@@ -177,7 +216,7 @@ const OneParkour = () => {
 
                       // if une note => handlePutNote
                       if (noteThisParkour) {
-                        handleNote(noteThisParkour);
+                        handleNote(noteThisParkour, commentThisParkour);
 
                         if (errorNote) {
                           handleClickClose();
@@ -205,6 +244,7 @@ const OneParkour = () => {
                       variant="standard"
                       margin="dense"
                       label="Votre commentaire"
+                      defaultValue={myComment}
                       multiline
                       rows={10}
                       id="commentThisParkour"

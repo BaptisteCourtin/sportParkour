@@ -1,23 +1,24 @@
 import React, { SyntheticEvent, useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { useForm } from "react-hook-form";
+import { mixed, number, object, string } from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+
 import {
   Difficulty,
   ParkourCreateEntity,
   useCreateParkourMutation,
-  useGetListTop20EpreuveByTitleLazyQuery,
+  useGetTop20EpreuveByTitleLazyQuery,
 } from "@/types/graphql";
 
-import { toast } from "react-hot-toast";
-
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { mixed, number, object, string } from "yup";
 import TextField from "@mui/material/TextField";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import Autocomplete from "@mui/material/Autocomplete";
+
+import { toast } from "react-hot-toast";
 import { FaCheck } from "react-icons/fa6";
 
 let createParkourSchema = object({
@@ -103,7 +104,7 @@ const createParkour = () => {
   const [
     getListEpreuvesByTitle,
     { data: dataEpreuves, loading: loadingEpreuves, error: errorEpreuves },
-  ] = useGetListTop20EpreuveByTitleLazyQuery();
+  ] = useGetTop20EpreuveByTitleLazyQuery();
 
   const handleSearchTitle = (
     e: SyntheticEvent<Element, Event>,
@@ -284,7 +285,7 @@ const createParkour = () => {
               onInputChange={handleSearchTitle}
               onChange={(e, value, detail) => handleEpreuveSelection(value)}
               // pour rechercher dans le back
-              options={dataEpreuves?.getListTop20EpreuveByTitle ?? []}
+              options={dataEpreuves?.getTop20EpreuveByTitle ?? []}
               // render qui veut un string
               getOptionLabel={(option) => option.title}
               // pour le style autour

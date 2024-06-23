@@ -3,6 +3,7 @@ import dataSource from "../lib/datasource";
 import { createUsers } from "./user.fixture";
 import { createEpreuves } from "./epreuve.fixture";
 import { createParkours } from "./parkour.fixture";
+import { createJoinUserParkourFavoris } from "./joinUserParkourFavoris.fixture";
 
 // const numberEpreuve = 5;
 // const numberParkour = 5;
@@ -29,6 +30,12 @@ async function indexFixtures() {
       dataSource,
       numberParkour,
       epreuves,
+      users
+    ); // parkours, joinParkourEpreuve, imageParkour, joinUserParkour
+
+    const userFavoris = await createJoinUserParkourFavoris(
+      dataSource,
+      parkours,
       users
     ); // parkours, joinParkourEpreuve, imageParkour, joinUserParkour
 

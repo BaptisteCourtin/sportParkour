@@ -3,13 +3,8 @@ import { gql } from "@apollo/client";
 export const MODIFY_USER = gql`
   mutation ModifyUser($infos: UserUpdateEntity!) {
     modifyUser(infos: $infos) {
-      id
-      name
-      firstname
-      email
-      city
-      codePostal
-      phone
+      message
+      success
     }
   }
 `;
@@ -27,14 +22,10 @@ export const MODIFY_USER = gql`
 // }
 
 export const DELETE_USER = gql`
-  mutation DeleteUser($deleteUserId: String!) {
-    deleteUser(id: $deleteUserId) {
+  mutation DeleteUser {
+    deleteUser {
       message
       success
     }
   }
 `;
-
-// {
-//   "deleteUserId": null
-// }

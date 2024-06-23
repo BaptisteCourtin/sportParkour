@@ -1,21 +1,20 @@
-import { useRouter } from "next/router";
-import { useLazyQuery, useMutation } from "@apollo/client";
-import {
-  ChangePasswordMutation,
-  ChangePasswordMutationVariables,
-  CheckResetTokenQuery,
-  CheckResetTokenQueryVariables,
-  useChangePasswordMutation,
-  useCheckResetTokenLazyQuery,
-} from "@/types/graphql";
 import { useEffect, useState } from "react";
-import Link from "next/link";
-import TextField from "@mui/material/TextField";
-import { object, ref, string } from "yup";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/router";
+import Link from "next/link";
+import { object, ref, string } from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+
+import {
+  useChangePasswordMutation,
+  useCheckResetTokenValidityLazyQuery,
+} from "@/types/graphql";
+
+import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
+
+import toast from "react-hot-toast";
 import { FaEye } from "react-icons/fa6";
 import { FaEyeSlash } from "react-icons/fa6";
 
@@ -55,7 +54,7 @@ function Reset() {
   const [
     checkToken,
     { data: dataCheck, loading: loadingCheck, error: errorCheck },
-  ] = useCheckResetTokenLazyQuery();
+  ] = useCheckResetTokenValidityLazyQuery();
 
   const [
     changePassword,
@@ -85,6 +84,12 @@ function Reset() {
         variables: {
           data: { password: password, token: token as string },
         },
+        onCompleted() {
+          router.push("/");
+        },
+        onError(error) {
+          toast.error(error.message);
+        },
       });
     }
   };
@@ -107,7 +112,7 @@ function Reset() {
     <main>
       {loadingCheck ? (
         <p>Vérification en cours</p>
-      ) : dataCheck?.checkResetToken.success && !dataChange ? (
+      ) : dataCheck?.checkResetTokenValidity.success && !dataChange ? (
         <>
           <h1>Réinitialisation de mot de passe</h1>
           <form onSubmit={handleSubmit(handlePasswordsResetPassword)}>

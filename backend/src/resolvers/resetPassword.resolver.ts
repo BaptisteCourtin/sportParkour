@@ -19,7 +19,7 @@ export default class ResetPasswordResolver {
 
   // utilisé sur [token]
   @Query(() => MessageEntity)
-  async checkResetToken(@Arg("token") token: string) {
+  async checkResetTokenValidity(@Arg("token") token: string) {
     const success = await new ResetPasswordService().checkResetTokenValidity(
       token
     );

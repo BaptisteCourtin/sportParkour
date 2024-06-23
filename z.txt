@@ -62,6 +62,17 @@ DROP TABLE image_epreuve;
 DROP TABLE parkour;
 DROP TABLE image_parkour;
 DROP TABLE join_parkour_epreuve;
+
 DROP TABLE user;
-DROP TABLE join_user_parkour;
+DROP TABLE join_user_parkour_favoris;
+DROP TABLE join_user_parkour_note;
 DROP TABLE reset_password
+
+------------------------------------------------------------------------------------------------------
+
+message sur logout
+
+supprimer note
+profil => parkours notés
+
+ajouter nom commune sur créer/modifier parkour

@@ -1,4 +1,8 @@
 import React, { useEffect, useState } from "react";
+import Link from "next/link";
+
+import { GetParkourByIdQuery } from "@/types/graphql";
+
 import {
   useMap,
   AdvancedMarker,
@@ -6,8 +10,6 @@ import {
   InfoWindow,
   useAdvancedMarkerRef,
 } from "@vis.gl/react-google-maps";
-import { GetParkourByIdQuery } from "@/types/graphql";
-import Link from "next/link";
 
 const PoiMarker = ({ poi }: { poi: GetParkourByIdQuery["getParkourById"] }) => {
   const [markerRef, marker] = useAdvancedMarkerRef();

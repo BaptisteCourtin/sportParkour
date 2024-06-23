@@ -10,16 +10,6 @@ export const GET_USER_BY_TOKEN = gql`
       city
       codePostal
       phone
-      parkours {
-        user_id
-        parkour_id
-        favoris
-        note
-        parkours {
-          id
-          title
-        }
-      }
     }
   }
 `;

@@ -1,7 +1,9 @@
-import { GetParkourByIdQuery } from "@/types/graphql";
-import Rating from "@mui/material/Rating";
-import Link from "next/link";
 import React from "react";
+import Link from "next/link";
+
+import Rating from "@mui/material/Rating";
+
+import { GetParkourByIdQuery } from "@/types/graphql";
 
 import { FaLocationDot } from "react-icons/fa6";
 import { FaPersonRunning } from "react-icons/fa6";

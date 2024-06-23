@@ -13,7 +13,7 @@ class EpreuveService {
     this.db = datasource.getRepository(EpreuveEntity);
   }
 
-  async getById(id: number) {
+  async getEpreuveById(id: number) {
     const epreuve: EpreuveEntity | null = await this.db.findOne({
       where: { id: id },
       relations: ["images"], // Charge la relation 'images'
@@ -24,12 +24,18 @@ class EpreuveService {
     return epreuve;
   }
 
-  async getListByIds(ids?: number[]) {
-    const listEpreuves: EpreuveEntity[] | null = await this.db.find({
-      where: {
-        id: ids && ids.length > 0 ? In(ids.map((id) => id)) : undefined,
-      },
-    });
+  async getListEpreuveByIds(ids?: number[]) {
+    // cherche les epreuves suivant la table de ids (all si pas de table)
+    // prend les images qui ont isCouverture à true
+    const listEpreuves: EpreuveEntity[] = await this.db
+      .createQueryBuilder("epreuve")
+      .leftJoinAndSelect(
+        "epreuve.images",
+        "images",
+        "images.isCouverture = true"
+      )
+      .where(ids && ids.length > 0 ? "epreuve.id IN (:...ids)" : "1=1", { ids })
+      .getMany();
 
     if (!listEpreuves) {
       throw new Error("Pas d'epreuves");
@@ -38,7 +44,7 @@ class EpreuveService {
     return listEpreuves;
   }
 
-  async getListTop20ByTitle(title?: string) {
+  async getTop20EpreuveByTitle(title?: string) {
     const listEpreuves: EpreuveEntity[] | null = await this.db.find({
       where: title ? [{ title: Like(`%${title}%`) }] : undefined,
       relations: ["images"],
@@ -63,6 +69,7 @@ class EpreuveService {
     if (!epreuve) {
       throw new Error("Cette épreuve n'existe pas");
     }
+
     if (epreuve?.parkours && epreuve.parkours.length > 0) {
       return true;
     }
@@ -71,16 +78,14 @@ class EpreuveService {
 
   // ---
 
-  async create(data: EpreuveCreateEntity) {
+  async createEpreuve(data: EpreuveCreateEntity) {
     const newEpreuve = this.db.create(data);
     await this.db.save(newEpreuve);
-    return newEpreuve.id;
+    return newEpreuve;
   }
 
-  // pas besoin de partial<>
-  async modify(id: number, data: EpreuveUpdateEntity) {
-    // les images ont déjà été changés avant (si besoin) => donc on peut juste renvoyer le save
-    const epreuve = await this.getById(id);
+  async modifyEpreuve(id: number, data: EpreuveUpdateEntity) {
+    const epreuve = await this.getEpreuveById(id);
 
     // Itérer sur les clés de l'objet data
     for (const key of Object.keys(data) as Array<keyof EpreuveUpdateEntity>) {
@@ -94,9 +99,9 @@ class EpreuveService {
     return await this.db.save(epreuve);
   }
 
-  async delete(id: number) {
-    const epreuve = await this.getById(id);
-    await this.db.remove(epreuve);
+  async deleteEpreuve(id: number) {
+    const epreuve = await this.getEpreuveById(id);
+    return await this.db.remove(epreuve);
   }
 }
 

@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
+import Link from "next/link";
+
 import { useGetAllUserFavByTokenLazyQuery } from "@/types/graphql";
 
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
-import NativeSelect from "@mui/material/NativeSelect";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 
 import CardFavParkour from "@/components/parkour/cardFavParkour";
-import Select from "@mui/material/Select";
-import { MenuItem } from "@mui/material";
-import Link from "next/link";
 
 const favoris = () => {
   const [getFav, { data, loading, error }] = useGetAllUserFavByTokenLazyQuery();
@@ -63,50 +63,50 @@ const favoris = () => {
             .slice() // c'est en read only donc sans slice je peux pas manip
             .sort(function compare(a, b) {
               if (tri === "default") {
-                if (a.parkours.id > b.parkours.id) return -1;
+                if (a.parkour.id > b.parkour.id) return -1;
                 return 1;
               }
               // nom
               else if (tri === "nomAZ") {
-                if (a.parkours.title < b.parkours.title) return -1;
+                if (a.parkour.title < b.parkour.title) return -1;
                 return 1;
               } else if (tri === "nomZA") {
-                if (a.parkours.title > b.parkours.title) return -1;
+                if (a.parkour.title > b.parkour.title) return -1;
                 return 1;
               }
               // temps
               else if (tri === "tempsCroissant") {
-                if (a.parkours.time && b.parkours.time) {
-                  if (a.parkours.time < b.parkours.time) return -1;
+                if (a.parkour.time && b.parkour.time) {
+                  if (a.parkour.time < b.parkour.time) return -1;
                 }
                 return 1;
               } else if (tri === "tempsDecroissant") {
-                if (a.parkours.time && b.parkours.time) {
-                  if (a.parkours.time > b.parkours.time) return -1;
+                if (a.parkour.time && b.parkour.time) {
+                  if (a.parkour.time > b.parkour.time) return -1;
                 }
                 return 1;
               }
               // longueur
               else if (tri === "longueurCroissant") {
-                if (a.parkours.length && b.parkours.length) {
-                  if (a.parkours.length < b.parkours.length) return -1;
+                if (a.parkour.length && b.parkour.length) {
+                  if (a.parkour.length < b.parkour.length) return -1;
                 }
                 return 1;
               } else if (tri === "longueurDecroissant") {
-                if (a.parkours.length && b.parkours.length) {
-                  if (a.parkours.length > b.parkours.length) return -1;
+                if (a.parkour.length && b.parkour.length) {
+                  if (a.parkour.length > b.parkour.length) return -1;
                 }
                 return 1;
               }
               // note
               else if (tri === "noteCroissant") {
-                if (a.parkours.note && b.parkours.note) {
-                  if (a.parkours.note < b.parkours.note) return -1;
+                if (a.parkour.note && b.parkour.note) {
+                  if (a.parkour.note < b.parkour.note) return -1;
                 }
                 return 1;
               } else if (tri === "noteDecroissant") {
-                if (a.parkours.note && b.parkours.note) {
-                  if (a.parkours.note > b.parkours.note) return -1;
+                if (a.parkour.note && b.parkour.note) {
+                  if (a.parkour.note > b.parkour.note) return -1;
                 }
                 return 1;
               }
@@ -114,7 +114,7 @@ const favoris = () => {
             })
             .map((parkour: any) => (
               <li>
-                <CardFavParkour parkour={parkour.parkours} />
+                <CardFavParkour parkour={parkour.parkour} />
               </li>
             ))}
         </ul>

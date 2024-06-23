@@ -3,6 +3,8 @@ import {
   BeforeUpdate,
   Column,
   Entity,
+  JoinTable,
+  ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
@@ -10,7 +12,8 @@ import { Field, ID, InputType, ObjectType } from "type-graphql";
 const argon2 = require("argon2");
 
 import { Role } from "../enum/role.enum";
-import JoinUserParkourEntity from "./joinUserParkour.entity";
+import { JoinUserParkourNoteEntity } from "./joinUserParkourNote.entity";
+import JoinUserParkourFavorisEntity from "./joinUserParkourFavoris.entity";
 
 @Entity("user")
 @ObjectType()
@@ -43,13 +46,11 @@ class UserEntity {
     length: 255,
     unique: true,
     transformer: {
-      from(value: string) {
-        return value.toLowerCase();
-        // from ⇒ permet d’altérer la donnée renvoyée lorsque vous la récupérez de la base de donnée
+      from(value: string | null): string | null {
+        return value ? value.toLowerCase() : null;
       },
-      to(value: string) {
-        return value.toLowerCase();
-        // to ⇒ permet d’altérer la donnée au moment de l’envoyer en base de donnée
+      to(value: string | null): string | null {
+        return value ? value.toLowerCase() : null;
       },
     },
   })
@@ -74,11 +75,19 @@ class UserEntity {
   })
   role: Role;
 
-  @Field(() => [JoinUserParkourEntity], { nullable: true })
-  @OneToMany(() => JoinUserParkourEntity, (join) => join.users, {
+  // ---
+
+  @Field(() => [JoinUserParkourFavorisEntity], { nullable: true })
+  @OneToMany(() => JoinUserParkourFavorisEntity, (like) => like.user, {
     nullable: true,
   })
-  parkours: JoinUserParkourEntity[];
+  favorisParkours: JoinUserParkourFavorisEntity[];
+
+  @Field(() => [JoinUserParkourNoteEntity], { nullable: true })
+  @OneToMany(() => JoinUserParkourNoteEntity, (note) => note.user, {
+    nullable: true,
+  })
+  notesParkours: JoinUserParkourNoteEntity[];
 }
 
 // ---

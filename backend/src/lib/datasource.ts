@@ -3,7 +3,8 @@ import { DataSource } from "typeorm";
 import EpreuveEntity from "../entities/epreuve.entity";
 import ParkourEntity from "../entities/parkour.entity";
 import UserEntity from "../entities/user.entity";
-import JoinUserParkourEntity from "../entities/joinUserParkour.entity";
+import JoinUserParkourFavorisEntity from "../entities/joinUserParkourFavoris.entity";
+import JoinUserParkourNoteEntity from "../entities/joinUserParkourNote.entity";
 import ImageEpreuveEntity from "../entities/imageEpreuve.entity";
 import ImageParkourEntity from "../entities/imageParkour.entity";
 import ResetPasswordEntity from "../entities/resetPassword.entity";
@@ -23,7 +24,8 @@ import ResetPasswordEntity from "../entities/resetPassword.entity";
 //     EpreuveEntity,
 //     ParkourEntity,
 //     UserEntity,
-//     JoinUserParkourEntity,
+//     JoinUserParkourFavorisEntity,
+//     JoinUserParkourNoteEntity,
 //     ImageEpreuveEntity,
 //     ImageParkourEntity,
 //     ResetPasswordEntity,
@@ -43,7 +45,8 @@ export default new DataSource({
     EpreuveEntity,
     ParkourEntity,
     UserEntity,
-    JoinUserParkourEntity,
+    JoinUserParkourFavorisEntity,
+    JoinUserParkourNoteEntity,
     ImageEpreuveEntity,
     ImageParkourEntity,
     ResetPasswordEntity,

@@ -5,19 +5,21 @@ import ParkourEntity, {
 } from "../entities/parkour.entity";
 import ParkourService from "../services/parkour.service";
 import { MessageEntity } from "../entities/message.entity";
+import JoinUserParkourNoteService from "../services/joinUserParkourNote.service";
+import JoinUserParkourFavorisService from "../services/joinUserParkourFavoris.service";
 
 @Resolver()
 export default class ParkourResolver {
   @Query(() => ParkourEntity)
   async getParkourById(@Arg("id") id: number) {
-    const result = await new ParkourService().getById(id);
+    const result = await new ParkourService().getParkourWithRelationsById(id);
     return result;
   }
 
   // possiblement changer
   @Query(() => [ParkourEntity])
   async getAllParkourForMap() {
-    const result = await new ParkourService().getAllForMap();
+    const result = await new ParkourService().getAllParkourForMap();
     return result;
   }
 
@@ -27,7 +29,7 @@ export default class ParkourResolver {
     @Arg("title", { nullable: true }) title: string
   ) {
     const result: ParkourEntity[] =
-      await new ParkourService().getListTop20ByTitle(title);
+      await new ParkourService().getTop20ParkourByTitle(title);
     return result;
   }
 
@@ -35,7 +37,7 @@ export default class ParkourResolver {
   @Query(() => [ParkourEntity])
   async getTop20ParkourBySearch(
     @Arg("triParField") triParField: string,
-    @Arg("triParSort") triParSort: string,
+    @Arg("triParSort") triParSort: "ASC" | "DESC",
     @Arg("startPage") startPage: number,
     @Arg("city", { nullable: true }) city: string,
     @Arg("timeMin", { nullable: true }) timeMin: number,
@@ -64,7 +66,7 @@ export default class ParkourResolver {
 
   // pagination
   @Query(() => Number)
-  async getTheParkourTotal(
+  async getTheParkourTotalForSearch(
     @Arg("city", { nullable: true }) city: string,
     @Arg("timeMin", { nullable: true }) timeMin: number,
     @Arg("timeMax", { nullable: true }) timeMax: number,
@@ -73,50 +75,52 @@ export default class ParkourResolver {
     @Arg("difficulty", { nullable: true }) difficulty: string,
     @Arg("noteMin", { nullable: true }) noteMin: number
   ) {
-    const result: Number = await new ParkourService().getTheTotal(
-      city,
-      timeMin,
-      timeMax,
-      lengthMin,
-      lengthMax,
-      difficulty,
-      noteMin
-    );
+    const result: Number =
+      await new ParkourService().getTheParkourTotalForSearch(
+        city,
+        timeMin,
+        timeMax,
+        lengthMin,
+        lengthMax,
+        difficulty,
+        noteMin
+      );
     return result;
   }
 
   // ---
 
-  // changer le result en message
+  // on cré pas les images ici => on récupe par rapport à l'id
   @Authorized("ADMIN")
   @Mutation(() => ParkourEntity)
   async createParkour(@Arg("infos") infos: ParkourCreateEntity) {
-    const resultNewParkourID: number = await new ParkourService().create(infos);
-
-    const result: ParkourEntity = await new ParkourService().getById(
-      resultNewParkourID
+    const newParkour: ParkourEntity = await new ParkourService().createParkour(
+      infos
     );
-    return result;
+
+    return newParkour;
   }
 
-  // changer le result en message
   @Authorized("ADMIN")
   @Mutation(() => ParkourEntity)
   async modifyParkour(
     @Arg("id") id: number,
     @Arg("infos") infos: ParkourUpdateEntity
   ) {
-    const result: ParkourEntity = await new ParkourService().modify(id, infos);
+    const result: ParkourEntity = await new ParkourService().modifyParkour(
+      id,
+      infos
+    );
     return result;
   }
 
   @Authorized("ADMIN")
   @Mutation(() => MessageEntity)
   async deleteParkour(@Arg("id") id: number) {
-    await new ParkourService().delete(id);
+    const parkourRemove = await new ParkourService().deleteParkour(id);
 
     const returnMessage = new MessageEntity();
-    returnMessage.message = "Vous venez de supprimer un parkour";
+    returnMessage.message = `Vous venez de supprimer le parkour : ${parkourRemove.title}`;
     returnMessage.success = true;
     return returnMessage;
   }

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useGetEpreuveByIdLazyQuery, useIsAdminQuery } from "@/types/graphql";
 
 import Carousel from "react-material-ui-carousel";
+
 import { FaAngleRight } from "react-icons/fa6";
 import { FaAngleLeft } from "react-icons/fa6";
 

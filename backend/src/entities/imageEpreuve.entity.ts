@@ -9,8 +9,8 @@ class ImageEpreuveEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Field({ nullable: true })
-  @Column({ type: "varchar", length: 250, nullable: true })
+  @Field()
+  @Column({ type: "varchar", length: 250 })
   lien: string;
 
   @Field()

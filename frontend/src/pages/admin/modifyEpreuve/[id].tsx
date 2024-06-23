@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { useForm } from "react-hook-form";
+import { object, string } from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+
 import {
   EpreuveUpdateEntity,
   useDeleteEpreuveMutation,
@@ -14,11 +18,8 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { toast } from "react-hot-toast";
 
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { object, string } from "yup";
+import { toast } from "react-hot-toast";
 
 let modifyEpreuveSchema = object({
   title: string()

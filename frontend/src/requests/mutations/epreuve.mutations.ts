@@ -3,24 +3,15 @@ import { gql } from "@apollo/client";
 export const CREATE_EPREUVE = gql`
   mutation CreateEpreuve($infos: EpreuveCreateEntity!) {
     createEpreuve(infos: $infos) {
-      videoLink
-      hardToDo
-      mediumToDo
-      easyToDo
-      description
-      title
       id
-      images {
-        id
-        lien
-      }
+      title
     }
   }
 `;
 
 // {
 //   "infos": {
-//     "title": "null",
+//     "title": "test",
 //     "description": null,
 //     "easyToDo": null,
 //     "mediumToDo": null,
@@ -37,20 +28,12 @@ export const MODIFY_EPREUVE = gql`
     modifyEpreuve(infos: $infos, id: $modifyEpreuveId) {
       id
       title
-      description
-      easyToDo
-      mediumToDo
-      hardToDo
-      videoLink
-      images {
-        id
-        lien
-      }
     }
   }
 `;
 
 // {
+//   "modifyEpreuveId": 0
 //   "infos": {
 //     "title": null,
 //     "description": null,
@@ -59,7 +42,6 @@ export const MODIFY_EPREUVE = gql`
 //     "hardToDo": null,
 //     "videoLink": null
 //   },
-//   "modifyEpreuveId": 0
 // }
 
 export const DELETE_EPREUVE = gql`

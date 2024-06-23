@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 export const CHECK_RESET_TOKEN = gql`
-  query CheckResetToken($token: String!) {
-    checkResetToken(token: $token) {
+  query checkResetTokenValidity($token: String!) {
+    checkResetTokenValidity(token: $token) {
       message
       success
     }

@@ -1,6 +1,9 @@
 import React, { useEffect } from "react";
 import { useRouter } from "next/router";
+
 import { useLogoutLazyQuery } from "@/types/graphql";
+
+import toast from "react-hot-toast";
 
 const logout = () => {
   const router = useRouter();
@@ -9,7 +12,8 @@ const logout = () => {
 
   useEffect(() => {
     logout({
-      onCompleted() {
+      onCompleted(data) {
+        toast.success(data.logout.message);
         router.push("/auth/login");
       },
     });

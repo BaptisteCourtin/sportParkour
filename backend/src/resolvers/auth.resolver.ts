@@ -10,13 +10,15 @@ const argon2 = require("argon2");
 import { SignJWT } from "jose";
 import { MyContext } from "..";
 import Cookies from "cookies";
+import UserService from "../services/user.service";
+import AuthService from "../services/auth.service";
 
 @Resolver()
 export default class AuthResolver {
   // enregistrement du user (la première fois)
   @Mutation(() => MessageEntity)
   async inscription(@Arg("infos") infos: UserInputRegisterEntity) {
-    let user = await new AuthentService().findUserByEmail(infos.email);
+    let user = await new AuthService().findUserByEmailOrNull(infos.email);
 
     // vérification email
     if (user) {
@@ -52,7 +54,7 @@ export default class AuthResolver {
     const returnMessage = new MessageEntity();
     let token: string | undefined;
 
-    let user = await new AuthentService().findUserByEmail(infos.email);
+    let user = await new AuthService().findUserByEmailOrNull(infos.email);
 
     // vérification email
     if (!user) {

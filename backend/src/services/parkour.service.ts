@@ -17,7 +17,7 @@ import ParkourEntity, {
 import EpreuveEntity from "../entities/epreuve.entity";
 
 import EpreuveService from "./epreuve.service";
-import JoinUserParkourService from "./joinUserParkour.service";
+import JoinUserParkourNoteService from "./joinUserParkourNote.service";
 
 class ParkourService {
   db: Repository<ParkourEntity>;
@@ -26,18 +26,41 @@ class ParkourService {
     this.db = datasource.getRepository(ParkourEntity);
   }
 
-  async getById(id: number) {
-    const parkour = await this.db.findOne({
-      where: { id },
-      relations: ["images", "epreuves"], // Charge la relation 'images' et 'parcours'
+  async getParkourById(id: number) {
+    const parkour: ParkourEntity | null = await this.db.findOne({
+      where: { id: id },
     });
     if (!parkour) {
-      throw new Error("Ce parkour n'existe pas");
+      throw new Error("Cette épreuve n'existe pas");
     }
     return parkour;
   }
 
-  async getAllForMap() {
+  async getParkourWithRelationsById(id: number) {
+    const parkour = await this.db
+      .createQueryBuilder("parkour")
+      .leftJoinAndSelect("parkour.images", "imagesParkour")
+      .leftJoinAndSelect("parkour.notesParkours", "notesParkours")
+      .leftJoinAndSelect("parkour.epreuves", "epreuves")
+
+      .leftJoinAndSelect("notesParkours.user", "user")
+      .leftJoinAndSelect(
+        "epreuves.images",
+        "imagesEpreuves",
+        "imagesEpreuves.isCouverture = true"
+      )
+
+      .where("parkour.id = :id", { id })
+      .getOne();
+
+    if (!parkour) {
+      throw new Error("Ce parkour n'existe pas");
+    }
+
+    return parkour;
+  }
+
+  async getAllParkourForMap() {
     const parkour = await this.db.find({});
     if (!parkour) {
       throw new Error("Pas de parkours en stock");
@@ -45,7 +68,7 @@ class ParkourService {
     return parkour;
   }
 
-  async getListTop20ByTitle(title?: string) {
+  async getTop20ParkourByTitle(title?: string) {
     const listParkours: ParkourEntity[] | null = await this.db.find({
       where: title ? [{ title: Like(`%${title}%`) }] : undefined,
       take: 20,
@@ -60,7 +83,7 @@ class ParkourService {
 
   async getTop20ParkourBySearch(
     triParField: string,
-    triParSort: string,
+    triParSort: "ASC" | "DESC",
 
     startPage?: number,
     city?: string,
@@ -71,56 +94,63 @@ class ParkourService {
     difficulty?: string,
     noteMin?: number
   ) {
-    const whereConditions: any = {};
+    const query = this.db
+      .createQueryBuilder("parkour")
+      .leftJoinAndSelect(
+        "parkour.images",
+        "image",
+        "image.isCouverture = :isCouverture",
+        { isCouverture: true }
+      )
+      .leftJoinAndSelect("parkour.epreuves", "epreuves");
 
     if (city) {
-      whereConditions.city = Like(`%${city}%`);
+      query.andWhere("LOWER(parkour.city) LIKE LOWER(:city)", {
+        city: `%${city}%`,
+      });
     }
     if (timeMin && timeMax) {
-      whereConditions.time = Between(timeMin, timeMax);
+      query.andWhere("parkour.time BETWEEN :timeMin AND :timeMax", {
+        timeMin,
+        timeMax,
+      });
     } else {
-      if (timeMin) {
-        whereConditions.time = MoreThanOrEqual(timeMin);
-      }
-      if (timeMax) {
-        whereConditions.time = LessThanOrEqual(timeMax);
-      }
+      if (timeMin) query.andWhere("parkour.time >= :timeMin", { timeMin });
+      if (timeMax) query.andWhere("parkour.time <= :timeMax", { timeMax });
     }
     if (lengthMin && lengthMax) {
-      whereConditions.length = Between(lengthMin, lengthMax);
+      query.andWhere("parkour.length BETWEEN :lengthMin AND :lengthMax", {
+        lengthMin,
+        lengthMax,
+      });
     } else {
-      if (lengthMin) {
-        whereConditions.length = MoreThanOrEqual(lengthMin);
-      }
-      if (lengthMax) {
-        whereConditions.length = LessThanOrEqual(lengthMax);
-      }
+      if (lengthMin)
+        query.andWhere("parkour.length >= :lengthMin", { lengthMin });
+      if (lengthMax)
+        query.andWhere("parkour.length <= :lengthMax", { lengthMax });
     }
     if (difficulty) {
-      whereConditions.difficulty = difficulty;
+      query.andWhere("parkour.difficulty = :difficulty", { difficulty });
     }
     if (noteMin) {
-      whereConditions.note = MoreThanOrEqual(noteMin);
+      query.andWhere("parkour.note >= :noteMin", { noteMin });
     }
 
-    const listParkours: ParkourEntity[] | null = await this.db.find({
-      where: whereConditions,
-      relations: ["images", "epreuves"],
-      order: {
-        [triParField]: triParSort,
-      },
-      skip: startPage,
-      take: 20,
-    });
+    query
+      .orderBy(`parkour.${triParField}`, triParSort)
+      .skip(startPage || 0)
+      .take(20);
 
-    if (!listParkours) {
+    const listParkours = await query.getMany();
+
+    if (listParkours.length === 0) {
       throw new Error("Pas de parkour avec cette recherche");
     }
 
     return listParkours;
   }
 
-  async getTheTotal(
+  async getTheParkourTotalForSearch(
     city?: string,
     timeMin?: number,
     timeMax?: number,
@@ -174,19 +204,8 @@ class ParkourService {
 
   // ---
 
-  async create(data: ParkourCreateEntity) {
-    let epreuves: EpreuveEntity[] = [];
-    if (data.epreuves?.length) {
-      epreuves = await new EpreuveService().getListByIds(data.epreuves);
-    }
-
-    const newParkour = this.db.create({ ...data, epreuves });
-    await this.db.save(newParkour);
-    return newParkour.id;
-  }
-
-  async addOneVoteByParkourId(parkour_id: number, note: number) {
-    const parkour = await this.getById(parkour_id);
+  async addOneNoteByParkourId(parkour_id: number, note: number) {
+    const parkour = await this.getParkourById(parkour_id);
 
     const newNbVote = parkour.nbVote + 1;
     const newNote = (parkour.note * parkour.nbVote + note) / newNbVote;
@@ -197,15 +216,15 @@ class ParkourService {
     };
 
     const newInfos = this.db.merge(parkour, data);
-    return await this.db.save(newInfos);
+    await this.db.save(newInfos);
   }
 
-  async changeOneVoteByParkourId(
+  async changeOneNoteByParkourId(
     ancienneNoteUser: number,
     parkour_id: number,
     newNoteUser: number
   ) {
-    const parkour = await this.getById(parkour_id);
+    const parkour = await this.getParkourById(parkour_id);
 
     const newNoteParkour =
       (parkour.note * parkour.nbVote - ancienneNoteUser + newNoteUser) /
@@ -217,11 +236,42 @@ class ParkourService {
     };
 
     const newInfos = this.db.merge(parkour, data);
-    return await this.db.save(newInfos);
+    await this.db.save(newInfos);
   }
 
-  async modify(id: number, data: ParkourUpdateEntity) {
-    const parkour = await this.getById(id);
+  async deleteOneNoteByParkourId(ancienneNoteUser: number, parkour_id: number) {
+    const parkour = await this.getParkourById(parkour_id);
+    let newNoteParkour: number = 0;
+
+    const newNbVote = parkour.nbVote - 1;
+    if (newNbVote != 0) {
+      newNoteParkour =
+        (parkour.note * parkour.nbVote - ancienneNoteUser) / newNbVote;
+    }
+
+    const data: ParkourUpdateNoteEntity = {
+      nbVote: newNbVote,
+      note: newNoteParkour,
+    };
+
+    const newInfos = this.db.merge(parkour, data);
+    await this.db.save(newInfos);
+  }
+
+  // ---
+
+  async createParkour(data: ParkourCreateEntity) {
+    let epreuves: EpreuveEntity[] = [];
+    if (data.epreuves?.length) {
+      epreuves = await new EpreuveService().getListEpreuveByIds(data.epreuves);
+    }
+
+    const newParkour = this.db.create({ ...data, epreuves });
+    return await this.db.save(newParkour);
+  }
+
+  async modifyParkour(id: number, data: ParkourUpdateEntity) {
+    let parkour = await this.getParkourById(id);
 
     for (const key of Object.keys(data) as Array<keyof ParkourUpdateEntity>) {
       if (data[key] !== null && key !== "epreuves") {
@@ -232,7 +282,9 @@ class ParkourService {
     // Gérer les relations avec epreuves
     if (data.epreuves !== null && data.epreuves.length > 0) {
       const epreuveIds = data.epreuves;
-      parkour.epreuves = await new EpreuveService().getListByIds(epreuveIds);
+      parkour.epreuves = await new EpreuveService().getListEpreuveByIds(
+        epreuveIds
+      );
     } else if (data.epreuves?.length == 0) {
       parkour.epreuves = [];
     }
@@ -240,16 +292,13 @@ class ParkourService {
     return await this.db.save(parkour);
   }
 
-  async delete(id: number) {
-    const parkour = await this.getById(id);
+  async deleteParkour(id: number) {
+    const parkour = await this.getParkourById(id);
     // pour sup les relations epreuves
     parkour.epreuves = [];
-
-    // pour sup les relations user
-    await new JoinUserParkourService().deleteAllByParkourId(id);
-
     await this.db.save(parkour);
-    await this.db.remove(parkour);
+
+    return await this.db.remove(parkour);
   }
 }
 

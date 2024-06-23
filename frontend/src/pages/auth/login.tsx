@@ -1,22 +1,23 @@
 import React, { useState } from "react";
+import { useForm } from "react-hook-form";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { object, string } from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+
 import {
   UserInputAuthEntity,
   useAuthentificationLazyQuery,
 } from "@/types/graphql";
 
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { object, string } from "yup";
-
-import { toast } from "react-hot-toast";
 import TextField from "@mui/material/TextField";
-import { FaArrowRight } from "react-icons/fa6";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
+
+import { toast } from "react-hot-toast";
 import { FaEye } from "react-icons/fa6";
 import { FaEyeSlash } from "react-icons/fa6";
+import { FaArrowRight } from "react-icons/fa6";
 
 let loginSchema = object({
   email: string()

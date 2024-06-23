@@ -19,7 +19,8 @@ import EpreuveResolver from "./resolvers/epreuve.resolver";
 import ParkourResolver from "./resolvers/parkour.resolver";
 import UserResolver from "./resolvers/user.resolver";
 import AuthResolver from "./resolvers/auth.resolver";
-import JoinUserParkourResolver from "./resolvers/joinUserParkour.resolver";
+import JoinUserParkourFavorisResolver from "./resolvers/joinUserParkourFavoris.resolver";
+import JoinUserParkourNoteResolver from "./resolvers/joinUserParkourNote.resolver";
 
 // authent
 import dotenv from "dotenv";
@@ -27,11 +28,11 @@ dotenv.config({
   path: "../.env", // je ne sais pas pk le path est pas le bon mais ça marche
 });
 import UserEntity from "./entities/user.entity";
-import AuthService from "./services/auth.service";
 import Cookies from "cookies";
 import { jwtVerify } from "jose";
 import { customAuthChecker } from "./lib/authChecker";
 import ResetPasswordResolver from "./resolvers/resetPassword.resolver";
+import UserService from "./services/user.service";
 
 // ---------------------------------------------
 // ---------------------------------------------
@@ -51,11 +52,12 @@ export interface Payload {
 async function main() {
   const schema = await buildSchema({
     resolvers: [
+      AuthResolver,
       EpreuveResolver,
       ParkourResolver,
       UserResolver,
-      AuthResolver,
-      JoinUserParkourResolver,
+      JoinUserParkourFavorisResolver,
+      JoinUserParkourNoteResolver,
       ResetPasswordResolver,
     ],
     validate: false,
@@ -91,9 +93,7 @@ async function main() {
               token,
               new TextEncoder().encode(process.env.SECRET_KEY)
             );
-            user = await new AuthService().findUserByEmail(
-              verify.payload.email
-            );
+            user = await new UserService().getUserByEmail(verify.payload.email);
           } catch (err) {
             console.error(err);
             //potentiellement gérer l'erreur, est ce que l'erreur est liée au fait que le token soit expiré? est ce qu'on le renouvelle? ou est ce autre chose? etc...

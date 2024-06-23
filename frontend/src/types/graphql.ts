@@ -61,7 +61,7 @@ export type ImageEpreuveEntity = {
   id: Scalars['ID']['output'];
   id_epreuve: EpreuveEntity;
   isCouverture: Scalars['Boolean']['output'];
-  lien?: Maybe<Scalars['String']['output']>;
+  lien: Scalars['String']['output'];
 };
 
 export type ImageParkourEntity = {
@@ -69,27 +69,31 @@ export type ImageParkourEntity = {
   id: Scalars['ID']['output'];
   id_parkour: ParkourEntity;
   isCouverture: Scalars['Boolean']['output'];
-  lien?: Maybe<Scalars['String']['output']>;
+  lien: Scalars['String']['output'];
 };
 
-export type JoinUserParkourEntity = {
-  __typename?: 'JoinUserParkourEntity';
-  favoris: Scalars['Boolean']['output'];
-  note?: Maybe<Scalars['Float']['output']>;
+export type JoinUserParkourFavorisEntity = {
+  __typename?: 'JoinUserParkourFavorisEntity';
+  parkour: ParkourEntity;
   parkour_id: Scalars['ID']['output'];
-  parkours: ParkourEntity;
+  user: UserEntity;
   user_id: Scalars['ID']['output'];
-  users: UserEntity;
 };
 
-export type JoinUserParkourFavEntity = {
-  favoris?: InputMaybe<Scalars['Boolean']['input']>;
+export type JoinUserParkourNoteCreateEntity = {
+  commentaire?: InputMaybe<Scalars['String']['input']>;
+  note?: InputMaybe<Scalars['Float']['input']>;
   parkour_id: Scalars['Float']['input'];
 };
 
 export type JoinUserParkourNoteEntity = {
-  note?: InputMaybe<Scalars['Float']['input']>;
-  parkour_id: Scalars['Float']['input'];
+  __typename?: 'JoinUserParkourNoteEntity';
+  commentaire?: Maybe<Scalars['String']['output']>;
+  note: Scalars['Float']['output'];
+  parkour: ParkourEntity;
+  parkour_id: Scalars['ID']['output'];
+  user: UserEntity;
+  user_id: Scalars['ID']['output'];
 };
 
 export type MessageEntity = {
@@ -102,16 +106,18 @@ export type Mutation = {
   __typename?: 'Mutation';
   changePassword: MessageEntity;
   createEpreuve: EpreuveEntity;
+  createJoinUserParkourFavoris: MessageEntity;
+  createJoinUserParkourNote: MessageEntity;
   createParkour: ParkourEntity;
   deleteEpreuve: MessageEntity;
+  deleteJoinUserParkourFavoris: MessageEntity;
+  deleteJoinUserParkourNote: MessageEntity;
   deleteParkour: MessageEntity;
   deleteUser: MessageEntity;
-  favJoinUserParkour: MessageEntity;
   inscription: MessageEntity;
   modifyEpreuve: EpreuveEntity;
   modifyParkour: ParkourEntity;
-  modifyUser: UserEntity;
-  noteJoinUserParkour: MessageEntity;
+  modifyUser: MessageEntity;
   resetPassword: ResetPasswordEntity;
 };
 
@@ -126,6 +132,16 @@ export type MutationCreateEpreuveArgs = {
 };
 
 
+export type MutationCreateJoinUserParkourFavorisArgs = {
+  idParkour: Scalars['Float']['input'];
+};
+
+
+export type MutationCreateJoinUserParkourNoteArgs = {
+  infos: JoinUserParkourNoteCreateEntity;
+};
+
+
 export type MutationCreateParkourArgs = {
   infos: ParkourCreateEntity;
 };
@@ -136,18 +152,18 @@ export type MutationDeleteEpreuveArgs = {
 };
 
 
+export type MutationDeleteJoinUserParkourFavorisArgs = {
+  idParkour: Scalars['Float']['input'];
+};
+
+
+export type MutationDeleteJoinUserParkourNoteArgs = {
+  idParkour: Scalars['Float']['input'];
+};
+
+
 export type MutationDeleteParkourArgs = {
   id: Scalars['Float']['input'];
-};
-
-
-export type MutationDeleteUserArgs = {
-  id: Scalars['String']['input'];
-};
-
-
-export type MutationFavJoinUserParkourArgs = {
-  infos: JoinUserParkourFavEntity;
 };
 
 
@@ -170,11 +186,6 @@ export type MutationModifyParkourArgs = {
 
 export type MutationModifyUserArgs = {
   infos: UserUpdateEntity;
-};
-
-
-export type MutationNoteJoinUserParkourArgs = {
-  infos: JoinUserParkourNoteEntity;
 };
 
 
@@ -204,6 +215,7 @@ export type ParkourEntity = {
   length?: Maybe<Scalars['Float']['output']>;
   nbVote?: Maybe<Scalars['Float']['output']>;
   note?: Maybe<Scalars['Float']['output']>;
+  notesParkours?: Maybe<Array<JoinUserParkourNoteEntity>>;
   start: Scalars['String']['output'];
   time?: Maybe<Scalars['Float']['output']>;
   title: Scalars['String']['output'];
@@ -223,18 +235,20 @@ export type ParkourUpdateEntity = {
 export type Query = {
   __typename?: 'Query';
   authentification: MessageEntity;
-  checkResetToken: MessageEntity;
+  checkResetTokenValidity: MessageEntity;
+  getAllEpreuve: Array<EpreuveEntity>;
   getAllParkourForMap: Array<ParkourEntity>;
-  getAllUserFavByToken: Array<JoinUserParkourEntity>;
+  getAllUserFavByToken: Array<JoinUserParkourFavorisEntity>;
+  getAllUserNoteByToken: Array<JoinUserParkourNoteEntity>;
   getEpreuveById: EpreuveEntity;
-  getListEpreuve: Array<EpreuveEntity>;
-  getListTop20EpreuveByTitle: Array<EpreuveEntity>;
   getParkourById: ParkourEntity;
-  getTheParkourTotal: Scalars['Float']['output'];
+  getTheParkourTotalForSearch: Scalars['Float']['output'];
+  getTop20EpreuveByTitle: Array<EpreuveEntity>;
   getTop20ParkourBySearch: Array<ParkourEntity>;
   getTop20ParkourByTitle: Array<ParkourEntity>;
   getUserByToken: UserEntity;
-  getUserFavByTokenAndIdParkour: JoinUserParkourEntity;
+  getUserFavByTokenAndParkourId: Scalars['Boolean']['output'];
+  getUserNoteByTokenAndParkourId: JoinUserParkourNoteEntity;
   isAdmin: Scalars['Boolean']['output'];
   isClient: Scalars['Boolean']['output'];
   logout: MessageEntity;
@@ -246,7 +260,7 @@ export type QueryAuthentificationArgs = {
 };
 
 
-export type QueryCheckResetTokenArgs = {
+export type QueryCheckResetTokenValidityArgs = {
   token: Scalars['String']['input'];
 };
 
@@ -256,17 +270,12 @@ export type QueryGetEpreuveByIdArgs = {
 };
 
 
-export type QueryGetListTop20EpreuveByTitleArgs = {
-  title?: InputMaybe<Scalars['String']['input']>;
-};
-
-
 export type QueryGetParkourByIdArgs = {
   id: Scalars['Float']['input'];
 };
 
 
-export type QueryGetTheParkourTotalArgs = {
+export type QueryGetTheParkourTotalForSearchArgs = {
   city?: InputMaybe<Scalars['String']['input']>;
   difficulty?: InputMaybe<Scalars['String']['input']>;
   lengthMax?: InputMaybe<Scalars['Float']['input']>;
@@ -274,6 +283,11 @@ export type QueryGetTheParkourTotalArgs = {
   noteMin?: InputMaybe<Scalars['Float']['input']>;
   timeMax?: InputMaybe<Scalars['Float']['input']>;
   timeMin?: InputMaybe<Scalars['Float']['input']>;
+};
+
+
+export type QueryGetTop20EpreuveByTitleArgs = {
+  title?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -296,7 +310,12 @@ export type QueryGetTop20ParkourByTitleArgs = {
 };
 
 
-export type QueryGetUserFavByTokenAndIdParkourArgs = {
+export type QueryGetUserFavByTokenAndParkourIdArgs = {
+  parkourId: Scalars['Float']['input'];
+};
+
+
+export type QueryGetUserNoteByTokenAndParkourIdArgs = {
   parkourId: Scalars['Float']['input'];
 };
 
@@ -324,10 +343,11 @@ export type UserEntity = {
   city?: Maybe<Scalars['String']['output']>;
   codePostal?: Maybe<Scalars['String']['output']>;
   email: Scalars['String']['output'];
+  favorisParkours?: Maybe<Array<JoinUserParkourFavorisEntity>>;
   firstname: Scalars['String']['output'];
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
-  parkours?: Maybe<Array<JoinUserParkourEntity>>;
+  notesParkours?: Maybe<Array<JoinUserParkourNoteEntity>>;
   password: Scalars['String']['output'];
   phone?: Maybe<Scalars['String']['output']>;
   role: Role;
@@ -369,7 +389,7 @@ export type CreateEpreuveMutationVariables = Exact<{
 }>;
 
 
-export type CreateEpreuveMutation = { __typename?: 'Mutation', createEpreuve: { __typename?: 'EpreuveEntity', videoLink?: string | null, hardToDo?: string | null, mediumToDo?: string | null, easyToDo?: string | null, description?: string | null, title: string, id: string, images?: Array<{ __typename?: 'ImageEpreuveEntity', id: string, lien?: string | null }> | null } };
+export type CreateEpreuveMutation = { __typename?: 'Mutation', createEpreuve: { __typename?: 'EpreuveEntity', id: string, title: string } };
 
 export type ModifyEpreuveMutationVariables = Exact<{
   infos: EpreuveUpdateEntity;
@@ -377,7 +397,7 @@ export type ModifyEpreuveMutationVariables = Exact<{
 }>;
 
 
-export type ModifyEpreuveMutation = { __typename?: 'Mutation', modifyEpreuve: { __typename?: 'EpreuveEntity', id: string, title: string, description?: string | null, easyToDo?: string | null, mediumToDo?: string | null, hardToDo?: string | null, videoLink?: string | null, images?: Array<{ __typename?: 'ImageEpreuveEntity', id: string, lien?: string | null }> | null } };
+export type ModifyEpreuveMutation = { __typename?: 'Mutation', modifyEpreuve: { __typename?: 'EpreuveEntity', id: string, title: string } };
 
 export type DeleteEpreuveMutationVariables = Exact<{
   deleteEpreuveId: Scalars['Float']['input'];
@@ -386,26 +406,40 @@ export type DeleteEpreuveMutationVariables = Exact<{
 
 export type DeleteEpreuveMutation = { __typename?: 'Mutation', deleteEpreuve: { __typename?: 'MessageEntity', message: string, success: boolean } };
 
-export type FavJoinUserParkourMutationVariables = Exact<{
-  infos: JoinUserParkourFavEntity;
+export type CreateJoinUserParkourFavorisMutationVariables = Exact<{
+  idParkour: Scalars['Float']['input'];
 }>;
 
 
-export type FavJoinUserParkourMutation = { __typename?: 'Mutation', favJoinUserParkour: { __typename?: 'MessageEntity', message: string, success: boolean } };
+export type CreateJoinUserParkourFavorisMutation = { __typename?: 'Mutation', createJoinUserParkourFavoris: { __typename?: 'MessageEntity', message: string, success: boolean } };
 
-export type NoteJoinUserParkourMutationVariables = Exact<{
-  infos: JoinUserParkourNoteEntity;
+export type DeleteJoinUserParkourFavorisMutationVariables = Exact<{
+  idParkour: Scalars['Float']['input'];
 }>;
 
 
-export type NoteJoinUserParkourMutation = { __typename?: 'Mutation', noteJoinUserParkour: { __typename?: 'MessageEntity', message: string, success: boolean } };
+export type DeleteJoinUserParkourFavorisMutation = { __typename?: 'Mutation', deleteJoinUserParkourFavoris: { __typename?: 'MessageEntity', message: string, success: boolean } };
+
+export type CreateJoinUserParkourNoteMutationVariables = Exact<{
+  infos: JoinUserParkourNoteCreateEntity;
+}>;
+
+
+export type CreateJoinUserParkourNoteMutation = { __typename?: 'Mutation', createJoinUserParkourNote: { __typename?: 'MessageEntity', message: string, success: boolean } };
+
+export type DeleteJoinUserParkourNoteMutationVariables = Exact<{
+  idParkour: Scalars['Float']['input'];
+}>;
+
+
+export type DeleteJoinUserParkourNoteMutation = { __typename?: 'Mutation', deleteJoinUserParkourNote: { __typename?: 'MessageEntity', message: string, success: boolean } };
 
 export type CreateParkourMutationVariables = Exact<{
   infos: ParkourCreateEntity;
 }>;
 
 
-export type CreateParkourMutation = { __typename?: 'Mutation', createParkour: { __typename?: 'ParkourEntity', id: string, title: string, description?: string | null, time?: number | null, length?: number | null, difficulty?: Difficulty | null, city?: string | null, start: string, note?: number | null, nbVote?: number | null, images?: Array<{ __typename?: 'ImageParkourEntity', id: string, lien?: string | null }> | null, epreuves?: Array<{ __typename?: 'EpreuveEntity', id: string, title: string }> | null } };
+export type CreateParkourMutation = { __typename?: 'Mutation', createParkour: { __typename?: 'ParkourEntity', id: string, title: string } };
 
 export type ModifyParkourMutationVariables = Exact<{
   infos: ParkourUpdateEntity;
@@ -413,7 +447,7 @@ export type ModifyParkourMutationVariables = Exact<{
 }>;
 
 
-export type ModifyParkourMutation = { __typename?: 'Mutation', modifyParkour: { __typename?: 'ParkourEntity', id: string, title: string, description?: string | null, time?: number | null, length?: number | null, difficulty?: Difficulty | null, city?: string | null, start: string, note?: number | null, nbVote?: number | null, images?: Array<{ __typename?: 'ImageParkourEntity', id: string, lien?: string | null }> | null, epreuves?: Array<{ __typename?: 'EpreuveEntity', id: string, title: string }> | null } };
+export type ModifyParkourMutation = { __typename?: 'Mutation', modifyParkour: { __typename?: 'ParkourEntity', id: string, title: string } };
 
 export type DeleteParkourMutationVariables = Exact<{
   deleteParkourId: Scalars['Float']['input'];
@@ -441,11 +475,9 @@ export type ModifyUserMutationVariables = Exact<{
 }>;
 
 
-export type ModifyUserMutation = { __typename?: 'Mutation', modifyUser: { __typename?: 'UserEntity', id: string, name: string, firstname: string, email: string, city?: string | null, codePostal?: string | null, phone?: string | null } };
+export type ModifyUserMutation = { __typename?: 'Mutation', modifyUser: { __typename?: 'MessageEntity', message: string, success: boolean } };
 
-export type DeleteUserMutationVariables = Exact<{
-  deleteUserId: Scalars['String']['input'];
-}>;
+export type DeleteUserMutationVariables = Exact<{ [key: string]: never; }>;
 
 
 export type DeleteUserMutation = { __typename?: 'Mutation', deleteUser: { __typename?: 'MessageEntity', message: string, success: boolean } };
@@ -467,38 +499,50 @@ export type GetEpreuveByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetEpreuveByIdQuery = { __typename?: 'Query', getEpreuveById: { __typename?: 'EpreuveEntity', id: string, title: string, description?: string | null, easyToDo?: string | null, mediumToDo?: string | null, hardToDo?: string | null, videoLink?: string | null, images?: Array<{ __typename?: 'ImageEpreuveEntity', id: string, lien?: string | null, isCouverture: boolean }> | null } };
+export type GetEpreuveByIdQuery = { __typename?: 'Query', getEpreuveById: { __typename?: 'EpreuveEntity', id: string, title: string, description?: string | null, easyToDo?: string | null, mediumToDo?: string | null, hardToDo?: string | null, videoLink?: string | null, images?: Array<{ __typename?: 'ImageEpreuveEntity', id: string, lien: string, isCouverture: boolean }> | null } };
 
-export type GetListEpreuveQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetAllEpreuveQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetListEpreuveQuery = { __typename?: 'Query', getListEpreuve: Array<{ __typename?: 'EpreuveEntity', id: string, title: string }> };
+export type GetAllEpreuveQuery = { __typename?: 'Query', getAllEpreuve: Array<{ __typename?: 'EpreuveEntity', id: string, title: string, images?: Array<{ __typename?: 'ImageEpreuveEntity', id: string, lien: string }> | null }> };
 
-export type GetListTop20EpreuveByTitleQueryVariables = Exact<{
+export type GetTop20EpreuveByTitleQueryVariables = Exact<{
   title?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
-export type GetListTop20EpreuveByTitleQuery = { __typename?: 'Query', getListTop20EpreuveByTitle: Array<{ __typename?: 'EpreuveEntity', id: string, title: string }> };
+export type GetTop20EpreuveByTitleQuery = { __typename?: 'Query', getTop20EpreuveByTitle: Array<{ __typename?: 'EpreuveEntity', id: string, title: string }> };
 
-export type GetUserFavByTokenAndIdParkourQueryVariables = Exact<{
+export type GetUserFavByTokenAndParkourIdQueryVariables = Exact<{
   parkourId: Scalars['Float']['input'];
 }>;
 
 
-export type GetUserFavByTokenAndIdParkourQuery = { __typename?: 'Query', getUserFavByTokenAndIdParkour: { __typename?: 'JoinUserParkourEntity', note?: number | null, favoris: boolean } };
+export type GetUserFavByTokenAndParkourIdQuery = { __typename?: 'Query', getUserFavByTokenAndParkourId: boolean };
 
 export type GetAllUserFavByTokenQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllUserFavByTokenQuery = { __typename?: 'Query', getAllUserFavByToken: Array<{ __typename?: 'JoinUserParkourEntity', parkours: { __typename?: 'ParkourEntity', id: string, title: string, time?: number | null, length?: number | null, difficulty?: Difficulty | null, city?: string | null, note?: number | null, nbVote?: number | null, images?: Array<{ __typename?: 'ImageParkourEntity', id: string, lien?: string | null }> | null, epreuves?: Array<{ __typename?: 'EpreuveEntity', id: string, title: string }> | null } }> };
+export type GetAllUserFavByTokenQuery = { __typename?: 'Query', getAllUserFavByToken: Array<{ __typename?: 'JoinUserParkourFavorisEntity', parkour: { __typename?: 'ParkourEntity', id: string, title: string, time?: number | null, length?: number | null, difficulty?: Difficulty | null, city?: string | null, note?: number | null, nbVote?: number | null, images?: Array<{ __typename?: 'ImageParkourEntity', id: string, lien: string }> | null, epreuves?: Array<{ __typename?: 'EpreuveEntity', id: string, title: string }> | null } }> };
+
+export type GetUserNoteByTokenAndParkourIdQueryVariables = Exact<{
+  parkourId: Scalars['Float']['input'];
+}>;
+
+
+export type GetUserNoteByTokenAndParkourIdQuery = { __typename?: 'Query', getUserNoteByTokenAndParkourId: { __typename?: 'JoinUserParkourNoteEntity', note: number, commentaire?: string | null } };
+
+export type GetAllUserNoteByTokenQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllUserNoteByTokenQuery = { __typename?: 'Query', getAllUserNoteByToken: Array<{ __typename?: 'JoinUserParkourNoteEntity', note: number, commentaire?: string | null, parkour: { __typename?: 'ParkourEntity', id: string, title: string, time?: number | null, length?: number | null, difficulty?: Difficulty | null, city?: string | null, note?: number | null, nbVote?: number | null, images?: Array<{ __typename?: 'ImageParkourEntity', id: string, lien: string }> | null, epreuves?: Array<{ __typename?: 'EpreuveEntity', id: string, title: string }> | null } }> };
 
 export type GetParkourByIdQueryVariables = Exact<{
   getParkourByIdId: Scalars['Float']['input'];
 }>;
 
 
-export type GetParkourByIdQuery = { __typename?: 'Query', getParkourById: { __typename?: 'ParkourEntity', id: string, title: string, description?: string | null, time?: number | null, length?: number | null, difficulty?: Difficulty | null, city?: string | null, start: string, note?: number | null, nbVote?: number | null, images?: Array<{ __typename?: 'ImageParkourEntity', id: string, lien?: string | null, isCouverture: boolean }> | null, epreuves?: Array<{ __typename?: 'EpreuveEntity', id: string, title: string }> | null } };
+export type GetParkourByIdQuery = { __typename?: 'Query', getParkourById: { __typename?: 'ParkourEntity', id: string, title: string, description?: string | null, time?: number | null, length?: number | null, difficulty?: Difficulty | null, city?: string | null, start: string, note?: number | null, nbVote?: number | null, images?: Array<{ __typename?: 'ImageParkourEntity', id: string, lien: string, isCouverture: boolean }> | null, notesParkours?: Array<{ __typename?: 'JoinUserParkourNoteEntity', note: number, commentaire?: string | null, user: { __typename?: 'UserEntity', id: string, name: string, firstname: string } }> | null, epreuves?: Array<{ __typename?: 'EpreuveEntity', id: string, title: string, images?: Array<{ __typename?: 'ImageEpreuveEntity', id: string, lien: string, isCouverture: boolean }> | null }> | null } };
 
 export type GetAllParkourForMapQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -526,9 +570,9 @@ export type GetTop20ParkourBySearchQueryVariables = Exact<{
 }>;
 
 
-export type GetTop20ParkourBySearchQuery = { __typename?: 'Query', getTop20ParkourBySearch: Array<{ __typename?: 'ParkourEntity', id: string, title: string, time?: number | null, length?: number | null, difficulty?: Difficulty | null, city?: string | null, note?: number | null, nbVote?: number | null, images?: Array<{ __typename?: 'ImageParkourEntity', id: string, lien?: string | null, isCouverture: boolean }> | null, epreuves?: Array<{ __typename?: 'EpreuveEntity', id: string, title: string }> | null }> };
+export type GetTop20ParkourBySearchQuery = { __typename?: 'Query', getTop20ParkourBySearch: Array<{ __typename?: 'ParkourEntity', id: string, title: string, time?: number | null, length?: number | null, difficulty?: Difficulty | null, city?: string | null, note?: number | null, nbVote?: number | null, images?: Array<{ __typename?: 'ImageParkourEntity', id: string, lien: string }> | null, epreuves?: Array<{ __typename?: 'EpreuveEntity', id: string }> | null }> };
 
-export type GetTheParkourTotalQueryVariables = Exact<{
+export type GetTheParkourTotalForSearchQueryVariables = Exact<{
   noteMin?: InputMaybe<Scalars['Float']['input']>;
   difficulty?: InputMaybe<Scalars['String']['input']>;
   lengthMax?: InputMaybe<Scalars['Float']['input']>;
@@ -539,19 +583,19 @@ export type GetTheParkourTotalQueryVariables = Exact<{
 }>;
 
 
-export type GetTheParkourTotalQuery = { __typename?: 'Query', getTheParkourTotal: number };
+export type GetTheParkourTotalForSearchQuery = { __typename?: 'Query', getTheParkourTotalForSearch: number };
 
-export type CheckResetTokenQueryVariables = Exact<{
+export type CheckResetTokenValidityQueryVariables = Exact<{
   token: Scalars['String']['input'];
 }>;
 
 
-export type CheckResetTokenQuery = { __typename?: 'Query', checkResetToken: { __typename?: 'MessageEntity', message: string, success: boolean } };
+export type CheckResetTokenValidityQuery = { __typename?: 'Query', checkResetTokenValidity: { __typename?: 'MessageEntity', message: string, success: boolean } };
 
 export type GetUserByTokenQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetUserByTokenQuery = { __typename?: 'Query', getUserByToken: { __typename?: 'UserEntity', id: string, name: string, firstname: string, email: string, city?: string | null, codePostal?: string | null, phone?: string | null, parkours?: Array<{ __typename?: 'JoinUserParkourEntity', user_id: string, parkour_id: string, favoris: boolean, note?: number | null, parkours: { __typename?: 'ParkourEntity', id: string, title: string } }> | null } };
+export type GetUserByTokenQuery = { __typename?: 'Query', getUserByToken: { __typename?: 'UserEntity', id: string, name: string, firstname: string, email: string, city?: string | null, codePostal?: string | null, phone?: string | null } };
 
 export type IsAdminQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -601,17 +645,8 @@ export type InscriptionMutationOptions = Apollo.BaseMutationOptions<InscriptionM
 export const CreateEpreuveDocument = gql`
     mutation CreateEpreuve($infos: EpreuveCreateEntity!) {
   createEpreuve(infos: $infos) {
-    videoLink
-    hardToDo
-    mediumToDo
-    easyToDo
-    description
-    title
     id
-    images {
-      id
-      lien
-    }
+    title
   }
 }
     `;
@@ -646,15 +681,6 @@ export const ModifyEpreuveDocument = gql`
   modifyEpreuve(infos: $infos, id: $modifyEpreuveId) {
     id
     title
-    description
-    easyToDo
-    mediumToDo
-    hardToDo
-    videoLink
-    images {
-      id
-      lien
-    }
   }
 }
     `;
@@ -719,95 +745,147 @@ export function useDeleteEpreuveMutation(baseOptions?: Apollo.MutationHookOption
 export type DeleteEpreuveMutationHookResult = ReturnType<typeof useDeleteEpreuveMutation>;
 export type DeleteEpreuveMutationResult = Apollo.MutationResult<DeleteEpreuveMutation>;
 export type DeleteEpreuveMutationOptions = Apollo.BaseMutationOptions<DeleteEpreuveMutation, DeleteEpreuveMutationVariables>;
-export const FavJoinUserParkourDocument = gql`
-    mutation FavJoinUserParkour($infos: JoinUserParkourFavEntity!) {
-  favJoinUserParkour(infos: $infos) {
+export const CreateJoinUserParkourFavorisDocument = gql`
+    mutation CreateJoinUserParkourFavoris($idParkour: Float!) {
+  createJoinUserParkourFavoris(idParkour: $idParkour) {
     message
     success
   }
 }
     `;
-export type FavJoinUserParkourMutationFn = Apollo.MutationFunction<FavJoinUserParkourMutation, FavJoinUserParkourMutationVariables>;
+export type CreateJoinUserParkourFavorisMutationFn = Apollo.MutationFunction<CreateJoinUserParkourFavorisMutation, CreateJoinUserParkourFavorisMutationVariables>;
 
 /**
- * __useFavJoinUserParkourMutation__
+ * __useCreateJoinUserParkourFavorisMutation__
  *
- * To run a mutation, you first call `useFavJoinUserParkourMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useFavJoinUserParkourMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useCreateJoinUserParkourFavorisMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateJoinUserParkourFavorisMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [favJoinUserParkourMutation, { data, loading, error }] = useFavJoinUserParkourMutation({
+ * const [createJoinUserParkourFavorisMutation, { data, loading, error }] = useCreateJoinUserParkourFavorisMutation({
  *   variables: {
- *      infos: // value for 'infos'
+ *      idParkour: // value for 'idParkour'
  *   },
  * });
  */
-export function useFavJoinUserParkourMutation(baseOptions?: Apollo.MutationHookOptions<FavJoinUserParkourMutation, FavJoinUserParkourMutationVariables>) {
+export function useCreateJoinUserParkourFavorisMutation(baseOptions?: Apollo.MutationHookOptions<CreateJoinUserParkourFavorisMutation, CreateJoinUserParkourFavorisMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<FavJoinUserParkourMutation, FavJoinUserParkourMutationVariables>(FavJoinUserParkourDocument, options);
+        return Apollo.useMutation<CreateJoinUserParkourFavorisMutation, CreateJoinUserParkourFavorisMutationVariables>(CreateJoinUserParkourFavorisDocument, options);
       }
-export type FavJoinUserParkourMutationHookResult = ReturnType<typeof useFavJoinUserParkourMutation>;
-export type FavJoinUserParkourMutationResult = Apollo.MutationResult<FavJoinUserParkourMutation>;
-export type FavJoinUserParkourMutationOptions = Apollo.BaseMutationOptions<FavJoinUserParkourMutation, FavJoinUserParkourMutationVariables>;
-export const NoteJoinUserParkourDocument = gql`
-    mutation NoteJoinUserParkour($infos: JoinUserParkourNoteEntity!) {
-  noteJoinUserParkour(infos: $infos) {
+export type CreateJoinUserParkourFavorisMutationHookResult = ReturnType<typeof useCreateJoinUserParkourFavorisMutation>;
+export type CreateJoinUserParkourFavorisMutationResult = Apollo.MutationResult<CreateJoinUserParkourFavorisMutation>;
+export type CreateJoinUserParkourFavorisMutationOptions = Apollo.BaseMutationOptions<CreateJoinUserParkourFavorisMutation, CreateJoinUserParkourFavorisMutationVariables>;
+export const DeleteJoinUserParkourFavorisDocument = gql`
+    mutation DeleteJoinUserParkourFavoris($idParkour: Float!) {
+  deleteJoinUserParkourFavoris(idParkour: $idParkour) {
     message
     success
   }
 }
     `;
-export type NoteJoinUserParkourMutationFn = Apollo.MutationFunction<NoteJoinUserParkourMutation, NoteJoinUserParkourMutationVariables>;
+export type DeleteJoinUserParkourFavorisMutationFn = Apollo.MutationFunction<DeleteJoinUserParkourFavorisMutation, DeleteJoinUserParkourFavorisMutationVariables>;
 
 /**
- * __useNoteJoinUserParkourMutation__
+ * __useDeleteJoinUserParkourFavorisMutation__
  *
- * To run a mutation, you first call `useNoteJoinUserParkourMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useNoteJoinUserParkourMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useDeleteJoinUserParkourFavorisMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteJoinUserParkourFavorisMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [noteJoinUserParkourMutation, { data, loading, error }] = useNoteJoinUserParkourMutation({
+ * const [deleteJoinUserParkourFavorisMutation, { data, loading, error }] = useDeleteJoinUserParkourFavorisMutation({
+ *   variables: {
+ *      idParkour: // value for 'idParkour'
+ *   },
+ * });
+ */
+export function useDeleteJoinUserParkourFavorisMutation(baseOptions?: Apollo.MutationHookOptions<DeleteJoinUserParkourFavorisMutation, DeleteJoinUserParkourFavorisMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteJoinUserParkourFavorisMutation, DeleteJoinUserParkourFavorisMutationVariables>(DeleteJoinUserParkourFavorisDocument, options);
+      }
+export type DeleteJoinUserParkourFavorisMutationHookResult = ReturnType<typeof useDeleteJoinUserParkourFavorisMutation>;
+export type DeleteJoinUserParkourFavorisMutationResult = Apollo.MutationResult<DeleteJoinUserParkourFavorisMutation>;
+export type DeleteJoinUserParkourFavorisMutationOptions = Apollo.BaseMutationOptions<DeleteJoinUserParkourFavorisMutation, DeleteJoinUserParkourFavorisMutationVariables>;
+export const CreateJoinUserParkourNoteDocument = gql`
+    mutation CreateJoinUserParkourNote($infos: JoinUserParkourNoteCreateEntity!) {
+  createJoinUserParkourNote(infos: $infos) {
+    message
+    success
+  }
+}
+    `;
+export type CreateJoinUserParkourNoteMutationFn = Apollo.MutationFunction<CreateJoinUserParkourNoteMutation, CreateJoinUserParkourNoteMutationVariables>;
+
+/**
+ * __useCreateJoinUserParkourNoteMutation__
+ *
+ * To run a mutation, you first call `useCreateJoinUserParkourNoteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateJoinUserParkourNoteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createJoinUserParkourNoteMutation, { data, loading, error }] = useCreateJoinUserParkourNoteMutation({
  *   variables: {
  *      infos: // value for 'infos'
  *   },
  * });
  */
-export function useNoteJoinUserParkourMutation(baseOptions?: Apollo.MutationHookOptions<NoteJoinUserParkourMutation, NoteJoinUserParkourMutationVariables>) {
+export function useCreateJoinUserParkourNoteMutation(baseOptions?: Apollo.MutationHookOptions<CreateJoinUserParkourNoteMutation, CreateJoinUserParkourNoteMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<NoteJoinUserParkourMutation, NoteJoinUserParkourMutationVariables>(NoteJoinUserParkourDocument, options);
+        return Apollo.useMutation<CreateJoinUserParkourNoteMutation, CreateJoinUserParkourNoteMutationVariables>(CreateJoinUserParkourNoteDocument, options);
       }
-export type NoteJoinUserParkourMutationHookResult = ReturnType<typeof useNoteJoinUserParkourMutation>;
-export type NoteJoinUserParkourMutationResult = Apollo.MutationResult<NoteJoinUserParkourMutation>;
-export type NoteJoinUserParkourMutationOptions = Apollo.BaseMutationOptions<NoteJoinUserParkourMutation, NoteJoinUserParkourMutationVariables>;
+export type CreateJoinUserParkourNoteMutationHookResult = ReturnType<typeof useCreateJoinUserParkourNoteMutation>;
+export type CreateJoinUserParkourNoteMutationResult = Apollo.MutationResult<CreateJoinUserParkourNoteMutation>;
+export type CreateJoinUserParkourNoteMutationOptions = Apollo.BaseMutationOptions<CreateJoinUserParkourNoteMutation, CreateJoinUserParkourNoteMutationVariables>;
+export const DeleteJoinUserParkourNoteDocument = gql`
+    mutation DeleteJoinUserParkourNote($idParkour: Float!) {
+  deleteJoinUserParkourNote(idParkour: $idParkour) {
+    message
+    success
+  }
+}
+    `;
+export type DeleteJoinUserParkourNoteMutationFn = Apollo.MutationFunction<DeleteJoinUserParkourNoteMutation, DeleteJoinUserParkourNoteMutationVariables>;
+
+/**
+ * __useDeleteJoinUserParkourNoteMutation__
+ *
+ * To run a mutation, you first call `useDeleteJoinUserParkourNoteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteJoinUserParkourNoteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteJoinUserParkourNoteMutation, { data, loading, error }] = useDeleteJoinUserParkourNoteMutation({
+ *   variables: {
+ *      idParkour: // value for 'idParkour'
+ *   },
+ * });
+ */
+export function useDeleteJoinUserParkourNoteMutation(baseOptions?: Apollo.MutationHookOptions<DeleteJoinUserParkourNoteMutation, DeleteJoinUserParkourNoteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteJoinUserParkourNoteMutation, DeleteJoinUserParkourNoteMutationVariables>(DeleteJoinUserParkourNoteDocument, options);
+      }
+export type DeleteJoinUserParkourNoteMutationHookResult = ReturnType<typeof useDeleteJoinUserParkourNoteMutation>;
+export type DeleteJoinUserParkourNoteMutationResult = Apollo.MutationResult<DeleteJoinUserParkourNoteMutation>;
+export type DeleteJoinUserParkourNoteMutationOptions = Apollo.BaseMutationOptions<DeleteJoinUserParkourNoteMutation, DeleteJoinUserParkourNoteMutationVariables>;
 export const CreateParkourDocument = gql`
     mutation CreateParkour($infos: ParkourCreateEntity!) {
   createParkour(infos: $infos) {
     id
     title
-    description
-    time
-    length
-    difficulty
-    city
-    start
-    note
-    nbVote
-    images {
-      id
-      lien
-    }
-    epreuves {
-      id
-      title
-    }
   }
 }
     `;
@@ -842,22 +920,6 @@ export const ModifyParkourDocument = gql`
   modifyParkour(infos: $infos, id: $modifyParkourId) {
     id
     title
-    description
-    time
-    length
-    difficulty
-    city
-    start
-    note
-    nbVote
-    images {
-      id
-      lien
-    }
-    epreuves {
-      id
-      title
-    }
   }
 }
     `;
@@ -994,13 +1056,8 @@ export type ChangePasswordMutationOptions = Apollo.BaseMutationOptions<ChangePas
 export const ModifyUserDocument = gql`
     mutation ModifyUser($infos: UserUpdateEntity!) {
   modifyUser(infos: $infos) {
-    id
-    name
-    firstname
-    email
-    city
-    codePostal
-    phone
+    message
+    success
   }
 }
     `;
@@ -1031,8 +1088,8 @@ export type ModifyUserMutationHookResult = ReturnType<typeof useModifyUserMutati
 export type ModifyUserMutationResult = Apollo.MutationResult<ModifyUserMutation>;
 export type ModifyUserMutationOptions = Apollo.BaseMutationOptions<ModifyUserMutation, ModifyUserMutationVariables>;
 export const DeleteUserDocument = gql`
-    mutation DeleteUser($deleteUserId: String!) {
-  deleteUser(id: $deleteUserId) {
+    mutation DeleteUser {
+  deleteUser {
     message
     success
   }
@@ -1053,7 +1110,6 @@ export type DeleteUserMutationFn = Apollo.MutationFunction<DeleteUserMutation, D
  * @example
  * const [deleteUserMutation, { data, loading, error }] = useDeleteUserMutation({
  *   variables: {
- *      deleteUserId: // value for 'deleteUserId'
  *   },
  * });
  */
@@ -1196,49 +1252,53 @@ export type GetEpreuveByIdQueryHookResult = ReturnType<typeof useGetEpreuveByIdQ
 export type GetEpreuveByIdLazyQueryHookResult = ReturnType<typeof useGetEpreuveByIdLazyQuery>;
 export type GetEpreuveByIdSuspenseQueryHookResult = ReturnType<typeof useGetEpreuveByIdSuspenseQuery>;
 export type GetEpreuveByIdQueryResult = Apollo.QueryResult<GetEpreuveByIdQuery, GetEpreuveByIdQueryVariables>;
-export const GetListEpreuveDocument = gql`
-    query GetListEpreuve {
-  getListEpreuve {
+export const GetAllEpreuveDocument = gql`
+    query GetAllEpreuve {
+  getAllEpreuve {
     id
     title
+    images {
+      id
+      lien
+    }
   }
 }
     `;
 
 /**
- * __useGetListEpreuveQuery__
+ * __useGetAllEpreuveQuery__
  *
- * To run a query within a React component, call `useGetListEpreuveQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetListEpreuveQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetAllEpreuveQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllEpreuveQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetListEpreuveQuery({
+ * const { data, loading, error } = useGetAllEpreuveQuery({
  *   variables: {
  *   },
  * });
  */
-export function useGetListEpreuveQuery(baseOptions?: Apollo.QueryHookOptions<GetListEpreuveQuery, GetListEpreuveQueryVariables>) {
+export function useGetAllEpreuveQuery(baseOptions?: Apollo.QueryHookOptions<GetAllEpreuveQuery, GetAllEpreuveQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetListEpreuveQuery, GetListEpreuveQueryVariables>(GetListEpreuveDocument, options);
+        return Apollo.useQuery<GetAllEpreuveQuery, GetAllEpreuveQueryVariables>(GetAllEpreuveDocument, options);
       }
-export function useGetListEpreuveLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetListEpreuveQuery, GetListEpreuveQueryVariables>) {
+export function useGetAllEpreuveLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllEpreuveQuery, GetAllEpreuveQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetListEpreuveQuery, GetListEpreuveQueryVariables>(GetListEpreuveDocument, options);
+          return Apollo.useLazyQuery<GetAllEpreuveQuery, GetAllEpreuveQueryVariables>(GetAllEpreuveDocument, options);
         }
-export function useGetListEpreuveSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetListEpreuveQuery, GetListEpreuveQueryVariables>) {
+export function useGetAllEpreuveSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetAllEpreuveQuery, GetAllEpreuveQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetListEpreuveQuery, GetListEpreuveQueryVariables>(GetListEpreuveDocument, options);
+          return Apollo.useSuspenseQuery<GetAllEpreuveQuery, GetAllEpreuveQueryVariables>(GetAllEpreuveDocument, options);
         }
-export type GetListEpreuveQueryHookResult = ReturnType<typeof useGetListEpreuveQuery>;
-export type GetListEpreuveLazyQueryHookResult = ReturnType<typeof useGetListEpreuveLazyQuery>;
-export type GetListEpreuveSuspenseQueryHookResult = ReturnType<typeof useGetListEpreuveSuspenseQuery>;
-export type GetListEpreuveQueryResult = Apollo.QueryResult<GetListEpreuveQuery, GetListEpreuveQueryVariables>;
-export const GetListTop20EpreuveByTitleDocument = gql`
-    query GetListTop20EpreuveByTitle($title: String) {
-  getListTop20EpreuveByTitle(title: $title) {
+export type GetAllEpreuveQueryHookResult = ReturnType<typeof useGetAllEpreuveQuery>;
+export type GetAllEpreuveLazyQueryHookResult = ReturnType<typeof useGetAllEpreuveLazyQuery>;
+export type GetAllEpreuveSuspenseQueryHookResult = ReturnType<typeof useGetAllEpreuveSuspenseQuery>;
+export type GetAllEpreuveQueryResult = Apollo.QueryResult<GetAllEpreuveQuery, GetAllEpreuveQueryVariables>;
+export const GetTop20EpreuveByTitleDocument = gql`
+    query GetTop20EpreuveByTitle($title: String) {
+  getTop20EpreuveByTitle(title: $title) {
     id
     title
   }
@@ -1246,82 +1306,79 @@ export const GetListTop20EpreuveByTitleDocument = gql`
     `;
 
 /**
- * __useGetListTop20EpreuveByTitleQuery__
+ * __useGetTop20EpreuveByTitleQuery__
  *
- * To run a query within a React component, call `useGetListTop20EpreuveByTitleQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetListTop20EpreuveByTitleQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetTop20EpreuveByTitleQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTop20EpreuveByTitleQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetListTop20EpreuveByTitleQuery({
+ * const { data, loading, error } = useGetTop20EpreuveByTitleQuery({
  *   variables: {
  *      title: // value for 'title'
  *   },
  * });
  */
-export function useGetListTop20EpreuveByTitleQuery(baseOptions?: Apollo.QueryHookOptions<GetListTop20EpreuveByTitleQuery, GetListTop20EpreuveByTitleQueryVariables>) {
+export function useGetTop20EpreuveByTitleQuery(baseOptions?: Apollo.QueryHookOptions<GetTop20EpreuveByTitleQuery, GetTop20EpreuveByTitleQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetListTop20EpreuveByTitleQuery, GetListTop20EpreuveByTitleQueryVariables>(GetListTop20EpreuveByTitleDocument, options);
+        return Apollo.useQuery<GetTop20EpreuveByTitleQuery, GetTop20EpreuveByTitleQueryVariables>(GetTop20EpreuveByTitleDocument, options);
       }
-export function useGetListTop20EpreuveByTitleLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetListTop20EpreuveByTitleQuery, GetListTop20EpreuveByTitleQueryVariables>) {
+export function useGetTop20EpreuveByTitleLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTop20EpreuveByTitleQuery, GetTop20EpreuveByTitleQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetListTop20EpreuveByTitleQuery, GetListTop20EpreuveByTitleQueryVariables>(GetListTop20EpreuveByTitleDocument, options);
+          return Apollo.useLazyQuery<GetTop20EpreuveByTitleQuery, GetTop20EpreuveByTitleQueryVariables>(GetTop20EpreuveByTitleDocument, options);
         }
-export function useGetListTop20EpreuveByTitleSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetListTop20EpreuveByTitleQuery, GetListTop20EpreuveByTitleQueryVariables>) {
+export function useGetTop20EpreuveByTitleSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetTop20EpreuveByTitleQuery, GetTop20EpreuveByTitleQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetListTop20EpreuveByTitleQuery, GetListTop20EpreuveByTitleQueryVariables>(GetListTop20EpreuveByTitleDocument, options);
+          return Apollo.useSuspenseQuery<GetTop20EpreuveByTitleQuery, GetTop20EpreuveByTitleQueryVariables>(GetTop20EpreuveByTitleDocument, options);
         }
-export type GetListTop20EpreuveByTitleQueryHookResult = ReturnType<typeof useGetListTop20EpreuveByTitleQuery>;
-export type GetListTop20EpreuveByTitleLazyQueryHookResult = ReturnType<typeof useGetListTop20EpreuveByTitleLazyQuery>;
-export type GetListTop20EpreuveByTitleSuspenseQueryHookResult = ReturnType<typeof useGetListTop20EpreuveByTitleSuspenseQuery>;
-export type GetListTop20EpreuveByTitleQueryResult = Apollo.QueryResult<GetListTop20EpreuveByTitleQuery, GetListTop20EpreuveByTitleQueryVariables>;
-export const GetUserFavByTokenAndIdParkourDocument = gql`
-    query GetUserFavByTokenAndIdParkour($parkourId: Float!) {
-  getUserFavByTokenAndIdParkour(parkourId: $parkourId) {
-    note
-    favoris
-  }
+export type GetTop20EpreuveByTitleQueryHookResult = ReturnType<typeof useGetTop20EpreuveByTitleQuery>;
+export type GetTop20EpreuveByTitleLazyQueryHookResult = ReturnType<typeof useGetTop20EpreuveByTitleLazyQuery>;
+export type GetTop20EpreuveByTitleSuspenseQueryHookResult = ReturnType<typeof useGetTop20EpreuveByTitleSuspenseQuery>;
+export type GetTop20EpreuveByTitleQueryResult = Apollo.QueryResult<GetTop20EpreuveByTitleQuery, GetTop20EpreuveByTitleQueryVariables>;
+export const GetUserFavByTokenAndParkourIdDocument = gql`
+    query GetUserFavByTokenAndParkourId($parkourId: Float!) {
+  getUserFavByTokenAndParkourId(parkourId: $parkourId)
 }
     `;
 
 /**
- * __useGetUserFavByTokenAndIdParkourQuery__
+ * __useGetUserFavByTokenAndParkourIdQuery__
  *
- * To run a query within a React component, call `useGetUserFavByTokenAndIdParkourQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetUserFavByTokenAndIdParkourQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetUserFavByTokenAndParkourIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserFavByTokenAndParkourIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetUserFavByTokenAndIdParkourQuery({
+ * const { data, loading, error } = useGetUserFavByTokenAndParkourIdQuery({
  *   variables: {
  *      parkourId: // value for 'parkourId'
  *   },
  * });
  */
-export function useGetUserFavByTokenAndIdParkourQuery(baseOptions: Apollo.QueryHookOptions<GetUserFavByTokenAndIdParkourQuery, GetUserFavByTokenAndIdParkourQueryVariables> & ({ variables: GetUserFavByTokenAndIdParkourQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+export function useGetUserFavByTokenAndParkourIdQuery(baseOptions: Apollo.QueryHookOptions<GetUserFavByTokenAndParkourIdQuery, GetUserFavByTokenAndParkourIdQueryVariables> & ({ variables: GetUserFavByTokenAndParkourIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetUserFavByTokenAndIdParkourQuery, GetUserFavByTokenAndIdParkourQueryVariables>(GetUserFavByTokenAndIdParkourDocument, options);
+        return Apollo.useQuery<GetUserFavByTokenAndParkourIdQuery, GetUserFavByTokenAndParkourIdQueryVariables>(GetUserFavByTokenAndParkourIdDocument, options);
       }
-export function useGetUserFavByTokenAndIdParkourLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserFavByTokenAndIdParkourQuery, GetUserFavByTokenAndIdParkourQueryVariables>) {
+export function useGetUserFavByTokenAndParkourIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserFavByTokenAndParkourIdQuery, GetUserFavByTokenAndParkourIdQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetUserFavByTokenAndIdParkourQuery, GetUserFavByTokenAndIdParkourQueryVariables>(GetUserFavByTokenAndIdParkourDocument, options);
+          return Apollo.useLazyQuery<GetUserFavByTokenAndParkourIdQuery, GetUserFavByTokenAndParkourIdQueryVariables>(GetUserFavByTokenAndParkourIdDocument, options);
         }
-export function useGetUserFavByTokenAndIdParkourSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetUserFavByTokenAndIdParkourQuery, GetUserFavByTokenAndIdParkourQueryVariables>) {
+export function useGetUserFavByTokenAndParkourIdSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetUserFavByTokenAndParkourIdQuery, GetUserFavByTokenAndParkourIdQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetUserFavByTokenAndIdParkourQuery, GetUserFavByTokenAndIdParkourQueryVariables>(GetUserFavByTokenAndIdParkourDocument, options);
+          return Apollo.useSuspenseQuery<GetUserFavByTokenAndParkourIdQuery, GetUserFavByTokenAndParkourIdQueryVariables>(GetUserFavByTokenAndParkourIdDocument, options);
         }
-export type GetUserFavByTokenAndIdParkourQueryHookResult = ReturnType<typeof useGetUserFavByTokenAndIdParkourQuery>;
-export type GetUserFavByTokenAndIdParkourLazyQueryHookResult = ReturnType<typeof useGetUserFavByTokenAndIdParkourLazyQuery>;
-export type GetUserFavByTokenAndIdParkourSuspenseQueryHookResult = ReturnType<typeof useGetUserFavByTokenAndIdParkourSuspenseQuery>;
-export type GetUserFavByTokenAndIdParkourQueryResult = Apollo.QueryResult<GetUserFavByTokenAndIdParkourQuery, GetUserFavByTokenAndIdParkourQueryVariables>;
+export type GetUserFavByTokenAndParkourIdQueryHookResult = ReturnType<typeof useGetUserFavByTokenAndParkourIdQuery>;
+export type GetUserFavByTokenAndParkourIdLazyQueryHookResult = ReturnType<typeof useGetUserFavByTokenAndParkourIdLazyQuery>;
+export type GetUserFavByTokenAndParkourIdSuspenseQueryHookResult = ReturnType<typeof useGetUserFavByTokenAndParkourIdSuspenseQuery>;
+export type GetUserFavByTokenAndParkourIdQueryResult = Apollo.QueryResult<GetUserFavByTokenAndParkourIdQuery, GetUserFavByTokenAndParkourIdQueryVariables>;
 export const GetAllUserFavByTokenDocument = gql`
     query GetAllUserFavByToken {
   getAllUserFavByToken {
-    parkours {
+    parkour {
       id
       title
       time
@@ -1374,6 +1431,105 @@ export type GetAllUserFavByTokenQueryHookResult = ReturnType<typeof useGetAllUse
 export type GetAllUserFavByTokenLazyQueryHookResult = ReturnType<typeof useGetAllUserFavByTokenLazyQuery>;
 export type GetAllUserFavByTokenSuspenseQueryHookResult = ReturnType<typeof useGetAllUserFavByTokenSuspenseQuery>;
 export type GetAllUserFavByTokenQueryResult = Apollo.QueryResult<GetAllUserFavByTokenQuery, GetAllUserFavByTokenQueryVariables>;
+export const GetUserNoteByTokenAndParkourIdDocument = gql`
+    query GetUserNoteByTokenAndParkourId($parkourId: Float!) {
+  getUserNoteByTokenAndParkourId(parkourId: $parkourId) {
+    note
+    commentaire
+  }
+}
+    `;
+
+/**
+ * __useGetUserNoteByTokenAndParkourIdQuery__
+ *
+ * To run a query within a React component, call `useGetUserNoteByTokenAndParkourIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserNoteByTokenAndParkourIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserNoteByTokenAndParkourIdQuery({
+ *   variables: {
+ *      parkourId: // value for 'parkourId'
+ *   },
+ * });
+ */
+export function useGetUserNoteByTokenAndParkourIdQuery(baseOptions: Apollo.QueryHookOptions<GetUserNoteByTokenAndParkourIdQuery, GetUserNoteByTokenAndParkourIdQueryVariables> & ({ variables: GetUserNoteByTokenAndParkourIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserNoteByTokenAndParkourIdQuery, GetUserNoteByTokenAndParkourIdQueryVariables>(GetUserNoteByTokenAndParkourIdDocument, options);
+      }
+export function useGetUserNoteByTokenAndParkourIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserNoteByTokenAndParkourIdQuery, GetUserNoteByTokenAndParkourIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserNoteByTokenAndParkourIdQuery, GetUserNoteByTokenAndParkourIdQueryVariables>(GetUserNoteByTokenAndParkourIdDocument, options);
+        }
+export function useGetUserNoteByTokenAndParkourIdSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetUserNoteByTokenAndParkourIdQuery, GetUserNoteByTokenAndParkourIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetUserNoteByTokenAndParkourIdQuery, GetUserNoteByTokenAndParkourIdQueryVariables>(GetUserNoteByTokenAndParkourIdDocument, options);
+        }
+export type GetUserNoteByTokenAndParkourIdQueryHookResult = ReturnType<typeof useGetUserNoteByTokenAndParkourIdQuery>;
+export type GetUserNoteByTokenAndParkourIdLazyQueryHookResult = ReturnType<typeof useGetUserNoteByTokenAndParkourIdLazyQuery>;
+export type GetUserNoteByTokenAndParkourIdSuspenseQueryHookResult = ReturnType<typeof useGetUserNoteByTokenAndParkourIdSuspenseQuery>;
+export type GetUserNoteByTokenAndParkourIdQueryResult = Apollo.QueryResult<GetUserNoteByTokenAndParkourIdQuery, GetUserNoteByTokenAndParkourIdQueryVariables>;
+export const GetAllUserNoteByTokenDocument = gql`
+    query GetAllUserNoteByToken {
+  getAllUserNoteByToken {
+    note
+    commentaire
+    parkour {
+      id
+      title
+      time
+      length
+      difficulty
+      city
+      note
+      nbVote
+      images {
+        id
+        lien
+      }
+      epreuves {
+        id
+        title
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetAllUserNoteByTokenQuery__
+ *
+ * To run a query within a React component, call `useGetAllUserNoteByTokenQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllUserNoteByTokenQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllUserNoteByTokenQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllUserNoteByTokenQuery(baseOptions?: Apollo.QueryHookOptions<GetAllUserNoteByTokenQuery, GetAllUserNoteByTokenQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllUserNoteByTokenQuery, GetAllUserNoteByTokenQueryVariables>(GetAllUserNoteByTokenDocument, options);
+      }
+export function useGetAllUserNoteByTokenLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllUserNoteByTokenQuery, GetAllUserNoteByTokenQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllUserNoteByTokenQuery, GetAllUserNoteByTokenQueryVariables>(GetAllUserNoteByTokenDocument, options);
+        }
+export function useGetAllUserNoteByTokenSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetAllUserNoteByTokenQuery, GetAllUserNoteByTokenQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetAllUserNoteByTokenQuery, GetAllUserNoteByTokenQueryVariables>(GetAllUserNoteByTokenDocument, options);
+        }
+export type GetAllUserNoteByTokenQueryHookResult = ReturnType<typeof useGetAllUserNoteByTokenQuery>;
+export type GetAllUserNoteByTokenLazyQueryHookResult = ReturnType<typeof useGetAllUserNoteByTokenLazyQuery>;
+export type GetAllUserNoteByTokenSuspenseQueryHookResult = ReturnType<typeof useGetAllUserNoteByTokenSuspenseQuery>;
+export type GetAllUserNoteByTokenQueryResult = Apollo.QueryResult<GetAllUserNoteByTokenQuery, GetAllUserNoteByTokenQueryVariables>;
 export const GetParkourByIdDocument = gql`
     query GetParkourById($getParkourByIdId: Float!) {
   getParkourById(id: $getParkourByIdId) {
@@ -1392,9 +1548,23 @@ export const GetParkourByIdDocument = gql`
       lien
       isCouverture
     }
+    notesParkours {
+      note
+      commentaire
+      user {
+        id
+        name
+        firstname
+      }
+    }
     epreuves {
       id
       title
+      images {
+        id
+        lien
+        isCouverture
+      }
     }
   }
 }
@@ -1539,11 +1709,9 @@ export const GetTop20ParkourBySearchDocument = gql`
     images {
       id
       lien
-      isCouverture
     }
     epreuves {
       id
-      title
     }
   }
 }
@@ -1590,9 +1758,9 @@ export type GetTop20ParkourBySearchQueryHookResult = ReturnType<typeof useGetTop
 export type GetTop20ParkourBySearchLazyQueryHookResult = ReturnType<typeof useGetTop20ParkourBySearchLazyQuery>;
 export type GetTop20ParkourBySearchSuspenseQueryHookResult = ReturnType<typeof useGetTop20ParkourBySearchSuspenseQuery>;
 export type GetTop20ParkourBySearchQueryResult = Apollo.QueryResult<GetTop20ParkourBySearchQuery, GetTop20ParkourBySearchQueryVariables>;
-export const GetTheParkourTotalDocument = gql`
-    query GetTheParkourTotal($noteMin: Float, $difficulty: String, $lengthMax: Float, $lengthMin: Float, $timeMax: Float, $timeMin: Float, $city: String) {
-  getTheParkourTotal(
+export const GetTheParkourTotalForSearchDocument = gql`
+    query GetTheParkourTotalForSearch($noteMin: Float, $difficulty: String, $lengthMax: Float, $lengthMin: Float, $timeMax: Float, $timeMin: Float, $city: String) {
+  getTheParkourTotalForSearch(
     noteMin: $noteMin
     difficulty: $difficulty
     lengthMax: $lengthMax
@@ -1605,16 +1773,16 @@ export const GetTheParkourTotalDocument = gql`
     `;
 
 /**
- * __useGetTheParkourTotalQuery__
+ * __useGetTheParkourTotalForSearchQuery__
  *
- * To run a query within a React component, call `useGetTheParkourTotalQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetTheParkourTotalQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetTheParkourTotalForSearchQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTheParkourTotalForSearchQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetTheParkourTotalQuery({
+ * const { data, loading, error } = useGetTheParkourTotalForSearchQuery({
  *   variables: {
  *      noteMin: // value for 'noteMin'
  *      difficulty: // value for 'difficulty'
@@ -1626,25 +1794,25 @@ export const GetTheParkourTotalDocument = gql`
  *   },
  * });
  */
-export function useGetTheParkourTotalQuery(baseOptions?: Apollo.QueryHookOptions<GetTheParkourTotalQuery, GetTheParkourTotalQueryVariables>) {
+export function useGetTheParkourTotalForSearchQuery(baseOptions?: Apollo.QueryHookOptions<GetTheParkourTotalForSearchQuery, GetTheParkourTotalForSearchQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetTheParkourTotalQuery, GetTheParkourTotalQueryVariables>(GetTheParkourTotalDocument, options);
+        return Apollo.useQuery<GetTheParkourTotalForSearchQuery, GetTheParkourTotalForSearchQueryVariables>(GetTheParkourTotalForSearchDocument, options);
       }
-export function useGetTheParkourTotalLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTheParkourTotalQuery, GetTheParkourTotalQueryVariables>) {
+export function useGetTheParkourTotalForSearchLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTheParkourTotalForSearchQuery, GetTheParkourTotalForSearchQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetTheParkourTotalQuery, GetTheParkourTotalQueryVariables>(GetTheParkourTotalDocument, options);
+          return Apollo.useLazyQuery<GetTheParkourTotalForSearchQuery, GetTheParkourTotalForSearchQueryVariables>(GetTheParkourTotalForSearchDocument, options);
         }
-export function useGetTheParkourTotalSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetTheParkourTotalQuery, GetTheParkourTotalQueryVariables>) {
+export function useGetTheParkourTotalForSearchSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetTheParkourTotalForSearchQuery, GetTheParkourTotalForSearchQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetTheParkourTotalQuery, GetTheParkourTotalQueryVariables>(GetTheParkourTotalDocument, options);
+          return Apollo.useSuspenseQuery<GetTheParkourTotalForSearchQuery, GetTheParkourTotalForSearchQueryVariables>(GetTheParkourTotalForSearchDocument, options);
         }
-export type GetTheParkourTotalQueryHookResult = ReturnType<typeof useGetTheParkourTotalQuery>;
-export type GetTheParkourTotalLazyQueryHookResult = ReturnType<typeof useGetTheParkourTotalLazyQuery>;
-export type GetTheParkourTotalSuspenseQueryHookResult = ReturnType<typeof useGetTheParkourTotalSuspenseQuery>;
-export type GetTheParkourTotalQueryResult = Apollo.QueryResult<GetTheParkourTotalQuery, GetTheParkourTotalQueryVariables>;
-export const CheckResetTokenDocument = gql`
-    query CheckResetToken($token: String!) {
-  checkResetToken(token: $token) {
+export type GetTheParkourTotalForSearchQueryHookResult = ReturnType<typeof useGetTheParkourTotalForSearchQuery>;
+export type GetTheParkourTotalForSearchLazyQueryHookResult = ReturnType<typeof useGetTheParkourTotalForSearchLazyQuery>;
+export type GetTheParkourTotalForSearchSuspenseQueryHookResult = ReturnType<typeof useGetTheParkourTotalForSearchSuspenseQuery>;
+export type GetTheParkourTotalForSearchQueryResult = Apollo.QueryResult<GetTheParkourTotalForSearchQuery, GetTheParkourTotalForSearchQueryVariables>;
+export const CheckResetTokenValidityDocument = gql`
+    query checkResetTokenValidity($token: String!) {
+  checkResetTokenValidity(token: $token) {
     message
     success
   }
@@ -1652,37 +1820,37 @@ export const CheckResetTokenDocument = gql`
     `;
 
 /**
- * __useCheckResetTokenQuery__
+ * __useCheckResetTokenValidityQuery__
  *
- * To run a query within a React component, call `useCheckResetTokenQuery` and pass it any options that fit your needs.
- * When your component renders, `useCheckResetTokenQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useCheckResetTokenValidityQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCheckResetTokenValidityQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useCheckResetTokenQuery({
+ * const { data, loading, error } = useCheckResetTokenValidityQuery({
  *   variables: {
  *      token: // value for 'token'
  *   },
  * });
  */
-export function useCheckResetTokenQuery(baseOptions: Apollo.QueryHookOptions<CheckResetTokenQuery, CheckResetTokenQueryVariables> & ({ variables: CheckResetTokenQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+export function useCheckResetTokenValidityQuery(baseOptions: Apollo.QueryHookOptions<CheckResetTokenValidityQuery, CheckResetTokenValidityQueryVariables> & ({ variables: CheckResetTokenValidityQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<CheckResetTokenQuery, CheckResetTokenQueryVariables>(CheckResetTokenDocument, options);
+        return Apollo.useQuery<CheckResetTokenValidityQuery, CheckResetTokenValidityQueryVariables>(CheckResetTokenValidityDocument, options);
       }
-export function useCheckResetTokenLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CheckResetTokenQuery, CheckResetTokenQueryVariables>) {
+export function useCheckResetTokenValidityLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CheckResetTokenValidityQuery, CheckResetTokenValidityQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<CheckResetTokenQuery, CheckResetTokenQueryVariables>(CheckResetTokenDocument, options);
+          return Apollo.useLazyQuery<CheckResetTokenValidityQuery, CheckResetTokenValidityQueryVariables>(CheckResetTokenValidityDocument, options);
         }
-export function useCheckResetTokenSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<CheckResetTokenQuery, CheckResetTokenQueryVariables>) {
+export function useCheckResetTokenValiditySuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<CheckResetTokenValidityQuery, CheckResetTokenValidityQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<CheckResetTokenQuery, CheckResetTokenQueryVariables>(CheckResetTokenDocument, options);
+          return Apollo.useSuspenseQuery<CheckResetTokenValidityQuery, CheckResetTokenValidityQueryVariables>(CheckResetTokenValidityDocument, options);
         }
-export type CheckResetTokenQueryHookResult = ReturnType<typeof useCheckResetTokenQuery>;
-export type CheckResetTokenLazyQueryHookResult = ReturnType<typeof useCheckResetTokenLazyQuery>;
-export type CheckResetTokenSuspenseQueryHookResult = ReturnType<typeof useCheckResetTokenSuspenseQuery>;
-export type CheckResetTokenQueryResult = Apollo.QueryResult<CheckResetTokenQuery, CheckResetTokenQueryVariables>;
+export type CheckResetTokenValidityQueryHookResult = ReturnType<typeof useCheckResetTokenValidityQuery>;
+export type CheckResetTokenValidityLazyQueryHookResult = ReturnType<typeof useCheckResetTokenValidityLazyQuery>;
+export type CheckResetTokenValiditySuspenseQueryHookResult = ReturnType<typeof useCheckResetTokenValiditySuspenseQuery>;
+export type CheckResetTokenValidityQueryResult = Apollo.QueryResult<CheckResetTokenValidityQuery, CheckResetTokenValidityQueryVariables>;
 export const GetUserByTokenDocument = gql`
     query GetUserByToken {
   getUserByToken {
@@ -1693,16 +1861,6 @@ export const GetUserByTokenDocument = gql`
     city
     codePostal
     phone
-    parkours {
-      user_id
-      parkour_id
-      favoris
-      note
-      parkours {
-        id
-        title
-      }
-    }
   }
 }
     `;

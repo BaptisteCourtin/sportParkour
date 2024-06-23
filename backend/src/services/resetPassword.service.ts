@@ -40,10 +40,7 @@ export default class ResetPasswordService {
   // ---
 
   async createResetToken(email: string) {
-    const user = await new UserService().getByEmail(email);
-    if (!user) {
-      throw new Error("Ce user n'existe pas");
-    }
+    const user = await new UserService().getUserByEmail(email);
 
     // cherche dans la bdd reset
     let resetToken = await this.db.findOne({

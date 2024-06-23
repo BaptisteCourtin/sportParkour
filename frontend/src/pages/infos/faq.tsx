@@ -5,6 +5,7 @@ import AccordionActions from "@mui/material/AccordionActions";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Button from "@mui/material/Button";
+
 import { FaAngleDown } from "react-icons/fa6";
 
 const faq = () => {

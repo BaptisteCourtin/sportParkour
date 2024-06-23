@@ -1,11 +1,15 @@
 import React, { SyntheticEvent, useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { useForm } from "react-hook-form";
+import { mixed, number, object, string } from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+
 import {
   Difficulty,
   EpreuveEntity,
   ParkourUpdateEntity,
   useDeleteParkourMutation,
-  useGetListTop20EpreuveByTitleLazyQuery,
+  useGetTop20EpreuveByTitleLazyQuery,
   useGetParkourByIdLazyQuery,
   useModifyParkourMutation,
 } from "@/types/graphql";
@@ -17,17 +21,14 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { toast } from "react-hot-toast";
-
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { mixed, number, object, string } from "yup";
 import Autocomplete from "@mui/material/Autocomplete";
-import { FaCheck } from "react-icons/fa6";
 import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
+
+import { toast } from "react-hot-toast";
+import { FaCheck } from "react-icons/fa6";
 
 let modifyParkourSchema = object({
   title: string()
@@ -170,7 +171,7 @@ const modifyOneParkour = () => {
   const [
     getListEpreuvesByTitle,
     { data: dataEpreuves, loading: loadingEpreuves, error: errorEpreuves },
-  ] = useGetListTop20EpreuveByTitleLazyQuery();
+  ] = useGetTop20EpreuveByTitleLazyQuery();
 
   const handleSearchTitle = (
     e: SyntheticEvent<Element, Event>,
@@ -186,14 +187,25 @@ const modifyOneParkour = () => {
   const [selectedEpreuveIds, setSelectedEpreuveIds] = useState<number[]>([]);
   const [chooseEpreuves, setChooseEpreuves] = useState<EpreuveEntity[]>([]);
 
-  const handleEpreuveSelection = (value: any) => {
-    const selectedIds = value.map((option: { id: string }) =>
+  const handleEpreuveSelection = (values: any) => {
+    // je sais pas mais ok
+    const idCounts: { [key: string]: number } = {};
+    const tableauFiltre: EpreuveEntity[] = values.filter((objet: any) => {
+      idCounts[objet.id] = (idCounts[objet.id] || 0) + 1;
+      return idCounts[objet.id] === 1;
+    });
+
+    const tableauSansDoublons: EpreuveEntity[] = tableauFiltre.filter(
+      (objet) => idCounts[objet.id] === 1
+    );
+    // voilà voilà
+
+    setChooseEpreuves(tableauSansDoublons);
+
+    const selectedIds = tableauSansDoublons.map((option: { id: string }) =>
       parseInt(option.id)
     );
     setSelectedEpreuveIds(selectedIds);
-
-    // Ajout des nouvelles épreuves tout en gardant les anciennes
-    setChooseEpreuves(value);
   };
 
   return (
@@ -369,7 +381,7 @@ const modifyOneParkour = () => {
                   onInputChange={handleSearchTitle}
                   onChange={(e, value, detail) => handleEpreuveSelection(value)}
                   // pour rechercher dans le back
-                  options={dataEpreuves?.getListTop20EpreuveByTitle ?? []}
+                  options={dataEpreuves?.getTop20EpreuveByTitle ?? []}
                   // render qui veut un string
                   getOptionLabel={(option) => option.title}
                   // pour le style autour

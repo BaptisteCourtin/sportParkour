@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import {
   Difficulty,
-  useGetTheParkourTotalLazyQuery,
+  useGetTheParkourTotalForSearchLazyQuery,
   useGetTop20ParkourBySearchLazyQuery,
   useIsAdminQuery,
 } from "@/types/graphql";
@@ -76,7 +76,7 @@ export default function Home() {
   const [
     getTheParkourTotal,
     { data: dataTotal, loading: loadingTotal, error: errorTotal },
-  ] = useGetTheParkourTotalLazyQuery();
+  ] = useGetTheParkourTotalForSearchLazyQuery();
 
   // --- VALUES SEARCH BY ALL ---
 
@@ -375,10 +375,10 @@ export default function Home() {
 
             {/* --- */}
 
-            {dataTotal?.getTheParkourTotal ? (
+            {dataTotal?.getTheParkourTotalForSearch ? (
               <Stack spacing={2}>
                 <Pagination
-                  count={Math.ceil(dataTotal?.getTheParkourTotal / 20)}
+                  count={Math.ceil(dataTotal?.getTheParkourTotalForSearch / 20)}
                   page={page}
                   onChange={handleChange}
                   variant="outlined"
@@ -399,10 +399,10 @@ export default function Home() {
 
             {/* --- */}
 
-            {dataTotal?.getTheParkourTotal ? (
+            {dataTotal?.getTheParkourTotalForSearch ? (
               <Stack spacing={2}>
                 <Pagination
-                  count={Math.ceil(dataTotal?.getTheParkourTotal / 20)}
+                  count={Math.ceil(dataTotal?.getTheParkourTotalForSearch / 20)}
                   page={page}
                   onChange={handleChange}
                   variant="outlined"

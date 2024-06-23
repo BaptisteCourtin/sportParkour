@@ -1,6 +1,7 @@
 import React from "react";
-import { GetEpreuveByIdQuery } from "@/types/graphql";
 import Link from "next/link";
+
+import { GetEpreuveByIdQuery } from "@/types/graphql";
 
 const nameEpreuve = ({
   epreuve,

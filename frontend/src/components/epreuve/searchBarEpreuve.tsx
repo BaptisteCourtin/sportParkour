@@ -1,15 +1,15 @@
 import React, { SyntheticEvent, useEffect } from "react";
+import Link from "next/link";
 
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 
-import { useGetListTop20EpreuveByTitleLazyQuery } from "@/types/graphql";
-import Link from "next/link";
+import { useGetTop20EpreuveByTitleLazyQuery } from "@/types/graphql";
 
 // style le link pour prendre toute la place
 const titleBarEpreuve = () => {
   const [getListEpreuvesByTitle, { data, loading, error }] =
-    useGetListTop20EpreuveByTitleLazyQuery();
+    useGetTop20EpreuveByTitleLazyQuery();
 
   const handleSearchTitle = (
     e: SyntheticEvent<Element, Event>,
@@ -31,7 +31,7 @@ const titleBarEpreuve = () => {
       )}
       sx={{ width: 300 }}
       // ---
-      options={data?.getListTop20EpreuveByTitle ?? []}
+      options={data?.getTop20EpreuveByTitle ?? []}
       getOptionLabel={(option) => option.title}
       onInputChange={handleSearchTitle}
       // ---

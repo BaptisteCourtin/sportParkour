@@ -6,9 +6,9 @@ import UserEntity from "./user.entity";
 import ParkourEntity from "./parkour.entity";
 
 // se cré si le user met une note ou un like sur un parkour
-@Entity("join_user_parkour")
+@Entity("join_user_parkour_note")
 @ObjectType()
-export class JoinUserParkourEntity {
+export class JoinUserParkourNoteEntity {
   @Field(() => ID)
   @PrimaryColumn()
   user_id: string;
@@ -19,51 +19,51 @@ export class JoinUserParkourEntity {
 
   // precision = maximum number of digits that are stored for the values
   // scale = the number of digits to the right of the decimal point
-  @Field({ nullable: true })
-  @Column("decimal", { precision: 3, scale: 2, unsigned: true, nullable: true })
+  @Field()
+  @Column("decimal", { precision: 3, scale: 2, unsigned: true })
   @Min(0, { message: "La valeur minimale est 0" })
   @Max(5, { message: "La valeur maximale est 5" })
   note: number;
 
-  @Field()
-  @Column({ default: false })
-  favoris: boolean;
+  @Field({ nullable: true })
+  @Column({ type: "varchar", length: 500, nullable: true })
+  commentaire: string;
+
+  // ---
 
   @Field(() => UserEntity)
-  @ManyToOne(() => UserEntity)
+  @ManyToOne(() => UserEntity, (user) => user.notesParkours, {
+    onDelete: "CASCADE",
+  })
   @JoinColumn({ name: "user_id" })
-  users: UserEntity;
+  user: UserEntity;
 
   @Field(() => ParkourEntity)
-  @ManyToOne(() => ParkourEntity)
+  @ManyToOne(() => ParkourEntity, (parkour) => parkour.notesParkours, {
+    onDelete: "CASCADE",
+  })
   @JoinColumn({ name: "parkour_id" })
-  parkours: ParkourEntity;
+  parkour: ParkourEntity;
 }
 
 @InputType()
-export class JoinUserParkourCreateEntity {
-  @Field()
-  parkour_id: number;
-  @Field({ nullable: true })
-  favoris: boolean;
-  @Field({ nullable: true })
-  note: number;
-}
-
-@InputType()
-export class JoinUserParkourFavEntity {
-  @Field()
-  parkour_id: number;
-  @Field({ nullable: true })
-  favoris: boolean;
-}
-
-@InputType()
-export class JoinUserParkourNoteEntity {
+export class JoinUserParkourNoteCreateEntity {
   @Field()
   parkour_id: number;
   @Field({ nullable: true })
   note: number;
+  @Field({ nullable: true })
+  commentaire: string;
 }
 
-export default JoinUserParkourEntity;
+@InputType()
+export class JoinUserParkourNoteUpdateEntity {
+  @Field()
+  parkour_id: number;
+  @Field({ nullable: true })
+  note: number;
+  @Field({ nullable: true })
+  commentaire: string;
+}
+
+export default JoinUserParkourNoteEntity;

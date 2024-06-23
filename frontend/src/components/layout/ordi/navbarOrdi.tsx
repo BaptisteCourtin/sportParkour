@@ -1,14 +1,14 @@
 import React from "react";
 import Link from "next/link";
-
-import DarkLight from "@/components/layout/ordi/darkLightOrdi";
+import { useRouter } from "next/router";
 
 import { FaUser } from "react-icons/fa6";
 import { FaHouse } from "react-icons/fa6";
 import { FaMapLocationDot } from "react-icons/fa6";
 import { FaFlagCheckered } from "react-icons/fa6";
-import { useRouter } from "next/router";
+
 import { useDarkLightContext } from "@/context/themeContext";
+import DarkLight from "@/components/layout/ordi/darkLightOrdi";
 
 const navbarOrdi = () => {
   const router = useRouter();

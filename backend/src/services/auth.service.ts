@@ -3,9 +3,6 @@ import UserEntity, { UserInputRegisterEntity } from "../entities/user.entity";
 
 import datasource from "../lib/datasource";
 
-import { jwtVerify } from "jose";
-import { Payload } from "..";
-
 class AuthService {
   db: Repository<UserEntity>;
 
@@ -13,8 +10,10 @@ class AuthService {
     this.db = datasource.getRepository(UserEntity);
   }
 
-  async findUserByEmail(email: string) {
-    const user: UserEntity | null = await this.db.findOneBy({ email });
+  async findUserByEmailOrNull(email: string) {
+    const user: UserEntity | null = await this.db.findOne({
+      where: { email: email },
+    });
     return user;
   }
 
