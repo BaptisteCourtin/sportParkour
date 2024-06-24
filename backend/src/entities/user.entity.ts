@@ -14,6 +14,7 @@ const argon2 = require("argon2");
 import { Role } from "../enum/role.enum";
 import { JoinUserParkourNoteEntity } from "./joinUserParkourNote.entity";
 import JoinUserParkourFavorisEntity from "./joinUserParkourFavoris.entity";
+import { ReportEntity } from "./reportEntity.entity";
 
 @Entity("user")
 @ObjectType()
@@ -57,7 +58,19 @@ class UserEntity {
   email: string;
 
   @Field({ nullable: true })
-  @Column({ type: "varchar", length: 50, nullable: true })
+  @Column({
+    type: "varchar",
+    length: 50,
+    nullable: true,
+    transformer: {
+      from(value: string | null): string | null {
+        return value ? value.toLowerCase() : null;
+      },
+      to(value: string | null): string | null {
+        return value ? value.toLowerCase() : null;
+      },
+    },
+  })
   city: string;
 
   @Field({ nullable: true })
@@ -71,12 +84,25 @@ class UserEntity {
   @Field(() => Role)
   @Column({
     type: "text",
+    enum: Role,
     default: Role.CLIENT,
   })
   role: Role;
 
+  // nb report validé par admin
+  @Field({ nullable: true })
+  @Column({ type: "int", default: 0 })
+  nbReportValide: number;
+
+  // nb report envoyé
+  @Field({ nullable: true })
+  @Column({ type: "int", default: 0 })
+  nbReportAjoute: number;
+
   // ---
 
+  // Vous n'avez pas besoin d'ajouter des @JoinColumn pour ces relations @OneToMany.
+  // @JoinColumn est généralement utilisé du côté "propriétaire" de la relation, qui est typiquement le côté "Many" dans une relation @ManyToOne.
   @Field(() => [JoinUserParkourFavorisEntity], { nullable: true })
   @OneToMany(() => JoinUserParkourFavorisEntity, (like) => like.user, {
     nullable: true,
@@ -88,6 +114,14 @@ class UserEntity {
     nullable: true,
   })
   notesParkours: JoinUserParkourNoteEntity[];
+
+  // ---
+
+  @Field(() => [ReportEntity], { nullable: true })
+  @OneToMany(() => ReportEntity, (report) => report.malfrat, {
+    nullable: true,
+  })
+  reports: ReportEntity[];
 }
 
 // ---

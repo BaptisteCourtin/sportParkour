@@ -6,7 +6,6 @@ import UserEntity from "../entities/user.entity";
 import ParkourService from "../services/parkour.service";
 import JoinUserParkourNoteEntity, {
   JoinUserParkourNoteCreateEntity,
-  JoinUserParkourNoteUpdateEntity,
 } from "../entities/joinUserParkourNote.entity";
 import JoinUserParkourNoteService from "../services/joinUserParkourNote.service";
 import ParkourEntity from "../entities/parkour.entity";
@@ -116,19 +115,8 @@ export default class JoinUserParkourResolver {
     let parkour: ParkourEntity | null = null;
 
     if (user?.id) {
-      const joinUserParkourLastNote =
-        await new JoinUserParkourNoteService().getNoteByUserIdAndParkourId(
-          user.id,
-          idParkour
-        );
-
       await new JoinUserParkourNoteService().deleteNoteByUserIdAndParkourId(
         user.id,
-        idParkour
-      );
-
-      await new ParkourService().deleteOneNoteByParkourId(
-        joinUserParkourLastNote.note,
         idParkour
       );
 

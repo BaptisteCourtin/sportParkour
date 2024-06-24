@@ -24,7 +24,7 @@ const SearchBarCommuneName = ({
 }: {
   userValue: string;
   setSelectedCommuneName: any;
-  setSelectedCommuneCodePostal: any;
+  setSelectedCommuneCodePostal?: any;
 }) => {
   const [selectedCommune, setSelectedCommune] = useState(null); // commune selectionné (entité complète)
   const [communesPossibles, setCommunesPossibles] = useState<
@@ -58,12 +58,12 @@ const SearchBarCommuneName = ({
       );
 
       setCommunesPossibles(options);
-      console.log(options);
 
       if (nomCommuneVoulu && isStart) {
         // trouver celle avec le même vrai nom
         const communeTrouvee = data.find(
-          (objet: TypeCommuneByName) => objet.nom === nomCommuneVoulu
+          (objet: TypeCommuneByName) =>
+            objet.nom.toLowerCase() === nomCommuneVoulu
         );
         setSelectedCommune(communeTrouvee || null); // que dans ce composant (ne va pas changer le code postal)
       }
@@ -85,10 +85,14 @@ const SearchBarCommuneName = ({
 
     if (value != null) {
       setSelectedCommuneName(value?.nom);
-      setSelectedCommuneCodePostal(value?.codePostal);
+      if (setSelectedCommuneCodePostal) {
+        setSelectedCommuneCodePostal(value?.codePostal);
+      }
     } else {
       setSelectedCommuneName("");
-      setSelectedCommuneCodePostal("");
+      if (setSelectedCommuneCodePostal) {
+        setSelectedCommuneCodePostal("");
+      }
       setSelectedCommune(null);
     }
   }

@@ -114,20 +114,12 @@ class ParkourService {
         timeMin,
         timeMax,
       });
-    } else {
-      if (timeMin) query.andWhere("parkour.time >= :timeMin", { timeMin });
-      if (timeMax) query.andWhere("parkour.time <= :timeMax", { timeMax });
     }
     if (lengthMin && lengthMax) {
       query.andWhere("parkour.length BETWEEN :lengthMin AND :lengthMax", {
         lengthMin,
         lengthMax,
       });
-    } else {
-      if (lengthMin)
-        query.andWhere("parkour.length >= :lengthMin", { lengthMin });
-      if (lengthMax)
-        query.andWhere("parkour.length <= :lengthMax", { lengthMax });
     }
     if (difficulty) {
       query.andWhere("parkour.difficulty = :difficulty", { difficulty });
@@ -136,10 +128,18 @@ class ParkourService {
       query.andWhere("parkour.note >= :noteMin", { noteMin });
     }
 
-    query
-      .orderBy(`parkour.${triParField}`, triParSort)
-      .skip(startPage || 0)
-      .take(20);
+    // tri si nom => gérer les accents
+    // PostgreSQL offre un excellent support pour les collations internationales via ICU (International Components for Unicode).
+    // Nous utilisons la collation "fr-FR-x-icu" qui est spécifique au français et gère correctement les accents et la casse.
+    // Assurez-vous que votre base de données PostgreSQL est configurée pour utiliser UTF-8 comme encodage par défaut.
+    if (triParField === "name" || triParField === "city") {
+      // Pour les champs textuels, utilisez la collation française
+      query.orderBy(`parkour.${triParField} COLLATE "fr-FR-x-icu"`, triParSort);
+    } else {
+      // Pour les autres champs, gardez le tri normal
+      query.orderBy(`parkour.${triParField}`, triParSort);
+    }
+    query.skip(startPage || 0).take(20);
 
     const listParkours = await query.getMany();
 
@@ -166,23 +166,9 @@ class ParkourService {
     }
     if (timeMin && timeMax) {
       whereConditions.time = Between(timeMin, timeMax);
-    } else {
-      if (timeMin) {
-        whereConditions.time = MoreThan(timeMin);
-      }
-      if (timeMax) {
-        whereConditions.time = LessThan(timeMax);
-      }
     }
     if (lengthMin && lengthMax) {
       whereConditions.length = Between(lengthMin, lengthMax);
-    } else {
-      if (lengthMin) {
-        whereConditions.length = MoreThan(lengthMin);
-      }
-      if (lengthMax) {
-        whereConditions.length = LessThan(lengthMax);
-      }
     }
     if (difficulty) {
       whereConditions.difficulty = difficulty;
@@ -194,10 +180,6 @@ class ParkourService {
     const totalCount: number | null = await this.db.count({
       where: whereConditions,
     });
-
-    if (!totalCount || totalCount == 0) {
-      throw new Error("Aucun parkour");
-    }
 
     return totalCount;
   }

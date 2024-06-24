@@ -72,7 +72,3 @@ DROP TABLE reset_password
 
 message sur logout
 
-supprimer note
-profil => parkours notés
-
-ajouter nom commune sur créer/modifier parkour

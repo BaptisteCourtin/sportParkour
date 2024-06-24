@@ -12,6 +12,19 @@ class UserService {
     this.db = datasource.getRepository(UserEntity);
   }
 
+  // pour report
+  async getUserById(id: string) {
+    const user: UserEntity | null = await this.db.findOne({
+      where: { id: id },
+    });
+
+    if (!user) {
+      throw new Error("L'utilisateur n'existe pas ? 🤔 bizarre...");
+    }
+
+    return user;
+  }
+
   // pour auth et reset password
   async getUserByEmail(email: string) {
     const user: UserEntity | null = await this.db.findOne({
@@ -38,6 +51,7 @@ class UserService {
   }
 
   async deleteUser(user: UserEntity) {
+    await new JoinUserParkourNoteService().deleteAllNoteByUserId(user.id);
     await this.db.remove(user);
   }
 }

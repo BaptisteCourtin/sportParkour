@@ -128,11 +128,17 @@ class JoinUserParkourNoteService {
   }
 
   async deleteNoteByUserIdAndParkourId(user_id: string, parkours_id: number) {
-    const joinUserParkours = await this.getNoteByUserIdAndParkourId(
+    const joinUserParkour = await this.getNoteByUserIdAndParkourId(
       user_id,
       parkours_id
     );
-    await this.db.remove(joinUserParkours);
+
+    await this.db.remove(joinUserParkour);
+
+    await new ParkourService().deleteOneNoteByParkourId(
+      joinUserParkour.note,
+      parkours_id
+    );
   }
 
   // supp user => modifier note parkour

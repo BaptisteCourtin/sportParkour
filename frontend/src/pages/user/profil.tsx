@@ -355,9 +355,12 @@ const profil = () => {
                 <p>phone : {data.getUserByToken.phone}</p>
               </section>
             )}
-            {/* --- favoris --- */}
+            {/* --- favoris / note --- */}
             {dataIsClient ? (
               <Link href="/user/favoris">mes favoris</Link>
+            ) : null}
+            {dataIsClient ? (
+              <Link href="/user/notes">mes notes et commentaires</Link>
             ) : null}
             {/* --- supp --- */}
             <div className="supp">

@@ -15,6 +15,8 @@ export class JoinUserParkourFavorisEntity {
   @PrimaryColumn()
   parkour_id: number;
 
+  // ---
+
   @Field(() => UserEntity)
   @ManyToOne(() => UserEntity, (user) => user.favorisParkours, {
     onDelete: "CASCADE",

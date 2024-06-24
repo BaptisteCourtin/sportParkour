@@ -47,7 +47,8 @@ async function checkToken(token: string | undefined, request: NextRequest) {
       response = NextResponse.next();
     } else if (
       // favoris, que pour les clients
-      request.nextUrl.pathname.startsWith("/user/favoris") &&
+      (request.nextUrl.pathname.startsWith("/user/favoris") ||
+        request.nextUrl.pathname.startsWith("/user/notes")) &&
       payload?.payload.role == "CLIENT" &&
       payload?.payload.email
     ) {

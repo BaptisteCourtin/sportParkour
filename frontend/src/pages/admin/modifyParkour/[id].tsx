@@ -29,6 +29,7 @@ import InputLabel from "@mui/material/InputLabel";
 
 import { toast } from "react-hot-toast";
 import { FaCheck } from "react-icons/fa6";
+import SearchBarCommuneName from "@/components/user/searchBarCommuneName";
 
 let modifyParkourSchema = object({
   title: string()
@@ -49,7 +50,6 @@ let modifyParkourSchema = object({
     .required("Veuillez entrer la longueur du parkour"),
   difficulty: mixed<Difficulty>().oneOf(Object.values(Difficulty)),
 
-  city: string().max(50, "Une ville, pas un lieu-dit paumé"),
   start: string()
     .max(20, "20 caractères ça suffit")
     .required("Veuillez entrer un point de départ"),
@@ -66,6 +66,9 @@ const modifyOneParkour = () => {
       getParkour({
         variables: { getParkourByIdId: +id },
         onCompleted(data) {
+          setSelectedCommuneName(
+            data.getParkourById.city ? data.getParkourById.city : ""
+          );
           const selectedIds = data.getParkourById.epreuves?.map(
             (option: { id: string }) => parseInt(option.id)
           );
@@ -104,6 +107,7 @@ const modifyOneParkour = () => {
     const dataAggregate: ParkourUpdateEntity = {
       ...dataForm,
       difficulty: choosenDificulty,
+      city: selectedCommuneName,
       epreuves: selectedEpreuveIds,
     };
 
@@ -159,7 +163,6 @@ const modifyOneParkour = () => {
   const [values, setValues] = useState({
     title: "",
     description: "",
-    city: "",
     start: "",
   });
 
@@ -207,6 +210,9 @@ const modifyOneParkour = () => {
     );
     setSelectedEpreuveIds(selectedIds);
   };
+
+  // --- API COMMUNES ---
+  const [selectedCommuneName, setSelectedCommuneName] = useState("");
 
   return (
     <main className="modifyOneParkour">
@@ -310,6 +316,7 @@ const modifyOneParkour = () => {
                     id="difficulty"
                     name="difficulty"
                     label="Difficultée"
+                    required
                     defaultValue={data.getParkourById.difficulty}
                     onChange={(e) =>
                       setChoosenDifficulty(e.target.value as Difficulty)
@@ -329,23 +336,10 @@ const modifyOneParkour = () => {
               </div>
 
               <div>
-                <TextField
-                  className="mui-input"
-                  fullWidth
-                  variant="outlined"
-                  label="Ville de départ"
-                  defaultValue={data.getParkourById.city}
-                  {...register("city")}
-                  id="city"
-                  name="city"
-                  type="text"
-                  inputProps={{ maxLength: 50 }}
-                  onChange={(e) => handleChangeAThing("city", e.target.value)}
+                <SearchBarCommuneName
+                  userValue={selectedCommuneName}
+                  setSelectedCommuneName={setSelectedCommuneName}
                 />
-                <span>
-                  {values.city.length > 0 ? `${values.city.length}/50` : ""}
-                </span>
-                <p className="error">{errors?.city?.message}</p>
               </div>
               <div>
                 <TextField

@@ -80,11 +80,13 @@ const allEpreuves = () => {
                 .slice() // car graphql nous renvoie un tableau en lecture seule
                 .sort(function compare(a: any, b: any) {
                   if (tri === "Titre A-Z") {
-                    if (a.title < b.title) return -1;
-                    return 1;
+                    return a.title.localeCompare(b.title, "fr", {
+                      sensitivity: "base",
+                    });
                   } else if (tri === "Titre Z-A") {
-                    if (a.title > b.title) return -1;
-                    return 1;
+                    return b.title.localeCompare(a.title, "fr", {
+                      sensitivity: "base",
+                    });
                   }
                   return 0;
                 })

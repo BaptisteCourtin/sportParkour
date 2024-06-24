@@ -1,8 +1,18 @@
 .cardEpreuve {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  gap: var(--cardGap);
 
-  width: 100%;
+  width: 320px;
+  padding: var(--cardEspace) var(--espace);
+  border-radius: var(--radius);
+  background-color: var(--middle);
+
+  img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: var(--radius);
+  }
 }

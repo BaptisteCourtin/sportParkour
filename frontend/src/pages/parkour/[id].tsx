@@ -11,6 +11,8 @@ import {
   useCreateJoinUserParkourNoteMutation,
   useGetUserNoteByTokenAndParkourIdLazyQuery,
   useDeleteJoinUserParkourFavorisMutation,
+  useDeleteJoinUserParkourNoteMutation,
+  JoinUserParkourNoteEntity,
 } from "@/types/graphql";
 
 import Button from "@mui/material/Button";
@@ -26,6 +28,8 @@ import Carousel from "react-material-ui-carousel";
 import { toast } from "react-hot-toast";
 import { FaAngleRight } from "react-icons/fa6";
 import { FaAngleLeft } from "react-icons/fa6";
+
+import DisplayComment from "@/components/parkour/displayComment";
 
 const OneParkour = () => {
   const router = useRouter();
@@ -67,6 +71,9 @@ const OneParkour = () => {
     if (router.isReady && id) {
       getParkour({
         variables: { getParkourByIdId: +id },
+        onCompleted(data) {
+          console.log(data);
+        },
         onError(err: any) {
           console.error("error", err);
         },
@@ -179,6 +186,37 @@ const OneParkour = () => {
   // --- DEAL WITH LENGTH DURING COMMENT ---
   const [comment, setComment] = useState("");
 
+  // --- SUPP NOTE ET COMMENT ---
+  const [openDeleteNote, setOpenDeleteNote] = useState(false);
+
+  const handleClickOpenDeleteNote = () => {
+    setOpenDeleteNote(true);
+  };
+
+  const handleClickCloseDeleteNote = () => {
+    setOpenDeleteNote(false);
+  };
+
+  const [deleteNote, { loading: loadingDeleteNote, error: errorDeleteNote }] =
+    useDeleteJoinUserParkourNoteMutation();
+
+  function handleDeleteNote(): void {
+    if (id) {
+      deleteNote({
+        variables: { idParkour: +id },
+        onCompleted(data) {
+          toast.success(data?.deleteJoinUserParkourNote.message);
+          setMyNote(0);
+          setMyComment("");
+          setOpenDeleteNote(false);
+        },
+        onError(error) {
+          toast.error(error.message);
+        },
+      });
+    }
+  }
+
   return (
     <main className="oneParkour">
       {error ? (
@@ -197,7 +235,9 @@ const OneParkour = () => {
             {dataIsClient ? (
               <div className="supp">
                 <Button variant="outlined" onClick={handleClickOpen}>
-                  Mettre une note à ce parkour
+                  {myNote
+                    ? "Modifier ma note pour ce parkour"
+                    : "Mettre une note à ce parkour"}
                 </Button>
                 <Dialog
                   open={open}
@@ -265,17 +305,58 @@ const OneParkour = () => {
               </div>
             ) : null}
 
+            {/* --- */}
+
+            {dataIsClient && myNote ? (
+              <div className="deleteMyNote">
+                <Button variant="outlined" onClick={handleClickOpenDeleteNote}>
+                  Supprimer ma note et mon commentaire
+                </Button>
+                <Dialog
+                  open={openDeleteNote}
+                  onClose={handleClickCloseDeleteNote}
+                  aria-labelledby="alert-dialog-title"
+                  aria-describedby="alert-dialog-description"
+                >
+                  <DialogTitle id="alert-dialog-title">Supprimer ?</DialogTitle>
+                  <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                      Voulez vous vraiment supprimer cette note et ce
+                      commentaire
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={handleClickCloseDeleteNote}>Non</Button>
+                    <Button onClick={handleDeleteNote} autoFocus>
+                      Oui
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+              </div>
+            ) : null}
+
+            {/* --- */}
+
             <br />
             <br />
             {dataIsClient && isLiked ? (
-              <button onClick={() => handleLike(false)}>
+              <button
+                onClick={() => handleLike(false)}
+                disabled={loadingCreateFav || loadingDeleteFav}
+              >
                 Supprimer des favoris
               </button>
             ) : dataIsClient && !isLiked ? (
-              <button onClick={() => handleLike(true)}>
+              <button
+                onClick={() => handleLike(true)}
+                disabled={loadingCreateFav || loadingDeleteFav}
+              >
                 Mettre en favoris
               </button>
             ) : null}
+
+            {/* --- */}
+
             <br />
             <br />
             <p>titre : {data.getParkourById.title}</p>
@@ -347,6 +428,16 @@ const OneParkour = () => {
                 )
               )}
             </div>
+
+            {data.getParkourById.notesParkours && (
+              <section className="allComms">
+                {data.getParkourById.notesParkours.map((comment, index) => (
+                  <DisplayComment key={index} comment={comment} />
+                ))}
+              </section>
+            )}
+
+            {/* --- */}
           </div>
         )
       )}

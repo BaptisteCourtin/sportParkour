@@ -62,8 +62,6 @@ export default class UserResolver {
     const returnMessage = new MessageEntity();
 
     if (user) {
-      await new JoinUserParkourNoteService().deleteAllNoteByUserId(user.id);
-
       await new UserService().deleteUser(user);
 
       let cookies = new Cookies(ctx.req, ctx.res);

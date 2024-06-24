@@ -20,6 +20,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 
 import { toast } from "react-hot-toast";
 import { FaCheck } from "react-icons/fa6";
+import SearchBarCommuneName from "@/components/user/searchBarCommuneName";
 
 let createParkourSchema = object({
   title: string()
@@ -40,7 +41,6 @@ let createParkourSchema = object({
     .required("Veuillez entrer la longueur du parkour"),
   difficulty: mixed<Difficulty>().oneOf(Object.values(Difficulty)),
 
-  city: string().max(50, "Une ville, pas un lieu-dit paumé"),
   start: string()
     .max(20, "20 caractères ça suffit")
     .required("Veuillez entrer un point de départ"),
@@ -67,6 +67,7 @@ const createParkour = () => {
     const dataAggregate: ParkourCreateEntity = {
       ...dataForm,
       difficulty: choosenDificulty,
+      city: selectedCommuneName,
       epreuves: selectedEpreuveIds,
     };
 
@@ -92,7 +93,6 @@ const createParkour = () => {
   const [values, setValues] = useState({
     title: "",
     description: "",
-    city: "",
     start: "",
   });
 
@@ -125,6 +125,9 @@ const createParkour = () => {
     );
     setSelectedEpreuveIds(selectedIds);
   };
+
+  // --- API COMMUNES ---
+  const [selectedCommuneName, setSelectedCommuneName] = useState("");
 
   return (
     <main className="createParkour">
@@ -208,22 +211,10 @@ const createParkour = () => {
 
         <div className="containerMiniChamp">
           <div className="champ">
-            <TextField
-              className="mui-input"
-              fullWidth
-              variant="outlined"
-              label="Ville de départ"
-              {...register("city")}
-              id="city"
-              name="city"
-              type="text"
-              inputProps={{ maxLength: 50 }}
-              onChange={(e) => handleChangeAThing("city", e.target.value)}
+            <SearchBarCommuneName
+              userValue={selectedCommuneName}
+              setSelectedCommuneName={setSelectedCommuneName}
             />
-            <span>
-              {values.city.length > 0 ? `${values.city.length}/50` : ""}
-            </span>
-            <p className="error">{errors?.city?.message}</p>
           </div>
           <div className="champ">
             <TextField
@@ -258,6 +249,7 @@ const createParkour = () => {
                 id="difficulty"
                 name="difficulty"
                 label="Difficultée"
+                required
                 onChange={(e) =>
                   setChoosenDifficulty(e.target.value as Difficulty)
                 }

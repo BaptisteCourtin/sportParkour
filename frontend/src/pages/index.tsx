@@ -137,16 +137,6 @@ export default function Home() {
   // --- REQUEST SEARCH BY ALL ---
 
   const makeTheRequest = () => {
-    // console.log(
-    //   (page - 1) * 20,
-    //   choosenCity.toLowerCase(),
-    //   valueTime[0],
-    //   valueTime[1],
-    //   valueLength[0],
-    //   valueLength[1],
-    //   choosenDificulty,
-    //   choosenNoteMin
-    // );
     get20Parkour({
       variables: {
         triParField: tri.split("_")[0],
@@ -174,6 +164,9 @@ export default function Home() {
         lengthMax: valueLength[1],
         difficulty: choosenDificulty,
         noteMin: choosenNoteMin,
+      },
+      onCompleted(data) {
+        console.log(data);
       },
       onError(err: any) {
         console.error("error", err);
