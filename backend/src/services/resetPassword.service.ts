@@ -61,7 +61,7 @@ export default class ResetPasswordService {
     return await this.db.save(newResetToken);
   }
 
-  async changePassword(password: string, user: User) {
+  async changePassword(password: string, user: UserEntity) {
     const editedUser = this.dbUser.create({ ...user });
     editedUser.password = password;
 

@@ -42,6 +42,10 @@ export default class ResetPasswordEntity {
   @Column({ type: "datetime" })
   expirationDate: Date;
 
+  // @Field()
+  // @Column({ type: "timestamp" })
+  // expirationDate: Date;
+
   @Field(() => User)
   @OneToOne(() => User)
   @JoinColumn()

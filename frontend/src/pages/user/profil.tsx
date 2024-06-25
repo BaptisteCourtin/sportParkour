@@ -8,6 +8,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import {
   useDeleteUserMutation,
   useGetUserByTokenLazyQuery,
+  useIsAdminQuery,
   useIsClientQuery,
   useModifyUserMutation,
   UserUpdateEntity,
@@ -57,6 +58,12 @@ const profil = () => {
     loading: loadingIsClient,
     error: errorIsClient,
   } = useIsClientQuery();
+
+  const {
+    data: dataIsAdmin,
+    loading: loadingIsAdmin,
+    error: errorIsAdmin,
+  } = useIsAdminQuery();
 
   const [getUser, { data, loading, error }] = useGetUserByTokenLazyQuery({
     fetchPolicy: "no-cache",
@@ -355,12 +362,15 @@ const profil = () => {
                 <p>phone : {data.getUserByToken.phone}</p>
               </section>
             )}
-            {/* --- favoris / note --- */}
+            {/* --- favoris / note / modo --- */}
             {dataIsClient ? (
               <Link href="/user/favoris">mes favoris</Link>
             ) : null}
             {dataIsClient ? (
               <Link href="/user/notes">mes notes et commentaires</Link>
+            ) : null}
+            {dataIsAdmin ? (
+              <Link href="/admin/reports/recherche">go modo un peu là</Link>
             ) : null}
             {/* --- supp --- */}
             <div className="supp">

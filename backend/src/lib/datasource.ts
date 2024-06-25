@@ -8,6 +8,7 @@ import JoinUserParkourNoteEntity from "../entities/joinUserParkourNote.entity";
 import ImageEpreuveEntity from "../entities/imageEpreuve.entity";
 import ImageParkourEntity from "../entities/imageParkour.entity";
 import ResetPasswordEntity from "../entities/resetPassword.entity";
+import { ReportEntity } from "../entities/reportEntity.entity";
 
 // -----------
 // AVEC DOCKER
@@ -22,13 +23,14 @@ import ResetPasswordEntity from "../entities/resetPassword.entity";
 //   password: process.env.POSTGRES_PASSWORD,
 //   entities: [
 //     EpreuveEntity,
-//     ParkourEntity,
 //     UserEntity,
+//     ParkourEntity,
 //     JoinUserParkourFavorisEntity,
 //     JoinUserParkourNoteEntity,
 //     ImageEpreuveEntity,
 //     ImageParkourEntity,
 //     ResetPasswordEntity,
+//     ReportEntity,
 //   ], // mettre les entities ici
 //   synchronize: true, //à ne pas utiliser en production
 //   logging: ["error", "query"], //à ne pas utiliser en production
@@ -50,6 +52,7 @@ export default new DataSource({
     ImageEpreuveEntity,
     ImageParkourEntity,
     ResetPasswordEntity,
+    ReportEntity,
   ], // mettre les entities
   synchronize: true, //à ne pas utiliser en production
   logging: ["error", "query"], //à ne pas utiliser en production

@@ -17,11 +17,17 @@
 // @import "../components/parkour/cardNoteParkour.scss";
 @import "../components/parkour/displayComment.scss";
 
-// --- admin ---
+@import "../components/admin/reportCard.scss";
+@import "../components/admin/noteCard.scss";
+@import "../components/admin/reportCardForSearch.scss";
+
+// --- pages admin ---
 @import "../pages/admin/createEpreuve.scss";
 @import "../pages/admin/createParkour.scss";
 @import "../pages/admin/modifyEpreuve/modifyEpreuve.scss";
 @import "../pages/admin/modifyParkour/modifyParkour.scss";
+@import "../pages/admin/reports/recherche.scss";
+@import "../pages/admin/reports/user/userIdByReports.scss";
 
 // --- pages ---
 @import "../pages/auth/auth.scss";

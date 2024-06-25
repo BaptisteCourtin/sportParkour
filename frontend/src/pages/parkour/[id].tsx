@@ -71,9 +71,6 @@ const OneParkour = () => {
     if (router.isReady && id) {
       getParkour({
         variables: { getParkourByIdId: +id },
-        onCompleted(data) {
-          console.log(data);
-        },
         onError(err: any) {
           console.error("error", err);
         },
@@ -84,6 +81,9 @@ const OneParkour = () => {
         onCompleted(data) {
           setIsLiked(data.getUserFavByTokenAndParkourId);
         },
+        onError(err: any) {
+          console.error("error", err);
+        },
       });
 
       getParkourNote({
@@ -93,6 +93,9 @@ const OneParkour = () => {
           setMyComment(
             data.getUserNoteByTokenAndParkourId.commentaire as string
           );
+        },
+        onError(err: any) {
+          console.error("error", err);
         },
       });
     }
@@ -432,7 +435,10 @@ const OneParkour = () => {
             {data.getParkourById.notesParkours && (
               <section className="allComms">
                 {data.getParkourById.notesParkours.map((comment, index) => (
-                  <DisplayComment key={index} comment={comment} />
+                  <DisplayComment
+                    comment={comment}
+                    parkourId={data.getParkourById.id}
+                  />
                 ))}
               </section>
             )}

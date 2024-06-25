@@ -33,6 +33,7 @@ import { jwtVerify } from "jose";
 import { customAuthChecker } from "./lib/authChecker";
 import ResetPasswordResolver from "./resolvers/resetPassword.resolver";
 import UserService from "./services/user.service";
+import ReportResolver from "./resolvers/report.resolver";
 
 // ---------------------------------------------
 // ---------------------------------------------
@@ -59,6 +60,7 @@ async function main() {
       JoinUserParkourFavorisResolver,
       JoinUserParkourNoteResolver,
       ResetPasswordResolver,
+      ReportResolver,
     ],
     validate: false,
     authChecker: customAuthChecker,

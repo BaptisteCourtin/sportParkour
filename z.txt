@@ -66,9 +66,23 @@ DROP TABLE join_parkour_epreuve;
 DROP TABLE user;
 DROP TABLE join_user_parkour_favoris;
 DROP TABLE join_user_parkour_note;
+DROP TABLE report
 DROP TABLE reset_password
 
 ------------------------------------------------------------------------------------------------------
 
 message sur logout
 
+------------------------------------------------------------------------------------------------------
+
+sur la partie admin des reports 
+    => cherche user by id
+    => combien de report sur un duo (user_id / parkour_id)
+
+------------------------------------------------------------------------------------------------------
+
+est ce que on garde reporter ? Sachant qu'il y a déjà le nbReportAjoute ?
+    => bof
+
+
+ajouter l'api commune sur recherche parkour (index)

@@ -14,6 +14,7 @@ import ImageParkourEntity from "./imageParkour.entity";
 
 import { Difficulty } from "../enum/difficulty.enum";
 import JoinUserParkourNoteEntity from "./joinUserParkourNote.entity";
+import { ReportEntity } from "./reportEntity.entity";
 
 @Entity("parkour")
 @ObjectType()

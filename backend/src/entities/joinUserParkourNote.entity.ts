@@ -2,21 +2,19 @@ import {
   Column,
   Entity,
   JoinColumn,
-  JoinTable,
-  ManyToMany,
   ManyToOne,
-  OneToMany,
   PrimaryColumn,
+  Unique,
 } from "typeorm";
 import { Max, Min } from "class-validator";
 import { Field, ID, InputType, ObjectType } from "type-graphql";
 
 import UserEntity from "./user.entity";
 import ParkourEntity from "./parkour.entity";
-import { ReportEntity } from "./reportEntity.entity";
 
 // se cré si le user met une note ou un like sur un parkour
 @Entity("join_user_parkour_note")
+@Unique(["user_id", "parkour_id"])
 @ObjectType()
 export class JoinUserParkourNoteEntity {
   @Field(() => ID)
@@ -54,14 +52,6 @@ export class JoinUserParkourNoteEntity {
   })
   @JoinColumn({ name: "parkour_id" })
   parkour: ParkourEntity;
-
-  // ---
-
-  @Field(() => [ReportEntity], { nullable: true })
-  @OneToMany(() => ReportEntity, (report) => report.reportedNote, {
-    nullable: true,
-  })
-  reports: ReportEntity[];
 }
 
 @InputType()

@@ -1,10 +1,37 @@
 import React from "react";
 
 import Rating from "@mui/material/Rating";
+import { useReportNoteMutation } from "@/types/graphql";
+import toast from "react-hot-toast";
 
-const displayComments = ({ comment }: any) => {
+const displayComment = ({
+  comment,
+  parkourId,
+}: {
+  comment: any;
+  parkourId: string;
+}) => {
+  const [reportNote, { loading, error }] = useReportNoteMutation();
+
+  function handleReportNote(): void {
+    reportNote({
+      variables: {
+        commentaire: comment.commentaire,
+        parkourId: +parkourId,
+        malfratId: comment.user.id,
+      },
+      onCompleted() {
+        toast.success("vous avez report ce message");
+      },
+      onError(error) {
+        toast.error(error.message);
+      },
+    });
+  }
+
   return (
     <div className="displayComment">
+      <button onClick={() => handleReportNote()}>reporter</button>
       <img src="/userDefault.png" className="imgProfil" />
       <div>
         <p>
@@ -23,4 +50,4 @@ const displayComments = ({ comment }: any) => {
   );
 };
 
-export default displayComments;
+export default displayComment;

@@ -104,6 +104,7 @@ export type MessageEntity = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addOneReportValideFromReport: MessageEntity;
   changePassword: MessageEntity;
   createEpreuve: EpreuveEntity;
   createJoinUserParkourFavoris: MessageEntity;
@@ -112,13 +113,24 @@ export type Mutation = {
   deleteEpreuve: MessageEntity;
   deleteJoinUserParkourFavoris: MessageEntity;
   deleteJoinUserParkourNote: MessageEntity;
+  deleteNoteFromReport: MessageEntity;
   deleteParkour: MessageEntity;
   deleteUser: MessageEntity;
+  deleteUserByReport: MessageEntity;
   inscription: MessageEntity;
+  letNoteFromReport: MessageEntity;
   modifyEpreuve: EpreuveEntity;
   modifyParkour: ParkourEntity;
   modifyUser: MessageEntity;
+  reportNote: MessageEntity;
   resetPassword: ResetPasswordEntity;
+};
+
+
+export type MutationAddOneReportValideFromReportArgs = {
+  commentaire: Scalars['String']['input'];
+  parkour_id: Scalars['Float']['input'];
+  user_id: Scalars['String']['input'];
 };
 
 
@@ -162,13 +174,31 @@ export type MutationDeleteJoinUserParkourNoteArgs = {
 };
 
 
+export type MutationDeleteNoteFromReportArgs = {
+  commentaire: Scalars['String']['input'];
+  parkour_id: Scalars['Float']['input'];
+  user_id: Scalars['String']['input'];
+};
+
+
 export type MutationDeleteParkourArgs = {
   id: Scalars['Float']['input'];
 };
 
 
+export type MutationDeleteUserByReportArgs = {
+  user_id: Scalars['String']['input'];
+};
+
+
 export type MutationInscriptionArgs = {
   infos: UserInputRegisterEntity;
+};
+
+
+export type MutationLetNoteFromReportArgs = {
+  parkour_id: Scalars['Float']['input'];
+  user_id: Scalars['String']['input'];
 };
 
 
@@ -186,6 +216,13 @@ export type MutationModifyParkourArgs = {
 
 export type MutationModifyUserArgs = {
   infos: UserUpdateEntity;
+};
+
+
+export type MutationReportNoteArgs = {
+  commentaire: Scalars['String']['input'];
+  malfrat_id: Scalars['String']['input'];
+  parkour_id: Scalars['Float']['input'];
 };
 
 
@@ -242,10 +279,12 @@ export type Query = {
   getAllUserNoteByToken: Array<JoinUserParkourNoteEntity>;
   getEpreuveById: EpreuveEntity;
   getParkourById: ParkourEntity;
+  getReportsBySearch: Array<ReportEntity>;
   getTheParkourTotalForSearch: Scalars['Float']['output'];
   getTop20EpreuveByTitle: Array<EpreuveEntity>;
   getTop20ParkourBySearch: Array<ParkourEntity>;
   getTop20ParkourByTitle: Array<ParkourEntity>;
+  getUserByIdForPageReport: UserEntity;
   getUserByToken: UserEntity;
   getUserFavByTokenAndParkourId: Scalars['Boolean']['output'];
   getUserNoteByTokenAndParkourId: JoinUserParkourNoteEntity;
@@ -272,6 +311,11 @@ export type QueryGetEpreuveByIdArgs = {
 
 export type QueryGetParkourByIdArgs = {
   id: Scalars['Float']['input'];
+};
+
+
+export type QueryGetReportsBySearchArgs = {
+  status: Scalars['String']['input'];
 };
 
 
@@ -310,6 +354,11 @@ export type QueryGetTop20ParkourByTitleArgs = {
 };
 
 
+export type QueryGetUserByIdForPageReportArgs = {
+  userId: Scalars['String']['input'];
+};
+
+
 export type QueryGetUserFavByTokenAndParkourIdArgs = {
   parkourId: Scalars['Float']['input'];
 };
@@ -318,6 +367,28 @@ export type QueryGetUserFavByTokenAndParkourIdArgs = {
 export type QueryGetUserNoteByTokenAndParkourIdArgs = {
   parkourId: Scalars['Float']['input'];
 };
+
+export type ReportEntity = {
+  __typename?: 'ReportEntity';
+  commentaireEnFaute: Scalars['String']['output'];
+  createdAt: Scalars['DateTimeISO']['output'];
+  id: Scalars['ID']['output'];
+  malfrat?: Maybe<UserEntity>;
+  malfrat_id?: Maybe<Scalars['String']['output']>;
+  parkour?: Maybe<ParkourEntity>;
+  parkour_id?: Maybe<Scalars['Float']['output']>;
+  reporter?: Maybe<UserEntity>;
+  reporter_id?: Maybe<Scalars['String']['output']>;
+  status: ReportStatus;
+};
+
+/** ReportStatus enum */
+export enum ReportStatus {
+  NonVu = 'NON_VU',
+  VuEtLaisse = 'VU_ET_LAISSE',
+  VuEtLaisseModif = 'VU_ET_LAISSE_MODIF',
+  VuEtSupprime = 'VU_ET_SUPPRIME'
+}
 
 export type ResetPasswordEntity = {
   __typename?: 'ResetPasswordEntity';
@@ -347,9 +418,12 @@ export type UserEntity = {
   firstname: Scalars['String']['output'];
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
+  nbReportAjoute?: Maybe<Scalars['Float']['output']>;
+  nbReportValide?: Maybe<Scalars['Float']['output']>;
   notesParkours?: Maybe<Array<JoinUserParkourNoteEntity>>;
   password: Scalars['String']['output'];
   phone?: Maybe<Scalars['String']['output']>;
+  reports?: Maybe<Array<ReportEntity>>;
   role: Role;
 };
 
@@ -455,6 +529,15 @@ export type DeleteParkourMutationVariables = Exact<{
 
 
 export type DeleteParkourMutation = { __typename?: 'Mutation', deleteParkour: { __typename?: 'MessageEntity', message: string, success: boolean } };
+
+export type ReportNoteMutationVariables = Exact<{
+  commentaire: Scalars['String']['input'];
+  parkourId: Scalars['Float']['input'];
+  malfratId: Scalars['String']['input'];
+}>;
+
+
+export type ReportNoteMutation = { __typename?: 'Mutation', reportNote: { __typename?: 'MessageEntity', message: string, success: boolean } };
 
 export type ResetPasswordMutationVariables = Exact<{
   email: Scalars['String']['input'];
@@ -584,6 +667,20 @@ export type GetTheParkourTotalForSearchQueryVariables = Exact<{
 
 
 export type GetTheParkourTotalForSearchQuery = { __typename?: 'Query', getTheParkourTotalForSearch: number };
+
+export type GetUserByIdForPageReportQueryVariables = Exact<{
+  userId: Scalars['String']['input'];
+}>;
+
+
+export type GetUserByIdForPageReportQuery = { __typename?: 'Query', getUserByIdForPageReport: { __typename?: 'UserEntity', id: string, name: string, firstname: string, email: string, nbReportValide?: number | null, nbReportAjoute?: number | null, notesParkours?: Array<{ __typename?: 'JoinUserParkourNoteEntity', commentaire?: string | null, parkour: { __typename?: 'ParkourEntity', id: string, title: string } }> | null, reports?: Array<{ __typename?: 'ReportEntity', commentaireEnFaute: string, createdAt: any, status: ReportStatus, parkour?: { __typename?: 'ParkourEntity', id: string, title: string } | null, reporter?: { __typename?: 'UserEntity', id: string, name: string, firstname: string, nbReportAjoute?: number | null } | null }> | null } };
+
+export type GetReportsBySearchQueryVariables = Exact<{
+  status: Scalars['String']['input'];
+}>;
+
+
+export type GetReportsBySearchQuery = { __typename?: 'Query', getReportsBySearch: Array<{ __typename?: 'ReportEntity', commentaireEnFaute: string, createdAt: any, status: ReportStatus, reporter?: { __typename?: 'UserEntity', id: string, name: string, firstname: string, nbReportAjoute?: number | null } | null, malfrat?: { __typename?: 'UserEntity', id: string, name: string, firstname: string, nbReportValide?: number | null } | null, parkour?: { __typename?: 'ParkourEntity', id: string, title: string } | null }> };
 
 export type CheckResetTokenValidityQueryVariables = Exact<{
   token: Scalars['String']['input'];
@@ -984,6 +1081,46 @@ export function useDeleteParkourMutation(baseOptions?: Apollo.MutationHookOption
 export type DeleteParkourMutationHookResult = ReturnType<typeof useDeleteParkourMutation>;
 export type DeleteParkourMutationResult = Apollo.MutationResult<DeleteParkourMutation>;
 export type DeleteParkourMutationOptions = Apollo.BaseMutationOptions<DeleteParkourMutation, DeleteParkourMutationVariables>;
+export const ReportNoteDocument = gql`
+    mutation ReportNote($commentaire: String!, $parkourId: Float!, $malfratId: String!) {
+  reportNote(
+    commentaire: $commentaire
+    parkour_id: $parkourId
+    malfrat_id: $malfratId
+  ) {
+    message
+    success
+  }
+}
+    `;
+export type ReportNoteMutationFn = Apollo.MutationFunction<ReportNoteMutation, ReportNoteMutationVariables>;
+
+/**
+ * __useReportNoteMutation__
+ *
+ * To run a mutation, you first call `useReportNoteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useReportNoteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [reportNoteMutation, { data, loading, error }] = useReportNoteMutation({
+ *   variables: {
+ *      commentaire: // value for 'commentaire'
+ *      parkourId: // value for 'parkourId'
+ *      malfratId: // value for 'malfratId'
+ *   },
+ * });
+ */
+export function useReportNoteMutation(baseOptions?: Apollo.MutationHookOptions<ReportNoteMutation, ReportNoteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ReportNoteMutation, ReportNoteMutationVariables>(ReportNoteDocument, options);
+      }
+export type ReportNoteMutationHookResult = ReturnType<typeof useReportNoteMutation>;
+export type ReportNoteMutationResult = Apollo.MutationResult<ReportNoteMutation>;
+export type ReportNoteMutationOptions = Apollo.BaseMutationOptions<ReportNoteMutation, ReportNoteMutationVariables>;
 export const ResetPasswordDocument = gql`
     mutation ResetPassword($email: String!) {
   resetPassword(email: $email) {
@@ -1810,6 +1947,131 @@ export type GetTheParkourTotalForSearchQueryHookResult = ReturnType<typeof useGe
 export type GetTheParkourTotalForSearchLazyQueryHookResult = ReturnType<typeof useGetTheParkourTotalForSearchLazyQuery>;
 export type GetTheParkourTotalForSearchSuspenseQueryHookResult = ReturnType<typeof useGetTheParkourTotalForSearchSuspenseQuery>;
 export type GetTheParkourTotalForSearchQueryResult = Apollo.QueryResult<GetTheParkourTotalForSearchQuery, GetTheParkourTotalForSearchQueryVariables>;
+export const GetUserByIdForPageReportDocument = gql`
+    query GetUserByIdForPageReport($userId: String!) {
+  getUserByIdForPageReport(userId: $userId) {
+    id
+    name
+    firstname
+    email
+    nbReportValide
+    nbReportAjoute
+    notesParkours {
+      commentaire
+      parkour {
+        id
+        title
+      }
+    }
+    reports {
+      parkour {
+        id
+        title
+      }
+      reporter {
+        id
+        name
+        firstname
+        nbReportAjoute
+      }
+      commentaireEnFaute
+      createdAt
+      status
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetUserByIdForPageReportQuery__
+ *
+ * To run a query within a React component, call `useGetUserByIdForPageReportQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserByIdForPageReportQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserByIdForPageReportQuery({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useGetUserByIdForPageReportQuery(baseOptions: Apollo.QueryHookOptions<GetUserByIdForPageReportQuery, GetUserByIdForPageReportQueryVariables> & ({ variables: GetUserByIdForPageReportQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserByIdForPageReportQuery, GetUserByIdForPageReportQueryVariables>(GetUserByIdForPageReportDocument, options);
+      }
+export function useGetUserByIdForPageReportLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserByIdForPageReportQuery, GetUserByIdForPageReportQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserByIdForPageReportQuery, GetUserByIdForPageReportQueryVariables>(GetUserByIdForPageReportDocument, options);
+        }
+export function useGetUserByIdForPageReportSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetUserByIdForPageReportQuery, GetUserByIdForPageReportQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetUserByIdForPageReportQuery, GetUserByIdForPageReportQueryVariables>(GetUserByIdForPageReportDocument, options);
+        }
+export type GetUserByIdForPageReportQueryHookResult = ReturnType<typeof useGetUserByIdForPageReportQuery>;
+export type GetUserByIdForPageReportLazyQueryHookResult = ReturnType<typeof useGetUserByIdForPageReportLazyQuery>;
+export type GetUserByIdForPageReportSuspenseQueryHookResult = ReturnType<typeof useGetUserByIdForPageReportSuspenseQuery>;
+export type GetUserByIdForPageReportQueryResult = Apollo.QueryResult<GetUserByIdForPageReportQuery, GetUserByIdForPageReportQueryVariables>;
+export const GetReportsBySearchDocument = gql`
+    query GetReportsBySearch($status: String!) {
+  getReportsBySearch(status: $status) {
+    commentaireEnFaute
+    createdAt
+    status
+    reporter {
+      id
+      name
+      firstname
+      nbReportAjoute
+    }
+    malfrat {
+      id
+      name
+      firstname
+      nbReportValide
+    }
+    parkour {
+      id
+      title
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetReportsBySearchQuery__
+ *
+ * To run a query within a React component, call `useGetReportsBySearchQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetReportsBySearchQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetReportsBySearchQuery({
+ *   variables: {
+ *      status: // value for 'status'
+ *   },
+ * });
+ */
+export function useGetReportsBySearchQuery(baseOptions: Apollo.QueryHookOptions<GetReportsBySearchQuery, GetReportsBySearchQueryVariables> & ({ variables: GetReportsBySearchQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetReportsBySearchQuery, GetReportsBySearchQueryVariables>(GetReportsBySearchDocument, options);
+      }
+export function useGetReportsBySearchLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetReportsBySearchQuery, GetReportsBySearchQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetReportsBySearchQuery, GetReportsBySearchQueryVariables>(GetReportsBySearchDocument, options);
+        }
+export function useGetReportsBySearchSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetReportsBySearchQuery, GetReportsBySearchQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetReportsBySearchQuery, GetReportsBySearchQueryVariables>(GetReportsBySearchDocument, options);
+        }
+export type GetReportsBySearchQueryHookResult = ReturnType<typeof useGetReportsBySearchQuery>;
+export type GetReportsBySearchLazyQueryHookResult = ReturnType<typeof useGetReportsBySearchLazyQuery>;
+export type GetReportsBySearchSuspenseQueryHookResult = ReturnType<typeof useGetReportsBySearchSuspenseQuery>;
+export type GetReportsBySearchQueryResult = Apollo.QueryResult<GetReportsBySearchQuery, GetReportsBySearchQueryVariables>;
 export const CheckResetTokenValidityDocument = gql`
     query checkResetTokenValidity($token: String!) {
   checkResetTokenValidity(token: $token) {

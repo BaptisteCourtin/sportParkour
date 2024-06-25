@@ -17,7 +17,6 @@ import ParkourEntity, {
 import EpreuveEntity from "../entities/epreuve.entity";
 
 import EpreuveService from "./epreuve.service";
-import JoinUserParkourNoteService from "./joinUserParkourNote.service";
 
 class ParkourService {
   db: Repository<ParkourEntity>;

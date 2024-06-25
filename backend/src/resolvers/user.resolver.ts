@@ -6,7 +6,6 @@ import UserService from "../services/user.service";
 import Cookies from "cookies";
 
 import { MyContext } from "..";
-import JoinUserParkourNoteService from "../services/joinUserParkourNote.service";
 
 @Resolver()
 export default class UserResolver {

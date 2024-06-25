@@ -79,7 +79,6 @@ export default function Home() {
   ] = useGetTheParkourTotalForSearchLazyQuery();
 
   // --- VALUES SEARCH BY ALL ---
-
   const minDistance = 10;
   const [choosenCity, setChoosenChoosenCity] = useState("");
   const [choosenDificulty, setChoosenDifficulty] = useState<Difficulty | "">(
@@ -135,7 +134,6 @@ export default function Home() {
   };
 
   // --- REQUEST SEARCH BY ALL ---
-
   const makeTheRequest = () => {
     get20Parkour({
       variables: {

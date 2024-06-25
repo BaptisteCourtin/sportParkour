@@ -2,7 +2,6 @@ import { Repository } from "typeorm";
 import UserEntity, { UserUpdateEntity } from "../entities/user.entity";
 
 import datasource from "../lib/datasource";
-import JoinUserParkourFavorisService from "./joinUserParkourFavoris.service";
 import JoinUserParkourNoteService from "./joinUserParkourNote.service";
 
 class UserService {
@@ -12,7 +11,7 @@ class UserService {
     this.db = datasource.getRepository(UserEntity);
   }
 
-  // pour report
+  // pour report delete
   async getUserById(id: string) {
     const user: UserEntity | null = await this.db.findOne({
       where: { id: id },

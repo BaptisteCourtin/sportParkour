@@ -1,10 +1,11 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
+import { Entity, JoinColumn, ManyToOne, PrimaryColumn, Unique } from "typeorm";
 import { Field, ID, InputType, ObjectType } from "type-graphql";
 
 import UserEntity from "./user.entity";
 import ParkourEntity from "./parkour.entity";
 
 @Entity("join_user_parkour_favoris")
+@Unique(["user_id", "parkour_id"])
 @ObjectType()
 export class JoinUserParkourFavorisEntity {
   @Field(() => ID)

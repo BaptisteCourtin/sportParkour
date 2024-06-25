@@ -1,0 +1,20 @@
+.reportCard {
+  width: 100%;
+  background-color: var(--middle);
+
+  margin: var(--espace) 0;
+  padding: var(--espace);
+  border-radius: var(--radius);
+
+  &.NON_VU {
+    border-top: var(--line) solid var(--blue);
+  }
+
+  &.VU_ET_LAISSE {
+    border-top: var(--line) solid var(--yellow);
+  }
+
+  &.VU_ET_SUPPRIME {
+    border-top: var(--line) solid var(--red);
+  }
+}
