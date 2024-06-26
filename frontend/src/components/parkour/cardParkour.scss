@@ -78,3 +78,13 @@
     right: 10px;
   }
 }
+
+@media screen and (min-width: 800px) {
+  .cardParkour {
+    height: 305px;
+
+    img {
+      flex: 2;
+    }
+  }
+}

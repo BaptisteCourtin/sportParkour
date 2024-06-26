@@ -48,7 +48,7 @@ const modifyOneEpreuve = () => {
     if (router.isReady && id) {
       getEpreuve({
         variables: { getEpreuveByIdId: +id },
-        onError(err: any) {
+        onError(err) {
           console.error("error", err);
         },
       });

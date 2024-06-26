@@ -63,7 +63,7 @@ const SearchBarCommuneName = ({
         // trouver celle avec le même vrai nom
         const communeTrouvee = data.find(
           (objet: TypeCommuneByName) =>
-            objet.nom.toLowerCase() === nomCommuneVoulu
+            objet.nom.toLowerCase() === nomCommuneVoulu.toLowerCase()
         );
         setSelectedCommune(communeTrouvee || null); // que dans ce composant (ne va pas changer le code postal)
       }
@@ -74,8 +74,11 @@ const SearchBarCommuneName = ({
 
   // pour afficher de base
   useEffect(() => {
+    console.log(userValue);
     if (userValue) {
       fetchCommuneByName(null, userValue, true);
+    } else {
+      setSelectedCommune(null);
     }
   }, [userValue]);
 

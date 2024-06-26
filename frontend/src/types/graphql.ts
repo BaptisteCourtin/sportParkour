@@ -104,7 +104,6 @@ export type MessageEntity = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  addOneReportValideFromReport: MessageEntity;
   changePassword: MessageEntity;
   createEpreuve: EpreuveEntity;
   createJoinUserParkourFavoris: MessageEntity;
@@ -113,24 +112,18 @@ export type Mutation = {
   deleteEpreuve: MessageEntity;
   deleteJoinUserParkourFavoris: MessageEntity;
   deleteJoinUserParkourNote: MessageEntity;
-  deleteNoteFromReport: MessageEntity;
+  deleteNoteAndAddOneReportValide: MessageEntity;
+  deleteNoteAndAddOneReportValideAndCreateReport: MessageEntity;
   deleteParkour: MessageEntity;
   deleteUser: MessageEntity;
-  deleteUserByReport: MessageEntity;
+  deleteUserByAdmin: MessageEntity;
   inscription: MessageEntity;
-  letNoteFromReport: MessageEntity;
+  letNote: MessageEntity;
   modifyEpreuve: EpreuveEntity;
   modifyParkour: ParkourEntity;
   modifyUser: MessageEntity;
   reportNote: MessageEntity;
   resetPassword: ResetPasswordEntity;
-};
-
-
-export type MutationAddOneReportValideFromReportArgs = {
-  commentaire: Scalars['String']['input'];
-  parkour_id: Scalars['Float']['input'];
-  user_id: Scalars['String']['input'];
 };
 
 
@@ -174,10 +167,18 @@ export type MutationDeleteJoinUserParkourNoteArgs = {
 };
 
 
-export type MutationDeleteNoteFromReportArgs = {
+export type MutationDeleteNoteAndAddOneReportValideArgs = {
   commentaire: Scalars['String']['input'];
-  parkour_id: Scalars['Float']['input'];
-  user_id: Scalars['String']['input'];
+  malfratId: Scalars['String']['input'];
+  parkourId: Scalars['Float']['input'];
+  reportId: Scalars['Float']['input'];
+};
+
+
+export type MutationDeleteNoteAndAddOneReportValideAndCreateReportArgs = {
+  commentaire: Scalars['String']['input'];
+  malfratId: Scalars['String']['input'];
+  parkourId: Scalars['Float']['input'];
 };
 
 
@@ -186,8 +187,8 @@ export type MutationDeleteParkourArgs = {
 };
 
 
-export type MutationDeleteUserByReportArgs = {
-  user_id: Scalars['String']['input'];
+export type MutationDeleteUserByAdminArgs = {
+  malfratId: Scalars['String']['input'];
 };
 
 
@@ -196,9 +197,8 @@ export type MutationInscriptionArgs = {
 };
 
 
-export type MutationLetNoteFromReportArgs = {
-  parkour_id: Scalars['Float']['input'];
-  user_id: Scalars['String']['input'];
+export type MutationLetNoteArgs = {
+  reportId: Scalars['Float']['input'];
 };
 
 
@@ -221,8 +221,8 @@ export type MutationModifyUserArgs = {
 
 export type MutationReportNoteArgs = {
   commentaire: Scalars['String']['input'];
-  malfrat_id: Scalars['String']['input'];
-  parkour_id: Scalars['Float']['input'];
+  malfratId: Scalars['String']['input'];
+  parkourId: Scalars['Float']['input'];
 };
 
 
@@ -385,9 +385,7 @@ export type ReportEntity = {
 /** ReportStatus enum */
 export enum ReportStatus {
   NonVu = 'NON_VU',
-  VuEtLaisse = 'VU_ET_LAISSE',
-  VuEtLaisseModif = 'VU_ET_LAISSE_MODIF',
-  VuEtSupprime = 'VU_ET_SUPPRIME'
+  Supprime = 'SUPPRIME'
 }
 
 export type ResetPasswordEntity = {
@@ -531,13 +529,46 @@ export type DeleteParkourMutationVariables = Exact<{
 export type DeleteParkourMutation = { __typename?: 'Mutation', deleteParkour: { __typename?: 'MessageEntity', message: string, success: boolean } };
 
 export type ReportNoteMutationVariables = Exact<{
+  malfratId: Scalars['String']['input'];
+  parkourId: Scalars['Float']['input'];
   commentaire: Scalars['String']['input'];
+}>;
+
+
+export type ReportNoteMutation = { __typename?: 'Mutation', reportNote: { __typename?: 'MessageEntity', message: string, success: boolean } };
+
+export type LetNoteMutationVariables = Exact<{
+  reportId: Scalars['Float']['input'];
+}>;
+
+
+export type LetNoteMutation = { __typename?: 'Mutation', letNote: { __typename?: 'MessageEntity', message: string, success: boolean } };
+
+export type DeleteNoteAndAddOneReportValideMutationVariables = Exact<{
+  commentaire: Scalars['String']['input'];
+  reportId: Scalars['Float']['input'];
   parkourId: Scalars['Float']['input'];
   malfratId: Scalars['String']['input'];
 }>;
 
 
-export type ReportNoteMutation = { __typename?: 'Mutation', reportNote: { __typename?: 'MessageEntity', message: string, success: boolean } };
+export type DeleteNoteAndAddOneReportValideMutation = { __typename?: 'Mutation', deleteNoteAndAddOneReportValide: { __typename?: 'MessageEntity', message: string, success: boolean } };
+
+export type DeleteNoteAndAddOneReportValideAndCreateReportMutationVariables = Exact<{
+  commentaire: Scalars['String']['input'];
+  malfratId: Scalars['String']['input'];
+  parkourId: Scalars['Float']['input'];
+}>;
+
+
+export type DeleteNoteAndAddOneReportValideAndCreateReportMutation = { __typename?: 'Mutation', deleteNoteAndAddOneReportValideAndCreateReport: { __typename?: 'MessageEntity', message: string, success: boolean } };
+
+export type DeleteUserByAdminMutationVariables = Exact<{
+  malfratId: Scalars['String']['input'];
+}>;
+
+
+export type DeleteUserByAdminMutation = { __typename?: 'Mutation', deleteUserByAdmin: { __typename?: 'MessageEntity', message: string, success: boolean } };
 
 export type ResetPasswordMutationVariables = Exact<{
   email: Scalars['String']['input'];
@@ -673,14 +704,14 @@ export type GetUserByIdForPageReportQueryVariables = Exact<{
 }>;
 
 
-export type GetUserByIdForPageReportQuery = { __typename?: 'Query', getUserByIdForPageReport: { __typename?: 'UserEntity', id: string, name: string, firstname: string, email: string, nbReportValide?: number | null, nbReportAjoute?: number | null, notesParkours?: Array<{ __typename?: 'JoinUserParkourNoteEntity', commentaire?: string | null, parkour: { __typename?: 'ParkourEntity', id: string, title: string } }> | null, reports?: Array<{ __typename?: 'ReportEntity', commentaireEnFaute: string, createdAt: any, status: ReportStatus, parkour?: { __typename?: 'ParkourEntity', id: string, title: string } | null, reporter?: { __typename?: 'UserEntity', id: string, name: string, firstname: string, nbReportAjoute?: number | null } | null }> | null } };
+export type GetUserByIdForPageReportQuery = { __typename?: 'Query', getUserByIdForPageReport: { __typename?: 'UserEntity', id: string, name: string, firstname: string, email: string, nbReportValide?: number | null, nbReportAjoute?: number | null, notesParkours?: Array<{ __typename?: 'JoinUserParkourNoteEntity', commentaire?: string | null, parkour: { __typename?: 'ParkourEntity', id: string, title: string } }> | null, reports?: Array<{ __typename?: 'ReportEntity', id: string, commentaireEnFaute: string, createdAt: any, status: ReportStatus, parkour?: { __typename?: 'ParkourEntity', id: string, title: string } | null, reporter?: { __typename?: 'UserEntity', id: string, name: string, firstname: string, nbReportAjoute?: number | null } | null }> | null } };
 
 export type GetReportsBySearchQueryVariables = Exact<{
   status: Scalars['String']['input'];
 }>;
 
 
-export type GetReportsBySearchQuery = { __typename?: 'Query', getReportsBySearch: Array<{ __typename?: 'ReportEntity', commentaireEnFaute: string, createdAt: any, status: ReportStatus, reporter?: { __typename?: 'UserEntity', id: string, name: string, firstname: string, nbReportAjoute?: number | null } | null, malfrat?: { __typename?: 'UserEntity', id: string, name: string, firstname: string, nbReportValide?: number | null } | null, parkour?: { __typename?: 'ParkourEntity', id: string, title: string } | null }> };
+export type GetReportsBySearchQuery = { __typename?: 'Query', getReportsBySearch: Array<{ __typename?: 'ReportEntity', id: string, commentaireEnFaute: string, createdAt: any, status: ReportStatus, reporter?: { __typename?: 'UserEntity', id: string, name: string, firstname: string, nbReportAjoute?: number | null } | null, malfrat?: { __typename?: 'UserEntity', id: string, name: string, firstname: string, nbReportValide?: number | null } | null, parkour?: { __typename?: 'ParkourEntity', id: string, title: string } | null }> };
 
 export type CheckResetTokenValidityQueryVariables = Exact<{
   token: Scalars['String']['input'];
@@ -1082,11 +1113,11 @@ export type DeleteParkourMutationHookResult = ReturnType<typeof useDeleteParkour
 export type DeleteParkourMutationResult = Apollo.MutationResult<DeleteParkourMutation>;
 export type DeleteParkourMutationOptions = Apollo.BaseMutationOptions<DeleteParkourMutation, DeleteParkourMutationVariables>;
 export const ReportNoteDocument = gql`
-    mutation ReportNote($commentaire: String!, $parkourId: Float!, $malfratId: String!) {
+    mutation ReportNote($malfratId: String!, $parkourId: Float!, $commentaire: String!) {
   reportNote(
+    malfratId: $malfratId
+    parkourId: $parkourId
     commentaire: $commentaire
-    parkour_id: $parkourId
-    malfrat_id: $malfratId
   ) {
     message
     success
@@ -1108,9 +1139,9 @@ export type ReportNoteMutationFn = Apollo.MutationFunction<ReportNoteMutation, R
  * @example
  * const [reportNoteMutation, { data, loading, error }] = useReportNoteMutation({
  *   variables: {
- *      commentaire: // value for 'commentaire'
- *      parkourId: // value for 'parkourId'
  *      malfratId: // value for 'malfratId'
+ *      parkourId: // value for 'parkourId'
+ *      commentaire: // value for 'commentaire'
  *   },
  * });
  */
@@ -1121,6 +1152,156 @@ export function useReportNoteMutation(baseOptions?: Apollo.MutationHookOptions<R
 export type ReportNoteMutationHookResult = ReturnType<typeof useReportNoteMutation>;
 export type ReportNoteMutationResult = Apollo.MutationResult<ReportNoteMutation>;
 export type ReportNoteMutationOptions = Apollo.BaseMutationOptions<ReportNoteMutation, ReportNoteMutationVariables>;
+export const LetNoteDocument = gql`
+    mutation LetNote($reportId: Float!) {
+  letNote(reportId: $reportId) {
+    message
+    success
+  }
+}
+    `;
+export type LetNoteMutationFn = Apollo.MutationFunction<LetNoteMutation, LetNoteMutationVariables>;
+
+/**
+ * __useLetNoteMutation__
+ *
+ * To run a mutation, you first call `useLetNoteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLetNoteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [letNoteMutation, { data, loading, error }] = useLetNoteMutation({
+ *   variables: {
+ *      reportId: // value for 'reportId'
+ *   },
+ * });
+ */
+export function useLetNoteMutation(baseOptions?: Apollo.MutationHookOptions<LetNoteMutation, LetNoteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<LetNoteMutation, LetNoteMutationVariables>(LetNoteDocument, options);
+      }
+export type LetNoteMutationHookResult = ReturnType<typeof useLetNoteMutation>;
+export type LetNoteMutationResult = Apollo.MutationResult<LetNoteMutation>;
+export type LetNoteMutationOptions = Apollo.BaseMutationOptions<LetNoteMutation, LetNoteMutationVariables>;
+export const DeleteNoteAndAddOneReportValideDocument = gql`
+    mutation DeleteNoteAndAddOneReportValide($commentaire: String!, $reportId: Float!, $parkourId: Float!, $malfratId: String!) {
+  deleteNoteAndAddOneReportValide(
+    commentaire: $commentaire
+    reportId: $reportId
+    parkourId: $parkourId
+    malfratId: $malfratId
+  ) {
+    message
+    success
+  }
+}
+    `;
+export type DeleteNoteAndAddOneReportValideMutationFn = Apollo.MutationFunction<DeleteNoteAndAddOneReportValideMutation, DeleteNoteAndAddOneReportValideMutationVariables>;
+
+/**
+ * __useDeleteNoteAndAddOneReportValideMutation__
+ *
+ * To run a mutation, you first call `useDeleteNoteAndAddOneReportValideMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteNoteAndAddOneReportValideMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteNoteAndAddOneReportValideMutation, { data, loading, error }] = useDeleteNoteAndAddOneReportValideMutation({
+ *   variables: {
+ *      commentaire: // value for 'commentaire'
+ *      reportId: // value for 'reportId'
+ *      parkourId: // value for 'parkourId'
+ *      malfratId: // value for 'malfratId'
+ *   },
+ * });
+ */
+export function useDeleteNoteAndAddOneReportValideMutation(baseOptions?: Apollo.MutationHookOptions<DeleteNoteAndAddOneReportValideMutation, DeleteNoteAndAddOneReportValideMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteNoteAndAddOneReportValideMutation, DeleteNoteAndAddOneReportValideMutationVariables>(DeleteNoteAndAddOneReportValideDocument, options);
+      }
+export type DeleteNoteAndAddOneReportValideMutationHookResult = ReturnType<typeof useDeleteNoteAndAddOneReportValideMutation>;
+export type DeleteNoteAndAddOneReportValideMutationResult = Apollo.MutationResult<DeleteNoteAndAddOneReportValideMutation>;
+export type DeleteNoteAndAddOneReportValideMutationOptions = Apollo.BaseMutationOptions<DeleteNoteAndAddOneReportValideMutation, DeleteNoteAndAddOneReportValideMutationVariables>;
+export const DeleteNoteAndAddOneReportValideAndCreateReportDocument = gql`
+    mutation DeleteNoteAndAddOneReportValideAndCreateReport($commentaire: String!, $malfratId: String!, $parkourId: Float!) {
+  deleteNoteAndAddOneReportValideAndCreateReport(
+    commentaire: $commentaire
+    malfratId: $malfratId
+    parkourId: $parkourId
+  ) {
+    message
+    success
+  }
+}
+    `;
+export type DeleteNoteAndAddOneReportValideAndCreateReportMutationFn = Apollo.MutationFunction<DeleteNoteAndAddOneReportValideAndCreateReportMutation, DeleteNoteAndAddOneReportValideAndCreateReportMutationVariables>;
+
+/**
+ * __useDeleteNoteAndAddOneReportValideAndCreateReportMutation__
+ *
+ * To run a mutation, you first call `useDeleteNoteAndAddOneReportValideAndCreateReportMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteNoteAndAddOneReportValideAndCreateReportMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteNoteAndAddOneReportValideAndCreateReportMutation, { data, loading, error }] = useDeleteNoteAndAddOneReportValideAndCreateReportMutation({
+ *   variables: {
+ *      commentaire: // value for 'commentaire'
+ *      malfratId: // value for 'malfratId'
+ *      parkourId: // value for 'parkourId'
+ *   },
+ * });
+ */
+export function useDeleteNoteAndAddOneReportValideAndCreateReportMutation(baseOptions?: Apollo.MutationHookOptions<DeleteNoteAndAddOneReportValideAndCreateReportMutation, DeleteNoteAndAddOneReportValideAndCreateReportMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteNoteAndAddOneReportValideAndCreateReportMutation, DeleteNoteAndAddOneReportValideAndCreateReportMutationVariables>(DeleteNoteAndAddOneReportValideAndCreateReportDocument, options);
+      }
+export type DeleteNoteAndAddOneReportValideAndCreateReportMutationHookResult = ReturnType<typeof useDeleteNoteAndAddOneReportValideAndCreateReportMutation>;
+export type DeleteNoteAndAddOneReportValideAndCreateReportMutationResult = Apollo.MutationResult<DeleteNoteAndAddOneReportValideAndCreateReportMutation>;
+export type DeleteNoteAndAddOneReportValideAndCreateReportMutationOptions = Apollo.BaseMutationOptions<DeleteNoteAndAddOneReportValideAndCreateReportMutation, DeleteNoteAndAddOneReportValideAndCreateReportMutationVariables>;
+export const DeleteUserByAdminDocument = gql`
+    mutation DeleteUserByAdmin($malfratId: String!) {
+  deleteUserByAdmin(malfratId: $malfratId) {
+    message
+    success
+  }
+}
+    `;
+export type DeleteUserByAdminMutationFn = Apollo.MutationFunction<DeleteUserByAdminMutation, DeleteUserByAdminMutationVariables>;
+
+/**
+ * __useDeleteUserByAdminMutation__
+ *
+ * To run a mutation, you first call `useDeleteUserByAdminMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteUserByAdminMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteUserByAdminMutation, { data, loading, error }] = useDeleteUserByAdminMutation({
+ *   variables: {
+ *      malfratId: // value for 'malfratId'
+ *   },
+ * });
+ */
+export function useDeleteUserByAdminMutation(baseOptions?: Apollo.MutationHookOptions<DeleteUserByAdminMutation, DeleteUserByAdminMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteUserByAdminMutation, DeleteUserByAdminMutationVariables>(DeleteUserByAdminDocument, options);
+      }
+export type DeleteUserByAdminMutationHookResult = ReturnType<typeof useDeleteUserByAdminMutation>;
+export type DeleteUserByAdminMutationResult = Apollo.MutationResult<DeleteUserByAdminMutation>;
+export type DeleteUserByAdminMutationOptions = Apollo.BaseMutationOptions<DeleteUserByAdminMutation, DeleteUserByAdminMutationVariables>;
 export const ResetPasswordDocument = gql`
     mutation ResetPassword($email: String!) {
   resetPassword(email: $email) {
@@ -1964,6 +2145,10 @@ export const GetUserByIdForPageReportDocument = gql`
       }
     }
     reports {
+      id
+      commentaireEnFaute
+      createdAt
+      status
       parkour {
         id
         title
@@ -1974,9 +2159,6 @@ export const GetUserByIdForPageReportDocument = gql`
         firstname
         nbReportAjoute
       }
-      commentaireEnFaute
-      createdAt
-      status
     }
   }
 }
@@ -2017,6 +2199,7 @@ export type GetUserByIdForPageReportQueryResult = Apollo.QueryResult<GetUserById
 export const GetReportsBySearchDocument = gql`
     query GetReportsBySearch($status: String!) {
   getReportsBySearch(status: $status) {
+    id
     commentaireEnFaute
     createdAt
     status

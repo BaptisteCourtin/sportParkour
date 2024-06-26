@@ -26,6 +26,8 @@ const OneUserByReports = () => {
     }
   }, [router.isReady]);
 
+  // --- SUPPRIME USER ---
+
   return (
     <main className="userIdByReports">
       {error ? (
@@ -36,24 +38,53 @@ const OneUserByReports = () => {
         data?.getUserByIdForPageReport && (
           <div>
             <section>
+              <ul className="infosMalfrat">
+                <h1>
+                  {data.getUserByIdForPageReport.name}{" "}
+                  {data.getUserByIdForPageReport.firstname}{" "}
+                </h1>
+                <h2>{data.getUserByIdForPageReport.id}</h2>
+                <p>{data.getUserByIdForPageReport.email}</p>
+                <p>
+                  L'utilisateur a {data.getUserByIdForPageReport.nbReportValide}{" "}
+                  report valide contre lui
+                </p>
+                <p>
+                  L'utilisateur a émis{" "}
+                  {data.getUserByIdForPageReport.nbReportAjoute} reports
+                </p>
+              </ul>
+            </section>
+
+            <section>
               <ul className="listReports">
-                <h4>Les reports contre cet utilisateur : </h4>
+                <h3>Les reports contre cet utilisateur : </h3>
                 {data.getUserByIdForPageReport.reports?.map((report, index) => (
-                  <ReportCard report={report} key={index} />
+                  <ReportCard
+                    report={report}
+                    malfratId={data.getUserByIdForPageReport.id}
+                    key={index}
+                  />
                 ))}
               </ul>
             </section>
 
             <section>
               <ul className="listNotes">
-                <h4>L'utilisateur à mis ces commentaires : </h4>
+                <h3>L'utilisateur à mis ces commentaires : </h3>
                 {data.getUserByIdForPageReport.notesParkours?.map(
                   (note, index) => (
-                    <NoteCard note={note} key={index} />
+                    <NoteCard
+                      note={note}
+                      malfratId={data.getUserByIdForPageReport.id}
+                      key={index}
+                    />
                   )
                 )}
               </ul>
             </section>
+
+            {/* --- */}
           </div>
         )
       )}

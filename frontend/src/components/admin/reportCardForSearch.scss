@@ -10,11 +10,7 @@
     border-top: var(--line) solid var(--blue);
   }
 
-  &.VU_ET_LAISSE {
-    border-top: var(--line) solid var(--yellow);
-  }
-
-  &.VU_ET_SUPPRIME {
+  &.SUPPRIME {
     border-top: var(--line) solid var(--red);
   }
 }

@@ -81,8 +81,4 @@ sur la partie admin des reports
 
 ------------------------------------------------------------------------------------------------------
 
-est ce que on garde reporter ? Sachant qu'il y a déjà le nbReportAjoute ?
-    => bof
-
-
-ajouter l'api commune sur recherche parkour (index)
+remettre propre les parkour_id / parkourId pareil pour user

@@ -1,8 +1,7 @@
 import { Repository } from "typeorm";
 import datasource from "../lib/datasource";
 
-import JoinUserParkourNoteEntity from "../entities/joinUserParkourNote.entity";
-import UserEntity, { UserUpdateEntity } from "../entities/user.entity";
+import UserEntity from "../entities/user.entity";
 import UserService from "./user.service";
 import { ReportStatus } from "../enum/reportStatus.enum";
 import { ReportEntity } from "../entities/reportEntity.entity";
@@ -10,12 +9,10 @@ import { ReportEntity } from "../entities/reportEntity.entity";
 class ReportService {
   db: Repository<ReportEntity>;
   dbUser: Repository<UserEntity>;
-  dbJoinNote: Repository<JoinUserParkourNoteEntity>;
 
   constructor() {
     this.db = datasource.getRepository(ReportEntity);
     this.dbUser = datasource.getRepository(UserEntity);
-    this.dbJoinNote = datasource.getRepository(JoinUserParkourNoteEntity);
   }
 
   // pour report idUser
@@ -41,19 +38,74 @@ class ReportService {
     return reports;
   }
 
+  // pour delete / modify one
+  async getReportByReportId(reportId: number) {
+    const report: ReportEntity | null = await this.db.findOne({
+      where: {
+        id: reportId,
+      },
+    });
+
+    if (!report) {
+      throw new Error("Pas de report (bizarre)");
+    }
+
+    return report;
+  }
+
+  async isReportExist(
+    malfratId: string,
+    parkourId: number,
+    commentaire: string
+  ) {
+    const report: ReportEntity | null = await this.db.findOne({
+      where: {
+        malfrat_id: malfratId,
+        parkour_id: parkourId,
+        commentaireEnFaute: commentaire,
+      },
+    });
+
+    if (report) {
+      return true;
+    }
+
+    return false;
+  }
+
   // ---
 
+  // création du report
   async reportNoteByUserIdAndParkourId(
-    malfrat_id: string,
-    parkour_id: number,
-    reporter_id: string,
+    malfratId: string,
+    parkourId: number,
+    reporterId: string,
     commentaire: string
   ) {
     const data = {
-      malfrat_id: malfrat_id,
-      parkour_id: parkour_id,
-      reporter_id: reporter_id,
+      malfrat_id: malfratId,
+      parkour_id: parkourId,
+      reporter_id: reporterId,
       commentaireEnFaute: commentaire,
+    };
+    const newReport = this.db.create(data);
+    await this.db.save(newReport);
+    return newReport;
+  }
+
+  // quand l'admin delete directement un comm
+  async createDeleteReport(
+    malfratId: string,
+    parkourId: number,
+    reporterId: string,
+    commentaire: string
+  ) {
+    const data = {
+      malfrat_id: malfratId,
+      parkour_id: parkourId,
+      reporter_id: reporterId,
+      commentaireEnFaute: commentaire,
+      status: ReportStatus.SUPPRIME,
     };
     const newReport = this.db.create(data);
     await this.db.save(newReport);
@@ -68,39 +120,27 @@ class ReportService {
     return await this.dbUser.save(editedUser);
   }
 
-  async deleteReportsByUserIdAndParkourId(user_id: string, parkour_id: number) {
-    // ...
+  // ---
+
+  async deleteReportByReportId(reportId: number) {
+    const report = await new ReportService().getReportByReportId(reportId);
+
+    await this.db.remove(report);
+  }
+
+  async modifyStatusReport(reportId: number, status: ReportStatus) {
+    const report = await new ReportService().getReportByReportId(reportId);
+    report.status = status;
+
+    return await this.db.save(report);
   }
 
   async addOneReportValideForUser(user_id: string) {
-    // const user = await new UserService().getUserById(user_id);
-    // const newNbReport = user.nbReportValide + 1;
-    // const data: UserUpdateEntity = {
-    //   nbReportValide: newNbReport,
-    // };
-    // const newInfos = this.dbUser.merge(user, data);
-    // await this.dbUser.save(newInfos);
-    // return newNbReport;
-  }
+    const user = await new UserService().getUserById(user_id);
+    user.nbReportValide += 1;
 
-  async keepOnlyOneReport(
-    user_id: string,
-    parkour_id: number,
-    commentaire: string
-  ) {
-    // ...
-  }
-
-  async modifyStatusReport(
-    user_id: string,
-    parkour_id: number,
-    status: ReportStatus
-  ) {
-    // ...
-  }
-
-  async supprimeAllReportsByUserId(user_id: string) {
-    // ...
+    await this.dbUser.save(user);
+    return user;
   }
 }
 export default ReportService;

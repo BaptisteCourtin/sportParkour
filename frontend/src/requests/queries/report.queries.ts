@@ -17,6 +17,10 @@ export const GET_USER_BY_ID_FOR_REPORT_PAGE = gql`
         }
       }
       reports {
+        id
+        commentaireEnFaute
+        createdAt
+        status
         parkour {
           id
           title
@@ -27,9 +31,6 @@ export const GET_USER_BY_ID_FOR_REPORT_PAGE = gql`
           firstname
           nbReportAjoute
         }
-        commentaireEnFaute
-        createdAt
-        status
       }
     }
   }
@@ -42,6 +43,7 @@ export const GET_USER_BY_ID_FOR_REPORT_PAGE = gql`
 export const GET_REPORTS_BY_SEARCH = gql`
   query GetReportsBySearch($status: String!) {
     getReportsBySearch(status: $status) {
+      id
       commentaireEnFaute
       createdAt
       status

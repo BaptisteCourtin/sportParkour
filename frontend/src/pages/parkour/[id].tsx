@@ -438,6 +438,8 @@ const OneParkour = () => {
                   <DisplayComment
                     comment={comment}
                     parkourId={data.getParkourById.id}
+                    isAdmin={dataIsAdmin ? true : false}
+                    isClient={dataIsClient ? true : false}
                   />
                 ))}
               </section>

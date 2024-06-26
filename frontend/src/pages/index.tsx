@@ -22,6 +22,7 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import Rating from "@mui/material/Rating";
 import Slider from "@mui/material/Slider";
+import SearchBarCommuneName from "@/components/user/searchBarCommuneName";
 
 let createSearchByAllSchema = object({
   city: string().max(50, "Une ville, pas un lieu-dit paumé"),
@@ -80,7 +81,7 @@ export default function Home() {
 
   // --- VALUES SEARCH BY ALL ---
   const minDistance = 10;
-  const [choosenCity, setChoosenChoosenCity] = useState("");
+  const [selectedCommuneName, setSelectedCommuneName] = useState("");
   const [choosenDificulty, setChoosenDifficulty] = useState<Difficulty | "">(
     ""
   );
@@ -140,7 +141,7 @@ export default function Home() {
         triParField: tri.split("_")[0],
         triParSort: tri.split("_")[1],
         startPage: (page - 1) * 20,
-        city: choosenCity.toLowerCase(),
+        city: selectedCommuneName.toLowerCase(),
         timeMin: valueTime[0],
         timeMax: valueTime[1],
         lengthMin: valueLength[0],
@@ -148,14 +149,14 @@ export default function Home() {
         difficulty: choosenDificulty,
         noteMin: choosenNoteMin,
       },
-      onError(err: any) {
+      onError(err) {
         console.error("error", err);
       },
     });
 
     getTheParkourTotal({
       variables: {
-        city: choosenCity.toLowerCase(),
+        city: selectedCommuneName.toLowerCase(),
         timeMin: valueTime[0],
         timeMax: valueTime[1],
         lengthMin: valueLength[0],
@@ -163,10 +164,7 @@ export default function Home() {
         difficulty: choosenDificulty,
         noteMin: choosenNoteMin,
       },
-      onCompleted(data) {
-        console.log(data);
-      },
-      onError(err: any) {
+      onError(err) {
         console.error("error", err);
       },
     });
@@ -182,7 +180,7 @@ export default function Home() {
   }, [page]);
 
   const resetChoosen = () => {
-    setChoosenChoosenCity("");
+    setSelectedCommuneName("");
     setChoosenDifficulty("");
     setValueLength([0, 60]);
     setValueTime([0, 600]);
@@ -241,18 +239,9 @@ export default function Home() {
 
             <section className="formSearchParkour">
               <div className="champ">
-                <TextField
-                  className="mui-input"
-                  fullWidth
-                  variant="outlined"
-                  label="Ville de départ"
-                  {...register("city")}
-                  id="city"
-                  name="city"
-                  type="text"
-                  inputProps={{ maxLength: 50 }}
-                  value={choosenCity}
-                  onChange={(e) => setChoosenChoosenCity(e.target.value)}
+                <SearchBarCommuneName
+                  userValue={selectedCommuneName}
+                  setSelectedCommuneName={setSelectedCommuneName}
                 />
               </div>
 

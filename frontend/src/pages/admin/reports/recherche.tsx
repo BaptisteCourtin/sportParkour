@@ -34,13 +34,7 @@ const recherche = () => {
           <div>
             <section>
               <button onClick={() => makeTheRequest("nonVu")}>non vu</button>
-              <button onClick={() => makeTheRequest("vuEtLaisse")}>
-                vu et laissé
-              </button>
-              <button onClick={() => makeTheRequest("vuEtLaisseModif")}>
-                vu et laissé car modifié
-              </button>
-              <button onClick={() => makeTheRequest("vuEtSupprime")}>
+              <button onClick={() => makeTheRequest("supprime")}>
                 supprimé
               </button>
             </section>

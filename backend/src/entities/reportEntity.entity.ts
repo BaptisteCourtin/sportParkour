@@ -15,7 +15,7 @@ import { ReportStatus } from "../enum/reportStatus.enum";
 import ParkourEntity from "./parkour.entity";
 
 @Entity("report")
-@Unique(["reporter_id", "malfrat_id", "parkour_id"])
+@Unique(["malfrat_id", "parkour_id", "commentaireEnFaute"])
 @ObjectType()
 export class ReportEntity {
   @Field(() => ID)

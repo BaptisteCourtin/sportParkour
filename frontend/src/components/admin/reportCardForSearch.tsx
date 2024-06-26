@@ -1,9 +1,19 @@
-import Link from "next/link";
 import React from "react";
+import Link from "next/link";
+import ButtonForRepport from "./buttonForReport";
 
 const reportCardForSearch = ({ report }: any) => {
   return (
     <li className={`${report.status} reportCard`}>
+      {report.status != "SUPPRIME" ? (
+        <ButtonForRepport
+          reportId={report.id}
+          malfratId={report.malfrat.id}
+          parkourId={report.parkour.id}
+          commentaire={report.commentaireEnFaute}
+        />
+      ) : null}
+
       <p>{report.commentaireEnFaute}</p>
       <p>{report.createdAt}</p>
       <p>{report.status}</p>
