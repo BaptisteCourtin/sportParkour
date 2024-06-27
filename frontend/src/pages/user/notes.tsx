@@ -22,7 +22,7 @@ const notes = () => {
   const [tri, setTri] = useState("default");
 
   return (
-    <main className="favoris">
+    <main className="favorisOrNotes">
       <form>
         <div className="champ">
           <FormControl

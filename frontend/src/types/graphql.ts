@@ -288,6 +288,7 @@ export type Query = {
   getUserByToken: UserEntity;
   getUserFavByTokenAndParkourId: Scalars['Boolean']['output'];
   getUserNoteByTokenAndParkourId: JoinUserParkourNoteEntity;
+  getUsersWithReports: Array<UserEntity>;
   isAdmin: Scalars['Boolean']['output'];
   isClient: Scalars['Boolean']['output'];
   logout: MessageEntity;
@@ -712,6 +713,11 @@ export type GetReportsBySearchQueryVariables = Exact<{
 
 
 export type GetReportsBySearchQuery = { __typename?: 'Query', getReportsBySearch: Array<{ __typename?: 'ReportEntity', id: string, commentaireEnFaute: string, createdAt: any, status: ReportStatus, reporter?: { __typename?: 'UserEntity', id: string, name: string, firstname: string, nbReportAjoute?: number | null } | null, malfrat?: { __typename?: 'UserEntity', id: string, name: string, firstname: string, nbReportValide?: number | null } | null, parkour?: { __typename?: 'ParkourEntity', id: string, title: string } | null }> };
+
+export type GetUsersWithReportsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetUsersWithReportsQuery = { __typename?: 'Query', getUsersWithReports: Array<{ __typename?: 'UserEntity', id: string, name: string, firstname: string, nbReportValide?: number | null, nbReportAjoute?: number | null }> };
 
 export type CheckResetTokenValidityQueryVariables = Exact<{
   token: Scalars['String']['input'];
@@ -2255,6 +2261,49 @@ export type GetReportsBySearchQueryHookResult = ReturnType<typeof useGetReportsB
 export type GetReportsBySearchLazyQueryHookResult = ReturnType<typeof useGetReportsBySearchLazyQuery>;
 export type GetReportsBySearchSuspenseQueryHookResult = ReturnType<typeof useGetReportsBySearchSuspenseQuery>;
 export type GetReportsBySearchQueryResult = Apollo.QueryResult<GetReportsBySearchQuery, GetReportsBySearchQueryVariables>;
+export const GetUsersWithReportsDocument = gql`
+    query GetUsersWithReports {
+  getUsersWithReports {
+    id
+    name
+    firstname
+    nbReportValide
+    nbReportAjoute
+  }
+}
+    `;
+
+/**
+ * __useGetUsersWithReportsQuery__
+ *
+ * To run a query within a React component, call `useGetUsersWithReportsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUsersWithReportsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUsersWithReportsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetUsersWithReportsQuery(baseOptions?: Apollo.QueryHookOptions<GetUsersWithReportsQuery, GetUsersWithReportsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUsersWithReportsQuery, GetUsersWithReportsQueryVariables>(GetUsersWithReportsDocument, options);
+      }
+export function useGetUsersWithReportsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUsersWithReportsQuery, GetUsersWithReportsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUsersWithReportsQuery, GetUsersWithReportsQueryVariables>(GetUsersWithReportsDocument, options);
+        }
+export function useGetUsersWithReportsSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetUsersWithReportsQuery, GetUsersWithReportsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetUsersWithReportsQuery, GetUsersWithReportsQueryVariables>(GetUsersWithReportsDocument, options);
+        }
+export type GetUsersWithReportsQueryHookResult = ReturnType<typeof useGetUsersWithReportsQuery>;
+export type GetUsersWithReportsLazyQueryHookResult = ReturnType<typeof useGetUsersWithReportsLazyQuery>;
+export type GetUsersWithReportsSuspenseQueryHookResult = ReturnType<typeof useGetUsersWithReportsSuspenseQuery>;
+export type GetUsersWithReportsQueryResult = Apollo.QueryResult<GetUsersWithReportsQuery, GetUsersWithReportsQueryVariables>;
 export const CheckResetTokenValidityDocument = gql`
     query checkResetTokenValidity($token: String!) {
   checkResetTokenValidity(token: $token) {

@@ -1,4 +1,4 @@
-import { Repository } from "typeorm";
+import { MoreThanOrEqual, Repository } from "typeorm";
 import datasource from "../lib/datasource";
 
 import UserEntity from "../entities/user.entity";
@@ -36,6 +36,14 @@ class ReportService {
     });
 
     return reports;
+  }
+
+  async getUsersWithReports() {
+    const users: UserEntity[] | null = await this.dbUser.find({
+      where: { nbReportValide: MoreThanOrEqual(1) },
+    });
+
+    return users;
   }
 
   // pour delete / modify one

@@ -16,13 +16,15 @@ const displayComment = ({
 }) => {
   return (
     <div className="displayComment">
-      <ButtonForComment
-        malfratId={comment.user.id}
-        parkourId={+parkourId}
-        commentaire={comment.commentaire}
-        isAdmin={isAdmin}
-        isClient={isClient}
-      />
+      {isAdmin || isClient ? (
+        <ButtonForComment
+          malfratId={comment.user.id}
+          parkourId={+parkourId}
+          commentaire={comment.commentaire}
+          isAdmin={isAdmin}
+          isClient={isClient}
+        />
+      ) : null}
 
       <img src="/userDefault.png" className="imgProfil" />
       <div>

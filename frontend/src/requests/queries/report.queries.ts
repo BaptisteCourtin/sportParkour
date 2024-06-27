@@ -70,3 +70,15 @@ export const GET_REPORTS_BY_SEARCH = gql`
 // {
 //   "status": "nonVu"
 // }
+
+export const GET_USERS_WITH_REPORTS = gql`
+  query GetUsersWithReports {
+    getUsersWithReports {
+      id
+      name
+      firstname
+      nbReportValide
+      nbReportAjoute
+    }
+  }
+`;

@@ -54,7 +54,7 @@ function ResetByEmail() {
   };
 
   return (
-    <main>
+    <main className="resetPassword">
       {/* pas encore de data de la mutation */}
       {!data?.resetPassword.resetToken ? (
         <form onSubmit={handleSubmit(handleEmailResetPassword)}>

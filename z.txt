@@ -75,10 +75,4 @@ message sur logout
 
 ------------------------------------------------------------------------------------------------------
 
-sur la partie admin des reports 
-    => cherche user by id
-    => combien de report sur un duo (user_id / parkour_id)
-
-------------------------------------------------------------------------------------------------------
-
 remettre propre les parkour_id / parkourId pareil pour user

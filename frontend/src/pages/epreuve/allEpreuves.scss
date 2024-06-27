@@ -1,11 +1,5 @@
 .allEpreuves {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   gap: var(--gap);
-
-  width: 100%;
 
   form {
     background-color: var(--middle);

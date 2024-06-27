@@ -109,7 +109,7 @@ function Reset() {
   const [showPassword2, setShowPassword2] = useState(false);
 
   return (
-    <main>
+    <main className="resetPasswordToken">
       {loadingCheck ? (
         <p>Vérification en cours</p>
       ) : dataCheck?.checkResetTokenValidity.success && !dataChange ? (

@@ -1,36 +1,40 @@
 @import "./variables.scss";
 @import "./reset.scss";
+@import "./form.scss";
 
-// --- components ---
+// --- LAYOUT ---
+@import "../components/layout/ordi/darkLightOrdi.scss";
+@import "../components/layout/ordi/footer.scss";
+@import "../components/layout/ordi/navbarOrdi.scss";
+
+@import "../components/layout/phone/darkLightPhone.scss";
+@import "../components/layout/phone/headerPhone.scss";
+@import "../components/layout/phone/navbarPhone.scss";
+
+// --- COMPONENTS ---
 @import "../components/epreuve/cardEpreuve.scss";
 
-@import "../components/layout/ordi/navbarOrdi.scss";
-@import "../components/layout/ordi/footer.scss";
-@import "../components/layout/ordi/darkLightOrdi.scss";
-
-@import "../components/layout/phone/navbarPhone.scss";
-@import "../components/layout/phone/headerPhone.scss";
-@import "../components/layout/phone/darkLightPhone.scss";
-
-@import "../components/parkour/cardParkour.scss";
 @import "../components/parkour/cardFavParkour.scss";
-// @import "../components/parkour/cardNoteParkour.scss";
+@import "../components/parkour/cardParkour.scss";
 @import "../components/parkour/displayComment.scss";
 
-@import "../components/admin/reportCard.scss";
 @import "../components/admin/noteCard.scss";
+@import "../components/admin/reportCard.scss";
 @import "../components/admin/reportCardForSearch.scss";
 
-// --- pages admin ---
+// --- PAGES ADMIN ---
 @import "../pages/admin/createEpreuve.scss";
 @import "../pages/admin/createParkour.scss";
 @import "../pages/admin/modifyEpreuve/modifyEpreuve.scss";
 @import "../pages/admin/modifyParkour/modifyParkour.scss";
+
 @import "../pages/admin/reports/recherche.scss";
 @import "../pages/admin/reports/user/userIdByReports.scss";
 
-// --- pages ---
+// --- PAGES ---
 @import "../pages/auth/auth.scss";
+@import "../pages/auth/resetPassword/resetPassword.scss";
+@import "../pages/auth/resetPassword/resetPasswordToken.scss";
 
 @import "../pages/epreuve/epreuveById.scss";
 @import "../pages/epreuve/allEpreuves.scss";
@@ -41,9 +45,7 @@
 @import "../pages/parkour/parkourMap.scss";
 
 @import "../pages/user/profil.scss";
-@import "../pages/user/favoris.scss";
-@import "../pages/user/notes.scss";
-@import "../pages/user/logout.scss";
+@import "../pages/user/favorisOrNotes.scss";
 
 @import "../pages/pageIndex.scss";
 @import "../pages/404.scss";

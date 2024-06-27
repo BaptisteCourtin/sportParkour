@@ -30,6 +30,16 @@ export default class ReportResolver {
     return result;
   }
 
+  // page search reports
+  @Authorized("ADMIN")
+  @Query(() => [UserEntity])
+  async getUsersWithReports() {
+    const result: UserEntity[] =
+      await new ReportService().getUsersWithReports();
+
+    return result;
+  }
+
   // ---
 
   // user sur malfrat comm
@@ -165,7 +175,7 @@ export default class ReportResolver {
   }
 
   // admin sur malfrat compte
-  // @Authorized("ADMIN")
+  @Authorized("ADMIN")
   @Mutation(() => MessageEntity)
   async deleteUserByAdmin(@Arg("malfratId") malfratId: string) {
     const returnMessage = new MessageEntity();
