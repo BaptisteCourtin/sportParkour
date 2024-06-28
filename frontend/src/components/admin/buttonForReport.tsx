@@ -68,7 +68,6 @@ const buttonForReport = ({
   });
 
   const handleSuppAndReport = () => {
-    console.log(reportId, malfratId, parkourId, commentaire);
     deleteNoteAndReport({
       variables: {
         reportId: +reportId,

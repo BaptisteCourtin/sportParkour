@@ -80,6 +80,10 @@ class UserEntity {
   @Column({ type: "varchar", length: 10, nullable: true })
   phone: string;
 
+  @Field({ nullable: true })
+  @Column({ type: "varchar", length: 250, nullable: true })
+  imageProfil: string;
+
   @Field(() => Role)
   @Column({
     type: "text",
@@ -168,6 +172,8 @@ export class UserUpdateEntity {
   codePostal: string;
   @Field({ nullable: true })
   phone: string;
+  @Field({ nullable: true })
+  imageProfil: string;
 }
 
 export default UserEntity;

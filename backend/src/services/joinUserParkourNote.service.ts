@@ -144,7 +144,6 @@ class JoinUserParkourNoteService {
   // supp user => modifier note parkour
   async deleteAllNoteByUserId(user_id: string) {
     const joinUserParkours = await this.getAllNoteByUserId(user_id);
-    console.log(joinUserParkours);
 
     joinUserParkours.forEach(async (element) => {
       await new ParkourService().deleteOneNoteByParkourId(

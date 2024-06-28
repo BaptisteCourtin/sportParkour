@@ -74,7 +74,6 @@ const SearchBarCommuneName = ({
 
   // pour afficher de base
   useEffect(() => {
-    console.log(userValue);
     if (userValue) {
       fetchCommuneByName(null, userValue, true);
     } else {
@@ -84,8 +83,6 @@ const SearchBarCommuneName = ({
 
   // quand on clique sur une commune
   function handlerChangeCommune(value: TypeCommune | null): void {
-    console.log(value);
-
     if (value != null) {
       setSelectedCommuneName(value?.nom);
       if (setSelectedCommuneCodePostal) {

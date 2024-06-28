@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently \"npm run startBack\" \"npm run startFront\"",
+    "dev": "concurrently \"npm run startBack\" \"npm run startFront\" \"npm run startImage\"",
     "startBack": "npm run start --prefix ./backend",
     "startFront": "npm run dev --prefix ./frontend",
+    "startImage": "npm run start --prefix ./images",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

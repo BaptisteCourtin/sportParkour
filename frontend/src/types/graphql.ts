@@ -416,6 +416,7 @@ export type UserEntity = {
   favorisParkours?: Maybe<Array<JoinUserParkourFavorisEntity>>;
   firstname: Scalars['String']['output'];
   id: Scalars['ID']['output'];
+  imageProfil?: Maybe<Scalars['String']['output']>;
   name: Scalars['String']['output'];
   nbReportAjoute?: Maybe<Scalars['Float']['output']>;
   nbReportValide?: Maybe<Scalars['Float']['output']>;
@@ -446,6 +447,7 @@ export type UserUpdateEntity = {
   codePostal?: InputMaybe<Scalars['String']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
   firstname?: InputMaybe<Scalars['String']['input']>;
+  imageProfil?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   phone?: InputMaybe<Scalars['String']['input']>;
 };
@@ -729,7 +731,7 @@ export type CheckResetTokenValidityQuery = { __typename?: 'Query', checkResetTok
 export type GetUserByTokenQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetUserByTokenQuery = { __typename?: 'Query', getUserByToken: { __typename?: 'UserEntity', id: string, name: string, firstname: string, email: string, city?: string | null, codePostal?: string | null, phone?: string | null } };
+export type GetUserByTokenQuery = { __typename?: 'Query', getUserByToken: { __typename?: 'UserEntity', id: string, name: string, firstname: string, email: string, city?: string | null, codePostal?: string | null, phone?: string | null, imageProfil?: string | null, nbReportValide?: number | null } };
 
 export type IsAdminQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2355,6 +2357,8 @@ export const GetUserByTokenDocument = gql`
     city
     codePostal
     phone
+    imageProfil
+    nbReportValide
   }
 }
     `;

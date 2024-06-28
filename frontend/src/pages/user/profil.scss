@@ -1,4 +1,13 @@
 .profil {
+  .photoProfil {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+
+    border: 1px var(--text2) solid;
+    border-radius: 50%;
+  }
+
   form.modifProfil {
     max-width: 700px;
     background-color: var(--middle);

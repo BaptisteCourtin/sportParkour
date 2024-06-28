@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
-import { object, string } from "yup";
+import { mixed, object, string } from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import {
@@ -25,8 +25,12 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { toast } from "react-hot-toast";
 
 import SearchBarCommuneName from "@/components/user/searchBarCommuneName";
+import axiosInstanceImage from "@/lib/axiosInstanceImage";
+import { FaUser } from "react-icons/fa6";
 
 let modifyUserSchema = object({
+  imageProfil: mixed<FileList>(),
+
   email: string()
     .email("Votre email doit être valide")
     .max(255)
@@ -47,6 +51,17 @@ let modifyUserSchema = object({
       }
     ),
 });
+
+// on peut pas utiliser UserUpdateEntity à cause du FileList qui va devenir un string
+type FormType = {
+  email: string;
+  name: string;
+  firstname: string;
+  phone?: string;
+  city?: string;
+  codePostal?: string;
+  imageProfil?: FileList;
+};
 
 // mettre les infos dans un form
 const profil = () => {
@@ -86,11 +101,12 @@ const profil = () => {
   }, [isModifMode]);
 
   // --- MODIFY USER ---
+  const [preview, setPreview] = useState<string>("");
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<FormType>({
     resolver: yupResolver(modifyUserSchema),
   });
 
@@ -101,7 +117,7 @@ const profil = () => {
     fetchPolicy: "no-cache",
   });
 
-  const handleModifyUser = (dataForm: UserUpdateEntity): void => {
+  const handleModifyUser = ({ imageProfil, ...dataForm }: FormType): void => {
     const { codePostal, ...data } = dataForm;
     const infos = {
       city: selectedCommuneName,
@@ -109,19 +125,51 @@ const profil = () => {
       ...data,
     };
 
-    modifyUser({
-      variables: { infos: infos },
-      onCompleted(data) {
-        if (data.modifyUser.success) {
-          setIsModifMode(false);
-          toast.success(data.modifyUser.message);
-          router.push(`/user/profil`);
-        }
-      },
-      onError(error) {
-        toast.error(error.message);
-      },
-    });
+    if (imageProfil?.length) {
+      const formData = new FormData();
+      formData.append("file", imageProfil[0], imageProfil[0].name);
+
+      axiosInstanceImage
+        .post("/uploadPhotoProfil", formData)
+        .then((resultImage) => {
+          console.log(resultImage);
+          const imageProfilLien =
+            "https://storage.cloud.google.com" +
+            resultImage.data.split("https://storage.googleapis.com")[1];
+          modifyUser({
+            variables: {
+              infos: { ...infos, imageProfil: imageProfilLien },
+            },
+            onCompleted(data) {
+              if (data.modifyUser.success) {
+                setIsModifMode(false);
+                toast.success(data.modifyUser.message);
+                router.push(`/user/profil`);
+              }
+            },
+            onError(error) {
+              toast.error(error.message);
+            },
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    } else {
+      modifyUser({
+        variables: { infos: infos },
+        onCompleted(data) {
+          if (data.modifyUser.success) {
+            setIsModifMode(false);
+            toast.success(data.modifyUser.message);
+            router.push(`/user/profil`);
+          }
+        },
+        onError(error) {
+          toast.error(error.message);
+        },
+      });
+    }
   };
 
   // --- DEAL WITH LENGTH DURING MODIF ---
@@ -194,6 +242,44 @@ const profil = () => {
                   className="modifProfil"
                   onSubmit={handleSubmit(handleModifyUser)}
                 >
+                  <div className="champ">
+                    <label htmlFor="img-profil">
+                      <input
+                        id="img-profil"
+                        type="file"
+                        accept="image/*"
+                        {...register("imageProfil", {
+                          onChange(e) {
+                            setPreview(URL.createObjectURL(e.target.files[0]));
+                          },
+                        })}
+                        placeholder="Photo"
+                      />
+
+                      {data.getUserByToken.imageProfil ? (
+                        <img
+                          className="photoProfil"
+                          src={data.getUserByToken.imageProfil}
+                          alt="avatar"
+                        />
+                      ) : (
+                        <FaUser />
+                      )}
+                    </label>
+
+                    <p>{errors?.imageProfil?.message}</p>
+                    {preview && (
+                      <div>
+                        <img
+                          src={preview}
+                          alt="preview"
+                          width={50}
+                          height={50}
+                        />
+                      </div>
+                    )}
+                  </div>
+
                   <div className="champ">
                     <TextField
                       className="mui-input"
@@ -342,6 +428,15 @@ const profil = () => {
             ) : (
               // --- profil ---
               <section className="seeProfil">
+                {data.getUserByToken.imageProfil ? (
+                  <img
+                    className="photoProfil"
+                    src={data.getUserByToken.imageProfil}
+                    alt="avatar"
+                  />
+                ) : (
+                  <FaUser className="photoProfil" />
+                )}
                 <br />
                 <br />
                 <p>nom : {data.getUserByToken.name}</p>

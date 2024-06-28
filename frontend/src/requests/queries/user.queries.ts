@@ -10,6 +10,8 @@ export const GET_USER_BY_TOKEN = gql`
       city
       codePostal
       phone
+      imageProfil
+      nbReportValide
     }
   }
 `;
