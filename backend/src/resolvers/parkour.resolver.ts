@@ -1,12 +1,12 @@
 import { Arg, Authorized, Mutation, Query, Resolver } from "type-graphql";
+
 import ParkourEntity, {
   ParkourCreateEntity,
   ParkourUpdateEntity,
 } from "../entities/parkour.entity";
-import ParkourService from "../services/parkour.service";
 import { MessageEntity } from "../entities/message.entity";
-import JoinUserParkourNoteService from "../services/joinUserParkourNote.service";
-import JoinUserParkourFavorisService from "../services/joinUserParkourFavoris.service";
+
+import ParkourService from "../services/parkour.service";
 
 @Resolver()
 export default class ParkourResolver {

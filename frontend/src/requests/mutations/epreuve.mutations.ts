@@ -17,15 +17,21 @@ export const CREATE_EPREUVE = gql`
 //     "mediumToDo": null,
 //     "hardToDo": null,
 //     "videoLink": null
+//     "images": [
+//       {
+//         "lien": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzDLj5l4O_Cp9vH7LoUn6wP9fN2fuZVg10w&s",
+//         "isCouverture": false
+//       }
+//     ]
 //   }
 // }
 
 export const MODIFY_EPREUVE = gql`
   mutation ModifyEpreuve(
-    $infos: EpreuveUpdateEntity!
     $modifyEpreuveId: Float!
+    $infos: EpreuveUpdateEntity!
   ) {
-    modifyEpreuve(infos: $infos, id: $modifyEpreuveId) {
+    modifyEpreuve(id: $modifyEpreuveId, infos: $infos) {
       id
       title
     }
@@ -41,6 +47,13 @@ export const MODIFY_EPREUVE = gql`
 //     "mediumToDo": null,
 //     "hardToDo": null,
 //     "videoLink": null
+//     "images": [
+//       {
+//         "lien": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzDLj5l4O_Cp9vH7LoUn6wP9fN2fuZVg10w&s",
+//         "isCouverture": false
+//       }
+//     ]
+//     "deletedImageIds": [28,27]
 //   },
 // }
 

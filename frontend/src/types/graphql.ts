@@ -29,6 +29,7 @@ export type EpreuveCreateEntity = {
   description?: InputMaybe<Scalars['String']['input']>;
   easyToDo?: InputMaybe<Scalars['String']['input']>;
   hardToDo?: InputMaybe<Scalars['String']['input']>;
+  images?: InputMaybe<Array<ImageEpreuveCreateEntity>>;
   mediumToDo?: InputMaybe<Scalars['String']['input']>;
   title: Scalars['String']['input'];
   videoLink?: InputMaybe<Scalars['String']['input']>;
@@ -48,28 +49,40 @@ export type EpreuveEntity = {
 };
 
 export type EpreuveUpdateEntity = {
+  deletedImageIds?: InputMaybe<Array<Scalars['Float']['input']>>;
   description?: InputMaybe<Scalars['String']['input']>;
   easyToDo?: InputMaybe<Scalars['String']['input']>;
   hardToDo?: InputMaybe<Scalars['String']['input']>;
+  images?: InputMaybe<Array<ImageEpreuveCreateEntity>>;
   mediumToDo?: InputMaybe<Scalars['String']['input']>;
   title?: InputMaybe<Scalars['String']['input']>;
   videoLink?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type ImageEpreuveCreateEntity = {
+  isCouverture: Scalars['Boolean']['input'];
+  lien: Scalars['String']['input'];
+};
+
 export type ImageEpreuveEntity = {
   __typename?: 'ImageEpreuveEntity';
+  epreuve_id: EpreuveEntity;
   id: Scalars['ID']['output'];
-  id_epreuve: EpreuveEntity;
   isCouverture: Scalars['Boolean']['output'];
   lien: Scalars['String']['output'];
+};
+
+export type ImageParkourCreateEntity = {
+  isCouverture: Scalars['Boolean']['input'];
+  lien: Scalars['String']['input'];
 };
 
 export type ImageParkourEntity = {
   __typename?: 'ImageParkourEntity';
   id: Scalars['ID']['output'];
-  id_parkour: ParkourEntity;
   isCouverture: Scalars['Boolean']['output'];
   lien: Scalars['String']['output'];
+  parkour_id: ParkourEntity;
 };
 
 export type JoinUserParkourFavorisEntity = {
@@ -138,7 +151,7 @@ export type MutationCreateEpreuveArgs = {
 
 
 export type MutationCreateJoinUserParkourFavorisArgs = {
-  idParkour: Scalars['Float']['input'];
+  parkourId: Scalars['Float']['input'];
 };
 
 
@@ -158,12 +171,12 @@ export type MutationDeleteEpreuveArgs = {
 
 
 export type MutationDeleteJoinUserParkourFavorisArgs = {
-  idParkour: Scalars['Float']['input'];
+  parkourId: Scalars['Float']['input'];
 };
 
 
 export type MutationDeleteJoinUserParkourNoteArgs = {
-  idParkour: Scalars['Float']['input'];
+  parkourId: Scalars['Float']['input'];
 };
 
 
@@ -235,6 +248,7 @@ export type ParkourCreateEntity = {
   description?: InputMaybe<Scalars['String']['input']>;
   difficulty?: InputMaybe<Difficulty>;
   epreuves?: InputMaybe<Array<Scalars['Int']['input']>>;
+  images?: InputMaybe<Array<ImageParkourCreateEntity>>;
   length?: InputMaybe<Scalars['Float']['input']>;
   start: Scalars['String']['input'];
   time?: InputMaybe<Scalars['Float']['input']>;
@@ -260,9 +274,11 @@ export type ParkourEntity = {
 
 export type ParkourUpdateEntity = {
   city?: InputMaybe<Scalars['String']['input']>;
+  deletedImageIds?: InputMaybe<Array<Scalars['Float']['input']>>;
   description?: InputMaybe<Scalars['String']['input']>;
   difficulty?: InputMaybe<Difficulty>;
   epreuves?: InputMaybe<Array<Scalars['Int']['input']>>;
+  images?: InputMaybe<Array<ImageParkourCreateEntity>>;
   length?: InputMaybe<Scalars['Float']['input']>;
   start?: InputMaybe<Scalars['String']['input']>;
   time?: InputMaybe<Scalars['Float']['input']>;
@@ -374,12 +390,10 @@ export type ReportEntity = {
   commentaireEnFaute: Scalars['String']['output'];
   createdAt: Scalars['DateTimeISO']['output'];
   id: Scalars['ID']['output'];
-  malfrat?: Maybe<UserEntity>;
-  malfrat_id?: Maybe<Scalars['String']['output']>;
+  malfrat: UserEntity;
+  malfrat_id: Scalars['String']['output'];
   parkour?: Maybe<ParkourEntity>;
   parkour_id?: Maybe<Scalars['Float']['output']>;
-  reporter?: Maybe<UserEntity>;
-  reporter_id?: Maybe<Scalars['String']['output']>;
   status: ReportStatus;
 };
 
@@ -467,8 +481,8 @@ export type CreateEpreuveMutationVariables = Exact<{
 export type CreateEpreuveMutation = { __typename?: 'Mutation', createEpreuve: { __typename?: 'EpreuveEntity', id: string, title: string } };
 
 export type ModifyEpreuveMutationVariables = Exact<{
-  infos: EpreuveUpdateEntity;
   modifyEpreuveId: Scalars['Float']['input'];
+  infos: EpreuveUpdateEntity;
 }>;
 
 
@@ -482,14 +496,14 @@ export type DeleteEpreuveMutationVariables = Exact<{
 export type DeleteEpreuveMutation = { __typename?: 'Mutation', deleteEpreuve: { __typename?: 'MessageEntity', message: string, success: boolean } };
 
 export type CreateJoinUserParkourFavorisMutationVariables = Exact<{
-  idParkour: Scalars['Float']['input'];
+  parkourId: Scalars['Float']['input'];
 }>;
 
 
 export type CreateJoinUserParkourFavorisMutation = { __typename?: 'Mutation', createJoinUserParkourFavoris: { __typename?: 'MessageEntity', message: string, success: boolean } };
 
 export type DeleteJoinUserParkourFavorisMutationVariables = Exact<{
-  idParkour: Scalars['Float']['input'];
+  parkourId: Scalars['Float']['input'];
 }>;
 
 
@@ -503,7 +517,7 @@ export type CreateJoinUserParkourNoteMutationVariables = Exact<{
 export type CreateJoinUserParkourNoteMutation = { __typename?: 'Mutation', createJoinUserParkourNote: { __typename?: 'MessageEntity', message: string, success: boolean } };
 
 export type DeleteJoinUserParkourNoteMutationVariables = Exact<{
-  idParkour: Scalars['Float']['input'];
+  parkourId: Scalars['Float']['input'];
 }>;
 
 
@@ -659,7 +673,7 @@ export type GetParkourByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetParkourByIdQuery = { __typename?: 'Query', getParkourById: { __typename?: 'ParkourEntity', id: string, title: string, description?: string | null, time?: number | null, length?: number | null, difficulty?: Difficulty | null, city?: string | null, start: string, note?: number | null, nbVote?: number | null, images?: Array<{ __typename?: 'ImageParkourEntity', id: string, lien: string, isCouverture: boolean }> | null, notesParkours?: Array<{ __typename?: 'JoinUserParkourNoteEntity', note: number, commentaire?: string | null, user: { __typename?: 'UserEntity', id: string, name: string, firstname: string } }> | null, epreuves?: Array<{ __typename?: 'EpreuveEntity', id: string, title: string, images?: Array<{ __typename?: 'ImageEpreuveEntity', id: string, lien: string, isCouverture: boolean }> | null }> | null } };
+export type GetParkourByIdQuery = { __typename?: 'Query', getParkourById: { __typename?: 'ParkourEntity', id: string, title: string, description?: string | null, time?: number | null, length?: number | null, difficulty?: Difficulty | null, city?: string | null, start: string, note?: number | null, nbVote?: number | null, images?: Array<{ __typename?: 'ImageParkourEntity', id: string, lien: string, isCouverture: boolean }> | null, notesParkours?: Array<{ __typename?: 'JoinUserParkourNoteEntity', note: number, commentaire?: string | null, user: { __typename?: 'UserEntity', id: string, name: string, firstname: string, imageProfil?: string | null } }> | null, epreuves?: Array<{ __typename?: 'EpreuveEntity', id: string, title: string, images?: Array<{ __typename?: 'ImageEpreuveEntity', id: string, lien: string, isCouverture: boolean }> | null }> | null } };
 
 export type GetAllParkourForMapQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -707,19 +721,19 @@ export type GetUserByIdForPageReportQueryVariables = Exact<{
 }>;
 
 
-export type GetUserByIdForPageReportQuery = { __typename?: 'Query', getUserByIdForPageReport: { __typename?: 'UserEntity', id: string, name: string, firstname: string, email: string, nbReportValide?: number | null, nbReportAjoute?: number | null, notesParkours?: Array<{ __typename?: 'JoinUserParkourNoteEntity', commentaire?: string | null, parkour: { __typename?: 'ParkourEntity', id: string, title: string } }> | null, reports?: Array<{ __typename?: 'ReportEntity', id: string, commentaireEnFaute: string, createdAt: any, status: ReportStatus, parkour?: { __typename?: 'ParkourEntity', id: string, title: string } | null, reporter?: { __typename?: 'UserEntity', id: string, name: string, firstname: string, nbReportAjoute?: number | null } | null }> | null } };
+export type GetUserByIdForPageReportQuery = { __typename?: 'Query', getUserByIdForPageReport: { __typename?: 'UserEntity', id: string, name: string, firstname: string, email: string, nbReportValide?: number | null, nbReportAjoute?: number | null, imageProfil?: string | null, notesParkours?: Array<{ __typename?: 'JoinUserParkourNoteEntity', commentaire?: string | null, parkour: { __typename?: 'ParkourEntity', id: string, title: string } }> | null, reports?: Array<{ __typename?: 'ReportEntity', id: string, commentaireEnFaute: string, createdAt: any, status: ReportStatus, parkour?: { __typename?: 'ParkourEntity', id: string, title: string } | null }> | null } };
 
 export type GetReportsBySearchQueryVariables = Exact<{
   status: Scalars['String']['input'];
 }>;
 
 
-export type GetReportsBySearchQuery = { __typename?: 'Query', getReportsBySearch: Array<{ __typename?: 'ReportEntity', id: string, commentaireEnFaute: string, createdAt: any, status: ReportStatus, reporter?: { __typename?: 'UserEntity', id: string, name: string, firstname: string, nbReportAjoute?: number | null } | null, malfrat?: { __typename?: 'UserEntity', id: string, name: string, firstname: string, nbReportValide?: number | null } | null, parkour?: { __typename?: 'ParkourEntity', id: string, title: string } | null }> };
+export type GetReportsBySearchQuery = { __typename?: 'Query', getReportsBySearch: Array<{ __typename?: 'ReportEntity', id: string, commentaireEnFaute: string, createdAt: any, status: ReportStatus, malfrat: { __typename?: 'UserEntity', id: string, name: string, firstname: string, nbReportValide?: number | null, imageProfil?: string | null }, parkour?: { __typename?: 'ParkourEntity', id: string, title: string } | null }> };
 
 export type GetUsersWithReportsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetUsersWithReportsQuery = { __typename?: 'Query', getUsersWithReports: Array<{ __typename?: 'UserEntity', id: string, name: string, firstname: string, nbReportValide?: number | null, nbReportAjoute?: number | null }> };
+export type GetUsersWithReportsQuery = { __typename?: 'Query', getUsersWithReports: Array<{ __typename?: 'UserEntity', id: string, name: string, firstname: string, nbReportValide?: number | null, nbReportAjoute?: number | null, imageProfil?: string | null }> };
 
 export type CheckResetTokenValidityQueryVariables = Exact<{
   token: Scalars['String']['input'];
@@ -813,8 +827,8 @@ export type CreateEpreuveMutationHookResult = ReturnType<typeof useCreateEpreuve
 export type CreateEpreuveMutationResult = Apollo.MutationResult<CreateEpreuveMutation>;
 export type CreateEpreuveMutationOptions = Apollo.BaseMutationOptions<CreateEpreuveMutation, CreateEpreuveMutationVariables>;
 export const ModifyEpreuveDocument = gql`
-    mutation ModifyEpreuve($infos: EpreuveUpdateEntity!, $modifyEpreuveId: Float!) {
-  modifyEpreuve(infos: $infos, id: $modifyEpreuveId) {
+    mutation ModifyEpreuve($modifyEpreuveId: Float!, $infos: EpreuveUpdateEntity!) {
+  modifyEpreuve(id: $modifyEpreuveId, infos: $infos) {
     id
     title
   }
@@ -835,8 +849,8 @@ export type ModifyEpreuveMutationFn = Apollo.MutationFunction<ModifyEpreuveMutat
  * @example
  * const [modifyEpreuveMutation, { data, loading, error }] = useModifyEpreuveMutation({
  *   variables: {
- *      infos: // value for 'infos'
  *      modifyEpreuveId: // value for 'modifyEpreuveId'
+ *      infos: // value for 'infos'
  *   },
  * });
  */
@@ -882,8 +896,8 @@ export type DeleteEpreuveMutationHookResult = ReturnType<typeof useDeleteEpreuve
 export type DeleteEpreuveMutationResult = Apollo.MutationResult<DeleteEpreuveMutation>;
 export type DeleteEpreuveMutationOptions = Apollo.BaseMutationOptions<DeleteEpreuveMutation, DeleteEpreuveMutationVariables>;
 export const CreateJoinUserParkourFavorisDocument = gql`
-    mutation CreateJoinUserParkourFavoris($idParkour: Float!) {
-  createJoinUserParkourFavoris(idParkour: $idParkour) {
+    mutation CreateJoinUserParkourFavoris($parkourId: Float!) {
+  createJoinUserParkourFavoris(parkourId: $parkourId) {
     message
     success
   }
@@ -904,7 +918,7 @@ export type CreateJoinUserParkourFavorisMutationFn = Apollo.MutationFunction<Cre
  * @example
  * const [createJoinUserParkourFavorisMutation, { data, loading, error }] = useCreateJoinUserParkourFavorisMutation({
  *   variables: {
- *      idParkour: // value for 'idParkour'
+ *      parkourId: // value for 'parkourId'
  *   },
  * });
  */
@@ -916,8 +930,8 @@ export type CreateJoinUserParkourFavorisMutationHookResult = ReturnType<typeof u
 export type CreateJoinUserParkourFavorisMutationResult = Apollo.MutationResult<CreateJoinUserParkourFavorisMutation>;
 export type CreateJoinUserParkourFavorisMutationOptions = Apollo.BaseMutationOptions<CreateJoinUserParkourFavorisMutation, CreateJoinUserParkourFavorisMutationVariables>;
 export const DeleteJoinUserParkourFavorisDocument = gql`
-    mutation DeleteJoinUserParkourFavoris($idParkour: Float!) {
-  deleteJoinUserParkourFavoris(idParkour: $idParkour) {
+    mutation DeleteJoinUserParkourFavoris($parkourId: Float!) {
+  deleteJoinUserParkourFavoris(parkourId: $parkourId) {
     message
     success
   }
@@ -938,7 +952,7 @@ export type DeleteJoinUserParkourFavorisMutationFn = Apollo.MutationFunction<Del
  * @example
  * const [deleteJoinUserParkourFavorisMutation, { data, loading, error }] = useDeleteJoinUserParkourFavorisMutation({
  *   variables: {
- *      idParkour: // value for 'idParkour'
+ *      parkourId: // value for 'parkourId'
  *   },
  * });
  */
@@ -984,8 +998,8 @@ export type CreateJoinUserParkourNoteMutationHookResult = ReturnType<typeof useC
 export type CreateJoinUserParkourNoteMutationResult = Apollo.MutationResult<CreateJoinUserParkourNoteMutation>;
 export type CreateJoinUserParkourNoteMutationOptions = Apollo.BaseMutationOptions<CreateJoinUserParkourNoteMutation, CreateJoinUserParkourNoteMutationVariables>;
 export const DeleteJoinUserParkourNoteDocument = gql`
-    mutation DeleteJoinUserParkourNote($idParkour: Float!) {
-  deleteJoinUserParkourNote(idParkour: $idParkour) {
+    mutation DeleteJoinUserParkourNote($parkourId: Float!) {
+  deleteJoinUserParkourNote(parkourId: $parkourId) {
     message
     success
   }
@@ -1006,7 +1020,7 @@ export type DeleteJoinUserParkourNoteMutationFn = Apollo.MutationFunction<Delete
  * @example
  * const [deleteJoinUserParkourNoteMutation, { data, loading, error }] = useDeleteJoinUserParkourNoteMutation({
  *   variables: {
- *      idParkour: // value for 'idParkour'
+ *      parkourId: // value for 'parkourId'
  *   },
  * });
  */
@@ -1881,6 +1895,7 @@ export const GetParkourByIdDocument = gql`
         id
         name
         firstname
+        imageProfil
       }
     }
     epreuves {
@@ -2145,6 +2160,7 @@ export const GetUserByIdForPageReportDocument = gql`
     email
     nbReportValide
     nbReportAjoute
+    imageProfil
     notesParkours {
       commentaire
       parkour {
@@ -2160,12 +2176,6 @@ export const GetUserByIdForPageReportDocument = gql`
       parkour {
         id
         title
-      }
-      reporter {
-        id
-        name
-        firstname
-        nbReportAjoute
       }
     }
   }
@@ -2211,17 +2221,12 @@ export const GetReportsBySearchDocument = gql`
     commentaireEnFaute
     createdAt
     status
-    reporter {
-      id
-      name
-      firstname
-      nbReportAjoute
-    }
     malfrat {
       id
       name
       firstname
       nbReportValide
+      imageProfil
     }
     parkour {
       id
@@ -2271,6 +2276,7 @@ export const GetUsersWithReportsDocument = gql`
     firstname
     nbReportValide
     nbReportAjoute
+    imageProfil
   }
 }
     `;

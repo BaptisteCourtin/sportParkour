@@ -19,15 +19,14 @@ const reportCardForSearch = ({ report }: any) => {
       <p>{report.status}</p>
       <br />
       <Link href={`/admin/reports/user/${report.malfrat?.id}`}>
+        {report.malfrat?.imageProfil ? (
+          <img src={report.malfrat?.imageProfil} />
+        ) : (
+          <img src="/userDefault.png" />
+        )}
         <p>{report.malfrat?.name}</p>
         <p>{report.malfrat?.firstname}</p>
         <p>{report.malfrat?.nbReportValide}</p>
-      </Link>
-      <br />
-      <Link href={`/admin/reports/user/${report.reporter?.id}`}>
-        <p>{report.reporter?.name}</p>
-        <p>{report.reporter?.firstname}</p>
-        <p>{report.reporter?.nbReportAjoute}</p>
       </Link>
       <br />
       <Link href={`/parkour/${report.parkour?.id}`}>

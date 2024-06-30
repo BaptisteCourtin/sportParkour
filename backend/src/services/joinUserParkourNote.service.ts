@@ -4,6 +4,7 @@ import datasource from "../lib/datasource";
 import JoinUserParkourNoteEntity, {
   JoinUserParkourNoteCreateEntity,
 } from "../entities/joinUserParkourNote.entity";
+
 import ParkourService from "./parkour.service";
 
 class JoinUserParkourNoteService {
@@ -13,11 +14,11 @@ class JoinUserParkourNoteService {
     this.db = datasource.getRepository(JoinUserParkourNoteEntity);
   }
 
-  async getNoteByUserIdAndParkourId(user_id: string, parkour_id: number) {
+  async getNoteByUserIdAndParkourId(userId: string, parkourId: number) {
     const result: JoinUserParkourNoteEntity | null = await this.db.findOne({
       where: {
-        user_id: user_id,
-        parkour_id: parkour_id,
+        user_id: userId,
+        parkour_id: parkourId,
       },
     });
 
@@ -28,11 +29,11 @@ class JoinUserParkourNoteService {
     return result;
   }
 
-  async getNoteByUserIdAndParkourIdOrNull(user_id: string, parkour_id: number) {
+  async getNoteByUserIdAndParkourIdOrNull(userId: string, parkourId: number) {
     const result: JoinUserParkourNoteEntity | null = await this.db.findOne({
       where: {
-        user_id: user_id,
-        parkour_id: parkour_id,
+        user_id: userId,
+        parkour_id: parkourId,
       },
     });
 
@@ -60,11 +61,11 @@ class JoinUserParkourNoteService {
   }
 
   // pour delete all
-  async getAllNoteByUserId(user_id: string) {
+  async getAllNoteByUserId(userId: string) {
     const allJoinUserParkours: JoinUserParkourNoteEntity[] | null =
       await this.db.find({
         where: {
-          user_id: user_id,
+          user_id: userId,
         },
       });
 
@@ -76,11 +77,11 @@ class JoinUserParkourNoteService {
   }
 
   // pour delete all
-  async getAllNoteByParkourId(parkour_id: number) {
+  async getAllNoteByParkourId(parkourId: number) {
     const allJoinUserParkours: JoinUserParkourNoteEntity[] | null =
       await this.db.find({
         where: {
-          parkour_id: parkour_id,
+          parkour_id: parkourId,
         },
       });
 
@@ -93,6 +94,7 @@ class JoinUserParkourNoteService {
 
   // ---
 
+  // fait aussi la modif
   async createNote(
     userId: string,
     data: Partial<JoinUserParkourNoteCreateEntity>
@@ -114,36 +116,23 @@ class JoinUserParkourNoteService {
     );
   }
 
-  async modifyNote(
-    userId: string,
-    infos: Partial<JoinUserParkourNoteCreateEntity>
-  ) {
+  async deleteNoteByUserIdAndParkourId(userId: string, parkourId: number) {
     const joinUserParkour = await this.getNoteByUserIdAndParkourId(
       userId,
-      infos.parkour_id as number
-    );
-
-    const modifyJoinUserParkour = this.db.merge(joinUserParkour, infos);
-    return await this.db.save(modifyJoinUserParkour);
-  }
-
-  async deleteNoteByUserIdAndParkourId(user_id: string, parkours_id: number) {
-    const joinUserParkour = await this.getNoteByUserIdAndParkourId(
-      user_id,
-      parkours_id
+      parkourId
     );
 
     await this.db.remove(joinUserParkour);
 
     await new ParkourService().deleteOneNoteByParkourId(
       joinUserParkour.note,
-      parkours_id
+      parkourId
     );
   }
 
   // supp user => modifier note parkour
-  async deleteAllNoteByUserId(user_id: string) {
-    const joinUserParkours = await this.getAllNoteByUserId(user_id);
+  async deleteAllNoteByUserId(userId: string) {
+    const joinUserParkours = await this.getAllNoteByUserId(userId);
 
     joinUserParkours.forEach(async (element) => {
       await new ParkourService().deleteOneNoteByParkourId(
@@ -154,8 +143,8 @@ class JoinUserParkourNoteService {
   }
 
   // supp parkour
-  async deleteAllNoteByParkourId(parkour_id: number) {
-    const joinUserParkours = await this.getAllNoteByParkourId(parkour_id);
+  async deleteAllNoteByParkourId(parkourId: number) {
+    const joinUserParkours = await this.getAllNoteByParkourId(parkourId);
     await this.db.remove(joinUserParkours);
   }
 }

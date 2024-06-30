@@ -4,11 +4,16 @@ import { useForm } from "react-hook-form";
 import { object, string } from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-import { EpreuveCreateEntity, useCreateEpreuveMutation } from "@/types/graphql";
+import {
+  EpreuveCreateEntity,
+  ImageEpreuveCreateEntity,
+  useCreateEpreuveMutation,
+} from "@/types/graphql";
 
 import TextField from "@mui/material/TextField";
 
 import { toast } from "react-hot-toast";
+import axiosInstanceImage from "@/lib/axiosInstanceImage";
 
 let createEpreuveSchema = object({
   title: string()
@@ -42,10 +47,49 @@ const createEpreuve = () => {
     fetchPolicy: "no-cache",
   });
 
-  const handleCreateEpreuve = (dataForm: EpreuveCreateEntity): void => {
-    if (dataForm.title) {
+  const uploadImages = async (): Promise<ImageEpreuveCreateEntity[]> => {
+    try {
+      const uploadPromises = filesToUpload.map(async (image) => {
+        const formData = new FormData();
+        formData.append("file", image, image.name);
+
+        const resultImage = await axiosInstanceImage.post(
+          "/uploadPhotoProfil",
+          formData
+        );
+        const imageLien =
+          "https://storage.cloud.google.com" +
+          resultImage.data.split("https://storage.googleapis.com")[1];
+
+        return {
+          lien: imageLien,
+          isCouverture: false,
+        };
+      });
+
+      return await Promise.all(uploadPromises);
+    } catch (error) {
+      console.error("Erreur lors de l'upload des images :", error);
+      return [];
+    }
+  };
+
+  const handleCreateEpreuve = async (
+    dataForm: EpreuveCreateEntity
+  ): Promise<void> => {
+    let allLienImages: ImageEpreuveCreateEntity[] = [];
+    if (filesToUpload.length !== 0) {
+      allLienImages = await uploadImages();
+    }
+
+    const updatedDataForm = {
+      images: allLienImages,
+      ...dataForm,
+    };
+
+    if (updatedDataForm.title) {
       createEpreuve({
-        variables: { infos: dataForm },
+        variables: { infos: updatedDataForm },
         onCompleted(data) {
           if (data.createEpreuve.id) {
             toast.success(
@@ -75,9 +119,50 @@ const createEpreuve = () => {
     setValues({ ...values, [name]: value });
   };
 
+  // --- UPLOAD IMAGES ---
+  const [filesToUpload, setFilesToUpload] = useState<File[]>([]); // à envoyer dans le modify en temps que "images"
+
+  const addSingleFileToPreview = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setFilesToUpload((prevFiles) => [...prevFiles, file]);
+    }
+  };
+
+  const removeImage = (index: number) => {
+    setFilesToUpload((prevFiles) => prevFiles.filter((_, i) => i !== index));
+  };
+
   return (
     <main className="createEpreuve">
       <h1>Créer une épreuve</h1>
+
+      <div>
+        {/* remove and preview */}
+        {filesToUpload.map((file, index) => (
+          <div key={index}>
+            <img src={URL.createObjectURL(file)} alt={`Preview ${file.name}`} />
+            <span className="remove_img" onClick={() => removeImage(index)}>
+              X
+            </span>
+          </div>
+        ))}
+
+        {/* input */}
+        {filesToUpload.length > 3 ? null : (
+          <div>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                addSingleFileToPreview(e);
+              }}
+            />
+          </div>
+        )}
+      </div>
+
+      {/* --- */}
 
       <form onSubmit={handleSubmit(handleCreateEpreuve)}>
         <div className="champ">

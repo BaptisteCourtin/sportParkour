@@ -7,8 +7,9 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import User from "./user.entity";
 import { Field, InputType, ObjectType } from "type-graphql";
+
+import User from "./user.entity";
 import Mailer from "../lib/mailer";
 
 import dotenv from "dotenv";
@@ -39,12 +40,8 @@ export default class ResetPasswordEntity {
   resetToken: string;
 
   @Field()
-  @Column({ type: "datetime" })
+  @Column()
   expirationDate: Date;
-
-  // @Field()
-  // @Column({ type: "timestamp" })
-  // expirationDate: Date;
 
   @Field(() => User)
   @OneToOne(() => User)

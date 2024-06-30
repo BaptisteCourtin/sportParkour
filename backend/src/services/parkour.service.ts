@@ -1,12 +1,4 @@
-import {
-  Between,
-  LessThan,
-  LessThanOrEqual,
-  Like,
-  MoreThan,
-  MoreThanOrEqual,
-  Repository,
-} from "typeorm";
+import { Between, Like, MoreThanOrEqual, Repository } from "typeorm";
 import datasource from "../lib/datasource";
 
 import ParkourEntity, {
@@ -17,12 +9,15 @@ import ParkourEntity, {
 import EpreuveEntity from "../entities/epreuve.entity";
 
 import EpreuveService from "./epreuve.service";
+import ImageParkourEntity from "../entities/imageParkour.entity";
 
 class ParkourService {
   db: Repository<ParkourEntity>;
+  dbImage: Repository<ImageParkourEntity>;
 
   constructor() {
     this.db = datasource.getRepository(ParkourEntity);
+    this.dbImage = datasource.getRepository(ImageParkourEntity);
   }
 
   async getParkourById(id: number) {
@@ -185,8 +180,8 @@ class ParkourService {
 
   // ---
 
-  async addOneNoteByParkourId(parkour_id: number, note: number) {
-    const parkour = await this.getParkourById(parkour_id);
+  async addOneNoteByParkourId(parkourId: number, note: number) {
+    const parkour = await this.getParkourById(parkourId);
 
     const newNbVote = parkour.nbVote + 1;
     const newNote = (parkour.note * parkour.nbVote + note) / newNbVote;
@@ -202,10 +197,10 @@ class ParkourService {
 
   async changeOneNoteByParkourId(
     ancienneNoteUser: number,
-    parkour_id: number,
+    parkourId: number,
     newNoteUser: number
   ) {
-    const parkour = await this.getParkourById(parkour_id);
+    const parkour = await this.getParkourById(parkourId);
 
     const newNoteParkour =
       (parkour.note * parkour.nbVote - ancienneNoteUser + newNoteUser) /
@@ -220,8 +215,8 @@ class ParkourService {
     await this.db.save(newInfos);
   }
 
-  async deleteOneNoteByParkourId(ancienneNoteUser: number, parkour_id: number) {
-    const parkour = await this.getParkourById(parkour_id);
+  async deleteOneNoteByParkourId(ancienneNoteUser: number, parkourId: number) {
+    const parkour = await this.getParkourById(parkourId);
     let newNoteParkour: number = 0;
 
     const newNbVote = parkour.nbVote - 1;
@@ -248,7 +243,19 @@ class ParkourService {
     }
 
     const newParkour = this.db.create({ ...data, epreuves });
-    return await this.db.save(newParkour);
+    await this.db.save(newParkour);
+
+    if (data.images && data.images.length > 0) {
+      for (const imageData of data.images) {
+        const newImage = this.dbImage.create({
+          ...imageData,
+          parkour_id: newParkour,
+        });
+        await this.dbImage.save(newImage);
+      }
+    }
+
+    return newParkour;
   }
 
   async modifyParkour(id: number, data: ParkourUpdateEntity) {
@@ -270,7 +277,29 @@ class ParkourService {
       parkour.epreuves = [];
     }
 
-    return await this.db.save(parkour);
+    await this.db.save(parkour);
+
+    // Gérer les images
+    if (data.images || data.deletedImageIds) {
+      // Supprimer les images si nécessaire
+      if (data.deletedImageIds && data.deletedImageIds.length > 0) {
+        await this.dbImage.delete(data.deletedImageIds);
+      }
+
+      // Ajouter les images
+      if (data.images && data.images.length > 0) {
+        for (const imageData of data.images) {
+          // Création d'une nouvelle image
+          const newImage = this.dbImage.create({
+            ...imageData,
+            parkour_id: parkour,
+          });
+          await this.dbImage.save(newImage);
+        }
+      }
+    }
+
+    return parkour;
   }
 
   async deleteParkour(id: number) {

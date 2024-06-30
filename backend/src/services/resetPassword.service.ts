@@ -1,10 +1,11 @@
 import { Repository } from "typeorm";
 import datasource from "../lib/datasource";
-import User from "../entities/user.entity";
-import ResetPasswordEntity from "../entities/resetPassword.entity";
-import UserService from "./user.service";
 import { uuid } from "uuidv4";
+
+import ResetPasswordEntity from "../entities/resetPassword.entity";
 import UserEntity from "../entities/user.entity";
+
+import UserService from "./user.service";
 
 export default class ResetPasswordService {
   db: Repository<ResetPasswordEntity>;

@@ -6,8 +6,8 @@ import {
   PrimaryColumn,
   Unique,
 } from "typeorm";
-import { Max, Min } from "class-validator";
 import { Field, ID, InputType, ObjectType } from "type-graphql";
+import { Max, Min } from "class-validator";
 
 import UserEntity from "./user.entity";
 import ParkourEntity from "./parkour.entity";

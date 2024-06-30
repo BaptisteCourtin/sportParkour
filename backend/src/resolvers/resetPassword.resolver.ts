@@ -1,12 +1,13 @@
 import { Arg, Mutation, Query, Resolver } from "type-graphql";
+
 import { MessageEntity } from "../entities/message.entity";
 import ResetPasswordEntity, {
   ResetPasswordUpdateEntity,
 } from "../entities/resetPassword.entity";
+
 import ResetPasswordService from "../services/resetPassword.service";
 
 // pas de @auth car non connecté
-
 @Resolver()
 export default class ResetPasswordResolver {
   // utilisé sur resetPassword

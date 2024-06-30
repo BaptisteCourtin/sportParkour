@@ -9,12 +9,12 @@ import {
 import { Field, ID, InputType, Int, ObjectType } from "type-graphql";
 import { Max, Min } from "class-validator";
 
-import EpreuveEntity from "./epreuve.entity";
-import ImageParkourEntity from "./imageParkour.entity";
-
 import { Difficulty } from "../enum/difficulty.enum";
+import EpreuveEntity from "./epreuve.entity";
+import ImageParkourEntity, {
+  ImageParkourCreateEntity,
+} from "./imageParkour.entity";
 import JoinUserParkourNoteEntity from "./joinUserParkourNote.entity";
-import { ReportEntity } from "./reportEntity.entity";
 
 @Entity("parkour")
 @ObjectType()
@@ -89,7 +89,7 @@ class ParkourEntity {
   // ---
 
   @Field(() => [ImageParkourEntity], { nullable: true })
-  @OneToMany(() => ImageParkourEntity, (img) => img.id_parkour, {
+  @OneToMany(() => ImageParkourEntity, (img) => img.parkour_id, {
     nullable: true,
   })
   images: ImageParkourEntity[];
@@ -138,6 +138,8 @@ export class ParkourCreateEntity {
   start: string;
   @Field(() => [Int], { nullable: true })
   epreuves: number[];
+  @Field(() => [ImageParkourCreateEntity], { nullable: true })
+  images: ImageParkourCreateEntity[];
 }
 
 @InputType()
@@ -158,6 +160,10 @@ export class ParkourUpdateEntity {
   start: string;
   @Field(() => [Int], { nullable: true })
   epreuves: number[];
+  @Field(() => [ImageParkourCreateEntity], { nullable: true })
+  images: ImageParkourCreateEntity[];
+  @Field(() => [Number], { nullable: true })
+  deletedImageIds: number[];
 }
 
 @InputType()

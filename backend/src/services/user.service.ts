@@ -1,7 +1,8 @@
 import { Repository } from "typeorm";
+import datasource from "../lib/datasource";
+
 import UserEntity, { UserUpdateEntity } from "../entities/user.entity";
 
-import datasource from "../lib/datasource";
 import JoinUserParkourNoteService from "./joinUserParkourNote.service";
 
 class UserService {

@@ -1,10 +1,11 @@
 import { MoreThanOrEqual, Repository } from "typeorm";
 import datasource from "../lib/datasource";
 
-import UserEntity from "../entities/user.entity";
-import UserService from "./user.service";
 import { ReportStatus } from "../enum/reportStatus.enum";
-import { ReportEntity } from "../entities/reportEntity.entity";
+import UserEntity from "../entities/user.entity";
+import ReportEntity from "../entities/reportEntity.entity";
+
+import UserService from "./user.service";
 
 class ReportService {
   db: Repository<ReportEntity>;
@@ -19,11 +20,7 @@ class ReportService {
   async getUserByIdForPageReport(userId: string) {
     const user: UserEntity | null = await this.dbUser.findOne({
       where: { id: userId },
-      relations: [
-        "notesParkours.parkour",
-        "reports.reporter",
-        "reports.parkour",
-      ],
+      relations: ["notesParkours.parkour", "reports.parkour"],
     });
 
     return user;
@@ -32,7 +29,7 @@ class ReportService {
   async getReportsBySearch(status: ReportStatus) {
     const reports: ReportEntity[] | null = await this.db.find({
       where: { status: status },
-      relations: ["reporter", "malfrat", "parkour"],
+      relations: ["malfrat", "parkour"],
     });
 
     return reports;
@@ -87,13 +84,11 @@ class ReportService {
   async reportNoteByUserIdAndParkourId(
     malfratId: string,
     parkourId: number,
-    reporterId: string,
     commentaire: string
   ) {
     const data = {
       malfrat_id: malfratId,
       parkour_id: parkourId,
-      reporter_id: reporterId,
       commentaireEnFaute: commentaire,
     };
     const newReport = this.db.create(data);
@@ -105,13 +100,11 @@ class ReportService {
   async createDeleteReport(
     malfratId: string,
     parkourId: number,
-    reporterId: string,
     commentaire: string
   ) {
     const data = {
       malfrat_id: malfratId,
       parkour_id: parkourId,
-      reporter_id: reporterId,
       commentaireEnFaute: commentaire,
       status: ReportStatus.SUPPRIME,
     };
@@ -140,15 +133,14 @@ class ReportService {
     const report = await new ReportService().getReportByReportId(reportId);
     report.status = status;
 
-    return await this.db.save(report);
+    await this.db.save(report);
   }
 
-  async addOneReportValideForUser(user_id: string) {
-    const user = await new UserService().getUserById(user_id);
+  async addOneReportValideForUser(userId: string) {
+    const user = await new UserService().getUserById(userId);
     user.nbReportValide += 1;
 
     await this.dbUser.save(user);
-    return user;
   }
 }
 export default ReportService;

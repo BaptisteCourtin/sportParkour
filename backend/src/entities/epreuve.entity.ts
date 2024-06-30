@@ -7,7 +7,10 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { Field, ID, InputType, ObjectType } from "type-graphql";
-import ImageEpreuveEntity from "./imageEpreuve.entity";
+
+import ImageEpreuveEntity, {
+  ImageEpreuveCreateEntity,
+} from "./imageEpreuve.entity";
 import ParkourEntity from "./parkour.entity";
 
 @Entity("epreuve")
@@ -43,7 +46,7 @@ class EpreuveEntity {
 
   // pas besoin de join column en many to one
   @Field(() => [ImageEpreuveEntity], { nullable: true })
-  @OneToMany(() => ImageEpreuveEntity, (img) => img.id_epreuve, {
+  @OneToMany(() => ImageEpreuveEntity, (img) => img.epreuve_id, {
     nullable: true,
   })
   images: ImageEpreuveEntity[];
@@ -82,6 +85,8 @@ export class EpreuveCreateEntity {
   hardToDo: string;
   @Field({ nullable: true })
   videoLink: string;
+  @Field(() => [ImageEpreuveCreateEntity], { nullable: true })
+  images: ImageEpreuveCreateEntity[];
 }
 
 // obliger de mettre nullable: true si on veut modifier que certain champs
@@ -99,6 +104,10 @@ export class EpreuveUpdateEntity {
   hardToDo: string;
   @Field({ nullable: true })
   videoLink: string;
+  @Field(() => [ImageEpreuveCreateEntity], { nullable: true })
+  images: ImageEpreuveCreateEntity[];
+  @Field(() => [Number], { nullable: true })
+  deletedImageIds: number[];
 }
 
 export default EpreuveEntity;

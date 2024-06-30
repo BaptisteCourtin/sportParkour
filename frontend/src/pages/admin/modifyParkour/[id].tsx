@@ -12,6 +12,8 @@ import {
   useGetTop20EpreuveByTitleLazyQuery,
   useGetParkourByIdLazyQuery,
   useModifyParkourMutation,
+  ImageEpreuveEntity,
+  ImageEpreuveCreateEntity,
 } from "@/types/graphql";
 
 import Button from "@mui/material/Button";
@@ -30,6 +32,7 @@ import InputLabel from "@mui/material/InputLabel";
 import { toast } from "react-hot-toast";
 import { FaCheck } from "react-icons/fa6";
 import SearchBarCommuneName from "@/components/user/searchBarCommuneName";
+import axiosInstanceImage from "@/lib/axiosInstanceImage";
 
 let modifyParkourSchema = object({
   title: string()
@@ -77,6 +80,10 @@ const modifyOneParkour = () => {
             : setSelectedEpreuveIds([]);
 
           setChooseEpreuves(data.getParkourById.epreuves as EpreuveEntity[]);
+
+          setListImagesAlreadyIn(
+            data.getParkourById.images as [ImageEpreuveEntity]
+          );
         },
         onError(err: any) {
           console.error("error", err);
@@ -103,12 +110,48 @@ const modifyOneParkour = () => {
 
   const [choosenDificulty, setChoosenDifficulty] = useState<Difficulty>();
 
-  const handleModifyParkour = (dataForm: ParkourUpdateEntity): void => {
+  const uploadImages = async (): Promise<ImageEpreuveCreateEntity[]> => {
+    try {
+      const uploadPromises = filesToUpload.map(async (image) => {
+        const formData = new FormData();
+        formData.append("file", image, image.name);
+
+        const resultImage = await axiosInstanceImage.post(
+          "/uploadPhotoProfil",
+          formData
+        );
+        const imageLien =
+          "https://storage.cloud.google.com" +
+          resultImage.data.split("https://storage.googleapis.com")[1];
+
+        return {
+          lien: imageLien,
+          isCouverture: false,
+        };
+      });
+
+      return await Promise.all(uploadPromises);
+    } catch (error) {
+      console.error("Erreur lors de l'upload des images :", error);
+      return [];
+    }
+  };
+
+  const handleModifyParkour = async (
+    dataForm: ParkourUpdateEntity
+  ): Promise<void> => {
+    let allLienImages: ImageEpreuveCreateEntity[] = [];
+    if (filesToUpload.length !== 0) {
+      allLienImages = await uploadImages();
+    }
+
     const dataAggregate: ParkourUpdateEntity = {
-      ...dataForm,
       difficulty: choosenDificulty,
       city: selectedCommuneName,
       epreuves: selectedEpreuveIds,
+      images: allLienImages,
+      deletedImageIds: idsImagesToSupp,
+      ...dataForm,
     };
 
     if (dataAggregate.title && id) {
@@ -214,6 +257,40 @@ const modifyOneParkour = () => {
   // --- API COMMUNES ---
   const [selectedCommuneName, setSelectedCommuneName] = useState("");
 
+  // --- DELETE IMAGES ---
+  const [listImagesAlreadyIn, setListImagesAlreadyIn] =
+    useState<[ImageEpreuveEntity]>();
+  const [idsImagesToSupp, setIdsImagesToSupp] = useState<number[]>([]); // à envoyer dans le modify en temps que "deletedImageIds"
+
+  function handleSuppOneImage(event: any, thisId: number) {
+    event.preventDefault();
+
+    if (idsImagesToSupp.includes(thisId)) {
+      setIdsImagesToSupp((prevIdsImagesToSupp) => {
+        return prevIdsImagesToSupp.filter((id) => id !== thisId);
+      });
+    } else {
+      setIdsImagesToSupp((prevIdsImagesToSupp) => [
+        ...prevIdsImagesToSupp,
+        thisId,
+      ]);
+    }
+  }
+
+  // --- UPLOAD IMAGES ---
+  const [filesToUpload, setFilesToUpload] = useState<File[]>([]); // à envoyer dans le modify en temps que "images"
+
+  const addSingleFileToPreview = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setFilesToUpload((prevFiles) => [...prevFiles, file]);
+    }
+  };
+
+  const removeImage = (index: number) => {
+    setFilesToUpload((prevFiles) => prevFiles.filter((_, i) => i !== index));
+  };
+
   return (
     <main className="modifyOneParkour">
       {error ? (
@@ -224,6 +301,69 @@ const modifyOneParkour = () => {
         data?.getParkourById && (
           <>
             <h1>MODIFIER LE PARKOUR</h1>
+
+            <div>
+              {/* remove and preview */}
+              {filesToUpload.map((file, index) => (
+                <div key={index}>
+                  <img
+                    src={URL.createObjectURL(file)}
+                    alt={`Preview ${file.name}`}
+                  />
+                  <span
+                    className="remove_img"
+                    onClick={() => removeImage(index)}
+                  >
+                    X
+                  </span>
+                </div>
+              ))}
+
+              {/* input */}
+              {filesToUpload.length > 3 ? null : (
+                <div>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => {
+                      addSingleFileToPreview(e);
+                    }}
+                  />
+                </div>
+              )}
+            </div>
+
+            {/* --- */}
+
+            <ul>
+              {listImagesAlreadyIn &&
+                listImagesAlreadyIn.map((img) => (
+                  <li
+                    key={img.id}
+                    className={
+                      idsImagesToSupp.includes(parseInt(img.id))
+                        ? "toDelete"
+                        : ""
+                    }
+                  >
+                    <img
+                      className="imagePrésentationApercu"
+                      src={img.lien}
+                      alt="image de présentation"
+                    />
+                    <button
+                      onClick={(e) => handleSuppOneImage(e, Number(img.id))}
+                    >
+                      {idsImagesToSupp.includes(parseInt(img.id))
+                        ? "Pas supp"
+                        : "Supp"}
+                    </button>
+                  </li>
+                ))}
+            </ul>
+
+            {/* --- */}
+
             <form onSubmit={handleSubmit(handleModifyParkour)}>
               <div>
                 <TextField

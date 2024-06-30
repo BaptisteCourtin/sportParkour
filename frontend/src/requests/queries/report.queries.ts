@@ -9,6 +9,7 @@ export const GET_USER_BY_ID_FOR_REPORT_PAGE = gql`
       email
       nbReportValide
       nbReportAjoute
+      imageProfil
       notesParkours {
         commentaire
         parkour {
@@ -24,12 +25,6 @@ export const GET_USER_BY_ID_FOR_REPORT_PAGE = gql`
         parkour {
           id
           title
-        }
-        reporter {
-          id
-          name
-          firstname
-          nbReportAjoute
         }
       }
     }
@@ -47,17 +42,12 @@ export const GET_REPORTS_BY_SEARCH = gql`
       commentaireEnFaute
       createdAt
       status
-      reporter {
-        id
-        name
-        firstname
-        nbReportAjoute
-      }
       malfrat {
         id
         name
         firstname
         nbReportValide
+        imageProfil
       }
       parkour {
         id
@@ -79,6 +69,7 @@ export const GET_USERS_WITH_REPORTS = gql`
       firstname
       nbReportValide
       nbReportAjoute
+      imageProfil
     }
   }
 `;

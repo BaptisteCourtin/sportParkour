@@ -2,8 +2,8 @@ import { gql } from "@apollo/client";
 
 // fait aussi la modif
 export const CREATE_FAV_JOIN_USER_PARKOUR = gql`
-  mutation CreateJoinUserParkourFavoris($idParkour: Float!) {
-    createJoinUserParkourFavoris(idParkour: $idParkour) {
+  mutation CreateJoinUserParkourFavoris($parkourId: Float!) {
+    createJoinUserParkourFavoris(parkourId: $parkourId) {
       message
       success
     }
@@ -11,12 +11,12 @@ export const CREATE_FAV_JOIN_USER_PARKOUR = gql`
 `;
 
 // {
-//   "idParkour": 4
+//   "parkourId": 4
 // }
 
 export const DELETE_FAV_JOIN_USER_PARKOUR = gql`
-  mutation DeleteJoinUserParkourFavoris($idParkour: Float!) {
-    deleteJoinUserParkourFavoris(idParkour: $idParkour) {
+  mutation DeleteJoinUserParkourFavoris($parkourId: Float!) {
+    deleteJoinUserParkourFavoris(parkourId: $parkourId) {
       message
       success
     }
@@ -24,5 +24,5 @@ export const DELETE_FAV_JOIN_USER_PARKOUR = gql`
 `;
 
 // {
-//   "idParkour": 4
+//   "parkourId": 4
 // }

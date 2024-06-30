@@ -26,7 +26,12 @@ const displayComment = ({
         />
       ) : null}
 
-      <img src="/userDefault.png" className="imgProfil" />
+      {comment.user.imageProfil ? (
+        <img src={comment.user.imageProfil} />
+      ) : (
+        <img src="/userDefault.png" />
+      )}
+
       <div>
         <p>
           {comment.user.firstname} {comment.user.name}

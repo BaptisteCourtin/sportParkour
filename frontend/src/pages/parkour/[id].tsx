@@ -118,7 +118,7 @@ const OneParkour = () => {
     if (id) {
       if (isFav) {
         createFav({
-          variables: { idParkour: parseInt(id as string) },
+          variables: { parkourId: parseInt(id as string) },
           onCompleted(data) {
             toast.success(data.createJoinUserParkourFavoris.message);
             setIsLiked(!isLiked);
@@ -129,7 +129,7 @@ const OneParkour = () => {
         });
       } else {
         deleteFav({
-          variables: { idParkour: parseInt(id as string) },
+          variables: { parkourId: parseInt(id as string) },
           onCompleted(data) {
             toast.success(data.deleteJoinUserParkourFavoris.message);
             setIsLiked(!isLiked);
@@ -206,7 +206,7 @@ const OneParkour = () => {
   function handleDeleteNote(): void {
     if (id) {
       deleteNote({
-        variables: { idParkour: +id },
+        variables: { parkourId: +id },
         onCompleted(data) {
           toast.success(data?.deleteJoinUserParkourNote.message);
           setMyNote(0);

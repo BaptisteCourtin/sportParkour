@@ -195,7 +195,7 @@ export default function Home() {
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData);
 
-    router.push(`/parkour/${data.idParkour}`);
+    router.push(`/parkour/${data.parkourId}`);
   };
 
   return (
@@ -227,8 +227,8 @@ export default function Home() {
                   variant="outlined"
                   label="numéro du parkour"
                   required
-                  id="idParkour"
-                  name="idParkour"
+                  id="parkourId"
+                  name="parkourId"
                   type="number"
                 />
               </div>

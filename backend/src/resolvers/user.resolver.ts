@@ -1,11 +1,11 @@
 import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from "type-graphql";
-import UserEntity, { UserUpdateEntity } from "../entities/user.entity";
-import { MessageEntity } from "../entities/message.entity";
-import UserService from "../services/user.service";
-
 import Cookies from "cookies";
-
 import { MyContext } from "..";
+
+import { MessageEntity } from "../entities/message.entity";
+import UserEntity, { UserUpdateEntity } from "../entities/user.entity";
+
+import UserService from "../services/user.service";
 
 @Resolver()
 export default class UserResolver {
@@ -36,8 +36,8 @@ export default class UserResolver {
   @Authorized("ADMIN", "CLIENT")
   @Mutation(() => MessageEntity)
   async modifyUser(
-    @Arg("infos") infos: UserUpdateEntity,
-    @Ctx() ctx: MyContext
+    @Ctx() ctx: MyContext,
+    @Arg("infos") infos: UserUpdateEntity
   ) {
     let user: UserEntity | null = ctx.user;
     const returnMessage = new MessageEntity();

@@ -89,6 +89,11 @@ const OneUserByReports = () => {
                 {data.getUserByIdForPageReport.firstname}{" "}
               </h1>
               <h2>{data.getUserByIdForPageReport.id}</h2>
+              {data.getUserByIdForPageReport.imageProfil ? (
+                <img src={data.getUserByIdForPageReport.imageProfil} />
+              ) : (
+                <img src="/userDefault.png" />
+              )}
               <p>{data.getUserByIdForPageReport.email}</p>
               <p>
                 L'utilisateur a {data.getUserByIdForPageReport.nbReportValide}{" "}
@@ -98,6 +103,7 @@ const OneUserByReports = () => {
                 L'utilisateur a émis{" "}
                 {data.getUserByIdForPageReport.nbReportAjoute} reports
               </p>
+
               {/* --- supp --- */}
               <div className="supp">
                 <Button variant="outlined" onClick={handleClickOpen}>

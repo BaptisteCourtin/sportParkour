@@ -4,14 +4,14 @@ import {
   JoinColumn,
   Column,
   CreateDateColumn,
-  PrimaryColumn,
   Unique,
   PrimaryGeneratedColumn,
   Index,
 } from "typeorm";
 import { Field, ObjectType, ID } from "type-graphql";
-import UserEntity from "./user.entity";
+
 import { ReportStatus } from "../enum/reportStatus.enum";
+import UserEntity from "./user.entity";
 import ParkourEntity from "./parkour.entity";
 
 @Entity("report")
@@ -22,13 +22,8 @@ export class ReportEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Field({ nullable: true })
-  @Column({ nullable: true })
-  @Index()
-  reporter_id: string;
-
-  @Field({ nullable: true })
-  @Column({ nullable: true })
+  @Field()
+  @Column()
   @Index()
   malfrat_id: string;
 
@@ -56,20 +51,10 @@ export class ReportEntity {
 
   // ---
 
-  // pour vérifier que y'ai pas un chieur
-  @Field(() => UserEntity, { nullable: true })
-  @ManyToOne(() => UserEntity, {
-    nullable: true,
-    onDelete: "SET NULL",
-  })
-  @JoinColumn({ name: "reporter_id" })
-  reporter: UserEntity;
-
   // du coup ça sert à rien de garder les reports vu que je peux pas accéder au user ou à son email
   // à moins de rajouter l'email ici ?
-  @Field(() => UserEntity, { nullable: true })
+  @Field(() => UserEntity)
   @ManyToOne(() => UserEntity, {
-    nullable: true,
     onDelete: "CASCADE",
   })
   @JoinColumn({ name: "malfrat_id" })
@@ -83,3 +68,5 @@ export class ReportEntity {
   @JoinColumn({ name: "parkour_id" })
   parkour: ParkourEntity;
 }
+
+export default ReportEntity;

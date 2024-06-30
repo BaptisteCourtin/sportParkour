@@ -1,21 +1,22 @@
 import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from "type-graphql";
-import JoinUserParkourFavorisEntity from "../entities/joinUserParkourFavoris.entity";
-
 import { MyContext } from "..";
+
 import { MessageEntity } from "../entities/message.entity";
+import JoinUserParkourFavorisEntity from "../entities/joinUserParkourFavoris.entity";
 import UserEntity from "../entities/user.entity";
-import JoinUserParkourFavorisService from "../services/joinUserParkourFavoris.service";
-import ParkourService from "../services/parkour.service";
 import ParkourEntity from "../entities/parkour.entity";
 
+import JoinUserParkourFavorisService from "../services/joinUserParkourFavoris.service";
+import ParkourService from "../services/parkour.service";
+
 @Resolver()
-export default class JoinUserParkourResolver {
+export default class JoinUserParkourFavorisResolver {
   // page id parkour (true / false)
   @Authorized("CLIENT")
   @Query(() => Boolean)
   async getUserFavByTokenAndParkourId(
     @Ctx() ctx: MyContext,
-    @Arg("parkourId") parkour_id: number
+    @Arg("parkourId") parkourId: number
   ) {
     let user: UserEntity | null = ctx.user;
     let result: JoinUserParkourFavorisEntity | null = null;
@@ -24,7 +25,7 @@ export default class JoinUserParkourResolver {
       result =
         await new JoinUserParkourFavorisService().getFavByUserIdAndParkourId(
           user.id,
-          parkour_id
+          parkourId
         );
     }
 
@@ -57,8 +58,8 @@ export default class JoinUserParkourResolver {
   @Authorized("CLIENT")
   @Mutation(() => MessageEntity)
   async createJoinUserParkourFavoris(
-    @Arg("idParkour") idParkour: number,
-    @Ctx() ctx: MyContext
+    @Ctx() ctx: MyContext,
+    @Arg("parkourId") parkourId: number
   ) {
     let user: UserEntity | null = ctx.user;
     let result: ParkourEntity | null = null;
@@ -66,10 +67,10 @@ export default class JoinUserParkourResolver {
     if (user?.id) {
       await new JoinUserParkourFavorisService().createFavByUserIdAndParkourId(
         user.id,
-        idParkour
+        parkourId
       );
 
-      result = await new ParkourService().getParkourById(idParkour);
+      result = await new ParkourService().getParkourById(parkourId);
     }
 
     const returnMessage = new MessageEntity();
@@ -88,8 +89,8 @@ export default class JoinUserParkourResolver {
   @Authorized("CLIENT")
   @Mutation(() => MessageEntity)
   async deleteJoinUserParkourFavoris(
-    @Arg("idParkour") idParkour: number,
-    @Ctx() ctx: MyContext
+    @Ctx() ctx: MyContext,
+    @Arg("parkourId") parkourId: number
   ) {
     let user: UserEntity | null = ctx.user;
     let result: ParkourEntity | null = null;
@@ -97,10 +98,10 @@ export default class JoinUserParkourResolver {
     if (user?.id) {
       await new JoinUserParkourFavorisService().deleteFavByUserIdAndParkourId(
         user.id,
-        idParkour
+        parkourId
       );
 
-      result = await new ParkourService().getParkourById(idParkour);
+      result = await new ParkourService().getParkourById(parkourId);
     }
 
     const returnMessage = new MessageEntity();

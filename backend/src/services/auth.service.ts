@@ -1,7 +1,7 @@
 import { Repository } from "typeorm";
-import UserEntity, { UserInputRegisterEntity } from "../entities/user.entity";
-
 import datasource from "../lib/datasource";
+
+import UserEntity, { UserInputRegisterEntity } from "../entities/user.entity";
 
 class AuthService {
   db: Repository<UserEntity>;

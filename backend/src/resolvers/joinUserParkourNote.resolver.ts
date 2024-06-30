@@ -1,23 +1,24 @@
 import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from "type-graphql";
-
 import { MyContext } from "..";
+
 import { MessageEntity } from "../entities/message.entity";
-import UserEntity from "../entities/user.entity";
-import ParkourService from "../services/parkour.service";
 import JoinUserParkourNoteEntity, {
   JoinUserParkourNoteCreateEntity,
 } from "../entities/joinUserParkourNote.entity";
-import JoinUserParkourNoteService from "../services/joinUserParkourNote.service";
+import UserEntity from "../entities/user.entity";
 import ParkourEntity from "../entities/parkour.entity";
 
+import ParkourService from "../services/parkour.service";
+import JoinUserParkourNoteService from "../services/joinUserParkourNote.service";
+
 @Resolver()
-export default class JoinUserParkourResolver {
+export default class JoinUserParkourNoteResolver {
   // page id parkour
   @Authorized("CLIENT")
   @Query(() => JoinUserParkourNoteEntity)
   async getUserNoteByTokenAndParkourId(
     @Ctx() ctx: MyContext,
-    @Arg("parkourId") parkour_id: number
+    @Arg("parkourId") parkourId: number
   ) {
     let user: UserEntity | null = ctx.user;
     let result: JoinUserParkourNoteEntity | null = null;
@@ -26,7 +27,7 @@ export default class JoinUserParkourResolver {
       result =
         await new JoinUserParkourNoteService().getNoteByUserIdAndParkourId(
           user.id,
-          parkour_id
+          parkourId
         );
     }
 
@@ -55,8 +56,8 @@ export default class JoinUserParkourResolver {
   @Authorized("CLIENT")
   @Mutation(() => MessageEntity)
   async createJoinUserParkourNote(
-    @Arg("infos") infos: JoinUserParkourNoteCreateEntity,
-    @Ctx() ctx: MyContext
+    @Ctx() ctx: MyContext,
+    @Arg("infos") infos: JoinUserParkourNoteCreateEntity
   ) {
     let user: UserEntity | null = ctx.user;
     let result: JoinUserParkourNoteEntity | null = null;
@@ -108,8 +109,8 @@ export default class JoinUserParkourResolver {
   @Authorized("CLIENT")
   @Mutation(() => MessageEntity)
   async deleteJoinUserParkourNote(
-    @Arg("idParkour") idParkour: number,
-    @Ctx() ctx: MyContext
+    @Ctx() ctx: MyContext,
+    @Arg("parkourId") parkourId: number
   ) {
     let user: UserEntity | null = ctx.user;
     let parkour: ParkourEntity | null = null;
@@ -117,10 +118,10 @@ export default class JoinUserParkourResolver {
     if (user?.id) {
       await new JoinUserParkourNoteService().deleteNoteByUserIdAndParkourId(
         user.id,
-        idParkour
+        parkourId
       );
 
-      parkour = await new ParkourService().getParkourById(idParkour);
+      parkour = await new ParkourService().getParkourById(parkourId);
     }
 
     const returnMessage = new MessageEntity();

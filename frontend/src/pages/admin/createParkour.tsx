@@ -6,6 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 import {
   Difficulty,
+  ImageEpreuveCreateEntity,
   ParkourCreateEntity,
   useCreateParkourMutation,
   useGetTop20EpreuveByTitleLazyQuery,
@@ -21,6 +22,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import { toast } from "react-hot-toast";
 import { FaCheck } from "react-icons/fa6";
 import SearchBarCommuneName from "@/components/user/searchBarCommuneName";
+import axiosInstanceImage from "@/lib/axiosInstanceImage";
 
 let createParkourSchema = object({
   title: string()
@@ -63,12 +65,47 @@ const createParkour = () => {
 
   const [choosenDificulty, setChoosenDifficulty] = useState<Difficulty>();
 
-  const handleCreateParkour = (dataForm: ParkourCreateEntity): void => {
+  const uploadImages = async (): Promise<ImageEpreuveCreateEntity[]> => {
+    try {
+      const uploadPromises = filesToUpload.map(async (image) => {
+        const formData = new FormData();
+        formData.append("file", image, image.name);
+
+        const resultImage = await axiosInstanceImage.post(
+          "/uploadPhotoProfil",
+          formData
+        );
+        const imageLien =
+          "https://storage.cloud.google.com" +
+          resultImage.data.split("https://storage.googleapis.com")[1];
+
+        return {
+          lien: imageLien,
+          isCouverture: false,
+        };
+      });
+
+      return await Promise.all(uploadPromises);
+    } catch (error) {
+      console.error("Erreur lors de l'upload des images :", error);
+      return [];
+    }
+  };
+
+  const handleCreateParkour = async (
+    dataForm: ParkourCreateEntity
+  ): Promise<void> => {
+    let allLienImages: ImageEpreuveCreateEntity[] = [];
+    if (filesToUpload.length !== 0) {
+      allLienImages = await uploadImages();
+    }
+
     const dataAggregate: ParkourCreateEntity = {
       ...dataForm,
       difficulty: choosenDificulty,
       city: selectedCommuneName,
       epreuves: selectedEpreuveIds,
+      images: allLienImages,
     };
 
     if (dataAggregate.title) {
@@ -129,9 +166,48 @@ const createParkour = () => {
   // --- API COMMUNES ---
   const [selectedCommuneName, setSelectedCommuneName] = useState("");
 
+  // --- UPLOAD IMAGES ---
+  const [filesToUpload, setFilesToUpload] = useState<File[]>([]); // à envoyer dans le modify en temps que "images"
+
+  const addSingleFileToPreview = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setFilesToUpload((prevFiles) => [...prevFiles, file]);
+    }
+  };
+
+  const removeImage = (index: number) => {
+    setFilesToUpload((prevFiles) => prevFiles.filter((_, i) => i !== index));
+  };
+
   return (
     <main className="createParkour">
       <h1>create parkour</h1>
+
+      <div>
+        {/* remove and preview */}
+        {filesToUpload.map((file, index) => (
+          <div key={index}>
+            <img src={URL.createObjectURL(file)} alt={`Preview ${file.name}`} />
+            <span className="remove_img" onClick={() => removeImage(index)}>
+              X
+            </span>
+          </div>
+        ))}
+
+        {/* input */}
+        {filesToUpload.length > 3 ? null : (
+          <div>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                addSingleFileToPreview(e);
+              }}
+            />
+          </div>
+        )}
+      </div>
 
       <form onSubmit={handleSubmit(handleCreateParkour)}>
         <div className="champ">

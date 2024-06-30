@@ -8,7 +8,7 @@ import JoinUserParkourNoteEntity from "../entities/joinUserParkourNote.entity";
 import ImageEpreuveEntity from "../entities/imageEpreuve.entity";
 import ImageParkourEntity from "../entities/imageParkour.entity";
 import ResetPasswordEntity from "../entities/resetPassword.entity";
-import { ReportEntity } from "../entities/reportEntity.entity";
+import ReportEntity from "../entities/reportEntity.entity";
 
 // -----------
 // AVEC DOCKER

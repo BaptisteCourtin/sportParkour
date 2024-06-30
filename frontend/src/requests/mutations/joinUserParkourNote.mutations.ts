@@ -18,8 +18,8 @@ export const CREATE_NOTE_JOIN_USER_PARKOUR = gql`
 // }
 
 export const DELETE_NOTE_JOIN_USER_PARKOUR = gql`
-  mutation DeleteJoinUserParkourNote($idParkour: Float!) {
-    deleteJoinUserParkourNote(idParkour: $idParkour) {
+  mutation DeleteJoinUserParkourNote($parkourId: Float!) {
+    deleteJoinUserParkourNote(parkourId: $parkourId) {
       message
       success
     }
@@ -27,5 +27,5 @@ export const DELETE_NOTE_JOIN_USER_PARKOUR = gql`
 `;
 
 // {
-//   "idParkour": 50
+//   "parkourId": 50
 // }

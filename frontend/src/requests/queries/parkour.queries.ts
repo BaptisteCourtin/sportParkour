@@ -25,6 +25,7 @@ export const GET_PARKOUR_BY_ID = gql`
           id
           name
           firstname
+          imageProfil
         }
       }
       epreuves {

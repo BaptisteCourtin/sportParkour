@@ -1,13 +1,15 @@
 import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from "type-graphql";
+import { MyContext } from "..";
+import { ReportStatus } from "../enum/reportStatus.enum";
+
 import { MessageEntity } from "../entities/message.entity";
-import JoinUserParkourNoteService from "../services/joinUserParkourNote.service";
+import ReportEntity from "../entities/reportEntity.entity";
+import UserEntity from "../entities/user.entity";
+import JoinUserParkourNoteEntity from "../entities/joinUserParkourNote.entity";
+
 import ReportService from "../services/report.service";
 import UserService from "../services/user.service";
-import { MyContext } from "..";
-import UserEntity from "../entities/user.entity";
-import { ReportStatus } from "../enum/reportStatus.enum";
-import { ReportEntity } from "../entities/reportEntity.entity";
-import JoinUserParkourNoteEntity from "../entities/joinUserParkourNote.entity";
+import JoinUserParkourNoteService from "../services/joinUserParkourNote.service";
 
 @Resolver()
 export default class ReportResolver {
@@ -46,9 +48,9 @@ export default class ReportResolver {
   @Authorized("CLIENT")
   @Mutation(() => MessageEntity)
   async reportNote(
+    @Ctx() ctx: MyContext,
     @Arg("malfratId") malfratId: string,
     @Arg("parkourId") parkourId: number,
-    @Ctx() ctx: MyContext,
     @Arg("commentaire") commentaire: string
   ) {
     const returnMessage = new MessageEntity();
@@ -60,12 +62,12 @@ export default class ReportResolver {
         commentaire
       );
 
+      // on s'en fout de qui a report => pas besoin de dire le reporter
       if (!reportExist) {
         // cré le report
         await new ReportService().reportNoteByUserIdAndParkourId(
           malfratId,
           parkourId,
-          ctx.user.id,
           commentaire
         );
       }
@@ -102,9 +104,9 @@ export default class ReportResolver {
   @Authorized("ADMIN")
   @Mutation(() => MessageEntity)
   async deleteNoteAndAddOneReportValide(
+    @Arg("reportId") reportId: number,
     @Arg("malfratId") malfratId: string,
     @Arg("parkourId") parkourId: number,
-    @Arg("reportId") reportId: number,
     @Arg("commentaire") commentaire: string
   ) {
     const returnMessage = new MessageEntity();
@@ -138,13 +140,13 @@ export default class ReportResolver {
     return returnMessage;
   }
 
-  // admin sur malfrat comm - delete sans passer par report
+  // admin sur malfrat comm - delete sans passer par report => pas de +1 reportMis
   @Authorized("ADMIN")
   @Mutation(() => MessageEntity)
   async deleteNoteAndAddOneReportValideAndCreateReport(
+    @Ctx() ctx: MyContext,
     @Arg("malfratId") malfratId: string,
     @Arg("parkourId") parkourId: number,
-    @Ctx() ctx: MyContext,
     @Arg("commentaire") commentaire: string
   ) {
     const returnMessage = new MessageEntity();
@@ -159,7 +161,6 @@ export default class ReportResolver {
       await new ReportService().createDeleteReport(
         malfratId,
         parkourId,
-        ctx.user.id,
         commentaire
       );
 

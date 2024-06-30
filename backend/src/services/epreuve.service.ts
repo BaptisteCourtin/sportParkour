@@ -1,16 +1,19 @@
-import { In, Like, Repository } from "typeorm";
+import { Like, Repository } from "typeorm";
 import datasource from "../lib/datasource";
 
 import EpreuveEntity, {
   EpreuveCreateEntity,
   EpreuveUpdateEntity,
 } from "../entities/epreuve.entity";
+import ImageEpreuveEntity from "../entities/imageEpreuve.entity";
 
 class EpreuveService {
   db: Repository<EpreuveEntity>;
+  dbImage: Repository<ImageEpreuveEntity>;
 
   constructor() {
     this.db = datasource.getRepository(EpreuveEntity);
+    this.dbImage = datasource.getRepository(ImageEpreuveEntity);
   }
 
   async getEpreuveById(id: number) {
@@ -77,26 +80,59 @@ class EpreuveService {
   }
 
   // ---
-
   async createEpreuve(data: EpreuveCreateEntity) {
     const newEpreuve = this.db.create(data);
     await this.db.save(newEpreuve);
+
+    if (data.images && data.images.length > 0) {
+      for (const imageData of data.images) {
+        const newImage = this.dbImage.create({
+          ...imageData,
+          epreuve_id: newEpreuve,
+        });
+        await this.dbImage.save(newImage);
+      }
+    }
+
     return newEpreuve;
   }
 
   async modifyEpreuve(id: number, data: EpreuveUpdateEntity) {
     const epreuve = await this.getEpreuveById(id);
 
-    // Itérer sur les clés de l'objet data
+    console.log("SERVICE", data.images);
+
+    // Mettre à jour les champs de l'épreuve
     for (const key of Object.keys(data) as Array<keyof EpreuveUpdateEntity>) {
-      // Vérifier si la valeur n'est pas nulle
-      if (data[key] !== null) {
-        // Mettre à jour la propriété correspondante de epreuve
+      if (data[key] !== null && key !== "images" && key !== "deletedImageIds") {
         (epreuve as any)[key] = data[key];
       }
     }
 
-    return await this.db.save(epreuve);
+    await this.db.save(epreuve);
+
+    // Gérer les images
+    if (data.images || data.deletedImageIds) {
+      // Supprimer les images si nécessaire
+      if (data.deletedImageIds && data.deletedImageIds.length > 0) {
+        await this.dbImage.delete(data.deletedImageIds);
+      }
+
+      // Ajouter les images
+      if (data.images && data.images.length > 0) {
+        for (const imageData of data.images) {
+          // Création d'une nouvelle image
+          const newImage = this.dbImage.create({
+            ...imageData,
+            epreuve_id: epreuve,
+          });
+          await this.dbImage.save(newImage);
+        }
+      }
+    }
+
+    // on retourne epreuve (donc sans les images mais osef on veut juste l'id)
+    return epreuve;
   }
 
   async deleteEpreuve(id: number) {

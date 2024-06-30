@@ -1,10 +1,12 @@
-import { Arg, Mutation, Query, Resolver, Ctx, Authorized } from "type-graphql";
+import { Arg, Mutation, Query, Resolver, Authorized } from "type-graphql";
+
+import { MessageEntity } from "../entities/message.entity";
 import EpreuveEntity, {
   EpreuveCreateEntity,
   EpreuveUpdateEntity,
 } from "../entities/epreuve.entity";
+
 import EpreuveService from "../services/epreuve.service";
-import { MessageEntity } from "../entities/message.entity";
 
 @Resolver()
 export default class EpreuveResolver {
@@ -52,6 +54,7 @@ export default class EpreuveResolver {
     @Arg("id") id: number,
     @Arg("infos") infos: EpreuveUpdateEntity
   ) {
+    console.log("RESOLVER", infos.images);
     const result: EpreuveEntity = await new EpreuveService().modifyEpreuve(
       id,
       infos

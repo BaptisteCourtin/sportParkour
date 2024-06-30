@@ -5,6 +5,12 @@ const reportCardForSearchUser = ({ reportUser }: any) => {
   return (
     <li className={`${reportUser.nbReportValide} reportCard`}>
       <Link href={`/admin/reports/user/${reportUser.id}`}>
+        {reportUser.imageProfil ? (
+          <img src={reportUser.imageProfil} />
+        ) : (
+          <img src="/userDefault.png" />
+        )}
+
         <p>{reportUser.name}</p>
         <p>{reportUser.firstname}</p>
         <p>

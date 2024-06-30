@@ -242,7 +242,7 @@ const profil = () => {
                   className="modifProfil"
                   onSubmit={handleSubmit(handleModifyUser)}
                 >
-                  <div className="champ">
+                  <div className="champ imageInput">
                     <label htmlFor="img-profil">
                       <input
                         id="img-profil"
@@ -455,6 +455,9 @@ const profil = () => {
                 <br />
                 <br />
                 <p>phone : {data.getUserByToken.phone}</p>
+                <br />
+                <br />
+                <p>nbReportValide : {data.getUserByToken.nbReportValide}</p>
               </section>
             )}
             {/* --- favoris / note / modo --- */}

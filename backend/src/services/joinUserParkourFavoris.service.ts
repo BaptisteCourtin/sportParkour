@@ -10,11 +10,11 @@ class JoinUserParkourFavorisService {
     this.db = datasource.getRepository(JoinUserParkourFavorisEntity);
   }
 
-  async getFavByUserIdAndParkourId(user_id: string, parkour_id: number) {
+  async getFavByUserIdAndParkourId(userId: string, parkourId: number) {
     const result: JoinUserParkourFavorisEntity | null = await this.db.findOne({
       where: {
-        user_id: user_id,
-        parkour_id: parkour_id,
+        user_id: userId,
+        parkour_id: parkourId,
       },
     });
 
@@ -46,11 +46,11 @@ class JoinUserParkourFavorisService {
   }
 
   // pour delete all
-  async getAllFavByUserId(user_id: string) {
+  async getAllFavByUserId(userId: string) {
     const allJoinUserParkoursFavoris: JoinUserParkourFavorisEntity[] | null =
       await this.db.find({
         where: {
-          user_id: user_id,
+          user_id: userId,
         },
       });
 
@@ -62,11 +62,11 @@ class JoinUserParkourFavorisService {
   }
 
   // pour delete all
-  async getAllFavByParkourId(parkour_id: number) {
+  async getAllFavByParkourId(parkourId: number) {
     const allJoinUserParkoursFavoris: JoinUserParkourFavorisEntity[] | null =
       await this.db.find({
         where: {
-          parkour_id: parkour_id,
+          parkour_id: parkourId,
         },
       });
 
@@ -89,23 +89,23 @@ class JoinUserParkourFavorisService {
     await this.db.save(newJoinUserParkourFavoris);
   }
 
-  async deleteFavByUserIdAndParkourId(user_id: string, parkours_id: number) {
+  async deleteFavByUserIdAndParkourId(userId: string, parkourId: number) {
     const joinUserParkoursFavoris = await this.getFavByUserIdAndParkourId(
-      user_id,
-      parkours_id
+      userId,
+      parkourId
     );
     await this.db.remove(joinUserParkoursFavoris);
   }
 
   // supp user
-  async deleteAllFavByUserId(user_id: string) {
-    const joinUserParkoursFavoris = await this.getAllFavByUserId(user_id);
+  async deleteAllFavByUserId(userId: string) {
+    const joinUserParkoursFavoris = await this.getAllFavByUserId(userId);
     await this.db.remove(joinUserParkoursFavoris);
   }
 
   // supp parkour
-  async deleteAllFavByParkourId(parkour_id: number) {
-    const joinUserParkoursFavoris = await this.getAllFavByParkourId(parkour_id);
+  async deleteAllFavByParkourId(parkourId: number) {
+    const joinUserParkoursFavoris = await this.getAllFavByParkourId(parkourId);
     await this.db.remove(joinUserParkoursFavoris);
   }
 }

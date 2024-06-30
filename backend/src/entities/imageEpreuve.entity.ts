@@ -1,5 +1,6 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { Field, ID, ObjectType } from "type-graphql";
+import { Field, ID, InputType, ObjectType } from "type-graphql";
+
 import EpreuveEntity from "./epreuve.entity";
 
 @Entity("image_epreuve")
@@ -21,7 +22,15 @@ class ImageEpreuveEntity {
   @ManyToOne(() => EpreuveEntity, {
     onDelete: "CASCADE",
   })
-  id_epreuve: EpreuveEntity;
+  epreuve_id: EpreuveEntity;
+}
+
+@InputType()
+export class ImageEpreuveCreateEntity {
+  @Field()
+  lien: string;
+  @Field()
+  isCouverture: boolean;
 }
 
 export default ImageEpreuveEntity;

@@ -21,19 +21,19 @@ import UserResolver from "./resolvers/user.resolver";
 import AuthResolver from "./resolvers/auth.resolver";
 import JoinUserParkourFavorisResolver from "./resolvers/joinUserParkourFavoris.resolver";
 import JoinUserParkourNoteResolver from "./resolvers/joinUserParkourNote.resolver";
+import ResetPasswordResolver from "./resolvers/resetPassword.resolver";
+import ReportResolver from "./resolvers/report.resolver";
 
 // authent
 import dotenv from "dotenv";
 dotenv.config({
   path: "../.env", // je ne sais pas pk le path est pas le bon mais ça marche
 });
-import UserEntity from "./entities/user.entity";
 import Cookies from "cookies";
 import { jwtVerify } from "jose";
 import { customAuthChecker } from "./lib/authChecker";
-import ResetPasswordResolver from "./resolvers/resetPassword.resolver";
+import UserEntity from "./entities/user.entity";
 import UserService from "./services/user.service";
-import ReportResolver from "./resolvers/report.resolver";
 
 // ---------------------------------------------
 // ---------------------------------------------

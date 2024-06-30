@@ -1,16 +1,15 @@
 import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
-import AuthentService from "../services/auth.service";
-import {
-  UserInputRegisterEntity,
-  UserInputAuthEntity,
-} from "../entities/user.entity";
-import { MessageEntity } from "../entities/message.entity";
-
 const argon2 = require("argon2");
 import { SignJWT } from "jose";
 import { MyContext } from "..";
 import Cookies from "cookies";
-import UserService from "../services/user.service";
+
+import { MessageEntity } from "../entities/message.entity";
+import {
+  UserInputRegisterEntity,
+  UserInputAuthEntity,
+} from "../entities/user.entity";
+
 import AuthService from "../services/auth.service";
 
 @Resolver()
@@ -25,7 +24,7 @@ export default class AuthResolver {
       throw new Error("Cet email est déjà utilisé. Tu nous as oublié 😭?");
     }
 
-    const newUser = await new AuthentService().createUser(infos);
+    const newUser = await new AuthService().createUser(infos);
     const returnMessage = new MessageEntity();
 
     // meassage de retour si bien create
@@ -48,8 +47,8 @@ export default class AuthResolver {
   // login du user
   @Query(() => MessageEntity)
   async authentification(
-    @Arg("infos") infos: UserInputAuthEntity,
-    @Ctx() ctx: MyContext
+    @Ctx() ctx: MyContext,
+    @Arg("infos") infos: UserInputAuthEntity
   ) {
     const returnMessage = new MessageEntity();
     let token: string | undefined;

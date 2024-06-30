@@ -8,12 +8,13 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { Field, ID, InputType, ObjectType } from "type-graphql";
-const argon2 = require("argon2");
 
 import { Role } from "../enum/role.enum";
-import { JoinUserParkourNoteEntity } from "./joinUserParkourNote.entity";
+import JoinUserParkourNoteEntity from "./joinUserParkourNote.entity";
 import JoinUserParkourFavorisEntity from "./joinUserParkourFavoris.entity";
-import { ReportEntity } from "./reportEntity.entity";
+import ReportEntity from "./reportEntity.entity";
+
+const argon2 = require("argon2");
 
 @Entity("user")
 @ObjectType()

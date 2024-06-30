@@ -1,5 +1,5 @@
 import { Entity, JoinColumn, ManyToOne, PrimaryColumn, Unique } from "typeorm";
-import { Field, ID, InputType, ObjectType } from "type-graphql";
+import { Field, ID, ObjectType } from "type-graphql";
 
 import UserEntity from "./user.entity";
 import ParkourEntity from "./parkour.entity";
@@ -31,14 +31,6 @@ export class JoinUserParkourFavorisEntity {
   })
   @JoinColumn({ name: "parkour_id" })
   parkour: ParkourEntity;
-}
-
-@InputType()
-export class JoinUserParkourFavorisCreateEntity {
-  @Field()
-  parkour_id: number;
-  @Field({ nullable: true })
-  favoris: boolean;
 }
 
 export default JoinUserParkourFavorisEntity;

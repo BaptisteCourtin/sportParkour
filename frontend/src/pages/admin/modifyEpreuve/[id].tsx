@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { object, string } from "yup";
@@ -6,6 +6,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 import {
   EpreuveUpdateEntity,
+  ImageEpreuveCreateEntity,
+  ImageEpreuveEntity,
   useDeleteEpreuveMutation,
   useGetEpreuveByIdLazyQuery,
   useModifyEpreuveMutation,
@@ -20,6 +22,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
 import { toast } from "react-hot-toast";
+import axiosInstanceImage from "@/lib/axiosInstanceImage";
 
 let modifyEpreuveSchema = object({
   title: string()
@@ -48,6 +51,11 @@ const modifyOneEpreuve = () => {
     if (router.isReady && id) {
       getEpreuve({
         variables: { getEpreuveByIdId: +id },
+        onCompleted(data) {
+          setListImagesAlreadyIn(
+            data.getEpreuveById.images as [ImageEpreuveEntity]
+          );
+        },
         onError(err) {
           console.error("error", err);
         },
@@ -71,10 +79,51 @@ const modifyOneEpreuve = () => {
     fetchPolicy: "no-cache",
   });
 
-  const handleModifyEpreuve = (dataForm: EpreuveUpdateEntity): void => {
-    if (dataForm.title && id) {
+  const uploadImages = async (): Promise<ImageEpreuveCreateEntity[]> => {
+    try {
+      const uploadPromises = filesToUpload.map(async (image) => {
+        const formData = new FormData();
+        formData.append("file", image, image.name);
+
+        const resultImage = await axiosInstanceImage.post(
+          "/uploadPhotoProfil",
+          formData
+        );
+        const imageLien =
+          "https://storage.cloud.google.com" +
+          resultImage.data.split("https://storage.googleapis.com")[1];
+
+        return {
+          lien: imageLien,
+          isCouverture: false,
+        };
+      });
+
+      return await Promise.all(uploadPromises);
+    } catch (error) {
+      console.error("Erreur lors de l'upload des images :", error);
+      return [];
+    }
+  };
+
+  const handleModifyEpreuve = async (
+    dataForm: EpreuveUpdateEntity
+  ): Promise<void> => {
+    let allLienImages: ImageEpreuveCreateEntity[] = [];
+    if (filesToUpload.length !== 0) {
+      allLienImages = await uploadImages();
+    }
+
+    const updatedDataForm = {
+      images: allLienImages,
+      deletedImageIds: idsImagesToSupp,
+      ...dataForm,
+    };
+
+    if (updatedDataForm.title && id) {
+      console.log(updatedDataForm);
       modifyEpreuve({
-        variables: { infos: dataForm, modifyEpreuveId: parseInt(id as string) },
+        variables: { infos: updatedDataForm, modifyEpreuveId: +id },
         onCompleted(data) {
           if (data.modifyEpreuve.id) {
             toast.success("GG, vous avez mis l'épreuve à jour 👌");
@@ -131,6 +180,40 @@ const modifyOneEpreuve = () => {
     }
   }
 
+  // --- DELETE IMAGES ---
+  const [listImagesAlreadyIn, setListImagesAlreadyIn] =
+    useState<[ImageEpreuveEntity]>();
+  const [idsImagesToSupp, setIdsImagesToSupp] = useState<number[]>([]); // à envoyer dans le modify en temps que "deletedImageIds"
+
+  function handleSuppOneImage(event: any, thisId: number) {
+    event.preventDefault();
+
+    if (idsImagesToSupp.includes(thisId)) {
+      setIdsImagesToSupp((prevIdsImagesToSupp) => {
+        return prevIdsImagesToSupp.filter((id) => id !== thisId);
+      });
+    } else {
+      setIdsImagesToSupp((prevIdsImagesToSupp) => [
+        ...prevIdsImagesToSupp,
+        thisId,
+      ]);
+    }
+  }
+
+  // --- UPLOAD IMAGES ---
+  const [filesToUpload, setFilesToUpload] = useState<File[]>([]); // à envoyer dans le modify en temps que "images"
+
+  const addSingleFileToPreview = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setFilesToUpload((prevFiles) => [...prevFiles, file]);
+    }
+  };
+
+  const removeImage = (index: number) => {
+    setFilesToUpload((prevFiles) => prevFiles.filter((_, i) => i !== index));
+  };
+
   return (
     <main className="modifyOneEpreuve">
       {error ? (
@@ -141,6 +224,69 @@ const modifyOneEpreuve = () => {
         data?.getEpreuveById && (
           <>
             <h1>MODIFIER L'ÉPREUVE</h1>
+
+            <div>
+              {/* remove and preview */}
+              {filesToUpload.map((file, index) => (
+                <div key={index}>
+                  <img
+                    src={URL.createObjectURL(file)}
+                    alt={`Preview ${file.name}`}
+                  />
+                  <span
+                    className="remove_img"
+                    onClick={() => removeImage(index)}
+                  >
+                    X
+                  </span>
+                </div>
+              ))}
+
+              {/* input */}
+              {filesToUpload.length > 3 ? null : (
+                <div>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => {
+                      addSingleFileToPreview(e);
+                    }}
+                  />
+                </div>
+              )}
+            </div>
+
+            {/* --- */}
+
+            <ul>
+              {listImagesAlreadyIn &&
+                listImagesAlreadyIn.map((img) => (
+                  <li
+                    key={img.id}
+                    className={
+                      idsImagesToSupp.includes(parseInt(img.id))
+                        ? "toDelete"
+                        : ""
+                    }
+                  >
+                    <img
+                      className="imagePrésentationApercu"
+                      src={img.lien}
+                      alt="image de présentation"
+                    />
+                    <button
+                      onClick={(e) => handleSuppOneImage(e, Number(img.id))}
+                    >
+                      {idsImagesToSupp.includes(parseInt(img.id))
+                        ? "Pas supp"
+                        : "Supp"}
+                    </button>
+                  </li>
+                ))}
+            </ul>
+
+            {/* --- */}
+
             <form onSubmit={handleSubmit(handleModifyEpreuve)}>
               <div className="champ">
                 <TextField
