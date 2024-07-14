@@ -1,14 +1,21 @@
 :root {
+  // style
   --line: 5px;
   --losange: 15px;
+
+  // espace
   --cardEspace: 10px;
   --espace: 20px;
+  --miniEspace: 5px;
 
+  // radius
   --radius: 8px;
   --radiusButton: 25px;
 
+  // padding
   --padButton: 9px 16px;
 
+  // texts
   --fs-h1: 1.75rem;
   --fs-h2: 1.25rem;
   --fs-h3: 1.15rem;
@@ -18,9 +25,11 @@
 
   --fw-button: 600;
 
+  // gap pour les flex
   --gap: 1rem;
   --cardGap: 0.5rem;
 
+  // couleurs
   --text1: rgb(255, 255, 255);
   --text2: rgb(0, 0, 0);
   --text2Trans: rgba(0, 0, 0, 0.5);

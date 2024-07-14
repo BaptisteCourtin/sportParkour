@@ -3,7 +3,10 @@ const Cloud = require("@google-cloud/storage");
 import path from "path";
 require("dotenv").config();
 
-const serviceKey = path.join(__dirname, "../google.cloud-key.json"); // fichier de l'objet
+// const serviceKey = path.join(__dirname, "./google.cloud-key.json"); // fichier de l'objet
+const serviceKey =
+  process.env.GOOGLE_APPLICATION_CREDENTIALS ||
+  path.join(__dirname, "../google.cloud-key.json");
 
 const { Storage } = Cloud;
 const storage = new Storage({

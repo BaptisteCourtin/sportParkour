@@ -1,4 +1,10 @@
 .oneEpreuve {
+  gap: var(--gap);
+
+  h1 {
+    text-transform: uppercase;
+  }
+
   .carrouselEpreuve {
     width: 360px;
     height: 340px;
@@ -9,8 +15,20 @@
       justify-content: center;
 
       img {
+        width: 360px;
         height: 300px;
+        border-radius: var(--radius);
       }
     }
+  }
+
+  .infoDifficulty {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap);
+  }
+
+  .videoEpreuve {
+    border: none;
   }
 }

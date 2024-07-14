@@ -13,13 +13,15 @@ import { FaCircleArrowRight } from "react-icons/fa6";
 
 const cardParkour = ({
   parkour,
+  color,
 }: {
   parkour: Omit<GetParkourByIdQuery, "start" | "description">["getParkourById"];
+  color: string;
 }) => {
   const couvertureImage = parkour.images?.find((image) => image.isCouverture);
 
   return (
-    <Link href={`/parkour/${parkour.id}`} className="cardParkour">
+    <Link href={`/parkour/${parkour.id}`} className={`cardParkour ${color}`}>
       <h3>
         <FaLocationDot /> {parkour.title}
       </h3>

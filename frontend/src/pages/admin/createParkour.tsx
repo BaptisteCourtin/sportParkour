@@ -63,7 +63,7 @@ const createParkour = () => {
     fetchPolicy: "no-cache",
   });
 
-  const [choosenDificulty, setChoosenDifficulty] = useState<Difficulty>();
+  const [choosenDifficulty, setChoosenDifficulty] = useState<Difficulty>();
 
   const uploadImages = async (): Promise<ImageEpreuveCreateEntity[]> => {
     try {
@@ -102,7 +102,7 @@ const createParkour = () => {
 
     const dataAggregate: ParkourCreateEntity = {
       ...dataForm,
-      difficulty: choosenDificulty,
+      difficulty: choosenDifficulty,
       city: selectedCommuneName,
       epreuves: selectedEpreuveIds,
       images: allLienImages,
@@ -184,32 +184,34 @@ const createParkour = () => {
     <main className="createParkour">
       <h1>create parkour</h1>
 
-      <div>
+      <div className="formForImages">
         {/* remove and preview */}
         {filesToUpload.map((file, index) => (
-          <div key={index}>
+          <div className="imager" key={index}>
             <img src={URL.createObjectURL(file)} alt={`Preview ${file.name}`} />
             <span className="remove_img" onClick={() => removeImage(index)}>
-              X
+              supprimer cette image
             </span>
           </div>
         ))}
 
         {/* input */}
-        {filesToUpload.length > 3 ? null : (
-          <div>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => {
-                addSingleFileToPreview(e);
-              }}
-            />
-          </div>
-        )}
+        <div className="inputer">
+          <label className="button" htmlFor="oneMoreFile">
+            Ajouter une image
+          </label>
+          <input
+            id="oneMoreFile"
+            type="file"
+            accept="image/*"
+            onChange={(e) => {
+              addSingleFileToPreview(e);
+            }}
+          />
+        </div>
       </div>
 
-      <form onSubmit={handleSubmit(handleCreateParkour)}>
+      <form onSubmit={handleSubmit(handleCreateParkour)} className="bigForm">
         <div className="champ">
           <TextField
             className="mui-input"
@@ -316,9 +318,7 @@ const createParkour = () => {
         <div className="containerFlexChamp">
           <div className="champ">
             <FormControl sx={{ m: 1, minWidth: 150 }}>
-              <InputLabel id="demo-simple-select-autowidth-label">
-                Difficultée
-              </InputLabel>
+              <InputLabel>Difficultée</InputLabel>
               <Select
                 className="mui-input"
                 variant="outlined"
@@ -344,7 +344,7 @@ const createParkour = () => {
           <div className="champ">
             <Autocomplete
               id="epreuves"
-              className="mui-input titleBar"
+              className="mui-input"
               multiple
               fullWidth
               loading={loadingEpreuves}

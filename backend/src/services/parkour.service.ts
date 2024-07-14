@@ -259,10 +259,15 @@ class ParkourService {
   }
 
   async modifyParkour(id: number, data: ParkourUpdateEntity) {
-    let parkour = await this.getParkourById(id);
+    const parkour = await this.getParkourById(id);
 
     for (const key of Object.keys(data) as Array<keyof ParkourUpdateEntity>) {
-      if (data[key] !== null && key !== "epreuves") {
+      if (
+        data[key] !== null &&
+        key !== "epreuves" &&
+        key !== "images" &&
+        key !== "deletedImageIds"
+      ) {
         (parkour as any)[key] = data[key];
       }
     }

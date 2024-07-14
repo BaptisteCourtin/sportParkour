@@ -45,7 +45,7 @@ services:
       timeout: 5s
       retries: 5
     volumes:
-      - gcdatabase:/var/lib/postgresql/data
+      - parkour-database:/var/lib/postgresql/data
 
   adminer:
     image: adminer
@@ -53,5 +53,25 @@ services:
     ports:
       - 8080:8080
 
+  # fixtures:
+  #   build: ./backend
+  #   command: npm run loadFixtures
+  #   depends_on:
+  #     db:
+  #       condition: service_healthy
+  #   env_file:
+  #     - ./.env
+
+  images:
+    build: ./images
+    ports:
+      - 3002:3002
+    env_file:
+      - ./images/.env
+    volumes:
+      - "./images/google.cloud-key.json:/app/google.cloud-key.json:ro"
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=/app/google.cloud-key.json
+
 volumes:
-  gcdatabase:
+  parkour-database:

@@ -12,7 +12,17 @@
 
   position: relative;
 
-  border-top: var(--line) solid var(--blue);
+  &.blue {
+    border-top: var(--line) solid var(--blue);
+  }
+
+  &.yellow {
+    border-top: var(--line) solid var(--yellow);
+  }
+
+  &.darkBlue {
+    border-top: var(--line) solid var(--darkBlue);
+  }
 
   h3 {
     text-transform: uppercase;
@@ -21,7 +31,6 @@
   img {
     width: 100%;
     height: 80px;
-    object-fit: cover;
     border-radius: var(--radius);
   }
 

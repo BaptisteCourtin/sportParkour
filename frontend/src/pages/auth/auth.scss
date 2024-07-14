@@ -21,14 +21,6 @@
   }
 
   form {
-    width: calc(100% - 40px);
-    max-width: 700px;
-    background-color: var(--middle);
-
-    padding: var(--espace);
-    border-radius: var(--radius);
-    border-top: var(--line) solid var(--blue);
-
     transform: translateY(-50px);
 
     .topForm {

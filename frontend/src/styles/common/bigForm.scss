@@ -1,0 +1,134 @@
+form.bigForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: var(--gap);
+
+  width: calc(100% - 40px);
+  max-width: 700px;
+  background-color: var(--middle);
+
+  padding: var(--espace);
+  border-radius: var(--radius);
+  border-top: var(--line) solid var(--blue);
+
+  hr {
+    width: 50%;
+    align-self: center;
+    margin: 10px 0;
+  }
+
+  // ville + codePostal
+  .containerMiniChamp {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--gap);
+  }
+
+  // texte et number de base
+  .champ {
+    // contient mui + span pour compte length + p pour error
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+
+    .mui-input {
+      // les text field
+      background-color: var(--back);
+      color: var(--text2);
+      border-radius: var(--radius);
+      width: 100%;
+
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+
+      &.codePostal {
+        filter: contrast(50%);
+        pointer-events: none;
+      }
+
+      label {
+        color: var(--text2Trans);
+        font-style: italic;
+        padding: 0 var(--espace) 0 0; // italic ça coupe
+      }
+
+      input,
+      textarea {
+        color: var(--text2);
+
+        // pour éviter les couleurs du autofill
+        &:-webkit-autofill,
+        &:-webkit-autofill:hover,
+        &:-webkit-autofill:focus,
+        &:-webkit-autofill:active {
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: var(--text2);
+        }
+      }
+    }
+
+    button {
+      color: var(--text2);
+    }
+
+    .buttonEye {
+      transform: translate(7px, 18px);
+    }
+  }
+
+  // parkour difficulty + multiple choose epreuves
+  .containerFlexChamp {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap);
+
+    .champ {
+      // parkour difficulty
+      &:nth-child(1) {
+        flex: 1;
+
+        label {
+          color: var(--text2Trans);
+          font-style: italic;
+        }
+
+        .MuiFormControl-root {
+          margin: 0 !important;
+        }
+
+        .MuiSvgIcon-root {
+          color: var(--text2);
+        }
+      }
+
+      // multiple choose epreuves
+      &:nth-child(2) {
+        .MuiChip-deletable {
+          border: 1px solid var(--text2);
+
+          span {
+            color: var(--text2);
+          }
+        }
+
+        .MuiChip-deleteIcon {
+          color: var(--text2);
+        }
+      }
+    }
+  }
+
+  @media screen and (min-width: 800px) {
+    .containerMiniChamp {
+      flex-direction: row;
+    }
+
+    .containerFlexChamp {
+      flex-direction: row;
+    }
+  }
+}

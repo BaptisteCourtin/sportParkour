@@ -3,7 +3,6 @@ import {
   BeforeUpdate,
   Column,
   Entity,
-  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
@@ -13,6 +12,7 @@ import { Role } from "../enum/role.enum";
 import JoinUserParkourNoteEntity from "./joinUserParkourNote.entity";
 import JoinUserParkourFavorisEntity from "./joinUserParkourFavoris.entity";
 import ReportEntity from "./reportEntity.entity";
+import { MaxLength } from "class-validator";
 
 const argon2 = require("argon2");
 
@@ -31,14 +31,17 @@ class UserEntity {
 
   @Field()
   @Column({ type: "varchar", length: 100 })
+  @MaxLength(100)
   password: string;
 
   @Field()
   @Column({ type: "varchar", length: 100 })
+  @MaxLength(100)
   name: string;
 
   @Field()
   @Column({ type: "varchar", length: 100 })
+  @MaxLength(100)
   firstname: string;
 
   @Field()
@@ -55,6 +58,7 @@ class UserEntity {
       },
     },
   })
+  @MaxLength(255)
   email: string;
 
   @Field({ nullable: true })
@@ -71,18 +75,22 @@ class UserEntity {
       },
     },
   })
+  @MaxLength(50)
   city: string;
 
   @Field({ nullable: true })
   @Column({ type: "varchar", length: 5, nullable: true })
+  @MaxLength(5)
   codePostal: string;
 
   @Field({ nullable: true })
   @Column({ type: "varchar", length: 10, nullable: true })
+  @MaxLength(10)
   phone: string;
 
   @Field({ nullable: true })
   @Column({ type: "varchar", length: 250, nullable: true })
+  @MaxLength(250)
   imageProfil: string;
 
   @Field(() => Role)
@@ -105,8 +113,6 @@ class UserEntity {
 
   // ---
 
-  // Vous n'avez pas besoin d'ajouter des @JoinColumn pour ces relations @OneToMany.
-  // @JoinColumn est généralement utilisé du côté "propriétaire" de la relation, qui est typiquement le côté "Many" dans une relation @ManyToOne.
   @Field(() => [JoinUserParkourFavorisEntity], { nullable: true })
   @OneToMany(() => JoinUserParkourFavorisEntity, (like) => like.user, {
     nullable: true,
@@ -134,18 +140,31 @@ class UserEntity {
 @InputType()
 export class UserInputRegisterEntity {
   @Field()
+  @MaxLength(100)
   password: string;
+
   @Field()
+  @MaxLength(100)
   name: string;
+
   @Field()
+  @MaxLength(100)
   firstname: string;
+
   @Field()
+  @MaxLength(255)
   email: string;
+
   @Field({ nullable: true })
+  @MaxLength(50)
   city: string;
+
   @Field({ nullable: true })
+  @MaxLength(5)
   codePostal: string;
+
   @Field({ nullable: true })
+  @MaxLength(10)
   phone: string;
 }
 
@@ -153,8 +172,11 @@ export class UserInputRegisterEntity {
 @InputType()
 export class UserInputAuthEntity {
   @Field()
+  @MaxLength(100)
   password: string;
+
   @Field()
+  @MaxLength(255)
   email: string;
 }
 
@@ -162,18 +184,31 @@ export class UserInputAuthEntity {
 @InputType()
 export class UserUpdateEntity {
   @Field({ nullable: true })
+  @MaxLength(100)
   name: string;
+
   @Field({ nullable: true })
+  @MaxLength(100)
   firstname: string;
+
   @Field({ nullable: true })
+  @MaxLength(255)
   email: string;
+
   @Field({ nullable: true })
+  @MaxLength(50)
   city: string;
+
   @Field({ nullable: true })
+  @MaxLength(5)
   codePostal: string;
+
   @Field({ nullable: true })
+  @MaxLength(10)
   phone: string;
+
   @Field({ nullable: true })
+  @MaxLength(250)
   imageProfil: string;
 }
 

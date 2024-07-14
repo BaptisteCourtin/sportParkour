@@ -3,19 +3,11 @@
     filter: grayscale(1);
   }
 
-  img {
-    width: 150px;
-    height: 150px;
-  }
-
   form {
-    width: 100%;
-    max-width: 700px;
-    background-color: var(--middle);
-
     margin: var(--espace) 0;
-    padding: var(--espace);
-    border-radius: var(--radius);
-    border-top: var(--line) solid var(--blue);
+
+    button {
+      align-self: center;
+    }
   }
 }

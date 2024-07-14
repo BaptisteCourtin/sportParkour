@@ -24,6 +24,8 @@ import Rating from "@mui/material/Rating";
 import Slider from "@mui/material/Slider";
 import SearchBarCommuneName from "@/components/user/searchBarCommuneName";
 
+import { FaArrowRight } from "react-icons/fa6";
+
 let createSearchByAllSchema = object({
   city: string().max(50, "Une ville, pas un lieu-dit paumé"),
   timeMin: number()
@@ -210,16 +212,18 @@ export default function Home() {
             <h1>Bonjour</h1>
 
             {dataIsAdmin ? (
-              <Link href="/admin/createParkour">créer un parkour</Link>
+              <Link className="button forAdmin" href="/admin/createParkour">
+                créer un parkour <FaArrowRight />
+              </Link>
             ) : null}
 
-            <form>
+            <form className="littleForm">
               <div className="champ">
                 <SearchBarParkour />
               </div>
             </form>
 
-            <form onSubmit={handleSearchById}>
+            <form onSubmit={handleSearchById} className="littleForm">
               <div className="champ">
                 <TextField
                   className="mui-input"
@@ -237,7 +241,7 @@ export default function Home() {
 
             {/* --- */}
 
-            <section className="formSearchParkour">
+            <section className="formSearchParkour littleForm">
               <div className="champ">
                 <SearchBarCommuneName
                   userValue={selectedCommuneName}
@@ -298,7 +302,7 @@ export default function Home() {
                 />
               </div>
 
-              <div className="champ searchNote">
+              <div className="searchNote">
                 <Rating
                   id="searchNoteMin"
                   name="searchNoteMin"
@@ -309,7 +313,7 @@ export default function Home() {
                     setChoosenNoteMin(newValue as number);
                   }}
                 />
-                <button onClick={() => setChoosenNoteMin(0)}>
+                <button className="button" onClick={() => setChoosenNoteMin(0)}>
                   reset note voulue
                 </button>
               </div>
@@ -358,6 +362,7 @@ export default function Home() {
             {dataTotal?.getTheParkourTotalForSearch ? (
               <Stack spacing={2}>
                 <Pagination
+                  className="pagination"
                   count={Math.ceil(dataTotal?.getTheParkourTotalForSearch / 20)}
                   page={page}
                   onChange={handleChange}
@@ -373,7 +378,7 @@ export default function Home() {
 
             <ul className="cardsParkoursUl">
               {data?.getTop20ParkourBySearch.map((parkour: any) => (
-                <CardParkour parkour={parkour} key={parkour.id} />
+                <CardParkour parkour={parkour} key={parkour.id} color="blue" />
               ))}
             </ul>
 
@@ -382,6 +387,7 @@ export default function Home() {
             {dataTotal?.getTheParkourTotalForSearch ? (
               <Stack spacing={2}>
                 <Pagination
+                  className="pagination"
                   count={Math.ceil(dataTotal?.getTheParkourTotalForSearch / 20)}
                   page={page}
                   onChange={handleChange}

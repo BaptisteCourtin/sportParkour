@@ -1,13 +1,14 @@
 import {
   Column,
   Entity,
+  Index,
   JoinTable,
   ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { Field, ID, InputType, Int, ObjectType } from "type-graphql";
-import { Max, Min } from "class-validator";
+import { Max, MaxLength, Min } from "class-validator";
 
 import { Difficulty } from "../enum/difficulty.enum";
 import EpreuveEntity from "./epreuve.entity";
@@ -25,10 +26,13 @@ class ParkourEntity {
 
   @Field()
   @Column({ type: "varchar", length: 50, unique: true })
+  @MaxLength(50)
+  @Index()
   title: string;
 
   @Field({ nullable: true })
   @Column({ type: "varchar", length: 1000, nullable: true })
+  @MaxLength(1000)
   description: string;
 
   @Field({ nullable: true })
@@ -65,21 +69,28 @@ class ParkourEntity {
       },
     },
   })
+  @MaxLength(50)
   city: string;
 
   // 49.421015, -1.388178
   @Field()
-  @Column({ type: "varchar", length: 20 })
+  @Column({ type: "varchar", length: 50 })
+  @MaxLength(50)
   start: string;
 
+  // precision = maximum number of digits that are stored for the values
+  // scale = the number of digits to the right of the decimal point
+  // Avec decimal(6,5), vous pouvez gérer précisément jusqu'à environ 100,000 votes avant de commencer à perdre en précision.
   @Field({ nullable: true })
   @Column("decimal", {
-    precision: 3,
-    scale: 2,
+    precision: 6,
+    scale: 5,
     unsigned: true,
     nullable: true,
     default: 0,
   })
+  @Min(0, { message: "La valeur minimale est 0" })
+  @Max(5, { message: "La valeur maximale est 5" })
   note: number;
 
   @Field({ nullable: true })
@@ -123,21 +134,39 @@ class ParkourEntity {
 @InputType()
 export class ParkourCreateEntity {
   @Field()
+  @MaxLength(50)
   title: string;
+
   @Field({ nullable: true })
+  @MaxLength(1000)
   description: string;
+
   @Field({ nullable: true })
+  @Min(0)
+  @Max(600)
   time: number;
+
   @Field({ nullable: true })
+  @Min(0)
+  @Max(60)
   length: number;
+
   @Field(() => Difficulty, { nullable: true })
   difficulty: Difficulty;
+
   @Field({ nullable: true })
+  @MaxLength(50)
   city: string;
+
   @Field()
+  @MaxLength(50)
   start: string;
+
+  // ---
+
   @Field(() => [Int], { nullable: true })
   epreuves: number[];
+
   @Field(() => [ImageParkourCreateEntity], { nullable: true })
   images: ImageParkourCreateEntity[];
 }
@@ -145,23 +174,42 @@ export class ParkourCreateEntity {
 @InputType()
 export class ParkourUpdateEntity {
   @Field({ nullable: true })
+  @MaxLength(50)
   title: string;
+
   @Field({ nullable: true })
+  @MaxLength(1000)
   description: string;
+
   @Field({ nullable: true })
+  @Min(0)
+  @Max(600)
   time: number;
+
   @Field({ nullable: true })
+  @Min(0)
+  @Max(60)
   length: number;
+
   @Field(() => Difficulty, { nullable: true })
   difficulty: Difficulty;
+
   @Field({ nullable: true })
+  @MaxLength(50)
   city: string;
+
   @Field({ nullable: true })
+  @MaxLength(50)
   start: string;
+
+  // ---
+
   @Field(() => [Int], { nullable: true })
   epreuves: number[];
+
   @Field(() => [ImageParkourCreateEntity], { nullable: true })
   images: ImageParkourCreateEntity[];
+
   @Field(() => [Number], { nullable: true })
   deletedImageIds: number[];
 }
@@ -169,7 +217,10 @@ export class ParkourUpdateEntity {
 @InputType()
 export class ParkourUpdateNoteEntity {
   @Field({ nullable: true })
+  @Min(0)
+  @Max(5)
   note: number;
+
   @Field({ nullable: true })
   nbVote: number;
 }

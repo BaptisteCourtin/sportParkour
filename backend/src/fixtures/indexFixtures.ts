@@ -31,13 +31,13 @@ async function indexFixtures() {
       numberParkour,
       epreuves,
       users
-    ); // parkours, joinParkourEpreuve, imageParkour, joinUserParkour
+    ); // parkours, joinParkourEpreuve, imageParkour, joinUserParkourNote
 
     const userFavoris = await createJoinUserParkourFavoris(
       dataSource,
       parkours,
       users
-    ); // parkours, joinParkourEpreuve, imageParkour, joinUserParkour
+    ); // parkours, joinParkourEpreuve, imageParkour, joinUserParkourFav
 
     console.log("Données de test insérées avec succès !");
   } catch (error) {

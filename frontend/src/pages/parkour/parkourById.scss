@@ -1,4 +1,81 @@
 .oneParkour {
+  gap: var(--gap);
+
+  .topButt {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: var(--gap);
+    margin-bottom: var(--espace);
+  }
+
+  h1 {
+    text-transform: uppercase;
+  }
+
+  .depart {
+    display: flex;
+    align-items: center;
+    gap: var(--gap);
+
+    .redDot {
+      fill: var(--red);
+    }
+
+    .nomVille {
+      text-transform: capitalize;
+    }
+  }
+
+  .rating {
+    position: relative;
+
+    .nbVote {
+      display: none;
+      position: absolute;
+      top: -30px;
+      right: -40px;
+
+      padding: 5px 10px;
+      background-color: var(--blue);
+      border-radius: var(--radius);
+    }
+
+    &:hover {
+      .nbVote {
+        display: block;
+        position: absolute;
+      }
+    }
+  }
+
+  .depart {
+    display: flex;
+    flex-direction: row;
+    gap: var(--gap);
+  }
+
+  .infos {
+    width: 100%;
+    max-width: 400px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    p {
+      display: flex;
+      align-items: center;
+      gap: var(--miniEspace);
+
+      background-color: var(--blue);
+      color: var(--text1);
+
+      padding: var(--padButton);
+      border-radius: var(--radiusButton);
+    }
+  }
+
   .carrouselParkour {
     width: 360px;
     height: 340px;
@@ -9,8 +86,47 @@
       justify-content: center;
 
       img {
+        width: 360px;
         height: 300px;
+        border-radius: var(--radius);
       }
+    }
+  }
+
+  .container-epreuves {
+    width: 100%;
+
+    h3 {
+      text-align: left;
+      margin-bottom: var(--gap);
+    }
+
+    ul {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: var(--gap);
+    }
+  }
+
+  hr {
+    width: 50%;
+    margin: 2rem 0;
+  }
+
+  .allComms {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2rem;
+  }
+}
+
+@media screen and (min-width: 800px) {
+  .oneParkour {
+    .topButt {
+      flex-direction: row;
     }
   }
 }

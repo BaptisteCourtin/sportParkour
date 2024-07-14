@@ -8,7 +8,7 @@ const planDuSite = () => {
     <main className="pagesInfos">
       <h1>PLAN DU SITE</h1>
       <h2>En vigueur au 01/08/2024</h2>
-      <ul>
+      <ul className="ulPlanSite">
         <h3>Pour vous connecter</h3>
         <li>
           <Link href="/auth/inscription">
@@ -20,6 +20,12 @@ const planDuSite = () => {
           <Link href="/auth/login">
             <FaCaretRight />
             Authentification
+          </Link>
+        </li>
+        <li>
+          <Link href="/auth/resetPassword/resetPassword">
+            <FaCaretRight />
+            Modifier votre mot de passe
           </Link>
         </li>
 
@@ -62,36 +68,52 @@ const planDuSite = () => {
             Vos parkours favoris
           </Link>
         </li>
+        <li>
+          <Link href="/user/notes">
+            <FaCaretRight />
+            Vos avis
+          </Link>
+        </li>
 
         <br />
         <br />
 
         <h3>les infos</h3>
         <li>
-          <FaCaretRight />
-          <Link href="/infos/cgu">CGU</Link>
+          <Link href="/infos/cgu">
+            <FaCaretRight />
+            CGU
+          </Link>
         </li>
         <li>
-          <FaCaretRight />
-          <Link href="/infos/faq">FAQ</Link>
+          <Link href="/infos/faq">
+            <FaCaretRight />
+            FAQ
+          </Link>
         </li>
         <li>
-          <FaCaretRight />
-          <Link href="/infos/mentionsLegales">Mentions légales</Link>
+          <Link href="/infos/mentionsLegales">
+            <FaCaretRight />
+            Mentions légales
+          </Link>
         </li>
         <li>
-          <FaCaretRight />{" "}
-          <Link href="/infos/planDuSite">Plan du site (c'est cette page)</Link>
+          <Link href="/infos/planDuSite">
+            <FaCaretRight />
+            Plan du site (c'est cette page)
+          </Link>
         </li>
         <li>
-          <FaCaretRight />
           <Link href="/infos/politiqueDeConfidentialite">
+            <FaCaretRight />
             Politique de confidentialité
           </Link>
         </li>
         <li>
-          <FaCaretRight />
-          <Link href="/infos/quiSommesNous">Qui sommes nous</Link>
+          <Link href="/infos/quiSommesNous">
+            <FaCaretRight />
+            Qui sommes nous
+          </Link>
         </li>
 
         <br />
@@ -99,8 +121,10 @@ const planDuSite = () => {
 
         <h3>La meilleure page du site</h3>
         <li>
-          <FaCaretRight />
-          <Link href="/404">La page 404</Link>
+          <Link href="/404">
+            <FaCaretRight />
+            La page 404
+          </Link>
         </li>
       </ul>
     </main>

@@ -11,7 +11,6 @@ import {
   useIsAdminQuery,
   useIsClientQuery,
   useModifyUserMutation,
-  UserUpdateEntity,
 } from "@/types/graphql";
 
 import Button from "@mui/material/Button";
@@ -26,7 +25,10 @@ import { toast } from "react-hot-toast";
 
 import SearchBarCommuneName from "@/components/user/searchBarCommuneName";
 import axiosInstanceImage from "@/lib/axiosInstanceImage";
+
 import { FaUser } from "react-icons/fa6";
+import { FaPencil } from "react-icons/fa6";
+import { FaArrowRight } from "react-icons/fa6";
 
 let modifyUserSchema = object({
   imageProfil: mixed<FileList>(),
@@ -227,21 +229,20 @@ const profil = () => {
       ) : (
         data?.getUserByToken && (
           <>
-            <button
-              className="isModif"
-              onClick={() => setIsModifMode(!isModifMode)}
-            >
-              {isModifMode
-                ? "Arreter de modifier mon profil"
-                : "Modifier mon profil"}
-            </button>
             {isModifMode ? (
               // --- modif ---
               <>
                 <form
-                  className="modifProfil"
+                  className="bigForm"
                   onSubmit={handleSubmit(handleModifyUser)}
                 >
+                  <button
+                    className="closeModif"
+                    onClick={() => setIsModifMode(!isModifMode)}
+                  >
+                    Arrêter de modifier mon profil
+                  </button>
+
                   <div className="champ imageInput">
                     <label htmlFor="img-profil">
                       <input
@@ -256,15 +257,17 @@ const profil = () => {
                         placeholder="Photo"
                       />
 
-                      {data.getUserByToken.imageProfil ? (
-                        <img
-                          className="photoProfil"
-                          src={data.getUserByToken.imageProfil}
-                          alt="avatar"
-                        />
-                      ) : (
-                        <FaUser />
-                      )}
+                      <div className="container-imageProfil">
+                        {data.getUserByToken.imageProfil ? (
+                          <img
+                            className="photoProfil"
+                            src={data.getUserByToken.imageProfil}
+                            alt="avatar"
+                          />
+                        ) : (
+                          <FaUser className="photoProfil" />
+                        )}
+                      </div>
                     </label>
 
                     <p>{errors?.imageProfil?.message}</p>
@@ -343,7 +346,7 @@ const profil = () => {
 
                     <div className="champ">
                       <TextField
-                        className="mui-input"
+                        className="mui-input codePostal"
                         fullWidth
                         variant="outlined"
                         label="Votre code postal"
@@ -419,7 +422,7 @@ const profil = () => {
                 </form>
 
                 <Link
-                  className="oublie"
+                  className="oublie button danger"
                   href="/auth/resetPassword/resetPassword"
                 >
                   Modifier mon mot de passe
@@ -428,109 +431,156 @@ const profil = () => {
             ) : (
               // --- profil ---
               <section className="seeProfil">
-                {data.getUserByToken.imageProfil ? (
-                  <img
-                    className="photoProfil"
-                    src={data.getUserByToken.imageProfil}
-                    alt="avatar"
-                  />
-                ) : (
-                  <FaUser className="photoProfil" />
-                )}
-                <br />
-                <br />
-                <p>nom : {data.getUserByToken.name}</p>
-                <br />
-                <br />
-                <p>prénom : {data.getUserByToken.firstname}</p>
-                <br />
-                <br />
-                <p>email : {data.getUserByToken.email}</p>
-                <br />
-                <br />
-                <p>ville : {data.getUserByToken.city}</p>
-                <br />
-                <br />
-                <p>codePostal : {data.getUserByToken.codePostal}</p>
-                <br />
-                <br />
-                <p>phone : {data.getUserByToken.phone}</p>
-                <br />
-                <br />
-                <p>nbReportValide : {data.getUserByToken.nbReportValide}</p>
+                <div className="topProfil">
+                  <h1>
+                    {data.getUserByToken.firstname} {data.getUserByToken.name}
+                  </h1>
+
+                  <button
+                    className="openModif"
+                    onClick={() => setIsModifMode(!isModifMode)}
+                  >
+                    <FaPencil />
+                  </button>
+                </div>
+
+                <div className="containerInfosProfil">
+                  <div className="container-imageProfil">
+                    {data.getUserByToken.imageProfil ? (
+                      <img
+                        className="photoProfil"
+                        src={data.getUserByToken.imageProfil}
+                        alt="avatar"
+                      />
+                    ) : (
+                      <FaUser className="photoProfil" />
+                    )}
+                  </div>
+
+                  <div className="infoProfil">
+                    <div>
+                      <p>Email</p>
+                      <span>{data.getUserByToken.email}</span>
+                    </div>
+                    <div className="ville">
+                      <div>
+                        <p>Ville</p>
+                        <span>
+                          {data.getUserByToken.city
+                            ? data.getUserByToken.city
+                            : "non renseigné"}
+                        </span>
+                      </div>
+                      <div>
+                        <p>Code postal</p>
+                        <span>
+                          {data.getUserByToken.codePostal
+                            ? data.getUserByToken.codePostal
+                            : "non renseigné"}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div>
+                      <p>Téléphone</p>
+                      <span>
+                        {data.getUserByToken.phone
+                          ? data.getUserByToken.phone
+                          : "non renseigné"}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* --- déconnection --- */}
+                <div className="bottomButt">
+                  <Link className="button danger" href="/user/logout">
+                    Se déconnecter
+                  </Link>
+
+                  {/* --- supp --- */}
+                  <div className="supp">
+                    <button className="danger" onClick={handleClickOpen}>
+                      Supprimer mon compte
+                    </button>
+                    <Dialog
+                      open={open}
+                      onClose={handleClickClose}
+                      PaperProps={{
+                        component: "form",
+                        onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
+                          event.preventDefault();
+
+                          const formData = new FormData(event.currentTarget);
+                          const formJson = Object.fromEntries(
+                            (formData as any).entries()
+                          );
+                          const emailUser = formJson.emailUser;
+
+                          if (data.getUserByToken.email == emailUser) {
+                            handleDeleteUser(data.getUserByToken.id);
+
+                            if (errorDelete) {
+                              handleClickClose();
+                              toast.error(errorDelete?.message);
+                            }
+                          } else {
+                            handleClickClose();
+                            toast.error("L'email ne correspond pas");
+                          }
+                        },
+                      }}
+                    >
+                      <DialogTitle>
+                        Vous êtes entrain de vous supprimer
+                      </DialogTitle>
+                      <DialogContent>
+                        <DialogContentText>
+                          Pour vous supprimer, entrez votre mail :
+                          {data.getUserByToken.email}
+                        </DialogContentText>
+                        <TextField
+                          autoFocus
+                          fullWidth
+                          variant="standard"
+                          required
+                          margin="dense"
+                          id="emailUser"
+                          name="emailUser"
+                          label="votre email"
+                          type="email"
+                        />
+                      </DialogContent>
+                      <DialogActions>
+                        <Button onClick={handleClickClose}>En fait, non</Button>
+                        <Button type="submit">Hop, ça dégage!</Button>
+                      </DialogActions>
+                    </Dialog>
+                  </div>
+                </div>
               </section>
             )}
+
             {/* --- favoris / note / modo --- */}
             {dataIsClient ? (
-              <Link href="/user/favoris">mes favoris</Link>
+              <div className="buttMyPages">
+                <Link className="button" href="/user/notes">
+                  MES AVIS <FaArrowRight />
+                </Link>
+                <Link className="fav button" href="/user/favoris">
+                  MES FAVORIS <FaArrowRight />
+                </Link>
+              </div>
             ) : null}
-            {dataIsClient ? (
-              <Link href="/user/notes">mes notes et commentaires</Link>
-            ) : null}
+
             {dataIsAdmin ? (
-              <Link href="/admin/reports/recherche">go modo un peu là</Link>
+              <Link className="goModo button" href="/admin/reports/recherche">
+                MODÉRATION <FaArrowRight />
+              </Link>
             ) : null}
-            {/* --- supp --- */}
-            <div className="supp">
-              <Button variant="outlined" onClick={handleClickOpen}>
-                Supprimer votre profil
-              </Button>
-              <Dialog
-                open={open}
-                onClose={handleClickClose}
-                PaperProps={{
-                  component: "form",
-                  onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
-                    event.preventDefault();
-
-                    const formData = new FormData(event.currentTarget);
-                    const formJson = Object.fromEntries(
-                      (formData as any).entries()
-                    );
-                    const emailUser = formJson.emailUser;
-
-                    if (data.getUserByToken.email == emailUser) {
-                      handleDeleteUser(data.getUserByToken.id);
-
-                      if (errorDelete) {
-                        handleClickClose();
-                        toast.error(errorDelete?.message);
-                      }
-                    } else {
-                      handleClickClose();
-                      toast.error("L'email ne correspond pas");
-                    }
-                  },
-                }}
-              >
-                <DialogTitle>Vous êtes entrain de vous supprimer</DialogTitle>
-                <DialogContent>
-                  <DialogContentText>
-                    Pour supprimer cette user entrez son nom :
-                    {data.getUserByToken.email}
-                  </DialogContentText>
-                  <TextField
-                    autoFocus
-                    fullWidth
-                    variant="standard"
-                    required
-                    margin="dense"
-                    id="emailUser"
-                    name="emailUser"
-                    label="votre email"
-                    type="email"
-                  />
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={handleClickClose}>En fait, non</Button>
-                  <Button type="submit">Hop, ça dégage!</Button>
-                </DialogActions>
-              </Dialog>
-            </div>
           </>
         )
       )}
-      <Link href="/user/logout">se déconnecter</Link>
     </main>
   );
 };

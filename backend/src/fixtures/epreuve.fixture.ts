@@ -61,12 +61,21 @@ export async function createEpreuves(
     // création épreuve
     const epreuve = new EpreuveEntity();
     epreuve.id = i + 1;
-    epreuve.title = faker.word.words({ count: { min: 2, max: 5 } });
-    epreuve.description = faker.lorem.paragraphs({ min: 3, max: 5 }, "<br/>\n");
-    epreuve.easyToDo = faker.lorem.paragraphs({ min: 1, max: 3 }, "<br/>\n");
-    epreuve.mediumToDo = faker.lorem.paragraphs({ min: 1, max: 3 }, "<br/>\n");
-    epreuve.hardToDo = faker.lorem.paragraphs({ min: 1, max: 3 }, "<br/>\n");
-    epreuve.videoLink = faker.lorem.paragraphs({ min: 1, max: 3 }, "<br/>\n");
+    epreuve.title = faker.word
+      .words({ count: { min: 2, max: 5 } })
+      .substring(0, 50);
+    epreuve.description = faker.lorem
+      .paragraphs({ min: 2, max: 4 }, "<br/>\n")
+      .substring(0, 1000);
+    epreuve.easyToDo = faker.lorem
+      .paragraphs({ min: 1, max: 3 }, "<br/>\n")
+      .substring(0, 250);
+    epreuve.mediumToDo = faker.lorem
+      .paragraphs({ min: 1, max: 3 }, "<br/>\n")
+      .substring(0, 250);
+    epreuve.hardToDo = faker.lorem
+      .paragraphs({ min: 1, max: 3 }, "<br/>\n")
+      .substring(0, 250);
     epreuve.videoLink = tabVideo[idVideo];
     epreuve.images = imagesEpreuve;
 

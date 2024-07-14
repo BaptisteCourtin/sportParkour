@@ -1,0 +1,105 @@
+.littleForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap);
+
+  width: 360px;
+  background-color: var(--middle);
+
+  margin: var(--espace) 0;
+  padding: var(--espace);
+  border-radius: var(--radius);
+  border-top: var(--line) solid var(--blue);
+
+  hr {
+    width: 50%;
+    align-self: center;
+    margin: 10px 0;
+  }
+
+  .champ {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    width: 100%;
+
+    button {
+      color: var(--text2);
+    }
+
+    .mui-input {
+      // les text field
+      background-color: var(--back);
+      color: var(--text2);
+      border-radius: var(--radius);
+      width: 100%;
+
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+
+      label {
+        color: var(--text2Trans);
+        font-style: italic;
+      }
+
+      input,
+      textarea {
+        color: var(--text2);
+
+        // pour éviter les couleurs du autofill
+        &:-webkit-autofill,
+        &:-webkit-autofill:hover,
+        &:-webkit-autofill:focus,
+        &:-webkit-autofill:active {
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: var(--text2);
+        }
+      }
+    }
+
+    &.difficulty {
+      label {
+        color: var(--text2Trans);
+        font-style: italic;
+        padding: 0 var(--espace) 0 0;
+      }
+
+      .MuiFormControl-root {
+        margin: 0 !important;
+        width: 100%;
+      }
+
+      .MuiSvgIcon-root {
+        color: var(--text2);
+      }
+    }
+
+    .containerInputTri {
+      width: 100%;
+
+      label {
+        color: var(--text2Trans);
+        font-style: italic;
+        padding: 0 var(--espace) 0 0; // ?
+      }
+
+      svg {
+        color: var(--text2) !important;
+      }
+    }
+  }
+
+  // pas de champ à cause du color du button reset
+  .searchNote {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: var(--gap);
+  }
+}

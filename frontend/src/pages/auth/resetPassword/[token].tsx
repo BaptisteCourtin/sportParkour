@@ -115,7 +115,10 @@ function Reset() {
       ) : dataCheck?.checkResetTokenValidity.success && !dataChange ? (
         <>
           <h1>Réinitialisation de mot de passe</h1>
-          <form onSubmit={handleSubmit(handlePasswordsResetPassword)}>
+          <form
+            className="bigForm"
+            onSubmit={handleSubmit(handlePasswordsResetPassword)}
+          >
             <div className="champ">
               <TextField
                 className="mui-input"

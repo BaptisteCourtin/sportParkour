@@ -16,26 +16,27 @@ const displayComment = ({
 }) => {
   return (
     <div className="displayComment">
-      {isAdmin || isClient ? (
-        <ButtonForComment
-          malfratId={comment.user.id}
-          parkourId={+parkourId}
-          commentaire={comment.commentaire}
-          isAdmin={isAdmin}
-          isClient={isClient}
-        />
-      ) : null}
+      <div className="topComment">
+        <div className="userProfil">
+          {comment.user.imageProfil ? (
+            <img src={comment.user.imageProfil} className="imgProfil" />
+          ) : (
+            <img src="/userDefault.png" className="imgProfil" />
+          )}
 
-      {comment.user.imageProfil ? (
-        <img src={comment.user.imageProfil} />
-      ) : (
-        <img src="/userDefault.png" />
-      )}
-
-      <div>
-        <p>
-          {comment.user.firstname} {comment.user.name}
-        </p>
+          <p>
+            {comment.user.firstname} {comment.user.name}
+          </p>
+        </div>
+        {isAdmin || isClient ? (
+          <ButtonForComment
+            malfratId={comment.user.id}
+            parkourId={+parkourId}
+            commentaire={comment.commentaire}
+            isAdmin={isAdmin}
+            isClient={isClient}
+          />
+        ) : null}
       </div>
 
       <Rating

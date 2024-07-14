@@ -48,6 +48,10 @@ table {
   border-spacing: 0;
 }
 
+img {
+  object-fit: cover;
+}
+
 /* --- TITRES --- */
 
 h1 {
@@ -115,37 +119,10 @@ main {
   margin-top: 50px;
 }
 
-// --- GLOBAL ---
-
-button,
-.button {
-  cursor: pointer;
-  border: none;
-  color: var(--text1);
-
-  background-color: var(--blue);
-  font-weight: var(--fw-button);
-  padding: var(--padButton);
-  border-radius: var(--radiusButton);
-}
-
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  margin: 0;
-}
-
-// .retourTopButton {
-//   width: 50px;
-//   height: 50px;
-//   border-radius: 50%;
-//   text-align: center;
-// }
-
-.error {
-  color: var(--red);
+@media screen and (min-width: 800px) {
+  main {
+    margin-top: 0;
+  }
 }
 
 /* --- REDUCE MOTION --- */

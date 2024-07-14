@@ -11,7 +11,6 @@ export const GET_USER_BY_TOKEN = gql`
       codePostal
       phone
       imageProfil
-      nbReportValide
     }
   }
 `;

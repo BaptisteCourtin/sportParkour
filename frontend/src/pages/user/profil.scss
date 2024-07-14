@@ -1,20 +1,143 @@
 .profil {
-  .photoProfil {
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-
-    border: 1px var(--text2) solid;
-    border-radius: 50%;
+  // mode vu
+  .openModif {
+    padding: 5px;
+    font-size: var(--fs-h3);
+    width: 35px;
+    height: 35px;
+    border-radius: var(--radius);
   }
 
-  form.modifProfil {
+  .seeProfil {
+    width: calc(100% - 20px);
     max-width: 700px;
     background-color: var(--middle);
 
-    margin-top: var(--espace);
     padding: var(--espace);
     border-radius: var(--radius);
     border-top: var(--line) solid var(--blue);
+
+    .topProfil {
+      display: flex;
+      justify-content: space-between;
+
+      h1 {
+        text-transform: uppercase;
+      }
+    }
+
+    .containerInfosProfil {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: var(--gap);
+
+      .container-imageProfil {
+        width: 175px;
+        height: 175px;
+
+        border: 5px var(--blue) solid;
+        border-radius: var(--radius);
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .photoProfil {
+          width: 95%;
+          height: 95%;
+          border-radius: var(--radius);
+        }
+      }
+
+      .infoProfil {
+        display: flex;
+        flex-direction: column;
+        gap: var(--gap);
+
+        span {
+          color: var(--text2Trans);
+          text-overflow: ellipsis;
+        }
+
+        .ville {
+          display: flex;
+          flex-direction: row;
+          gap: var(--espace);
+        }
+      }
+    }
+  }
+
+  .bottomButt {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+
+    margin-top: calc(2 * var(--espace));
+    gap: var(--gap);
+  }
+
+  // mode modif
+  form {
+    margin-bottom: var(--espace);
+
+    .container-imageProfil {
+      width: 175px;
+      height: 175px;
+
+      border: 5px var(--blue) solid;
+      border-radius: var(--radius);
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .photoProfil {
+        width: 95%;
+        height: 95%;
+        border-radius: var(--radius);
+      }
+    }
+
+    // image input
+    .imageInput {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      label {
+        border-radius: var(--radius);
+      }
+
+      input {
+        width: 0px;
+        position: absolute;
+      }
+
+      .photoProfil {
+        cursor: pointer;
+      }
+    }
+
+    button {
+      align-self: center;
+    }
+  }
+
+  // les 2 modes
+  .buttMyPages {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+
+    margin-top: var(--espace);
+    width: 100%;
+  }
+
+  .goModo {
+    margin-top: var(--espace);
   }
 }

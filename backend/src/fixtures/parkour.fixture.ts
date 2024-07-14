@@ -5,9 +5,6 @@ import { Difficulty } from "../enum/difficulty.enum";
 import EpreuveEntity from "../entities/epreuve.entity";
 import ImageParkourEntity from "../entities/imageParkour.entity";
 import UserEntity from "../entities/user.entity";
-import JoinUserParkourEntity, {
-  JoinUserParkourFavorisEntity,
-} from "../entities/joinUserParkourFavoris.entity";
 import JoinUserParkourNoteEntity from "../entities/joinUserParkourNote.entity";
 
 export async function createParkours(
@@ -23,21 +20,15 @@ export async function createParkours(
   );
 
   let indexImage = 1;
+  const difficulties = Object.values(Difficulty);
 
   const parkours = [];
   for (let i = 0; i < numParkours; i++) {
     // ---------------------------------------------------------------------------------
 
     // difficulté
-    const difficultyNumber = Math.floor(Math.random() * 3);
-    let thisDifficulty = Difficulty.facile;
-    if (difficultyNumber == 0) {
-      thisDifficulty = Difficulty.facile;
-    } else if (difficultyNumber == 1) {
-      thisDifficulty = Difficulty.moyen;
-    } else if (difficultyNumber == 2) {
-      thisDifficulty = Difficulty.difficile;
-    }
+    const randomDifficulty =
+      difficulties[Math.floor(Math.random() * difficulties.length)];
 
     // ---------------------------------------------------------------------------------
 
@@ -86,11 +77,15 @@ export async function createParkours(
     // création
     const parkour = new ParkourEntity();
     parkour.id = i + 1;
-    parkour.title = faker.word.words({ count: { min: 2, max: 5 } });
-    parkour.description = faker.lorem.paragraphs({ min: 3, max: 5 }, "<br/>\n");
+    parkour.title = faker.word
+      .words({ count: { min: 2, max: 5 } })
+      .substring(0, 50);
+    parkour.description = faker.lorem
+      .paragraphs({ min: 3, max: 5 }, "<br/>\n")
+      .substring(0, 1000);
     parkour.length = thisLength;
     parkour.time = thisTime;
-    parkour.difficulty = thisDifficulty;
+    parkour.difficulty = randomDifficulty;
     parkour.city = faker.location.city();
     parkour.start = `${faker.location.nearbyGPSCoordinate({
       origin: [46.767671, 2.4291341],
@@ -129,10 +124,9 @@ export async function createParkours(
         joinUserParkourNote.user_id = users[idUser].id;
         joinUserParkourNote.parkour_id = parkour.id;
         joinUserParkourNote.note = thisNote;
-        joinUserParkourNote.commentaire = faker.lorem.paragraphs(
-          { min: 1, max: 3 },
-          "<br/>\n"
-        );
+        joinUserParkourNote.commentaire = faker.lorem
+          .paragraphs({ min: 1, max: 3 }, "<br/>\n")
+          .substring(0, 500);
         joinUserParkoursNotes.push(joinUserParkourNote);
 
         noteTotalThisParkour += thisNote;

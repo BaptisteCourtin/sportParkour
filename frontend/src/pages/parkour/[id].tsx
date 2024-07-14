@@ -12,7 +12,6 @@ import {
   useGetUserNoteByTokenAndParkourIdLazyQuery,
   useDeleteJoinUserParkourFavorisMutation,
   useDeleteJoinUserParkourNoteMutation,
-  JoinUserParkourNoteEntity,
 } from "@/types/graphql";
 
 import Button from "@mui/material/Button";
@@ -28,8 +27,14 @@ import Carousel from "react-material-ui-carousel";
 import { toast } from "react-hot-toast";
 import { FaAngleRight } from "react-icons/fa6";
 import { FaAngleLeft } from "react-icons/fa6";
+import { FaLocationDot } from "react-icons/fa6";
+import { FaPersonRunning } from "react-icons/fa6";
+import { FaStopwatch } from "react-icons/fa6";
+import { FaArrowUpRightDots } from "react-icons/fa6";
+import { FaArrowRight } from "react-icons/fa6";
 
 import DisplayComment from "@/components/parkour/displayComment";
+import CardEpreuve from "@/components/epreuve/cardEpreuve";
 
 const OneParkour = () => {
   const router = useRouter();
@@ -221,177 +226,196 @@ const OneParkour = () => {
   }
 
   return (
-    <main className="oneParkour">
+    <div>
       {error ? (
         <h2>une erreur... (déso) : {error.message}</h2>
       ) : loading ? (
         <h2>Chargement en cours</h2>
       ) : (
         data?.getParkourById && (
-          <div>
-            {dataIsAdmin ? (
-              <Link href={`/admin/modifyParkour/${data.getParkourById.id}`}>
-                Modifier ce parkour
-              </Link>
-            ) : null}
+          <main className="oneParkour">
+            {/* --- LIEN MODIFIER --- */}
+            <section className="topButt">
+              {dataIsAdmin && (
+                <Link
+                  className="button"
+                  href={`/admin/modifyParkour/${data.getParkourById.id}`}
+                >
+                  Modifier ce parkour <FaArrowRight />
+                </Link>
+              )}
 
-            {dataIsClient ? (
-              <div className="supp">
-                <Button variant="outlined" onClick={handleClickOpen}>
-                  {myNote
-                    ? "Modifier ma note pour ce parkour"
-                    : "Mettre une note à ce parkour"}
-                </Button>
-                <Dialog
-                  open={open}
-                  onClose={handleClickClose}
-                  PaperProps={{
-                    component: "form",
-                    onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
-                      event.preventDefault();
+              {/* --- BUTTON METTRE NOTE --- */}
 
-                      const formData = new FormData(event.currentTarget);
-                      const formJson = Object.fromEntries(
-                        (formData as any).entries()
-                      );
-                      const noteThisParkour = formJson.noteThisParkour;
-                      const commentThisParkour = formJson.commentThisParkour;
+              {dataIsClient ? (
+                <div className="supp">
+                  <button onClick={handleClickOpen}>
+                    {myNote
+                      ? "Modifier mon avis pour ce parkour"
+                      : "Mettre un avis à ce parkour"}
+                  </button>
+                  <Dialog
+                    open={open}
+                    onClose={handleClickClose}
+                    PaperProps={{
+                      component: "form",
+                      onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
+                        event.preventDefault();
 
-                      // if une note => handlePutNote
-                      if (noteThisParkour) {
-                        handleNote(noteThisParkour, commentThisParkour);
+                        const formData = new FormData(event.currentTarget);
+                        const formJson = Object.fromEntries(
+                          (formData as any).entries()
+                        );
+                        const noteThisParkour = formJson.noteThisParkour;
+                        const commentThisParkour = formJson.commentThisParkour;
 
-                        if (errorNote) {
-                          handleClickClose();
-                          toast.error(errorNote.message);
+                        // if une note => handlePutNote
+                        if (noteThisParkour) {
+                          handleNote(noteThisParkour, commentThisParkour);
+
+                          if (errorNote) {
+                            handleClickClose();
+                            toast.error(errorNote.message);
+                          }
+                        } else {
+                          toast.error("Il faut mettre une note");
                         }
-                      } else {
-                        toast.error("Il faut mettre une note");
-                      }
-                    },
-                  }}
+                      },
+                    }}
+                  >
+                    <DialogTitle>Note</DialogTitle>
+                    <DialogContent>
+                      <DialogContentText>
+                        Mettez une note à ce parkour
+                      </DialogContentText>
+                      <Rating
+                        id="noteThisParkour"
+                        name="noteThisParkour"
+                        precision={0.5}
+                        defaultValue={myNote}
+                      />
+                      <TextField
+                        fullWidth
+                        variant="standard"
+                        margin="dense"
+                        label="Votre commentaire"
+                        defaultValue={myComment}
+                        multiline
+                        rows={10}
+                        id="commentThisParkour"
+                        name="commentThisParkour"
+                        type="text"
+                        inputProps={{ maxLength: 500 }}
+                        onChange={(e) => setComment(e.target.value)}
+                      />
+                      <span>
+                        {comment.length > 0 ? `${comment.length}/500` : ""}
+                      </span>
+                    </DialogContent>
+                    <DialogActions>
+                      <Button onClick={handleClickClose}>En fait, non</Button>
+                      <Button type="submit">Hop, c'est mis!</Button>
+                    </DialogActions>
+                  </Dialog>
+                </div>
+              ) : null}
+
+              {/* --- SUPPRIMER NOTE --- */}
+              {dataIsClient && myNote ? (
+                <div className="deleteMyNote">
+                  <button onClick={handleClickOpenDeleteNote}>
+                    Supprimer mon avis
+                  </button>
+                  <Dialog
+                    open={openDeleteNote}
+                    onClose={handleClickCloseDeleteNote}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                  >
+                    <DialogTitle id="alert-dialog-title">
+                      Supprimer ?
+                    </DialogTitle>
+                    <DialogContent>
+                      <DialogContentText id="alert-dialog-description">
+                        Voulez vous vraiment supprimer cette note et ce
+                        commentaire
+                      </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                      <Button onClick={handleClickCloseDeleteNote}>Non</Button>
+                      <Button onClick={handleDeleteNote} autoFocus>
+                        Oui
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
+                </div>
+              ) : null}
+
+              {/* --- LIKE --- */}
+              {dataIsClient && isLiked ? (
+                <button
+                  className="fav"
+                  onClick={() => handleLike(false)}
+                  disabled={loadingCreateFav || loadingDeleteFav}
                 >
-                  <DialogTitle>Note</DialogTitle>
-                  <DialogContent>
-                    <DialogContentText>
-                      Mettez une note à ce parkour
-                    </DialogContentText>
-                    <Rating
-                      id="noteThisParkour"
-                      name="noteThisParkour"
-                      precision={0.5}
-                      defaultValue={myNote}
-                    />
-                    <TextField
-                      fullWidth
-                      variant="standard"
-                      margin="dense"
-                      label="Votre commentaire"
-                      defaultValue={myComment}
-                      multiline
-                      rows={10}
-                      id="commentThisParkour"
-                      name="commentThisParkour"
-                      type="text"
-                      inputProps={{ maxLength: 500 }}
-                      onChange={(e) => setComment(e.target.value)}
-                    />
-                    <span>
-                      {comment.length > 0 ? `${comment.length}/500` : ""}
-                    </span>
-                  </DialogContent>
-                  <DialogActions>
-                    <Button onClick={handleClickClose}>En fait, non</Button>
-                    <Button type="submit">Hop, c'est mis!</Button>
-                  </DialogActions>
-                </Dialog>
-              </div>
-            ) : null}
-
-            {/* --- */}
-
-            {dataIsClient && myNote ? (
-              <div className="deleteMyNote">
-                <Button variant="outlined" onClick={handleClickOpenDeleteNote}>
-                  Supprimer ma note et mon commentaire
-                </Button>
-                <Dialog
-                  open={openDeleteNote}
-                  onClose={handleClickCloseDeleteNote}
-                  aria-labelledby="alert-dialog-title"
-                  aria-describedby="alert-dialog-description"
+                  Supprimer des favoris
+                </button>
+              ) : dataIsClient && !isLiked ? (
+                <button
+                  className="fav"
+                  onClick={() => handleLike(true)}
+                  disabled={loadingCreateFav || loadingDeleteFav}
                 >
-                  <DialogTitle id="alert-dialog-title">Supprimer ?</DialogTitle>
-                  <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                      Voulez vous vraiment supprimer cette note et ce
-                      commentaire
-                    </DialogContentText>
-                  </DialogContent>
-                  <DialogActions>
-                    <Button onClick={handleClickCloseDeleteNote}>Non</Button>
-                    <Button onClick={handleDeleteNote} autoFocus>
-                      Oui
-                    </Button>
-                  </DialogActions>
-                </Dialog>
+                  Mettre en favoris
+                </button>
+              ) : null}
+            </section>
+
+            {/* --- DATA PARKOUR --- */}
+            <div className="titreAvecLosange">
+              <i className="losange"></i>
+              <h1>{data.getParkourById.title}</h1>
+            </div>
+
+            {data.getParkourById.note ? (
+              <div className="rating">
+                <Rating
+                  defaultValue={parseFloat(data.getParkourById.note.toFixed(1))}
+                  precision={0.1}
+                  readOnly
+                />
+                <span className="nbVote">
+                  {data.getParkourById.note.toFixed(1)} sur{" "}
+                  {data.getParkourById.nbVote} votes
+                </span>
               </div>
-            ) : null}
+            ) : (
+              <p>Nouveau</p>
+            )}
 
-            {/* --- */}
-
-            <br />
-            <br />
-            {dataIsClient && isLiked ? (
-              <button
-                onClick={() => handleLike(false)}
-                disabled={loadingCreateFav || loadingDeleteFav}
+            <div className="depart">
+              <h2 className="nomVille">{data.getParkourById.city}</h2>
+              <a
+                href={`https://www.google.fr/maps/place/${data.getParkourById.start}`}
+                target="blank"
               >
-                Supprimer des favoris
-              </button>
-            ) : dataIsClient && !isLiked ? (
-              <button
-                onClick={() => handleLike(true)}
-                disabled={loadingCreateFav || loadingDeleteFav}
-              >
-                Mettre en favoris
-              </button>
-            ) : null}
+                <FaLocationDot className="redDot" /> Y aller !
+              </a>
+            </div>
 
-            {/* --- */}
+            <p>{data.getParkourById.description}</p>
 
-            <br />
-            <br />
-            <p>titre : {data.getParkourById.title}</p>
-            <br />
-            <br />
-            <p>description : {data.getParkourById.description}</p>
-            <p>city : {data.getParkourById.city}</p>
-            <br />
-            <br />
-            <p>difficulty : {data.getParkourById.difficulty}</p>
-            <br />
-            <br />
-            <p>length : {data.getParkourById.length}</p>
-            <br />
-            <br />
-            <a
-              href={`https://www.google.fr/maps/place/${data.getParkourById.start}`}
-              target="blank"
-            >
-              {data.getParkourById.start}
-            </a>
-            <br />
-            <br />
-            <p>time : {data.getParkourById.time}</p>
-            <br />
-            <br />
-            <p>note : {data.getParkourById.note}</p>
-            <br />
-            <br />
-            <p>nbVote : {data.getParkourById.nbVote}</p>
-            <br />
-            <br />
+            <div className="infos">
+              <p>
+                <FaStopwatch /> {data.getParkourById.time} min
+              </p>
+              <p>
+                <FaPersonRunning /> {data.getParkourById.length} km
+              </p>
+              <p>
+                <FaArrowUpRightDots /> {data.getParkourById.difficulty}
+              </p>
+            </div>
 
             {data.getParkourById.images &&
               data.getParkourById.images.length > 0 && (
@@ -403,9 +427,13 @@ const OneParkour = () => {
                   indicators={true}
                   swipe={true}
                   cycleNavigation={true}
-                  navButtonsAlwaysVisible={true}
-                  navButtonsAlwaysInvisible={false}
-                  fullHeightHover={true}
+                  navButtonsAlwaysVisible={
+                    data.getParkourById.images.length > 1 ? true : false
+                  }
+                  navButtonsAlwaysInvisible={
+                    data.getParkourById.images.length > 1 ? false : true
+                  }
+                  fullHeightHover={false}
                   animation="slide"
                 >
                   {data.getParkourById.images
@@ -422,18 +450,30 @@ const OneParkour = () => {
                 </Carousel>
               )}
 
-            <br />
-            <br />
             <div className="container-epreuves">
-              {data.getParkourById.epreuves?.map(
-                (epreuve: GetEpreuveByIdQuery["getEpreuveById"]) => (
-                  <Link href={`/epreuve/${epreuve.id}`}>{epreuve.title}</Link>
-                )
+              <h3>Les épreuves :</h3>
+              {data.getParkourById.epreuves?.length ? (
+                <ul>
+                  {data.getParkourById.epreuves?.map(
+                    (epreuve: GetEpreuveByIdQuery["getEpreuveById"]) => (
+                      <CardEpreuve epreuve={epreuve} />
+                    )
+                  )}
+                </ul>
+              ) : (
+                <p>Y'en a pas</p>
               )}
             </div>
 
+            {/* --- NOTES --- */}
+            <hr />
+
             {data.getParkourById.notesParkours && (
               <section className="allComms">
+                <div className="titreAvecLosange">
+                  <i className="losange"></i>
+                  <h2>AVIS SUR LE PARCOURS</h2>
+                </div>
                 {data.getParkourById.notesParkours.map((comment, index) => (
                   <DisplayComment
                     comment={comment}
@@ -444,12 +484,10 @@ const OneParkour = () => {
                 ))}
               </section>
             )}
-
-            {/* --- */}
-          </div>
+          </main>
         )
       )}
-    </main>
+    </div>
   );
 };
 

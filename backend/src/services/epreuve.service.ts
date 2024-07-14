@@ -100,8 +100,6 @@ class EpreuveService {
   async modifyEpreuve(id: number, data: EpreuveUpdateEntity) {
     const epreuve = await this.getEpreuveById(id);
 
-    console.log("SERVICE", data.images);
-
     // Mettre à jour les champs de l'épreuve
     for (const key of Object.keys(data) as Array<keyof EpreuveUpdateEntity>) {
       if (data[key] !== null && key !== "images" && key !== "deletedImageIds") {

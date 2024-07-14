@@ -13,6 +13,7 @@ import { Field, ObjectType, ID } from "type-graphql";
 import { ReportStatus } from "../enum/reportStatus.enum";
 import UserEntity from "./user.entity";
 import ParkourEntity from "./parkour.entity";
+import { MaxLength } from "class-validator";
 
 @Entity("report")
 @Unique(["malfrat_id", "parkour_id", "commentaireEnFaute"])
@@ -29,12 +30,12 @@ export class ReportEntity {
 
   @Field({ nullable: true })
   @Column({ nullable: true })
-  @Index()
   parkour_id: number;
 
   // pour éviter que l'utilisateur enlève le commentaire
   @Field()
   @Column({ type: "varchar", length: 500 })
+  @MaxLength(500)
   commentaireEnFaute: string;
 
   @Field()

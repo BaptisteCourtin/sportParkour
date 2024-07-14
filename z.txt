@@ -26,13 +26,10 @@ pas de tri par NOUVEAU, des annonces en haut de page ?
 
 https://api-adresse.data.gouv.fr/search/?q=caen&postcode=14000&type=municipality
 
-
 resolver => ce qui va etre utilisé à partir du front
 service => utiliser à partir du back
 
-
 ------------------------------------------------------------------------------------------------------
-
 
     CLIENT    |    ADMIN     | NON CONNECTE
 --------------|--------------|-------------
@@ -75,4 +72,52 @@ message sur logout
 
 ------------------------------------------------------------------------------------------------------
 
-image parkour/epreuve isCouverture
+- image parkour/epreuve isCouverture
+- image profil default
+- navbar phone => recadrer les icons et bulle
+
+------------------------------------------------------------------------------------------------------
+
+@Column({ length: 1000 }):
+Ce décorateur est spécifique à TypeORM.
+Il définit la contrainte au niveau de la base de données.
+Il indique à la base de données de limiter la longueur du champ à 1000 caractères.
+Cela assure l'intégrité des données au niveau le plus bas, empêchant toute insertion de données dépassant cette limite, même si l'application le permettait.
+
+@MaxLength(1000):
+Ce décorateur vient de la bibliothèque class-validator.
+Il ajoute une validation côté application.
+Il permet de vérifier la longueur avant même d'essayer d'insérer les données dans la base.
+Il est utile pour la validation des entrées utilisateur, par exemple dans les formulaires ou les API.
+
+Pourquoi utiliser les deux ?
+Sécurité en profondeur : Avoir une validation à plusieurs niveaux (application et base de données) renforce la sécurité et l'intégrité des données.
+Performance : La validation côté application (@MaxLength) peut éviter des appels inutiles à la base de données pour des données invalides.
+Flexibilité : La validation côté application peut être plus facilement personnalisée ou modifiée sans avoir à changer le schéma de la base de données.
+Feedback utilisateur : Avec la validation côté application, vous pouvez fournir un retour immédiat à l'utilisateur sans avoir à interroger la base de données.
+Cohérence : Cela garantit que les contraintes sont appliquées de manière cohérente, que les données passent par l'application ou qu'elles soient insérées directement dans la base de données.
+
+------------------------------------------------------------------------------------------------------
+
+J'ai ajouté ? après le type string pour indiquer que ces champs sont optionnels en TypeScript. Cela correspond mieux au fait que ces champs sont nullable dans GraphQL.
+
+@IsOptional() : Cela indique que le champ peut être omis lors de la mise à jour. C'est important pour les mises à jour partielles.
+
+------------------------------------------------------------------------------------------------------
+
+@Field({ nullable: true })
+Ce décorateur vient de TypeGraphQL.
+Il définit la structure du schéma GraphQL.
+Il indique que ce champ peut être null dans les requêtes et réponses GraphQL.
+Il affecte la façon dont le champ est représenté dans le schéma GraphQL (il devient optionnel dans le schéma).
+
+@IsOptional()
+Ce décorateur vient de class-validator.
+Il concerne la validation des données côté application.
+Il indique que le champ peut être omis lors de la validation (c'est-à-dire qu'il peut être undefined).
+Il n'affecte pas le schéma GraphQL, mais plutôt la logique de validation dans votre application.
+
+------------------------------------------------------------------------------------------------------
+
+Vous n'avez pas besoin d'ajouter des @JoinColumn pour ces relations @OneToMany.
+@JoinColumn est généralement utilisé du côté "propriétaire" de la relation, qui est typiquement le côté "Many" dans une relation @ManyToOne.

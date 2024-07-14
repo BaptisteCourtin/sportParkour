@@ -1,4 +1,4 @@
-import CardNoteParkour from "@/components/parkour/cardNoteParkour";
+import CardParkour from "@/components/parkour/cardParkour";
 import { useGetAllUserNoteByTokenLazyQuery } from "@/types/graphql";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
@@ -23,7 +23,7 @@ const notes = () => {
 
   return (
     <main className="favorisOrNotes">
-      <form>
+      <form className="littleForm">
         <div className="champ">
           <FormControl
             className="containerInputTri"
@@ -112,7 +112,7 @@ const notes = () => {
             })
             .map((parkour: any) => (
               <li>
-                <CardNoteParkour parkour={parkour.parkour} />
+                <CardParkour parkour={parkour.parkour} color="darkBlue" />
               </li>
             ))}
         </ul>

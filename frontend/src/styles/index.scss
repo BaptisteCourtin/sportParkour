@@ -1,6 +1,12 @@
 @import "./variables.scss";
 @import "./reset.scss";
-@import "./form.scss";
+
+// --- COMMON --
+@import "./common/bigForm.scss";
+@import "./common/littleForm.scss";
+@import "./common/commonMui.scss";
+@import "./common/commonStyle.scss";
+@import "./common/formImage.scss";
 
 // --- LAYOUT ---
 @import "../components/layout/ordi/darkLightOrdi.scss";
@@ -14,7 +20,6 @@
 // --- COMPONENTS ---
 @import "../components/epreuve/cardEpreuve.scss";
 
-@import "../components/parkour/cardFavParkour.scss";
 @import "../components/parkour/cardParkour.scss";
 @import "../components/parkour/displayComment.scss";
 

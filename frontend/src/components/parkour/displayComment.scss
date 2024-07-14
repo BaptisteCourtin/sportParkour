@@ -1,7 +1,30 @@
 .displayComment {
-  margin-top: var(--espace);
-  .imgProfil {
-    width: 25px;
-    height: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+
+  .topComment {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+
+    .userProfil {
+      display: flex;
+      align-items: center;
+      gap: var(--espace);
+
+      .imgProfil {
+        width: 35px;
+        height: 35px;
+        border-radius: var(--radius);
+      }
+    }
+
+    button {
+      color: var(--text2);
+    }
   }
 }

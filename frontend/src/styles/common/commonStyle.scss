@@ -1,0 +1,60 @@
+button,
+.button {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: var(--miniEspace);
+
+  width: max-content;
+  padding: var(--padButton);
+
+  cursor: pointer;
+  border: none;
+  border-radius: var(--radiusButton);
+
+  background-color: var(--blue);
+  color: var(--text1);
+  font-weight: var(--fw-button);
+  font-size: var(--fs-base);
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+
+// .retourTopButton {
+//   width: 50px;
+//   height: 50px;
+//   border-radius: 50%;
+//   text-align: center;
+// }
+
+.titreAvecLosange {
+  display: flex;
+  align-items: center;
+  gap: var(--gap);
+
+  i.losange {
+    display: block;
+    padding: 7px; // fait width et height
+    background-color: var(--blue);
+    transform: rotate(45deg);
+  }
+}
+
+.fav {
+  background-color: var(--yellow);
+}
+
+.danger {
+  background-color: var(--red);
+}
+
+.error {
+  color: var(--red);
+}

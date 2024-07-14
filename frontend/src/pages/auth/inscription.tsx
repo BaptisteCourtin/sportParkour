@@ -130,7 +130,7 @@ const inscription = () => {
         <h1>POSSEDEZ UN COMPTE PARKOUR</h1>
       </div>
 
-      <form onSubmit={handleSubmit(handleInscription)}>
+      <form onSubmit={handleSubmit(handleInscription)} className="bigForm">
         <div className="topForm">
           <h2>INSCRIPTION</h2>
           <Link className="inscr" href="/auth/login">
@@ -190,7 +190,7 @@ const inscription = () => {
 
           <div className="champ">
             <TextField
-              className="mui-input"
+              className="mui-input codePostal"
               fullWidth
               variant="outlined"
               label="Votre code postal"
@@ -260,7 +260,7 @@ const inscription = () => {
             onChange={(e) => handleChangeAThing("password", e.target.value)}
             InputProps={{
               endAdornment: (
-                <InputAdornment position="end">
+                <InputAdornment position="end" className="buttonEye">
                   <IconButton onClick={() => setShowPassword(!showPassword)}>
                     {showPassword ? <FaEyeSlash /> : <FaEye />}
                   </IconButton>
@@ -288,7 +288,7 @@ const inscription = () => {
             onChange={(e) => handleChangeAThing("password2", e.target.value)}
             InputProps={{
               endAdornment: (
-                <InputAdornment position="end">
+                <InputAdornment position="end" className="buttonEye">
                   <IconButton onClick={() => setShowPassword2(!showPassword2)}>
                     {showPassword2 ? <FaEyeSlash /> : <FaEye />}
                   </IconButton>

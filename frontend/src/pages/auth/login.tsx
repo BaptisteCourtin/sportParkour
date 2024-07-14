@@ -72,7 +72,7 @@ const login = () => {
         <h1>UTILISEZ VOTRE ESPACE PERSONNEL</h1>
       </div>
 
-      <form onSubmit={handleSubmit(handleAuthentification)}>
+      <form onSubmit={handleSubmit(handleAuthentification)} className="bigForm">
         <div className="topForm">
           <h2>CONNECTEZ VOUS</h2>
           <Link className="inscr" href="/auth/inscription">
@@ -109,7 +109,7 @@ const login = () => {
             inputProps={{ maxLength: 100 }}
             InputProps={{
               endAdornment: (
-                <InputAdornment position="end">
+                <InputAdornment position="end" className="buttonEye">
                   <IconButton onClick={() => setShowPassword(!showPassword)}>
                     {showPassword ? <FaEyeSlash /> : <FaEye />}
                   </IconButton>

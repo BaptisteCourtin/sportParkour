@@ -29,7 +29,7 @@ let createEpreuveSchema = object({
     "Pas besoin d'avoir une description aussi long"
   ),
   hardToDo: string().max(250, "Pas besoin d'avoir une description aussi long"),
-  videoLink: string().max(300, "max 300, carcatères normalement ça suffit"),
+  videoLink: string().max(150, "max 150 carcatères, normalement ça suffit"),
 });
 
 const createEpreuve = () => {
@@ -137,34 +137,36 @@ const createEpreuve = () => {
     <main className="createEpreuve">
       <h1>Créer une épreuve</h1>
 
-      <div>
+      <div className="formForImages">
         {/* remove and preview */}
         {filesToUpload.map((file, index) => (
-          <div key={index}>
+          <div className="imager" key={index}>
             <img src={URL.createObjectURL(file)} alt={`Preview ${file.name}`} />
             <span className="remove_img" onClick={() => removeImage(index)}>
-              X
+              supprimer cette image
             </span>
           </div>
         ))}
 
         {/* input */}
-        {filesToUpload.length > 3 ? null : (
-          <div>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => {
-                addSingleFileToPreview(e);
-              }}
-            />
-          </div>
-        )}
+        <div className="inputer">
+          <label className="button" htmlFor="oneMoreFile">
+            Ajouter une image
+          </label>
+          <input
+            id="oneMoreFile"
+            type="file"
+            accept="image/*"
+            onChange={(e) => {
+              addSingleFileToPreview(e);
+            }}
+          />
+        </div>
       </div>
 
       {/* --- */}
 
-      <form onSubmit={handleSubmit(handleCreateEpreuve)}>
+      <form onSubmit={handleSubmit(handleCreateEpreuve)} className="bigForm">
         <div className="champ">
           <TextField
             className="mui-input"
@@ -214,7 +216,7 @@ const createEpreuve = () => {
             variant="outlined"
             label="Que faire (version débutant)"
             multiline
-            rows={6}
+            rows={5}
             {...register("easyToDo")}
             id="easyToDo"
             name="easyToDo"
@@ -234,7 +236,7 @@ const createEpreuve = () => {
             variant="outlined"
             label="Que faire (version medium)"
             multiline
-            rows={6}
+            rows={5}
             {...register("mediumToDo")}
             id="mediumToDo"
             name="mediumToDo"
@@ -256,7 +258,7 @@ const createEpreuve = () => {
             variant="outlined"
             label="Que faire (version hard)"
             multiline
-            rows={6}
+            rows={5}
             {...register("hardToDo")}
             id="hardToDo"
             name="hardToDo"
@@ -280,12 +282,12 @@ const createEpreuve = () => {
             id="videoLink"
             name="videoLink"
             type="text"
-            inputProps={{ maxLength: 300 }}
+            inputProps={{ maxLength: 150 }}
             onChange={(e) => handleChangeAThing("videoLink", e.target.value)}
           />
           <span>
             {values.videoLink.length > 0
-              ? `${values.videoLink.length}/300`
+              ? `${values.videoLink.length}/150`
               : ""}
           </span>
           <p className="error">{errors?.videoLink?.message}</p>

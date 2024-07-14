@@ -1,8 +1,5 @@
-import { faker } from "@faker-js/faker/locale/fr";
 import { DataSource } from "typeorm";
-import JoinUserParkourEntity, {
-  JoinUserParkourFavorisEntity,
-} from "../entities/joinUserParkourFavoris.entity";
+import { JoinUserParkourFavorisEntity } from "../entities/joinUserParkourFavoris.entity";
 import UserEntity from "../entities/user.entity";
 import ParkourEntity from "../entities/parkour.entity";
 

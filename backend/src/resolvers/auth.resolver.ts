@@ -60,6 +60,9 @@ export default class AuthResolver {
       returnMessage.message =
         "Mot de passe ou email pas bon. Mais on te dira pas lequel 😁!!!";
       returnMessage.success = false;
+
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // Attend 1 seconde
+
       return returnMessage;
     }
 
@@ -85,6 +88,8 @@ export default class AuthResolver {
       returnMessage.message =
         "Mot de passe ou email pas bon. Mais on te dira pas lequel 😁!!!";
       returnMessage.success = false;
+
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // Attend 1 seconde
     }
 
     return returnMessage;

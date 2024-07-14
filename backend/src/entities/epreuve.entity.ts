@@ -1,6 +1,8 @@
 import {
   Column,
   Entity,
+  Index,
+  JoinColumn,
   JoinTable,
   ManyToMany,
   OneToMany,
@@ -12,6 +14,7 @@ import ImageEpreuveEntity, {
   ImageEpreuveCreateEntity,
 } from "./imageEpreuve.entity";
 import ParkourEntity from "./parkour.entity";
+import { MaxLength } from "class-validator";
 
 @Entity("epreuve")
 @ObjectType()
@@ -22,26 +25,33 @@ class EpreuveEntity {
 
   @Field()
   @Column({ type: "varchar", length: 50, unique: true })
+  @MaxLength(50)
+  @Index() // vu que on fait beaucoup de recherche sur le titre
   title: string;
 
   @Field({ nullable: true })
   @Column({ type: "varchar", length: 1000, nullable: true })
+  @MaxLength(1000)
   description: string;
 
   @Field({ nullable: true })
   @Column({ type: "varchar", length: 250, nullable: true })
+  @MaxLength(250)
   easyToDo: string;
 
   @Field({ nullable: true })
   @Column({ type: "varchar", length: 250, nullable: true })
+  @MaxLength(250)
   mediumToDo: string;
 
   @Field({ nullable: true })
   @Column({ type: "varchar", length: 250, nullable: true })
+  @MaxLength(250)
   hardToDo: string;
 
   @Field({ nullable: true })
-  @Column({ type: "varchar", length: 300, nullable: true })
+  @Column({ type: "varchar", length: 150, nullable: true })
+  @MaxLength(150)
   videoLink: string;
 
   // pas besoin de join column en many to one
@@ -51,21 +61,25 @@ class EpreuveEntity {
   })
   images: ImageEpreuveEntity[];
 
+  // @Field(() => [ParkourEntity], { nullable: true })
+  // @ManyToMany(() => ParkourEntity, {
+  //   nullable: true,
+  // })
+  // @JoinTable({
+  //   name: "join_parkour_epreuve",
+  //   joinColumn: {
+  //     name: "epreuve_id",
+  //     referencedColumnName: "id",
+  //   },
+  //   inverseJoinColumn: {
+  //     name: "parkour_id",
+  //     referencedColumnName: "id",
+  //   },
+  // })
+  // parkours: ParkourEntity[];
+
   @Field(() => [ParkourEntity], { nullable: true })
-  @ManyToMany(() => ParkourEntity, {
-    nullable: true,
-  })
-  @JoinTable({
-    name: "join_parkour_epreuve",
-    joinColumn: {
-      name: "epreuve_id",
-      referencedColumnName: "id",
-    },
-    inverseJoinColumn: {
-      name: "parkour_id",
-      referencedColumnName: "id",
-    },
-  })
+  @ManyToMany(() => ParkourEntity, { nullable: true })
   parkours: ParkourEntity[];
 }
 
@@ -74,17 +88,31 @@ class EpreuveEntity {
 @InputType()
 export class EpreuveCreateEntity {
   @Field()
+  @MaxLength(50)
   title: string;
+
   @Field({ nullable: true })
+  @MaxLength(1000)
   description: string;
+
   @Field({ nullable: true })
+  @MaxLength(250)
   easyToDo: string;
+
   @Field({ nullable: true })
+  @MaxLength(250)
   mediumToDo: string;
+
   @Field({ nullable: true })
+  @MaxLength(250)
   hardToDo: string;
+
   @Field({ nullable: true })
+  @MaxLength(150)
   videoLink: string;
+
+  // ---
+
   @Field(() => [ImageEpreuveCreateEntity], { nullable: true })
   images: ImageEpreuveCreateEntity[];
 }
@@ -93,21 +121,36 @@ export class EpreuveCreateEntity {
 @InputType()
 export class EpreuveUpdateEntity {
   @Field({ nullable: true })
-  title: string;
+  @MaxLength(50)
+  title?: string;
+
   @Field({ nullable: true })
-  description: string;
+  @MaxLength(1000)
+  description?: string;
+
   @Field({ nullable: true })
-  easyToDo: string;
+  @MaxLength(250)
+  easyToDo?: string;
+
   @Field({ nullable: true })
-  mediumToDo: string;
+  @MaxLength(250)
+  mediumToDo?: string;
+
   @Field({ nullable: true })
-  hardToDo: string;
+  @MaxLength(250)
+  hardToDo?: string;
+
   @Field({ nullable: true })
-  videoLink: string;
+  @MaxLength(150)
+  videoLink?: string;
+
+  // ---
+
   @Field(() => [ImageEpreuveCreateEntity], { nullable: true })
-  images: ImageEpreuveCreateEntity[];
+  images?: ImageEpreuveCreateEntity[];
+
   @Field(() => [Number], { nullable: true })
-  deletedImageIds: number[];
+  deletedImageIds?: number[];
 }
 
 export default EpreuveEntity;

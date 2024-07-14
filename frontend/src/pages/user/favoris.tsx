@@ -8,7 +8,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 
-import CardFavParkour from "@/components/parkour/cardFavParkour";
+import CardParkour from "@/components/parkour/cardParkour";
 
 const favoris = () => {
   const [getFav, { data, loading, error }] = useGetAllUserFavByTokenLazyQuery();
@@ -25,8 +25,8 @@ const favoris = () => {
 
   return (
     <main className="favorisOrNotes">
-      <form>
-        <div className="champ">
+      <form className="littleForm">
+        <div className="champ ">
           <FormControl
             className="containerInputTri"
             sx={{ m: 1, minWidth: 250 }}
@@ -114,7 +114,7 @@ const favoris = () => {
             })
             .map((parkour: any) => (
               <li>
-                <CardFavParkour parkour={parkour.parkour} />
+                <CardParkour parkour={parkour.parkour} color="yellow" />
               </li>
             ))}
         </ul>

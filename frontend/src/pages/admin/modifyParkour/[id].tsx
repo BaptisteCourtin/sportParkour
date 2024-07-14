@@ -302,40 +302,9 @@ const modifyOneParkour = () => {
           <>
             <h1>MODIFIER LE PARKOUR</h1>
 
-            <div>
-              {/* remove and preview */}
-              {filesToUpload.map((file, index) => (
-                <div key={index}>
-                  <img
-                    src={URL.createObjectURL(file)}
-                    alt={`Preview ${file.name}`}
-                  />
-                  <span
-                    className="remove_img"
-                    onClick={() => removeImage(index)}
-                  >
-                    X
-                  </span>
-                </div>
-              ))}
-
-              {/* input */}
-              {filesToUpload.length > 3 ? null : (
-                <div>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => {
-                      addSingleFileToPreview(e);
-                    }}
-                  />
-                </div>
-              )}
-            </div>
-
             {/* --- */}
 
-            <ul>
+            <ul className="imageAlredyInBase">
               {listImagesAlreadyIn &&
                 listImagesAlreadyIn.map((img) => (
                   <li
@@ -346,11 +315,7 @@ const modifyOneParkour = () => {
                         : ""
                     }
                   >
-                    <img
-                      className="imagePrésentationApercu"
-                      src={img.lien}
-                      alt="image de présentation"
-                    />
+                    <img src={img.lien} alt="image de présentation" />
                     <button
                       onClick={(e) => handleSuppOneImage(e, Number(img.id))}
                     >
@@ -364,8 +329,46 @@ const modifyOneParkour = () => {
 
             {/* --- */}
 
-            <form onSubmit={handleSubmit(handleModifyParkour)}>
-              <div>
+            <div className="formForImages">
+              {/* remove and preview */}
+              {filesToUpload.map((file, index) => (
+                <div className="imager" key={index}>
+                  <img
+                    src={URL.createObjectURL(file)}
+                    alt={`Preview ${file.name}`}
+                  />
+                  <span
+                    className="remove_img"
+                    onClick={() => removeImage(index)}
+                  >
+                    supprimer cette image
+                  </span>
+                </div>
+              ))}
+
+              {/* input */}
+              <div className="inputer">
+                <label className="button" htmlFor="oneMoreFile">
+                  Ajouter une image
+                </label>
+                <input
+                  id="oneMoreFile"
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    addSingleFileToPreview(e);
+                  }}
+                />
+              </div>
+            </div>
+
+            {/* --- */}
+
+            <form
+              onSubmit={handleSubmit(handleModifyParkour)}
+              className="bigForm"
+            >
+              <div className="champ">
                 <TextField
                   className="mui-input"
                   fullWidth
@@ -385,7 +388,7 @@ const modifyOneParkour = () => {
                 </span>
                 <p className="error">{errors?.title?.message}</p>
               </div>
-              <div>
+              <div className="champ">
                 <TextField
                   className="mui-input"
                   fullWidth
@@ -411,7 +414,7 @@ const modifyOneParkour = () => {
                 <p className="error">{errors?.description?.message}</p>
               </div>
 
-              <div>
+              <div className="champ">
                 <TextField
                   className="mui-input"
                   fullWidth
@@ -427,7 +430,7 @@ const modifyOneParkour = () => {
                 />
                 <p className="error">{errors?.time?.message}</p>
               </div>
-              <div>
+              <div className="champ">
                 <TextField
                   className="mui-input"
                   fullWidth
@@ -444,96 +447,102 @@ const modifyOneParkour = () => {
                 <p className="error">{errors?.length?.message}</p>
               </div>
 
-              <div>
-                <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-                  <InputLabel id="demo-simple-select-standard-label">
-                    Difficultée
-                  </InputLabel>
-                  <Select
+              <div className="containerMiniChamp">
+                <div className="champ">
+                  <SearchBarCommuneName
+                    userValue={selectedCommuneName}
+                    setSelectedCommuneName={setSelectedCommuneName}
+                  />
+                </div>
+                <div className="champ">
+                  <TextField
                     className="mui-input"
                     fullWidth
                     variant="outlined"
-                    id="difficulty"
-                    name="difficulty"
-                    label="Difficultée"
+                    label="Point gps de départ"
+                    defaultValue={data.getParkourById.start}
                     required
-                    defaultValue={data.getParkourById.difficulty}
+                    {...register("start")}
+                    id="start"
+                    name="start"
+                    type="text"
+                    inputProps={{ maxLength: 20 }}
                     onChange={(e) =>
-                      setChoosenDifficulty(e.target.value as Difficulty)
+                      handleChangeAThing("start", e.target.value)
                     }
-                  >
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    <MenuItem value="facile">{Difficulty.Facile}</MenuItem>
-                    <MenuItem value="moyen">{Difficulty.Moyen}</MenuItem>
-                    <MenuItem value="difficile">
-                      {Difficulty.Difficile}
-                    </MenuItem>
-                  </Select>
-                </FormControl>
-                <p className="error">{errors?.difficulty?.message}</p>
+                  />
+                  <span>
+                    {values.start.length > 0 ? `${values.start.length}/20` : ""}
+                  </span>
+                  <p className="error">{errors?.start?.message}</p>
+                </div>
               </div>
 
-              <div>
-                <SearchBarCommuneName
-                  userValue={selectedCommuneName}
-                  setSelectedCommuneName={setSelectedCommuneName}
-                />
-              </div>
-              <div>
-                <TextField
-                  className="mui-input"
-                  fullWidth
-                  variant="outlined"
-                  label="Point gps de départ"
-                  defaultValue={data.getParkourById.start}
-                  required
-                  {...register("start")}
-                  id="start"
-                  name="start"
-                  type="text"
-                  inputProps={{ maxLength: 20 }}
-                  onChange={(e) => handleChangeAThing("start", e.target.value)}
-                />
-                <span>
-                  {values.start.length > 0 ? `${values.start.length}/20` : ""}
-                </span>
-                <p className="error">{errors?.start?.message}</p>
-              </div>
-
-              <div>
-                <Autocomplete
-                  sx={{ width: 300 }}
-                  id="epreuves"
-                  multiple
-                  loading={loadingEpreuves}
-                  disableCloseOnSelect
-                  // valeur de base (repris de la bdd) (sous forme d'épreuve)
-                  value={chooseEpreuves}
-                  // on change
-                  onInputChange={handleSearchTitle}
-                  onChange={(e, value, detail) => handleEpreuveSelection(value)}
-                  // pour rechercher dans le back
-                  options={dataEpreuves?.getTop20EpreuveByTitle ?? []}
-                  // render qui veut un string
-                  getOptionLabel={(option) => option.title}
-                  // pour le style autour
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
+              <div className="containerFlexChamp">
+                <div className="champ">
+                  <FormControl sx={{ m: 1, minWidth: 150 }}>
+                    <InputLabel>Difficultée</InputLabel>
+                    <Select
+                      className="mui-input"
                       variant="outlined"
-                      label="Recherche une épreuve par titre"
-                    />
-                  )}
-                  // pour la liste déroulante
-                  renderOption={(props, option, { selected }) => (
-                    <li {...props} key={option.id} value={option.id}>
-                      {option.title}
-                      {selected ? <FaCheck /> : null}
-                    </li>
-                  )}
-                />
+                      id="difficulty"
+                      name="difficulty"
+                      label="Difficultée"
+                      required
+                      defaultValue={data.getParkourById.difficulty}
+                      onChange={(e) =>
+                        setChoosenDifficulty(e.target.value as Difficulty)
+                      }
+                    >
+                      <MenuItem value="">
+                        <em>None</em>
+                      </MenuItem>
+                      <MenuItem value="facile">{Difficulty.Facile}</MenuItem>
+                      <MenuItem value="moyen">{Difficulty.Moyen}</MenuItem>
+                      <MenuItem value="difficile">
+                        {Difficulty.Difficile}
+                      </MenuItem>
+                    </Select>
+                  </FormControl>
+                  <p className="error">{errors?.difficulty?.message}</p>
+                </div>
+
+                <div className="champ">
+                  <Autocomplete
+                    sx={{ width: 300 }}
+                    id="epreuves"
+                    className="mui-input"
+                    multiple
+                    loading={loadingEpreuves}
+                    disableCloseOnSelect
+                    // valeur de base (repris de la bdd) (sous forme d'épreuve)
+                    value={chooseEpreuves}
+                    // on change
+                    onInputChange={handleSearchTitle}
+                    onChange={(e, value, detail) =>
+                      handleEpreuveSelection(value)
+                    }
+                    // pour rechercher dans le back
+                    options={dataEpreuves?.getTop20EpreuveByTitle ?? []}
+                    // render qui veut un string
+                    getOptionLabel={(option) => option.title}
+                    // pour le style autour
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        variant="outlined"
+                        label="Recherche une épreuve par titre"
+                      />
+                    )}
+                    // pour la liste déroulante
+                    renderOption={(props, option, { selected }) => (
+                      <li {...props} key={option.id} value={option.id}>
+                        {option.title}
+                        {selected ? <FaCheck /> : null}
+                      </li>
+                    )}
+                  />
+                </div>
               </div>
 
               <button type="submit" disabled={loadingModify}>
@@ -545,12 +554,11 @@ const modifyOneParkour = () => {
               </div>
             </form>
 
-            {/* --- */}
-
+            {/* --- DELETE PARKOUR --- */}
             <div className="parkourToDelete">
-              <Button variant="outlined" onClick={handleClickOpen}>
+              <button onClick={handleClickOpen}>
                 Delete parkour {data.getParkourById.id}
-              </Button>
+              </button>
               <Dialog
                 open={open}
                 onClose={handleClickClose}

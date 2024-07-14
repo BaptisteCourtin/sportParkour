@@ -44,20 +44,14 @@ function ResetByEmail() {
     });
   };
 
-  // --- DEAL WITH LENGTH DURING MODIF ---
-  const [values, setValues] = useState({
-    email: "",
-  });
-
-  const handleChangeAThing = (name: string, value: any) => {
-    setValues({ ...values, [name]: value });
-  };
-
   return (
     <main className="resetPassword">
       {/* pas encore de data de la mutation */}
       {!data?.resetPassword.resetToken ? (
-        <form onSubmit={handleSubmit(handleEmailResetPassword)}>
+        <form
+          className="littleForm"
+          onSubmit={handleSubmit(handleEmailResetPassword)}
+        >
           <div className="champ">
             <TextField
               className="mui-input"
@@ -70,11 +64,7 @@ function ResetByEmail() {
               name="email"
               type="text"
               inputProps={{ maxLength: 255 }}
-              onChange={(e) => handleChangeAThing("email", e.target.value)}
             />
-            <span>
-              {values.email.length > 0 ? `${values.email.length}/255` : ""}
-            </span>
             <p className="error">{errors?.email?.message}</p>
           </div>
           <button type="submit" disabled={loading}>

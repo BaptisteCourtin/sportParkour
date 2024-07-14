@@ -7,7 +7,7 @@ import {
   Unique,
 } from "typeorm";
 import { Field, ID, InputType, ObjectType } from "type-graphql";
-import { Max, Min } from "class-validator";
+import { Max, MaxLength, Min } from "class-validator";
 
 import UserEntity from "./user.entity";
 import ParkourEntity from "./parkour.entity";
@@ -28,13 +28,14 @@ export class JoinUserParkourNoteEntity {
   // precision = maximum number of digits that are stored for the values
   // scale = the number of digits to the right of the decimal point
   @Field()
-  @Column("decimal", { precision: 3, scale: 2, unsigned: true })
+  @Column("decimal", { precision: 2, scale: 1, unsigned: true })
   @Min(0, { message: "La valeur minimale est 0" })
   @Max(5, { message: "La valeur maximale est 5" })
   note: number;
 
   @Field({ nullable: true })
   @Column({ type: "varchar", length: 500, nullable: true })
+  @MaxLength(500)
   commentaire: string;
 
   // ---
@@ -58,9 +59,14 @@ export class JoinUserParkourNoteEntity {
 export class JoinUserParkourNoteCreateEntity {
   @Field()
   parkour_id: number;
-  @Field({ nullable: true })
+
+  @Field()
+  @Min(0)
+  @Max(5)
   note: number;
+
   @Field({ nullable: true })
+  @MaxLength(500)
   commentaire: string;
 }
 
@@ -68,9 +74,14 @@ export class JoinUserParkourNoteCreateEntity {
 export class JoinUserParkourNoteUpdateEntity {
   @Field()
   parkour_id: number;
-  @Field({ nullable: true })
+
+  @Field()
+  @Min(0)
+  @Max(5)
   note: number;
+
   @Field({ nullable: true })
+  @MaxLength(500)
   commentaire: string;
 }
 

@@ -38,7 +38,7 @@ let modifyEpreuveSchema = object({
     "Pas besoin d'avoir une description aussi long"
   ),
   hardToDo: string().max(250, "Pas besoin d'avoir une description aussi long"),
-  videoLink: string().max(300, "max 300, carcatères normalement ça suffit"),
+  videoLink: string().max(150, "max 150, carcatères normalement ça suffit"),
 });
 
 const modifyOneEpreuve = () => {
@@ -121,7 +121,6 @@ const modifyOneEpreuve = () => {
     };
 
     if (updatedDataForm.title && id) {
-      console.log(updatedDataForm);
       modifyEpreuve({
         variables: { infos: updatedDataForm, modifyEpreuveId: +id },
         onCompleted(data) {
@@ -225,40 +224,8 @@ const modifyOneEpreuve = () => {
           <>
             <h1>MODIFIER L'ÉPREUVE</h1>
 
-            <div>
-              {/* remove and preview */}
-              {filesToUpload.map((file, index) => (
-                <div key={index}>
-                  <img
-                    src={URL.createObjectURL(file)}
-                    alt={`Preview ${file.name}`}
-                  />
-                  <span
-                    className="remove_img"
-                    onClick={() => removeImage(index)}
-                  >
-                    X
-                  </span>
-                </div>
-              ))}
-
-              {/* input */}
-              {filesToUpload.length > 3 ? null : (
-                <div>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => {
-                      addSingleFileToPreview(e);
-                    }}
-                  />
-                </div>
-              )}
-            </div>
-
             {/* --- */}
-
-            <ul>
+            <ul className="imageAlredyInBase">
               {listImagesAlreadyIn &&
                 listImagesAlreadyIn.map((img) => (
                   <li
@@ -269,11 +236,7 @@ const modifyOneEpreuve = () => {
                         : ""
                     }
                   >
-                    <img
-                      className="imagePrésentationApercu"
-                      src={img.lien}
-                      alt="image de présentation"
-                    />
+                    <img src={img.lien} alt="image de présentation" />
                     <button
                       onClick={(e) => handleSuppOneImage(e, Number(img.id))}
                     >
@@ -287,7 +250,45 @@ const modifyOneEpreuve = () => {
 
             {/* --- */}
 
-            <form onSubmit={handleSubmit(handleModifyEpreuve)}>
+            <div className="formForImages">
+              {/* remove and preview */}
+              {filesToUpload.map((file, index) => (
+                <div className="imager" key={index}>
+                  <img
+                    src={URL.createObjectURL(file)}
+                    alt={`Preview ${file.name}`}
+                  />
+                  <span
+                    className="remove_img"
+                    onClick={() => removeImage(index)}
+                  >
+                    supprimer cette image
+                  </span>
+                </div>
+              ))}
+
+              {/* input */}
+              <div className="inputer">
+                <label className="button" htmlFor="oneMoreFile">
+                  Ajouter une image
+                </label>
+                <input
+                  id="oneMoreFile"
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    addSingleFileToPreview(e);
+                  }}
+                />
+              </div>
+            </div>
+
+            {/* --- */}
+
+            <form
+              onSubmit={handleSubmit(handleModifyEpreuve)}
+              className="bigForm"
+            >
               <div className="champ">
                 <TextField
                   className="mui-input"
@@ -345,7 +346,7 @@ const modifyOneEpreuve = () => {
                   label="Que faire (version débutant)"
                   defaultValue={data.getEpreuveById.easyToDo}
                   multiline
-                  rows={6}
+                  rows={5}
                   {...register("easyToDo")}
                   id="easyToDo"
                   name="easyToDo"
@@ -370,7 +371,7 @@ const modifyOneEpreuve = () => {
                   label="Que faire (version medium)"
                   defaultValue={data.getEpreuveById.mediumToDo}
                   multiline
-                  rows={6}
+                  rows={5}
                   {...register("mediumToDo")}
                   id="mediumToDo"
                   name="mediumToDo"
@@ -395,7 +396,7 @@ const modifyOneEpreuve = () => {
                   label="Que faire (version hard)"
                   defaultValue={data.getEpreuveById.hardToDo}
                   multiline
-                  rows={6}
+                  rows={5}
                   {...register("hardToDo")}
                   id="hardToDo"
                   name="hardToDo"
@@ -424,14 +425,14 @@ const modifyOneEpreuve = () => {
                   id="videoLink"
                   name="videoLink"
                   type="text"
-                  inputProps={{ maxLength: 300 }}
+                  inputProps={{ maxLength: 150 }}
                   onChange={(e) =>
                     handleChangeAThing("videoLink", e.target.value)
                   }
                 />
                 <span>
                   {values.videoLink.length > 0
-                    ? `${values.videoLink.length}/300`
+                    ? `${values.videoLink.length}/150`
                     : ""}
                 </span>
                 <p className="error">{errors?.videoLink?.message}</p>
@@ -449,9 +450,9 @@ const modifyOneEpreuve = () => {
             {/* --- delete --- */}
 
             <div className="epreuveToDelete">
-              <Button variant="outlined" onClick={handleClickOpen}>
+              <button className="danger" onClick={handleClickOpen}>
                 Delete epreuve
-              </Button>
+              </button>
 
               <Dialog
                 open={open}

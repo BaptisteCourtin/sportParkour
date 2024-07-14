@@ -87,7 +87,7 @@ async function main() {
 
         const cookies = new Cookies(req, res);
         const token = cookies.get("tokenParkour");
-        // console.log("TOKEN", token); // on reçoit le token à chaque requête (fait par défaut par jose)
+        console.log("TOKEN", token); // on reçoit le token à chaque requête (fait par défaut par jose)
 
         if (token) {
           try {

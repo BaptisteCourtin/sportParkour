@@ -5,9 +5,14 @@ import Link from "next/link";
 import { useGetAllEpreuveQuery, useIsAdminQuery } from "@/types/graphql";
 
 import TextField from "@mui/material/TextField";
-
 import CardEpreuve from "@/components/epreuve/cardEpreuve";
 import SearchBarEpreuve from "@/components/epreuve/searchBarEpreuve";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+
+import { FaArrowRight } from "react-icons/fa6";
 
 const allEpreuves = () => {
   const router = useRouter();
@@ -42,16 +47,18 @@ const allEpreuves = () => {
         data?.getAllEpreuve && (
           <>
             {dataIsAdmin ? (
-              <Link href="/admin/createEpreuve">créer une épreuve</Link>
+              <Link className="button forAdmin" href="/admin/createEpreuve">
+                créer une épreuve <FaArrowRight />
+              </Link>
             ) : null}
 
-            <form>
+            <form className="littleForm">
               <div className="champ">
                 <SearchBarEpreuve />
               </div>
             </form>
 
-            <form onSubmit={handleSearchById}>
+            <form onSubmit={handleSearchById} className="littleForm">
               <div className="champ">
                 <TextField
                   className="mui-input"
@@ -67,13 +74,28 @@ const allEpreuves = () => {
               <button type="submit">Chercher par numéro</button>
             </form>
 
-            <div className="trieur">
-              <label htmlFor="tri">Ordre de tri : </label>
-              <select id="tri" onChange={(event) => setTri(event.target.value)}>
-                <option value="Titre A-Z">Titre A-Z</option>
-                <option value="Titre Z-A">Titre Z-A</option>
-              </select>
-            </div>
+            <form className="littleForm">
+              <div className="champ ">
+                <FormControl
+                  className="containerInputTri"
+                  sx={{ m: 1, minWidth: 250 }}
+                >
+                  <InputLabel htmlFor="tri">Trier par :</InputLabel>
+                  <Select
+                    className="mui-input"
+                    variant="outlined"
+                    id="orderFavorite"
+                    name="orderFavorite"
+                    label="Trier par :"
+                    value={tri}
+                    onChange={(event) => setTri(event.target.value as string)}
+                  >
+                    <MenuItem value="Titre A-Z">Titre A-Z</MenuItem>
+                    <MenuItem value="Titre Z-A">Titre Z-A</MenuItem>
+                  </Select>
+                </FormControl>
+              </div>
+            </form>
 
             <ul className="cardsEpreuvesUl">
               {data?.getAllEpreuve
