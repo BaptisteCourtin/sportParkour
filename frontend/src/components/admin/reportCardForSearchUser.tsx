@@ -3,21 +3,24 @@ import React from "react";
 
 const reportCardForSearchUser = ({ reportUser }: any) => {
   return (
-    <li className={`${reportUser.nbReportValide} reportCard`}>
-      <Link href={`/admin/reports/user/${reportUser.id}`}>
-        {reportUser.imageProfil ? (
-          <img src={reportUser.imageProfil} />
+    <li
+      className={`nbRep-${reportUser.nbReportValide} reportCardForSearchUser`}
+    >
+      <div className="userProfil">
+        {reportUser.imageProfill ? (
+          <img src={reportUser.imageProfill} className="imgProfil" />
         ) : (
-          <img src="/userDefault.png" />
+          <img src="/userDefault.png" className="imgProfil" />
         )}
 
-        <p>{reportUser.name}</p>
-        <p>{reportUser.firstname}</p>
-        <p>
-          L'utilisateur a {reportUser.nbReportValide} report valide contre lui
-        </p>
-        <p>L'utilisateur a émis {reportUser.nbReportAjoute} reports</p>
-      </Link>
+        <Link href={`/admin/reports/user/${reportUser.id}`}>
+          {reportUser.firstname} {reportUser.name}
+        </Link>
+      </div>
+      <p>
+        L'utilisateur a {reportUser.nbReportValide} report valide contre lui
+      </p>
+      <p>L'utilisateur a émis {reportUser.nbReportAjoute} reports</p>
     </li>
   );
 };

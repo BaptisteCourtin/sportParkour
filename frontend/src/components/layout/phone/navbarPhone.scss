@@ -45,16 +45,16 @@
     }
 
     &:nth-child(1).active ~ .indicator {
-      transform: translateX(calc(100vw - 137.5vw));
+      transform: translateX(calc(100vw - 138vw));
     }
     &:nth-child(2).active ~ .indicator {
-      transform: translateX(calc(100vw - 112.5vw));
+      transform: translateX(calc(100vw - 112.75vw));
     }
     &:nth-child(3).active ~ .indicator {
-      transform: translateX(calc(100vw - 87.5vw));
+      transform: translateX(calc(100vw - 87vw));
     }
     &:nth-child(4).active ~ .indicator {
-      transform: translateX(calc(100vw - 62.5vw));
+      transform: translateX(calc(100vw - 62.75vw));
     }
   }
 
@@ -67,6 +67,8 @@
     border-radius: 50%;
     background-color: var(--middle);
     transition: 0.5s;
+
+    transform: translate(-500px);
 
     &::before {
       content: "";

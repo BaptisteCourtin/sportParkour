@@ -28,7 +28,9 @@ const Layout = ({ children }: React.PropsWithChildren<{}>) => {
       {windowWidth <= 800 ? <HeaderPhone /> : null}
 
       {/* nos pages = children*/}
-      <div className="layoutChild">{children}</div>
+      <div className="layoutChild" id="main">
+        {children}
+      </div>
 
       {windowWidth <= 800 ? <NavbarPhone /> : null}
       <Footer />

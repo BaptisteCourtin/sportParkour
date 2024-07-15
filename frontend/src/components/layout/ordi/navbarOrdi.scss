@@ -6,6 +6,21 @@
 
   width: 100%;
 
+  .skipNavbarLink {
+    position: absolute;
+    left: 0;
+    transform: translate(-105%);
+
+    background: var(--middle);
+    padding: var(--espace);
+
+    transition: transform 0.3s;
+
+    &:focus {
+      transform: translate(5%);
+    }
+  }
+
   .navbar {
     padding: 0 2rem;
     height: 70px;
@@ -30,7 +45,20 @@
       flex-direction: row;
       align-items: center;
       justify-content: flex-end;
-      gap: 2rem;
+      gap: var(--espace);
+
+      a {
+        padding: 0.5rem;
+        border-radius: var(--radius);
+
+        &.active {
+          background-color: var(--blue);
+        }
+
+        span {
+          display: flex;
+        }
+      }
     }
   }
 

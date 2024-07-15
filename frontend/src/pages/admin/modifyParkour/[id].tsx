@@ -14,6 +14,8 @@ import {
   useModifyParkourMutation,
   ImageEpreuveEntity,
   ImageEpreuveCreateEntity,
+  useModifyImageCouvertureParkourMutation,
+  ImageParkourCreateEntity,
 } from "@/types/graphql";
 
 import Button from "@mui/material/Button";
@@ -54,7 +56,7 @@ let modifyParkourSchema = object({
   difficulty: mixed<Difficulty>().oneOf(Object.values(Difficulty)),
 
   start: string()
-    .max(20, "20 caractères ça suffit")
+    .max(50, "50 caractères ça suffit")
     .required("Veuillez entrer un point de départ"),
 });
 
@@ -84,6 +86,16 @@ const modifyOneParkour = () => {
           setListImagesAlreadyIn(
             data.getParkourById.images as [ImageEpreuveEntity]
           );
+
+          if (data.getParkourById.images) {
+            for (let i = 0; i < data.getParkourById.images.length; i++) {
+              if (data.getParkourById.images[i].isCouverture) {
+                setIsMyCouverture(+data.getParkourById.images[i].id);
+                setMyLastCouverture(+data.getParkourById.images[i].id);
+                break;
+              }
+            }
+          }
         },
         onError(err: any) {
           console.error("error", err);
@@ -110,9 +122,20 @@ const modifyOneParkour = () => {
 
   const [choosenDificulty, setChoosenDifficulty] = useState<Difficulty>();
 
-  const uploadImages = async (): Promise<ImageEpreuveCreateEntity[]> => {
+  const [
+    modifyImageParkour,
+    {
+      data: dataImageModify,
+      loading: loadingImageModify,
+      error: errorImageModify,
+    },
+  ] = useModifyImageCouvertureParkourMutation({
+    fetchPolicy: "no-cache",
+  });
+
+  const uploadImages = async (): Promise<ImageParkourCreateEntity[]> => {
     try {
-      const uploadPromises = filesToUpload.map(async (image) => {
+      const uploadPromises = filesToUpload.map(async (image, index) => {
         const formData = new FormData();
         formData.append("file", image, image.name);
 
@@ -124,9 +147,14 @@ const modifyOneParkour = () => {
           "https://storage.cloud.google.com" +
           resultImage.data.split("https://storage.googleapis.com")[1];
 
+        let isCouv = false;
+        if (isMyCouverture == index) {
+          isCouv = true;
+        }
+
         return {
           lien: imageLien,
-          isCouverture: false,
+          isCouverture: isCouv,
         };
       });
 
@@ -153,6 +181,26 @@ const modifyOneParkour = () => {
       deletedImageIds: idsImagesToSupp,
       ...dataForm,
     };
+
+    // une requete ici pour enlevé le isCouverture
+    if (myLastCouverture && isMyCouverture != myLastCouverture) {
+      modifyImageParkour({
+        variables: { idImage: myLastCouverture },
+      });
+    }
+    // une requete ici pour ajouter le isCouverture
+    if (data?.getParkourById.images && isMyCouverture != myLastCouverture) {
+      for (let i = 0; i < data?.getParkourById.images.length; i++) {
+        // si isCouv est sur une ancienne image => va changer
+        // si isCouv est sur une nouvelle image => va rien faire
+        if (+data?.getParkourById.images[i].id == isMyCouverture) {
+          modifyImageParkour({
+            variables: { idImage: isMyCouverture },
+          });
+          break;
+        }
+      }
+    }
 
     if (dataAggregate.title && id) {
       modifyParkour({
@@ -279,6 +327,8 @@ const modifyOneParkour = () => {
 
   // --- UPLOAD IMAGES ---
   const [filesToUpload, setFilesToUpload] = useState<File[]>([]); // à envoyer dans le modify en temps que "images"
+  const [isMyCouverture, setIsMyCouverture] = useState<number>(); // celui à mettre en isCouverture
+  const [myLastCouverture, setMyLastCouverture] = useState<number>(); // pour vérifier
 
   const addSingleFileToPreview = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -309,13 +359,20 @@ const modifyOneParkour = () => {
                 listImagesAlreadyIn.map((img) => (
                   <li
                     key={img.id}
-                    className={
+                    className={`${
                       idsImagesToSupp.includes(parseInt(img.id))
                         ? "toDelete"
                         : ""
                     }
+                        ${isMyCouverture == +img.id ? "isCouv" : ""}`}
                   >
                     <img src={img.lien} alt="image de présentation" />
+                    <button
+                      className="toCouv"
+                      onClick={() => setIsMyCouverture(+img.id)}
+                    >
+                      image de couverture
+                    </button>
                     <button
                       onClick={(e) => handleSuppOneImage(e, Number(img.id))}
                     >
@@ -332,11 +389,19 @@ const modifyOneParkour = () => {
             <div className="formForImages">
               {/* remove and preview */}
               {filesToUpload.map((file, index) => (
-                <div className="imager" key={index}>
+                <div
+                  className={`${
+                    isMyCouverture == index ? "isCouv" : ""
+                  } imager`}
+                  key={index}
+                >
                   <img
                     src={URL.createObjectURL(file)}
                     alt={`Preview ${file.name}`}
                   />
+                  <button onClick={() => setIsMyCouverture(index)}>
+                    image de couverture
+                  </button>
                   <span
                     className="remove_img"
                     onClick={() => removeImage(index)}
@@ -466,13 +531,13 @@ const modifyOneParkour = () => {
                     id="start"
                     name="start"
                     type="text"
-                    inputProps={{ maxLength: 20 }}
+                    inputProps={{ maxLength: 50 }}
                     onChange={(e) =>
                       handleChangeAThing("start", e.target.value)
                     }
                   />
                   <span>
-                    {values.start.length > 0 ? `${values.start.length}/20` : ""}
+                    {values.start.length > 0 ? `${values.start.length}/50` : ""}
                   </span>
                   <p className="error">{errors?.start?.message}</p>
                 </div>

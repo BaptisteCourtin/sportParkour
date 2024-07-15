@@ -65,10 +65,10 @@ const recherche = () => {
   };
 
   return (
-    <main>
+    <main className="reportSearch">
       <h1>recherche les reports</h1>
 
-      <form onSubmit={handleSearchById}>
+      <form onSubmit={handleSearchById} className="littleForm">
         <div className="champ">
           <TextField
             className="mui-input"
@@ -84,56 +84,54 @@ const recherche = () => {
         <button type="submit">Chercher par id</button>
       </form>
 
-      <div>
-        <section>
-          <button onClick={() => makeTheRequestForNote("nonVu")}>non vu</button>
-          <button onClick={() => makeTheRequestForNote("supprime")}>
-            supprimé (utilisateur encore actif)
-          </button>
-          <button onClick={() => makeTheRequestForUser()}>
-            utilisateur avec reports
-          </button>
-        </section>
+      <section className="buttonToSee">
+        <button onClick={() => makeTheRequestForNote("nonVu")}>non vu</button>
+        <button onClick={() => makeTheRequestForNote("supprime")}>
+          supprimé (utilisateur encore actif)
+        </button>
+        <button onClick={() => makeTheRequestForUser()}>
+          utilisateur avec reports
+        </button>
+      </section>
 
-        {error ? (
-          <h2>une erreur... (déso) : {error.message}</h2>
-        ) : loading ? (
-          <h2>Chargement en cours</h2>
-        ) : (
-          data?.getReportsBySearch &&
-          !isUserCard && (
-            <section>
-              <ul className="listReports">
-                {data.getReportsBySearch.map((report, index) => (
-                  <ReportCardForSearch report={report} key={index} />
-                ))}
-              </ul>
-            </section>
-          )
-        )}
+      {error ? (
+        <h2>une erreur... (déso) : {error.message}</h2>
+      ) : loading ? (
+        <h2>Chargement en cours</h2>
+      ) : (
+        data?.getReportsBySearch &&
+        !isUserCard && (
+          <section>
+            <ul className="listReports">
+              {data.getReportsBySearch.map((report, index) => (
+                <ReportCardForSearch report={report} key={index} />
+              ))}
+            </ul>
+          </section>
+        )
+      )}
 
-        {errorUsersWithReports ? (
-          <h2>une erreur... (déso) : {errorUsersWithReports.message}</h2>
-        ) : loadingUsersWithReports ? (
-          <h2>Chargement en cours</h2>
-        ) : (
-          dataUsersWithReports?.getUsersWithReports &&
-          isUserCard && (
-            <section>
-              <ul className="listReports">
-                {dataUsersWithReports.getUsersWithReports.map(
-                  (reportUser, index) => (
-                    <ReportCardForSearchUser
-                      reportUser={reportUser}
-                      key={index}
-                    />
-                  )
-                )}
-              </ul>
-            </section>
-          )
-        )}
-      </div>
+      {errorUsersWithReports ? (
+        <h2>une erreur... (déso) : {errorUsersWithReports.message}</h2>
+      ) : loadingUsersWithReports ? (
+        <h2>Chargement en cours</h2>
+      ) : (
+        dataUsersWithReports?.getUsersWithReports &&
+        isUserCard && (
+          <section>
+            <ul className="listReports">
+              {dataUsersWithReports.getUsersWithReports.map(
+                (reportUser, index) => (
+                  <ReportCardForSearchUser
+                    reportUser={reportUser}
+                    key={index}
+                  />
+                )
+              )}
+            </ul>
+          </section>
+        )
+      )}
     </main>
   );
 };

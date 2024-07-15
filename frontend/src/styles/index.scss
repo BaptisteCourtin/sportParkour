@@ -22,10 +22,12 @@
 
 @import "../components/parkour/cardParkour.scss";
 @import "../components/parkour/displayComment.scss";
+@import "../components/parkour/poiMarker.scss";
 
-@import "../components/admin/noteCard.scss";
-@import "../components/admin/reportCard.scss";
 @import "../components/admin/reportCardForSearch.scss";
+@import "../components/admin/reportCardForSearchUser.scss";
+@import "../components/admin/reportUser/noteCard.scss";
+@import "../components/admin/reportUser/reportCard.scss";
 
 // --- PAGES ADMIN ---
 @import "../pages/admin/createEpreuve.scss";

@@ -13,7 +13,7 @@ const navbarPhone = () => {
     <nav className="navbarPhone elementsNavigation">
       <Link
         href="/epreuve/allEpreuves"
-        className={router.pathname == "/epreuve/allEpreuves" ? "active" : ""}
+        className={router.pathname.startsWith("/epreuve") ? "active" : ""}
       >
         <span className="icon">
           <FaFlagCheckered />
@@ -21,7 +21,15 @@ const navbarPhone = () => {
         <p>Epreuves</p>
       </Link>
 
-      <Link href="/" className={router.pathname == "/" ? "active" : ""}>
+      <Link
+        href="/"
+        className={
+          (router.pathname == "/" || router.pathname.startsWith("/parkour")) &&
+          !router.pathname.startsWith("/parkour/parkourMap")
+            ? "active"
+            : ""
+        }
+      >
         <span className="icon">
           <FaHouse />
         </span>
@@ -30,7 +38,9 @@ const navbarPhone = () => {
 
       <Link
         href="/parkour/parkourMap"
-        className={router.pathname == "/parkour/parkourMap" ? "active" : ""}
+        className={
+          router.pathname.startsWith("/parkour/parkourMap") ? "active" : ""
+        }
       >
         <span className="icon">
           <FaMapLocationDot />
@@ -41,9 +51,8 @@ const navbarPhone = () => {
       <Link
         href="/user/profil"
         className={
-          router.pathname.startsWith("/user")
-            ? "active"
-            : router.pathname.startsWith("/auth")
+          router.pathname.startsWith("/user") ||
+          router.pathname.startsWith("/auth")
             ? "active"
             : ""
         }

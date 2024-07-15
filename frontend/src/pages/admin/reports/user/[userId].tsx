@@ -1,9 +1,12 @@
-import NoteCard from "@/components/admin/noteCard";
-import ReportCard from "@/components/admin/reportCard";
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import toast from "react-hot-toast";
+
 import {
   useDeleteUserByAdminMutation,
   useGetUserByIdForPageReportLazyQuery,
 } from "@/types/graphql";
+
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -11,9 +14,9 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
-import toast from "react-hot-toast";
+
+import NoteCard from "@/components/admin/reportUser/noteCard";
+import ReportCard from "@/components/admin/reportUser/reportCard";
 
 const OneUserByReports = () => {
   const router = useRouter();
@@ -27,9 +30,6 @@ const OneUserByReports = () => {
     if (router.isReady && userId) {
       getUserReports({
         variables: { userId: userId as string },
-        onCompleted(data) {
-          console.log(data);
-        },
         onError(err: any) {
           console.error("error", err);
         },
@@ -75,40 +75,52 @@ const OneUserByReports = () => {
   }
 
   return (
-    <main className="userIdByReports">
+    <div>
       {error ? (
         <h2>une erreur... (déso) : {error.message}</h2>
       ) : loading ? (
         <h2>Chargement en cours</h2>
       ) : (
         data?.getUserByIdForPageReport && (
-          <div>
+          <main className="userIdByReports">
             <section className="infosMalfrat">
-              <h1>
-                {data.getUserByIdForPageReport.name}{" "}
-                {data.getUserByIdForPageReport.firstname}{" "}
-              </h1>
-              <h2>{data.getUserByIdForPageReport.id}</h2>
-              {data.getUserByIdForPageReport.imageProfil ? (
-                <img src={data.getUserByIdForPageReport.imageProfil} />
-              ) : (
-                <img src="/userDefault.png" />
-              )}
-              <p>{data.getUserByIdForPageReport.email}</p>
-              <p>
-                L'utilisateur a {data.getUserByIdForPageReport.nbReportValide}{" "}
-                report valide contre lui
-              </p>
-              <p>
-                L'utilisateur a émis{" "}
-                {data.getUserByIdForPageReport.nbReportAjoute} reports
-              </p>
+              <div>
+                <h1>
+                  {data.getUserByIdForPageReport.name}{" "}
+                  {data.getUserByIdForPageReport.firstname}{" "}
+                </h1>
+                <h2>{data.getUserByIdForPageReport.id}</h2>
+              </div>
+
+              <div className="imgEmail">
+                {data.getUserByIdForPageReport.imageProfil ? (
+                  <img
+                    src={data.getUserByIdForPageReport.imageProfil}
+                    className="imgProfil"
+                  />
+                ) : (
+                  <img src="/userDefault.png" className="imgProfil" />
+                )}
+
+                <p>{data.getUserByIdForPageReport.email}</p>
+              </div>
+
+              <div>
+                <p>
+                  L'utilisateur a {data.getUserByIdForPageReport.nbReportValide}{" "}
+                  report valide contre lui
+                </p>
+                <p>
+                  L'utilisateur a émis{" "}
+                  {data.getUserByIdForPageReport.nbReportAjoute} reports
+                </p>
+              </div>
 
               {/* --- supp --- */}
               <div className="supp">
-                <Button variant="outlined" onClick={handleClickOpen}>
-                  Supprimer cet utilisateur{" "}
-                </Button>
+                <button onClick={handleClickOpen}>
+                  Supprimer cet utilisateur
+                </button>
                 <Dialog
                   open={open}
                   onClose={handleClickClose}
@@ -121,9 +133,9 @@ const OneUserByReports = () => {
                       const formJson = Object.fromEntries(
                         (formData as any).entries()
                       );
-                      const nameUser = formJson.nameUser;
+                      const emailUser = formJson.emailUser;
 
-                      if (data.getUserByIdForPageReport.name == nameUser) {
+                      if (data.getUserByIdForPageReport.email == emailUser) {
                         handleDeleteUser(data.getUserByIdForPageReport.id);
 
                         if (errorDeleteUser) {
@@ -142,8 +154,8 @@ const OneUserByReports = () => {
                   </DialogTitle>
                   <DialogContent>
                     <DialogContentText>
-                      Pour supprimer cet utilisateur, entrez son nom :
-                      {data.getUserByIdForPageReport.name}
+                      Pour supprimer cet utilisateur, entrez son email :{" "}
+                      {data.getUserByIdForPageReport.email}
                     </DialogContentText>
                     <TextField
                       autoFocus
@@ -151,9 +163,9 @@ const OneUserByReports = () => {
                       variant="standard"
                       required
                       margin="dense"
-                      id="nameUser"
-                      name="nameUser"
-                      label="votre name"
+                      id="emailUser"
+                      name="emailUser"
+                      label="l'email de l'utilisateur"
                       type="text"
                     />
                   </DialogContent>
@@ -195,10 +207,10 @@ const OneUserByReports = () => {
             </section>
 
             {/* --- */}
-          </div>
+          </main>
         )
       )}
-    </main>
+    </div>
   );
 };
 

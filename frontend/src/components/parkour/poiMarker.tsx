@@ -27,7 +27,6 @@ const PoiMarker = ({ poi }: { poi: GetParkourByIdQuery["getParkourById"] }) => {
     if (marker === activeMarkerId) {
       return;
     }
-    // console.log("marker clicked: ", marker);
     setActiveMarkerId(marker);
   };
 
@@ -44,12 +43,16 @@ const PoiMarker = ({ poi }: { poi: GetParkourByIdQuery["getParkourById"] }) => {
       onClick={(ev) => handleActiveMarker(poi.id, ev)}
     >
       {activeMarkerId == poi.id ? (
-        <InfoWindow anchor={marker} onCloseClick={() => setActiveMarkerId("0")}>
+        <InfoWindow
+          anchor={marker}
+          onCloseClick={() => setActiveMarkerId("0")}
+          className="poiMarkerInfo"
+        >
           <Link href={`/parkour/${poi.id}`}>{poi.title}</Link>
-          <br />
           <a
             href={`https://www.google.fr/maps/place/${poi.start}`}
             target="blank"
+            className="aller"
           >
             Y aller !
           </a>

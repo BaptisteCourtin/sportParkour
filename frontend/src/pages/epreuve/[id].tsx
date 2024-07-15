@@ -90,11 +90,17 @@ const OneEpreuve = () => {
                   fullHeightHover={false}
                   animation="slide"
                 >
-                  {data.getEpreuveById.images.map((image) => (
-                    <div className="imageContainer">
-                      <img src={image.lien as string} alt="" />
-                    </div>
-                  ))}
+                  {data.getEpreuveById.images
+                    ?.slice()
+                    .sort(function compare(a: any, b: any) {
+                      if (a.isCouverture > b.isCouverture) return -1;
+                      return 1;
+                    })
+                    .map((image) => (
+                      <div className="imageContainer">
+                        <img src={image.lien as string} alt="" />
+                      </div>
+                    ))}
                 </Carousel>
               )}
 

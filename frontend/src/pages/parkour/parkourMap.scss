@@ -1,6 +1,7 @@
 .parkourMap {
   .map {
-    width: 500px;
+    width: 1380px;
+    max-width: calc(100% - 2rem);
     height: 500px;
   }
 }

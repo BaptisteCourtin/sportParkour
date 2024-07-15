@@ -1,0 +1,30 @@
+.gm-style-iw.gm-style-iw-c {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+  align-items: center;
+
+  .gm-style-iw-chr {
+    .gm-style-iw-ch {
+      flex-grow: 0 !important;
+    }
+  }
+
+  .gm-style-iw-d {
+    overflow: auto !important;
+
+    .poiMarkerInfo {
+      color: var(--black);
+
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      gap: var(--gap);
+
+      .aller {
+        text-decoration: underline;
+      }
+    }
+  }
+}

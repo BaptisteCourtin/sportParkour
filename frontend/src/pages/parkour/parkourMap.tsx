@@ -15,10 +15,7 @@ const parkourMap = () => {
 
   return (
     <main className="parkourMap">
-      <APIProvider
-        apiKey={process.env.NEXT_PUBLIC_MAPS_API_KEY as string}
-        onLoad={() => console.log("Maps API has loaded.")}
-      >
+      <APIProvider apiKey={process.env.NEXT_PUBLIC_MAPS_API_KEY as string}>
         <Map
           className="map"
           defaultZoom={10}

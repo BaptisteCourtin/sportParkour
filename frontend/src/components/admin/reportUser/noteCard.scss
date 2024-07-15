@@ -1,0 +1,24 @@
+.noteCard {
+  width: 100%;
+  background-color: var(--middle);
+
+  margin: var(--espace) 0;
+  padding: var(--espace);
+  border-radius: var(--radius);
+
+  .top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+
+    .commentInFaute {
+      margin: var(--espace) 0;
+    }
+
+    button {
+      color: var(--text2);
+    }
+  }
+}

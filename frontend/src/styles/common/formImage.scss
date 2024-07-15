@@ -15,6 +15,17 @@ ul.imageAlredyInBase {
       width: 360px;
       height: 300px;
     }
+
+    &.isCouv {
+      img {
+        border: 2px var(--blue) solid;
+        border-radius: var(--radius);
+      }
+
+      button.toCouv {
+        filter: grayscale(0.7);
+      }
+    }
   }
 }
 
@@ -41,13 +52,19 @@ ul.imageAlredyInBase {
     align-items: center;
     justify-content: center;
 
-    img {
-      width: 360px;
-      height: 300px;
-    }
-
     .remove_img {
       cursor: pointer;
+    }
+
+    &.isCouv {
+      img {
+        border: 2px var(--blue) solid;
+        border-radius: var(--radius);
+      }
+
+      button {
+        filter: grayscale(0.7);
+      }
     }
   }
 

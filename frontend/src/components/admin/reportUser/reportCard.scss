@@ -14,23 +14,16 @@
     border-top: var(--line) solid var(--red);
   }
 
-  .topComment {
+  .top {
     display: flex;
     align-items: center;
     justify-content: space-between;
 
     width: 100%;
 
-    .userProfil {
-      display: flex;
-      align-items: center;
-      gap: var(--espace);
-
-      .imgProfil {
-        width: 35px;
-        height: 35px;
-        border-radius: var(--radius);
-      }
+    span {
+      font-style: italic;
+      font-size: var(--fs-mini);
     }
 
     button {
@@ -40,10 +33,5 @@
 
   .commentInFaute {
     margin: var(--espace) 0;
-
-    span {
-      font-style: italic;
-      font-size: var(--fs-mini);
-    }
   }
 }

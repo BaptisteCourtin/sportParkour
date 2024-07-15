@@ -65,16 +65,16 @@ export async function createEpreuves(
       .words({ count: { min: 2, max: 5 } })
       .substring(0, 50);
     epreuve.description = faker.lorem
-      .paragraphs({ min: 2, max: 4 }, "<br/>\n")
+      .paragraphs({ min: 2, max: 4 }, "\n\n")
       .substring(0, 1000);
     epreuve.easyToDo = faker.lorem
-      .paragraphs({ min: 1, max: 3 }, "<br/>\n")
+      .paragraphs({ min: 1, max: 3 }, "\n\n")
       .substring(0, 250);
     epreuve.mediumToDo = faker.lorem
-      .paragraphs({ min: 1, max: 3 }, "<br/>\n")
+      .paragraphs({ min: 1, max: 3 }, "\n\n")
       .substring(0, 250);
     epreuve.hardToDo = faker.lorem
-      .paragraphs({ min: 1, max: 3 }, "<br/>\n")
+      .paragraphs({ min: 1, max: 3 }, "\n\n")
       .substring(0, 250);
     epreuve.videoLink = tabVideo[idVideo];
     epreuve.images = imagesEpreuve;

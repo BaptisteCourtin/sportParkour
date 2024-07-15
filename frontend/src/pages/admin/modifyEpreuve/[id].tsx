@@ -11,6 +11,7 @@ import {
   useDeleteEpreuveMutation,
   useGetEpreuveByIdLazyQuery,
   useModifyEpreuveMutation,
+  useModifyImageCouvertureEpreuveMutation,
 } from "@/types/graphql";
 
 import Button from "@mui/material/Button";
@@ -55,6 +56,16 @@ const modifyOneEpreuve = () => {
           setListImagesAlreadyIn(
             data.getEpreuveById.images as [ImageEpreuveEntity]
           );
+
+          if (data.getEpreuveById.images) {
+            for (let i = 0; i < data.getEpreuveById.images.length; i++) {
+              if (data.getEpreuveById.images[i].isCouverture) {
+                setIsMyCouverture(+data.getEpreuveById.images[i].id);
+                setMyLastCouverture(+data.getEpreuveById.images[i].id);
+                break;
+              }
+            }
+          }
         },
         onError(err) {
           console.error("error", err);
@@ -79,9 +90,20 @@ const modifyOneEpreuve = () => {
     fetchPolicy: "no-cache",
   });
 
+  const [
+    modifyImageEpreuve,
+    {
+      data: dataImageModify,
+      loading: loadingImageModify,
+      error: errorImageModify,
+    },
+  ] = useModifyImageCouvertureEpreuveMutation({
+    fetchPolicy: "no-cache",
+  });
+
   const uploadImages = async (): Promise<ImageEpreuveCreateEntity[]> => {
     try {
-      const uploadPromises = filesToUpload.map(async (image) => {
+      const uploadPromises = filesToUpload.map(async (image, index) => {
         const formData = new FormData();
         formData.append("file", image, image.name);
 
@@ -93,9 +115,14 @@ const modifyOneEpreuve = () => {
           "https://storage.cloud.google.com" +
           resultImage.data.split("https://storage.googleapis.com")[1];
 
+        let isCouv = false;
+        if (isMyCouverture == index) {
+          isCouv = true;
+        }
+
         return {
           lien: imageLien,
-          isCouverture: false,
+          isCouverture: isCouv,
         };
       });
 
@@ -119,6 +146,26 @@ const modifyOneEpreuve = () => {
       deletedImageIds: idsImagesToSupp,
       ...dataForm,
     };
+
+    // une requete ici pour enlevé le isCouverture
+    if (myLastCouverture && isMyCouverture != myLastCouverture) {
+      modifyImageEpreuve({
+        variables: { idImage: myLastCouverture },
+      });
+    }
+    // une requete ici pour ajouter le isCouverture
+    if (data?.getEpreuveById.images && isMyCouverture != myLastCouverture) {
+      for (let i = 0; i < data.getEpreuveById.images.length; i++) {
+        // si isCouv est sur une ancienne image => va changer
+        // si isCouv est sur une nouvelle image => va rien faire
+        if (+data.getEpreuveById.images[i].id == isMyCouverture) {
+          modifyImageEpreuve({
+            variables: { idImage: isMyCouverture },
+          });
+          break;
+        }
+      }
+    }
 
     if (updatedDataForm.title && id) {
       modifyEpreuve({
@@ -201,6 +248,8 @@ const modifyOneEpreuve = () => {
 
   // --- UPLOAD IMAGES ---
   const [filesToUpload, setFilesToUpload] = useState<File[]>([]); // à envoyer dans le modify en temps que "images"
+  const [isMyCouverture, setIsMyCouverture] = useState<number>(); // celui à mettre en isCouverture
+  const [myLastCouverture, setMyLastCouverture] = useState<number>(); // pour vérifier
 
   const addSingleFileToPreview = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -225,18 +274,26 @@ const modifyOneEpreuve = () => {
             <h1>MODIFIER L'ÉPREUVE</h1>
 
             {/* --- */}
+
             <ul className="imageAlredyInBase">
               {listImagesAlreadyIn &&
                 listImagesAlreadyIn.map((img) => (
                   <li
                     key={img.id}
-                    className={
+                    className={`${
                       idsImagesToSupp.includes(parseInt(img.id))
                         ? "toDelete"
                         : ""
                     }
+                        ${isMyCouverture == +img.id ? "isCouv" : ""}`}
                   >
                     <img src={img.lien} alt="image de présentation" />
+                    <button
+                      className="toCouv"
+                      onClick={() => setIsMyCouverture(+img.id)}
+                    >
+                      image de couverture
+                    </button>
                     <button
                       onClick={(e) => handleSuppOneImage(e, Number(img.id))}
                     >
@@ -253,11 +310,19 @@ const modifyOneEpreuve = () => {
             <div className="formForImages">
               {/* remove and preview */}
               {filesToUpload.map((file, index) => (
-                <div className="imager" key={index}>
+                <div
+                  className={`${
+                    isMyCouverture == index ? "isCouv" : ""
+                  } imager`}
+                  key={index}
+                >
                   <img
                     src={URL.createObjectURL(file)}
                     alt={`Preview ${file.name}`}
                   />
+                  <button onClick={() => setIsMyCouverture(index)}>
+                    image de couverture
+                  </button>
                   <span
                     className="remove_img"
                     onClick={() => removeImage(index)}

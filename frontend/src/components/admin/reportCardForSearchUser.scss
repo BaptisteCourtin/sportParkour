@@ -1,0 +1,30 @@
+.reportCardForSearchUser {
+  width: 100%;
+  background-color: var(--middle);
+
+  margin: var(--espace) 0;
+  padding: var(--espace);
+  border-radius: var(--radius);
+  border-top: var(--line) solid var(--red);
+
+  &.nbRep-1 {
+    border-top: var(--line) solid var(--blue);
+  }
+
+  &.nbRep-2 {
+    border-top: var(--line) solid var(--yellow);
+  }
+
+  .userProfil {
+    display: flex;
+    align-items: center;
+    gap: var(--espace);
+    margin-bottom: var(--espace);
+
+    .imgProfil {
+      width: 35px;
+      height: 35px;
+      border-radius: var(--radius);
+    }
+  }
+}

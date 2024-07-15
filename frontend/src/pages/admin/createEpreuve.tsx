@@ -49,7 +49,7 @@ const createEpreuve = () => {
 
   const uploadImages = async (): Promise<ImageEpreuveCreateEntity[]> => {
     try {
-      const uploadPromises = filesToUpload.map(async (image) => {
+      const uploadPromises = filesToUpload.map(async (image, index) => {
         const formData = new FormData();
         formData.append("file", image, image.name);
 
@@ -61,9 +61,14 @@ const createEpreuve = () => {
           "https://storage.cloud.google.com" +
           resultImage.data.split("https://storage.googleapis.com")[1];
 
+        let isCouv = false;
+        if (isMyCouverture == index) {
+          isCouv = true;
+        }
+
         return {
           lien: imageLien,
-          isCouverture: false,
+          isCouverture: isCouv,
         };
       });
 
@@ -120,7 +125,8 @@ const createEpreuve = () => {
   };
 
   // --- UPLOAD IMAGES ---
-  const [filesToUpload, setFilesToUpload] = useState<File[]>([]); // à envoyer dans le modify en temps que "images"
+  const [filesToUpload, setFilesToUpload] = useState<File[]>([]); // à envoyer dans le create en temps que "images"
+  const [isMyCouverture, setIsMyCouverture] = useState<number>();
 
   const addSingleFileToPreview = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -140,8 +146,14 @@ const createEpreuve = () => {
       <div className="formForImages">
         {/* remove and preview */}
         {filesToUpload.map((file, index) => (
-          <div className="imager" key={index}>
+          <div
+            key={index}
+            className={`${isMyCouverture == index ? "isCouv" : ""} imager`}
+          >
             <img src={URL.createObjectURL(file)} alt={`Preview ${file.name}`} />
+            <button onClick={() => setIsMyCouverture(index)}>
+              image de couverture
+            </button>
             <span className="remove_img" onClick={() => removeImage(index)}>
               supprimer cette image
             </span>

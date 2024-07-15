@@ -81,7 +81,7 @@ export async function createParkours(
       .words({ count: { min: 2, max: 5 } })
       .substring(0, 50);
     parkour.description = faker.lorem
-      .paragraphs({ min: 3, max: 5 }, "<br/>\n")
+      .paragraphs({ min: 3, max: 5 }, "\n\n")
       .substring(0, 1000);
     parkour.length = thisLength;
     parkour.time = thisTime;
@@ -125,7 +125,7 @@ export async function createParkours(
         joinUserParkourNote.parkour_id = parkour.id;
         joinUserParkourNote.note = thisNote;
         joinUserParkourNote.commentaire = faker.lorem
-          .paragraphs({ min: 1, max: 3 }, "<br/>\n")
+          .paragraphs({ min: 1, max: 3 }, "\n\n")
           .substring(0, 500);
         joinUserParkoursNotes.push(joinUserParkourNote);
 

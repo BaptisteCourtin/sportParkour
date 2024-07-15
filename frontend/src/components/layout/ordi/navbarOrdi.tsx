@@ -9,6 +9,7 @@ import { FaFlagCheckered } from "react-icons/fa6";
 
 import { useDarkLightContext } from "@/context/themeContext";
 import DarkLight from "@/components/layout/ordi/darkLightOrdi";
+import Tooltip from "@mui/material/Tooltip";
 
 const navbarOrdi = () => {
   const router = useRouter();
@@ -16,6 +17,10 @@ const navbarOrdi = () => {
 
   return (
     <header className="navbarOrdi elementsNavigation">
+      <a className="skipNavbarLink" href="#main">
+        Aller au contenu principal
+      </a>
+
       <nav className="navbar">
         <Link href="/">
           {isDarkTheme ? (
@@ -28,38 +33,62 @@ const navbarOrdi = () => {
         <div className="links">
           <DarkLight />
 
-          <Link href="/" className={router.pathname == "/" ? "active" : ""}>
-            <span className="icon">
-              <FaHouse />
-            </span>
-          </Link>
+          <Tooltip title="Epreuves" arrow>
+            <Link
+              href="/epreuve/allEpreuves"
+              className={router.pathname.startsWith("/epreuve") ? "active" : ""}
+            >
+              <span className="icon">
+                <FaFlagCheckered />
+              </span>
+            </Link>
+          </Tooltip>
 
-          <Link
-            href="/parkour/parkourMap"
-            className={router.pathname == "/parkour/parkourMap" ? "active" : ""}
-          >
-            <span className="icon">
-              <FaMapLocationDot />
-            </span>
-          </Link>
+          <Tooltip title="Parkour" arrow>
+            <Link
+              href="/"
+              className={
+                (router.pathname == "/" ||
+                  router.pathname.startsWith("/parkour")) &&
+                !router.pathname.startsWith("/parkour/parkourMap")
+                  ? "active"
+                  : ""
+              }
+            >
+              <span className="icon">
+                <FaHouse />
+              </span>
+            </Link>
+          </Tooltip>
 
-          <Link
-            href="/epreuve/allEpreuves"
-            className={
-              router.pathname == "/epreuve/allEpreuves" ? "active" : ""
-            }
-          >
-            <span className="icon">
-              <FaFlagCheckered />
-            </span>
-          </Link>
+          <Tooltip title="Map" arrow>
+            <Link
+              href="/parkour/parkourMap"
+              className={
+                router.pathname.startsWith("/parkour/parkourMap")
+                  ? "active"
+                  : ""
+              }
+            >
+              <span className="icon">
+                <FaMapLocationDot />
+              </span>
+            </Link>
+          </Tooltip>
 
-          <Link
-            href="/user/profil"
-            className={router.pathname == "/user/profil" ? "active" : ""}
-          >
-            <FaUser className="icon" />
-          </Link>
+          <Tooltip title="Profil" arrow>
+            <Link
+              href="/user/profil"
+              className={
+                router.pathname.startsWith("/user") ||
+                router.pathname.startsWith("/auth")
+                  ? "active"
+                  : ""
+              }
+            >
+              <FaUser className="icon" />
+            </Link>
+          </Tooltip>
         </div>
       </nav>
     </header>

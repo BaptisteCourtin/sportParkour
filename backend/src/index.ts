@@ -34,6 +34,7 @@ import { jwtVerify } from "jose";
 import { customAuthChecker } from "./lib/authChecker";
 import UserEntity from "./entities/user.entity";
 import UserService from "./services/user.service";
+import ImagesResolver from "./resolvers/images.resolver";
 
 // ---------------------------------------------
 // ---------------------------------------------
@@ -61,6 +62,7 @@ async function main() {
       JoinUserParkourNoteResolver,
       ResetPasswordResolver,
       ReportResolver,
+      ImagesResolver,
     ],
     validate: false,
     authChecker: customAuthChecker,

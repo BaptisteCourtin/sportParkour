@@ -95,7 +95,7 @@ export type JoinUserParkourFavorisEntity = {
 
 export type JoinUserParkourNoteCreateEntity = {
   commentaire?: InputMaybe<Scalars['String']['input']>;
-  note?: InputMaybe<Scalars['Float']['input']>;
+  note: Scalars['Float']['input'];
   parkour_id: Scalars['Float']['input'];
 };
 
@@ -133,6 +133,8 @@ export type Mutation = {
   inscription: MessageEntity;
   letNote: MessageEntity;
   modifyEpreuve: EpreuveEntity;
+  modifyImageCouvertureEpreuve: MessageEntity;
+  modifyImageCouvertureParkour: MessageEntity;
   modifyParkour: ParkourEntity;
   modifyUser: MessageEntity;
   reportNote: MessageEntity;
@@ -218,6 +220,16 @@ export type MutationLetNoteArgs = {
 export type MutationModifyEpreuveArgs = {
   id: Scalars['Float']['input'];
   infos: EpreuveUpdateEntity;
+};
+
+
+export type MutationModifyImageCouvertureEpreuveArgs = {
+  idImage: Scalars['Float']['input'];
+};
+
+
+export type MutationModifyImageCouvertureParkourArgs = {
+  idImage: Scalars['Float']['input'];
 };
 
 
@@ -495,6 +507,20 @@ export type DeleteEpreuveMutationVariables = Exact<{
 
 export type DeleteEpreuveMutation = { __typename?: 'Mutation', deleteEpreuve: { __typename?: 'MessageEntity', message: string, success: boolean } };
 
+export type ModifyImageCouvertureEpreuveMutationVariables = Exact<{
+  idImage: Scalars['Float']['input'];
+}>;
+
+
+export type ModifyImageCouvertureEpreuveMutation = { __typename?: 'Mutation', modifyImageCouvertureEpreuve: { __typename?: 'MessageEntity', message: string, success: boolean } };
+
+export type ModifyImageCouvertureParkourMutationVariables = Exact<{
+  idImage: Scalars['Float']['input'];
+}>;
+
+
+export type ModifyImageCouvertureParkourMutation = { __typename?: 'Mutation', modifyImageCouvertureParkour: { __typename?: 'MessageEntity', message: string, success: boolean } };
+
 export type CreateJoinUserParkourFavorisMutationVariables = Exact<{
   parkourId: Scalars['Float']['input'];
 }>;
@@ -745,7 +771,7 @@ export type CheckResetTokenValidityQuery = { __typename?: 'Query', checkResetTok
 export type GetUserByTokenQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetUserByTokenQuery = { __typename?: 'Query', getUserByToken: { __typename?: 'UserEntity', id: string, name: string, firstname: string, email: string, city?: string | null, codePostal?: string | null, phone?: string | null, imageProfil?: string | null, nbReportValide?: number | null } };
+export type GetUserByTokenQuery = { __typename?: 'Query', getUserByToken: { __typename?: 'UserEntity', id: string, name: string, firstname: string, email: string, city?: string | null, codePostal?: string | null, phone?: string | null, imageProfil?: string | null } };
 
 export type IsAdminQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -895,6 +921,74 @@ export function useDeleteEpreuveMutation(baseOptions?: Apollo.MutationHookOption
 export type DeleteEpreuveMutationHookResult = ReturnType<typeof useDeleteEpreuveMutation>;
 export type DeleteEpreuveMutationResult = Apollo.MutationResult<DeleteEpreuveMutation>;
 export type DeleteEpreuveMutationOptions = Apollo.BaseMutationOptions<DeleteEpreuveMutation, DeleteEpreuveMutationVariables>;
+export const ModifyImageCouvertureEpreuveDocument = gql`
+    mutation ModifyImageCouvertureEpreuve($idImage: Float!) {
+  modifyImageCouvertureEpreuve(idImage: $idImage) {
+    message
+    success
+  }
+}
+    `;
+export type ModifyImageCouvertureEpreuveMutationFn = Apollo.MutationFunction<ModifyImageCouvertureEpreuveMutation, ModifyImageCouvertureEpreuveMutationVariables>;
+
+/**
+ * __useModifyImageCouvertureEpreuveMutation__
+ *
+ * To run a mutation, you first call `useModifyImageCouvertureEpreuveMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useModifyImageCouvertureEpreuveMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [modifyImageCouvertureEpreuveMutation, { data, loading, error }] = useModifyImageCouvertureEpreuveMutation({
+ *   variables: {
+ *      idImage: // value for 'idImage'
+ *   },
+ * });
+ */
+export function useModifyImageCouvertureEpreuveMutation(baseOptions?: Apollo.MutationHookOptions<ModifyImageCouvertureEpreuveMutation, ModifyImageCouvertureEpreuveMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ModifyImageCouvertureEpreuveMutation, ModifyImageCouvertureEpreuveMutationVariables>(ModifyImageCouvertureEpreuveDocument, options);
+      }
+export type ModifyImageCouvertureEpreuveMutationHookResult = ReturnType<typeof useModifyImageCouvertureEpreuveMutation>;
+export type ModifyImageCouvertureEpreuveMutationResult = Apollo.MutationResult<ModifyImageCouvertureEpreuveMutation>;
+export type ModifyImageCouvertureEpreuveMutationOptions = Apollo.BaseMutationOptions<ModifyImageCouvertureEpreuveMutation, ModifyImageCouvertureEpreuveMutationVariables>;
+export const ModifyImageCouvertureParkourDocument = gql`
+    mutation ModifyImageCouvertureParkour($idImage: Float!) {
+  modifyImageCouvertureParkour(idImage: $idImage) {
+    message
+    success
+  }
+}
+    `;
+export type ModifyImageCouvertureParkourMutationFn = Apollo.MutationFunction<ModifyImageCouvertureParkourMutation, ModifyImageCouvertureParkourMutationVariables>;
+
+/**
+ * __useModifyImageCouvertureParkourMutation__
+ *
+ * To run a mutation, you first call `useModifyImageCouvertureParkourMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useModifyImageCouvertureParkourMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [modifyImageCouvertureParkourMutation, { data, loading, error }] = useModifyImageCouvertureParkourMutation({
+ *   variables: {
+ *      idImage: // value for 'idImage'
+ *   },
+ * });
+ */
+export function useModifyImageCouvertureParkourMutation(baseOptions?: Apollo.MutationHookOptions<ModifyImageCouvertureParkourMutation, ModifyImageCouvertureParkourMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ModifyImageCouvertureParkourMutation, ModifyImageCouvertureParkourMutationVariables>(ModifyImageCouvertureParkourDocument, options);
+      }
+export type ModifyImageCouvertureParkourMutationHookResult = ReturnType<typeof useModifyImageCouvertureParkourMutation>;
+export type ModifyImageCouvertureParkourMutationResult = Apollo.MutationResult<ModifyImageCouvertureParkourMutation>;
+export type ModifyImageCouvertureParkourMutationOptions = Apollo.BaseMutationOptions<ModifyImageCouvertureParkourMutation, ModifyImageCouvertureParkourMutationVariables>;
 export const CreateJoinUserParkourFavorisDocument = gql`
     mutation CreateJoinUserParkourFavoris($parkourId: Float!) {
   createJoinUserParkourFavoris(parkourId: $parkourId) {
@@ -2364,7 +2458,6 @@ export const GetUserByTokenDocument = gql`
     codePostal
     phone
     imageProfil
-    nbReportValide
   }
 }
     `;

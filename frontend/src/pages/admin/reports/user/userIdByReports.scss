@@ -1,0 +1,24 @@
+.userIdByReports {
+  gap: var(--espace);
+
+  .infosMalfrat {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: var(--espace);
+
+    .imgEmail {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      .imgProfil {
+        width: 150px;
+        height: 150px;
+        border-radius: var(--radius);
+      }
+    }
+  }
+}
