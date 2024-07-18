@@ -6,8 +6,12 @@ const Custom404 = () => {
       <div className="containerText">
         <h1>Bonjour valeureux guerrier! Voulez-vous jouer avec moi ?</h1>
         <h2 className="linkToNext">
-          <a href="#0">OUI avec plaisir</a>
-          <a href="/">NON sans façon, ramenez moi à l'accueil</a>
+          <a href="#0" className="button">
+            OUI avec plaisir
+          </a>
+          <a href="/" className="button">
+            NON sans façon, ramenez moi à l'accueil
+          </a>
         </h2>
       </div>
 
@@ -23,8 +27,12 @@ const Custom404 = () => {
           toute façon c'est moi qui décide! Nananère.
         </p>
         <div className="linkToNext">
-          <a href="#1">Faire un pas en avant</a>
-          <a href="#2">Faire un pas en arrière</a>
+          <a href="#1" className="button">
+            Faire un pas en avant
+          </a>
+          <a href="#2" className="button">
+            Faire un pas en arrière
+          </a>
         </div>
       </div>
 
@@ -39,8 +47,12 @@ const Custom404 = () => {
           chemin voulez vous empreinter?
         </p>
         <div className="linkToNext">
-          <a href="#3">Avancer dans la forêt</a>
-          <a href="#4">Faire le tour de la forêt</a>
+          <a href="#3" className="button">
+            Avancer dans la forêt
+          </a>
+          <a href="#4" className="button">
+            Faire le tour de la forêt
+          </a>
         </div>
       </div>
 
@@ -56,8 +68,12 @@ const Custom404 = () => {
           mort. Dommage.
         </p>
         <div className="linkToNext">
-          <a href="#0">Relancer une partie</a>
-          <a href="/">Nul, ce jeu (alt F4)</a>
+          <a href="#0" className="button">
+            Relancer une partie
+          </a>
+          <a href="/" className="button">
+            Nul, ce jeu (alt F4)
+          </a>
         </div>
       </div>
 
@@ -68,15 +84,19 @@ const Custom404 = () => {
           vous chauffe le dos. Vous marchez d'un pas assurer sur la route de
           gravier qui s'étant devant vous. Peu petit à petit, le chemin se
           rétrécit, se rétrécit, se rétrécit trop, jusqu'à disparaitre. La
-          falaise est désormais au pied de la forêt. Vous commencez a fatiguer
-          de cette longue marche. Vous regardez vers la forêt. Il y fait encore
-          plus sombre que tout à l'heure. Le soleil est bas de le ciel, dans peu
-          de temps il passera derrière l'horizon dans un magnifique couché de
-          soleil sur la mer.
+          falaise s'enfonce désormais au pied de la forêt. Vous commencez a
+          fatiguer de cette longue marche. Vous regardez vers la forêt. Il y
+          fait encore plus sombre que tout à l'heure. Le soleil est bas de le
+          ciel, dans peu de temps il passera derrière l'horizon dans un
+          magnifique couché de soleil sur la mer.
         </p>
         <div className="linkToNext">
-          <a href="#5">Aller dans la forêt</a>
-          <a href="#6">Rester au bord de la falaise</a>
+          <a href="#5" className="button">
+            Aller dans la forêt
+          </a>
+          <a href="#6" className="button">
+            Rester au bord de la falaise
+          </a>
         </div>
       </div>
 
@@ -84,11 +104,19 @@ const Custom404 = () => {
       <div className="containerText" id="5">
         <p>
           Vous hésitez mais finissez par choisir d'allez dans la forêt. Il y
-          fait sombre, très sombre, trop sombre... Sombre. Vous avez faim, et
-          soif et sommeille. Décidemment.
+          fait sombre, très sombre, trop sombre... Sombre. Dans toute cette
+          obscurité, vous arrivez tout de même très bien à distinguer la falaise
+          qui s'enfonce dans la forêt. Elle semble même continuer à s'étendre
+          peu à peu mais aucun bruit ne vous donne de confirmation. Vous avez
+          faim, et soif et sommeille. Décidemment.
         </p>
         <div className="linkToNext">
-          <a href="#15">Se reposer</a> - <a href="#16">Continuer à explorer</a>
+          <a href="#15" className="button">
+            Se reposer
+          </a>
+          <a href="#16" className="button">
+            Continuer à explorer
+          </a>
         </div>
       </div>
 
@@ -104,8 +132,12 @@ const Custom404 = () => {
           souterraine, elle devrait donc être potable.
         </p>
         <div className="linkToNext">
-          <a href="#7">Essayer de boire cette eau</a>
-          <a href="#5">Aller dans la forêt</a>
+          <a href="#7" className="button">
+            Essayer de boire cette eau
+          </a>
+          <a href="#5" className="button">
+            Aller dans la forêt
+          </a>
         </div>
       </div>
 
@@ -122,8 +154,12 @@ const Custom404 = () => {
           attacher autour d'une branche base d'un arbre.
         </p>
         <div className="linkToNext">
-          <a href="#8">Continuer</a>
-          <a href="#5">Aller dans la forêt</a>
+          <a href="#8" className="button">
+            Continuer
+          </a>
+          <a href="#5" className="button">
+            Aller dans la forêt
+          </a>
         </div>
       </div>
 
@@ -140,8 +176,12 @@ const Custom404 = () => {
           semblent résister.
         </p>
         <div className="linkToNext">
-          <a href="#8">Continuer à boire</a>
-          <a href="#5">Remonter</a>
+          <a href="#8" className="button">
+            Continuer à boire
+          </a>
+          <a href="#5" className="button">
+            Remonter
+          </a>
         </div>
       </div>
 
@@ -154,8 +194,12 @@ const Custom404 = () => {
           yeux, votre pantalon se déchire.
         </p>
         <div className="linkToNext">
-          <a href="#11">Agripper rapidement une racine</a>
-          <a href="#12">Agripper doucement une racine</a>
+          <a href="#11" className="button">
+            Agripper rapidement une racine
+          </a>
+          <a href="#12" className="button">
+            Agripper doucement une racine
+          </a>
         </div>
       </div>
 
@@ -168,8 +212,12 @@ const Custom404 = () => {
           bout de pantalon à la main. Vous êtes mort? Oui.
         </p>
         <div className="linkToNext">
-          <a href="#0">Relancer une partie</a>
-          <a href="/">Nul, ce jeu (alt F4)</a>
+          <a href="#0" className="button">
+            Relancer une partie
+          </a>
+          <a href="/" className="button">
+            Nul, ce jeu (alt F4)
+          </a>
         </div>
       </div>
 
@@ -188,8 +236,12 @@ const Custom404 = () => {
           boire.
         </p>
         <div className="linkToNext">
-          <a href="#13">Chercher un ruisseau </a>
-          <a href="#14">Chercher à manger</a>
+          <a href="#13" className="button">
+            Chercher un ruisseau{" "}
+          </a>
+          <a href="#14" className="button">
+            Chercher à manger
+          </a>
         </div>
       </div>
 
@@ -204,8 +256,12 @@ const Custom404 = () => {
           boire.
         </p>
         <div className="linkToNext">
-          <a href="#13">Chercher un ruisseau</a>
-          <a href="#14">Chercher à manger</a>
+          <a href="#13" className="button">
+            Chercher un ruisseau
+          </a>
+          <a href="#14" className="button">
+            Chercher à manger
+          </a>
         </div>
       </div>
 
@@ -216,8 +272,12 @@ const Custom404 = () => {
           sèche et des gargouillis dans le ventre.
         </p>
         <div className="linkToNext">
-          <a href="#13">Chercher un ruisseau</a>
-          <a href="#14">Chercher à manger</a>
+          <a href="#13" className="button">
+            Chercher un ruisseau
+          </a>
+          <a href="#14" className="button">
+            Chercher à manger
+          </a>
         </div>
       </div>
 
@@ -235,8 +295,12 @@ const Custom404 = () => {
           dernière fois
         </p>
         <div className="linkToNext">
-          <a href="#0">Relancer une partie</a>
-          <a href="/">Nul, ce jeu (alt F4)</a>
+          <a href="#0" className="button">
+            Relancer une partie
+          </a>
+          <a href="/" className="button">
+            Nul, ce jeu (alt F4)
+          </a>
         </div>
       </div>
 
@@ -256,8 +320,12 @@ const Custom404 = () => {
           minimum.
         </p>
         <div className="linkToNext">
-          <a href="#17">Chercher des fruits</a>
-          <a href="#18">Poser des pièges</a>
+          <a href="#17" className="button">
+            Chercher des fruits
+          </a>
+          <a href="#18" className="button">
+            Poser des pièges
+          </a>
         </div>
       </div>
 
@@ -272,8 +340,12 @@ const Custom404 = () => {
           reprendre le fil de vos pensées.
         </p>
         <div className="linkToNext">
-          <a href="#17">Chercher des fruits</a>
-          <a href="#18">Poser des pièges</a>
+          <a href="#17" className="button">
+            Chercher des fruits
+          </a>
+          <a href="#18" className="button">
+            Poser des pièges
+          </a>
         </div>
       </div>
 
@@ -286,8 +358,12 @@ const Custom404 = () => {
           d'autres fruits.
         </p>
         <div className="linkToNext">
-          <a href="#19">Monter à l'arbre</a>
-          <a href="#20">Passer votre chemin</a>
+          <a href="#19" className="button">
+            Monter à l'arbre
+          </a>
+          <a href="#20" className="button">
+            Passer votre chemin
+          </a>
         </div>
       </div>
 
@@ -299,8 +375,12 @@ const Custom404 = () => {
           appétissants.
         </p>
         <div className="linkToNext">
-          <a href="#21">Manger</a>
-          <a href="#22">Retourner à la clairière</a>
+          <a href="#21" className="button">
+            Manger
+          </a>
+          <a href="#22" className="button">
+            Retourner à la clairière
+          </a>
         </div>
       </div>
 
@@ -317,8 +397,12 @@ const Custom404 = () => {
           qu'une bouchée.
         </p>
         <div className="linkToNext">
-          <a href="#XX">XXX</a>
-          <a href="#XX">XXX</a>
+          <a href="#XX" className="button">
+            XXX
+          </a>
+          <a href="#XX" className="button">
+            XXX
+          </a>
         </div>
       </div>
 
@@ -331,8 +415,12 @@ const Custom404 = () => {
           pas repartir ainsi, il vous faut trouver quelque chose à grignoter.
         </p>
         <div className="linkToNext">
-          <a href="#23">Manger de l'écorce</a>
-          <a href="#24">Continuer à chercher</a>
+          <a href="#23" className="button">
+            Manger de l'écorce
+          </a>
+          <a href="#24" className="button">
+            Continuer à chercher
+          </a>
         </div>
       </div>
 
@@ -345,8 +433,12 @@ const Custom404 = () => {
           remontant le cours d'eau. Vous apercevez une bananier.
         </p>
         <div className="linkToNext">
-          <a href="#19">Monter à l'arbre</a>
-          <a href="#25">Passer votre chemin</a>
+          <a href="#19" className="button">
+            Monter à l'arbre
+          </a>
+          <a href="#25" className="button">
+            Passer votre chemin
+          </a>
         </div>
       </div>
 
@@ -360,8 +452,12 @@ const Custom404 = () => {
           seul.
         </p>
         <div className="linkToNext">
-          <a href="#XX">XXX</a>
-          <a href="#XX">XXX</a>
+          <a href="#XX" className="button">
+            XXX
+          </a>
+          <a href="#XX" className="button">
+            XXX
+          </a>
         </div>
       </div>
 
@@ -375,8 +471,12 @@ const Custom404 = () => {
           formes deviennent toutes des bulles, vous sentez la terre tournée…
         </p>
         <div className="linkToNext">
-          <a href="#26">Vous battre contre un ours</a>
-          <a href="#27">Devenir un poisson</a>
+          <a href="#26" className="button">
+            Vous battre contre un ours
+          </a>
+          <a href="#27" className="button">
+            Devenir un poisson
+          </a>
         </div>
       </div>
 
@@ -398,8 +498,12 @@ const Custom404 = () => {
           succulents.
         </p>
         <div className="linkToNext">
-          <a href="#XX">XXX</a>
-          <a href="#XX">XXX</a>
+          <a href="#XX" className="button">
+            XXX
+          </a>
+          <a href="#XX" className="button">
+            XXX
+          </a>
         </div>
       </div>
 
@@ -412,8 +516,12 @@ const Custom404 = () => {
           finalement sur une banane qui gigote. Un serpent !
         </p>
         <div className="linkToNext">
-          <a href="#28">Le jeter</a>
-          <a href="#29">Le lâcher</a>
+          <a href="#28" className="button">
+            Le jeter
+          </a>
+          <a href="#29" className="button">
+            Le lâcher
+          </a>
         </div>
       </div>
 
@@ -421,8 +529,12 @@ const Custom404 = () => {
       <div className="containerText" id="31">
         <p>Vous êtes mort. Dead. Finito. Kaput. Crevé quoi... (feur)</p>
         <div className="linkToNext">
-          <a href="#0">Relancer une partie</a>
-          <a href="/">Nul, ce jeu (alt F4)</a>
+          <a href="#0" className="button">
+            Relancer une partie
+          </a>
+          <a href="/" className="button">
+            Nul, ce jeu (alt F4)
+          </a>
         </div>
       </div>
 
@@ -436,13 +548,17 @@ const Custom404 = () => {
           tête sur un rocher dans la rivière.
         </p>
         <div className="linkToNext">
-          <a href="#0">Relancer une partie</a>
-          <a href="/">Nul, ce jeu (alt F4)</a>
+          <a href="#0" className="button">
+            Relancer une partie
+          </a>
+          <a href="/" className="button">
+            Nul, ce jeu (alt F4)
+          </a>
         </div>
       </div>
 
       {/* 28 */}
-      <div className="containerText" id="28">
+      <div className="containerText lanceLeDe" id="28">
         <p>
           Vous tentez de jeter le serpent mais sa queue est toujours enroulé
           autour d'une branche. Vous avez un fort mouvement de recule. Et tombez
@@ -451,8 +567,12 @@ const Custom404 = () => {
           les oiseaux qui viennent de s'enfuir. Jetez un dé 20.
         </p>
         <div className="linkToNext">
-          <a href="#30">Résultat entre 1 et 10</a>
-          <a href="#31">Résultat entre 11 et 20</a>
+          <a href="#30" className="button">
+            Résultat entre 1 et 10
+          </a>
+          <a href="#31" className="button">
+            Résultat entre 11 et 20
+          </a>
         </div>
       </div>
 
@@ -464,8 +584,12 @@ const Custom404 = () => {
           les formes deviennent toutes des bulles, vous sentez la terre tournée…
         </p>
         <div className="linkToNext">
-          <a href="#26">Vous battre contre un ours</a>
-          <a href="#27">Devenir un poisson</a>
+          <a href="#26" className="button">
+            Vous battre contre un ours
+          </a>
+          <a href="#27" className="button">
+            Devenir un poisson
+          </a>
         </div>
       </div>
 
@@ -480,13 +604,17 @@ const Custom404 = () => {
           encore vu d'autres fruits.
         </p>
         <div className="linkToNext">
-          <a href="#19">Monter à l'arbre</a>
-          <a href="#20">Passer votre chemin</a>
+          <a href="#19" className="button">
+            Monter à l'arbre
+          </a>
+          <a href="#20" className="button">
+            Passer votre chemin
+          </a>
         </div>
       </div>
 
       {/* 3 */}
-      <div className="containerText" id="3">
+      <div className="containerText nainDeJardin" id="3">
         <p>
           Vous vous avancez de plus en plus profondément dans l'immensité de la
           forêt. Les minutes deviennent des heures, votre vision s'habitue peu à
@@ -498,8 +626,12 @@ const Custom404 = () => {
           par ici ?"
         </p>
         <div className="linkToNext">
-          <a href="#31">Je suis à la recherche de la page perdu</a>
-          <a href="#32">Mes pieds (lol)</a>
+          <a href="#52" className="button">
+            Je suis à la recherche de la page perdu
+          </a>
+          <a href="#32" className="button">
+            Mes pieds (lol)
+          </a>
         </div>
       </div>
 
@@ -517,8 +649,12 @@ const Custom404 = () => {
           fourchette qui s'abattent sur vous. Vous crachez votre pomme.
         </p>
         <div className="linkToNext">
-          <a href="#33">S'adresser aux nains</a>
-          <a href="#34">Ronger les cordes</a>
+          <a href="#33" className="button">
+            S'adresser aux nains
+          </a>
+          <a href="#34" className="button">
+            Ronger les cordes
+          </a>
         </div>
       </div>
 
@@ -535,8 +671,12 @@ const Custom404 = () => {
           marmite sur le côté. Mais vous êtes toujours pieds et poings liés.
         </p>
         <div className="linkToNext">
-          <a href="#35">S'enfuir en sautillant</a>
-          <a href="#36">Péter la gueule aux nains</a>
+          <a href="#35" className="button">
+            S'enfuir en sautillant
+          </a>
+          <a href="#36" className="button">
+            Péter la gueule aux nains
+          </a>
         </div>
       </div>
 
@@ -550,8 +690,12 @@ const Custom404 = () => {
           viande du tout.
         </p>
         <div className="linkToNext">
-          <a href="#0">Relancer une partie</a>
-          <a href="/">Nul, ce jeu (alt F4)</a>
+          <a href="#0" className="button">
+            Relancer une partie
+          </a>
+          <a href="/" className="button">
+            Nul, ce jeu (alt F4)
+          </a>
         </div>
       </div>
 
@@ -567,8 +711,12 @@ const Custom404 = () => {
           plein sur la tête depuis le haut d'un arbre.
         </p>
         <div className="linkToNext">
-          <a href="#0">Relancer une partie</a>
-          <a href="/">Nul, ce jeu (alt F4)</a>
+          <a href="#0" className="button">
+            Relancer une partie
+          </a>
+          <a href="/" className="button">
+            Nul, ce jeu (alt F4)
+          </a>
         </div>
       </div>
 
@@ -580,25 +728,423 @@ const Custom404 = () => {
           cercles de toutes les couleurs. Vous entamez votre discours.
         </p>
         <div className="linkToNext">
-          <a href="#37">Rebellez vous</a>
-          <a href="#38">Avoir une vision</a>
+          <a href="#37" className="button">
+            Rebellez vous
+          </a>
+          <a href="#38" className="button">
+            Avoir une vision
+          </a>
         </div>
       </div>
 
       {/* 37 */}
       <div className="containerText" id="37">
         <p>
-          "Rebellez vous, vous je suis venu en ami, on ne fait pas cuire ses
-          amis même quand ils font des blagues nulles. Frères nains arrêtez
-          cette cuisson et je aiderais de la meilleure des façon. Je vous
-          apporterais à manger, autant que vous le souhaitez."" Le chef
-          s'adresse à vous. "Nous ne manquons pas de nourriture. Ces bois ne
-          sont pas très prolifiques mais les tribus naines on su cultiver les
-          buissons fruitiers." Le fond de la marmite commence à ce réchauffer.
+          "Rebellez vous, je suis venu en ami, on ne fait pas cuire ses amis
+          même quand ils font des blagues nulles. Frères nains arrêtez cette
+          cuisson et je vous aiderais de la meilleure des façon. Je vous
+          apporterais à manger, autant que vous le souhaitez." Le chef s'adresse
+          à vous. "Nous ne manquons pas de nourriture. Ces bois ne sont pas très
+          prolifiques mais les tribus naines on su cultiver les buissons
+          fruitiers." Le fond de la marmite commence à ce réchauffer.
         </p>
         <div className="linkToNext">
-          <a href="#39">Je vous apporterais de la viande</a>
-          <a href="#40">Je vous protègerais</a>
+          <a href="#39" className="button">
+            Je vous apporterais de la viande
+          </a>
+          <a href="#40" className="button">
+            Je vous protègerais
+          </a>
+        </div>
+      </div>
+
+      {/* 39 */}
+      <div className="containerText" id="39">
+        <p>
+          Vous essayez de les convaincre comme vous pouvez. "Je vous apporterais
+          de la viande". Leur chef vous regarde de travers. "Y'a que des
+          serpents et des piafs. Et c'est pas bon."
+        </p>
+        <div className="linkToNext">
+          <a href="#41" className="button">
+            Il doit bien y avoir d'autres viandes
+          </a>
+          <a href="#42" className="button">
+            Ne rien faire
+          </a>
+        </div>
+      </div>
+
+      {/* 42 */}
+      <div className="containerText" id="42">
+        <p>
+          Vous ne faite rien. L'eau se réchauffe peu à peu. Vous vous endormez.
+          Dead, finito. C'était très con.
+        </p>
+        <div className="linkToNext">
+          <a href="#0" className="button">
+            Relancer une partie
+          </a>
+          <a href="/" className="button">
+            Nul, ce jeu (alt F4)
+          </a>
+        </div>
+      </div>
+
+      {/* 40 */}
+      <div className="containerText" id="40">
+        <p>
+          "J'ai cru comprendre qu'il y avait d'autres tribus. Je serais votre
+          allié." Leur chef est introgué. "Arrêté le feu!" Vous senter le fond
+          de la marmitte arrêter de chauffer. "Oui, vous pourriez nous être
+          utile. Mais comment pouvons nous te faire confiance?"
+        </p>
+        <div className="linkToNext">
+          <a href="#43" className="button">
+            Je n'ai qu'une parole
+          </a>
+          <a href="#44" className="button">
+            Vous avez mes vêtements
+          </a>
+        </div>
+      </div>
+
+      {/* 38 */}
+      <div className="containerText lanceLeDe" id="38">
+        <p>
+          "Il est écrit que seul le dernier des poulpes à 7 bras, pourra voir la
+          comète à friture s'écrasé dans les lianes de l'ayahuasca. Alors les
+          bulles de savon nous libérerons de l'emprise du grand chou fleur gris.
+          Elles seules nous amerons vers la terre du ciel promis". Lancez un dé
+          20
+        </p>
+        <div className="linkToNext">
+          <a href="#41" className="button">
+            Résultat entre 1 et 10
+          </a>
+          <a href="#45" className="button">
+            Résultat entre 11 et 20
+          </a>
+        </div>
+      </div>
+
+      {/* 41 */}
+      <div className="containerText" id="41">
+        <p>
+          Les nains se sont arrêtés. Leur chef lève la main. "Qui peut lui
+          éclaté le crâne s'il vous plaît ?". Une branche vous tombe dessu et
+          vous assome
+        </p>
+        <div className="linkToNext">
+          <a href="#0" className="button">
+            Relancer une partie
+          </a>
+          <a href="/" className="button">
+            Nul, ce jeu (alt F4)
+          </a>
+        </div>
+      </div>
+
+      {/* 45 */}
+      <div className="containerText" id="45">
+        <p>
+          Les nains se sont arrêtés. Leur chef lève la main. "Continuez à
+          remuer!". Les autres nains nous bougent plus. Ils se regardent avec de
+          grands yeux. Une vague de murmures se fait ressentir. La marmite est
+          toujours entrain de chauffer, ce serai bien qu'ils se dépêchent. Le
+          plus vieux nains s'avance sur l'estrade. "Arrêtez le feu, c'est la
+          parole des dieux" Le feu s'éteind. Les cordes qui vous retenez se
+          détendent puis tombent. Vous vous relevez et sortez de la marmite.
+        </p>
+        <div className="linkToNext">
+          <a href="#46" className="button">
+            Vous enfuire
+          </a>
+          <a href="#47" className="button">
+            Parler au vieux nain
+          </a>
+        </div>
+      </div>
+
+      {/* 30 */}
+      <div className="containerText" id="30">
+        <p>
+          Le bruit ambient vous réveille. Vous avez toujours mal au dos mais
+          vous pouvez bouger. Enfin... pas totalement, vous êtes dans une grande
+          marmitte. Autour, une bande de nains de jardins s'active. Ils sont
+          entrain d'allumer un feu sous votre marmitte. Vous crachez la pomme
+          que vous avez dans la bouche.
+        </p>
+        <div className="linkToNext">
+          <a href="#33" className="button">
+            S'adresser aux nains
+          </a>
+          <a href="#34" className="button">
+            Ronger les cordes
+          </a>
+        </div>
+      </div>
+
+      {/* 46 */}
+      <div className="containerText" id="46">
+        <p>
+          Vous courez, courez, courez. Vous esquivez les branches et les
+          racines. Votre coeur s'affole. Vos mouvements deviennent automatiques.
+          De la lumière au loin. Vous ne décellerez pas, ne retournez pas non
+          plus la tête. Vous sentez qui si vous atteignez la lumière vous serrez
+          en sécurité. Une bouffée de vent frais vous souffle sur le visage.
+          Vous avez réussi à passer cette forêt. Vous regarder derrière vous. Il
+          y fait toujours aussi sombre.
+        </p>
+        <div className="linkToNext">
+          <a href="#XX" className="button">
+            XXX
+          </a>
+          <a href="#XX" className="button">
+            XXX
+          </a>
+        </div>
+      </div>
+
+      {/* 47 */}
+      <div className="containerText" id="47">
+        <p>
+          "Votre peuple va affronter un grand danger. Je vois la terre s'ouvrir
+          sans un bruit, les arbres sombrés en enfer pour y ramener les feux
+          vangeurs." Le vieux nain vous regarde subjuguer. "Amis nains il faut
+          partir au plus vite, prévenez les autres clans, le jour est arrivé."
+          Ce fut instantanément la pagaille. Tous s'afférez à emballer leurs
+          affaires et prendre des provisions. Leur chef et leur vieux sage
+          sonnez des ordres à des messagers et organisaient toute cette
+          bouscule. Dans la tourmente, vous en profitez pour reprendre vos
+          affaires et vous éclipsez sans un bruit. Vous arrivez en fin de
+          journée à la frontière de la forêt. Personne ne vous a suivi. Vous
+          êtes libre.
+        </p>
+        <div className="linkToNext">
+          <a href="#XX" className="button">
+            XXX
+          </a>
+          <a href="#XX" className="button">
+            XXX
+          </a>
+        </div>
+      </div>
+
+      {/* 43 */}
+      <div className="containerText" id="43">
+        <p>
+          "Je vous aiderez de toute les manières que vous voulez à la condition
+          que vous sortiez de là". Leur chef hésite. "Bien, détachez le, ça vaut
+          le coup d'essayer. De l'autre côté, qui semble diriger les opérations
+          des cordes lance une interrogation. "Vous êtes sûr chef? Y'a pas
+          beaucoup d'humain qui passe par ici." "Oui allez y, la dernière fois
+          qu'il y en a eu un, plusieurs sont arrivés peu après." Vous vous
+          redressez et sortez de la marmitte.
+        </p>
+        <div className="linkToNext">
+          <a href="#46" className="button">
+            Vous enfuire
+          </a>
+          <a href="#48" className="button">
+            Demandez vos vêtements
+          </a>
+        </div>
+      </div>
+
+      {/* 48 */}
+      <div className="containerText" id="48">
+        <p>
+          Vous récupérez vos vêtements. Vous devenez l'esclave des nains et
+          votre première tâche est de ranger tout ce bazarre pendant qu'ils vont
+          mangers leurs fruits favoris. Une garde rapproché vous surveille en
+          permanance. Pendant la nuit, un boulet vous est attaché au pied. Vous
+          vivez quelques temps parmis eux ainsi. Le jour d'atttaquer le village
+          voisin se prépare, dans 2 jours, vous marcheraient vers l'Est. Deux
+          jours plus tard, en fin de journée, vous arrivez au village voisin. Le
+          plan est simple: raser le village et faire le plus de prisonniers
+          possible. Vous remarquez que ceux-là ont des bonnets alors que votre
+          clan en a des rouges. A l'attaque !!!
+        </p>
+        <div className="linkToNext">
+          <a href="#49" className="button">
+            Attaquer avec votre clan
+          </a>
+          <a href="#50" className="button">
+            Se retourner contre votre clan
+          </a>
+        </div>
+      </div>
+
+      {/* 49 */}
+      <div className="containerText" id="49">
+        <p>
+          Vous réduisez le clan adverse en cendre. Vous avez pris goût au sang.
+          Bientôt toute la forêt sera à vous. Vous décidez de finalement rester
+          avec votre clan pour le reste de votre vie où tout du moins pour
+          l'instant, jusqu'à ce que toute la forêt se prosterne à vos pieds.
+        </p>
+        <div className="linkToNext">
+          <a href="#0" className="button">
+            Relancer une partie
+          </a>
+          <a href="/" className="button">
+            Nul, ce jeu (alt F4)
+          </a>
+        </div>
+      </div>
+
+      {/* 50 */}
+      <div className="containerText" id="50">
+        <p>
+          Juste avant que les premières lames s'entrechoquent, vous vous
+          retournez et attaquaient votre clan. Un mouvement de panique se
+          propage dans vos rangs. En peu de temps, votre ancienne armée est
+          défaite. vous vous retrouvez dans ce nouveau village. Beaucoup de sac
+          remplis sont à terre. Plusieurs fenêtres sont barricadées et une foule
+          s'approche de vous.
+        </p>
+        <div className="linkToNext">
+          <a href="#46" className="button">
+            Vous enfuire
+          </a>
+          <a href="#51" className="button">
+            Parler à leur chef
+          </a>
+        </div>
+      </div>
+
+      {/* 51 */}
+      <div className="containerText" id="51">
+        <p>
+          Un nain un peu plus grand que les autres s'avance. "Merci humain, sans
+          vous ne serions tous mort. Pour vous remmercier, veuillez acceptez ce
+          présent." Il vous donne un petit sachet rempli d'écorce. "Mangez, vous
+          verrez c'est très bon."
+        </p>
+        <div className="linkToNext">
+          <a href="#46" className="button">
+            Manger
+          </a>
+          <a href="#51" className="button">
+            Ne pas manger
+          </a>
+        </div>
+      </div>
+
+      {/* 51 */}
+      <div className="containerText" id="50">
+        <p>
+          Vous mangez les écorces. C'est dur avec un arrière goût amer. Mais
+          vous vous sentez léger, comme un oiseau. Les nains vont une rondes
+          autour de vous. Vous battez des ailes de plus en plus vite. "Vite au
+          gouffre", cri leur chef. Les nains vous emmènent vers un plongeoir,
+          vous allez pouvoir sentir le vent battre vos ailes pour la première
+          fois. Vous vous élancez dans le creuvasse... "J'espère que ce
+          sacrifice nous vaudra les faveurs de mère nature. Retardons notre
+          départ d'un jour. Nous verrons demain si la descente au enfers à
+          reculé."
+        </p>
+        <div className="linkToNext">
+          <a href="#0" className="button">
+            Relancer une partie
+          </a>
+          <a href="/" className="button">
+            Nul, ce jeu (alt F4)
+          </a>
+        </div>
+      </div>
+
+      {/* 40 */}
+      <div className="containerText" id="40">
+        <p>
+          "J'ai cru comprendre qu'il y avait d'autres tribus. Je serais votre
+          allié." Leur chef est introgué. "Arrêté le feu!" Vous senter le fond
+          de la marmitte arrêter de chauffer. "Oui, vous pourriez nous être
+          utile. Mais comment pouvons nous te faire confiance?"
+        </p>
+        <div className="linkToNext">
+          <a href="#43" className="button">
+            Je n'ai qu'une parole
+          </a>
+          <a href="#44" className="button">
+            Vous avez mes vêtements
+          </a>
+        </div>
+      </div>
+
+      {/* 52 */}
+      <div className="containerText" id="52">
+        <p>
+          Des voix résonnent en fond "Encore un", "ça faisait longtemps", "Tu
+          crois qu'il va y arriver", "Comment ça il est pas frais mon poisson?",
+          "Je crois que le dernier est mort avant de retourner dans son monde",
+          "Il est pas au bout de ses peines", "10 balles sur le fait qu'il crève
+          avant de passer la forêt". "Chut" dit leurs chef. D'un coup, plus
+          aucun bruit. "Voyageur, vous pouvez passer la nuit ici si vous le
+          voulez. Certe nous n'avons pas de maison à votre taille mais vous
+          pouvez allumer le feu du village".
+        </p>
+        <div className="linkToNext">
+          <a href="#53" className="button">
+            Rester pour la nuit
+          </a>
+          <a href="#54" className="button">
+            Repartir
+          </a>
+        </div>
+      </div>
+
+      {/* 54 */}
+      <div className="containerText" id="54">
+        <p>
+          "Merci, mais mon destin m'appel. Je dois repartir au plus vite pour
+          retrouver ma voie." Vous repartez de suite vers d'autres aventures.
+        </p>
+        <div className="linkToNext">
+          <a href="#XX" className="button">
+            XXX
+          </a>
+          <a href="#XX" className="button">
+            XXX
+          </a>
+        </div>
+      </div>
+
+      {/* 53 */}
+      <div className="containerText" id="53">
+        <p>
+          "Merci, de votre hospitalité. Je repartirais demain au aurores." "Bien
+          si vous le voulez" lança le chef. Il ordonna ensuite à 3 autres nains
+          d'aller chercher du petit bois pour allumer le feu. "Avant que vous
+          repartiez, je dois vous prévenir de ce qui pourrai vous attendre."
+          Intrigué, vous l'écoutez avec attention. "Seul une poigné de voyageur,
+          dans le même cas que vous, a réussi à retourner dans son monde. En
+          tout cas c'est ce que nous laisse penser les éclairs bleus qui
+          perssent le ciel au dessus de la baies des 1000 écailles. Ils sont
+          visibles depuis tout le continent. Ils sont du même bleu azure que le
+          portail qui amène les voyageur devant la forêt. Ils sont rapidement
+          suivant d'es nuages mauves qui tournoient au dessus d'eux. Il y en a
+          peu par raport au nombre d'arrivé, trop peu. Nous, les nains rouges,
+          ne sommes jamais aller bien plus loin que la forêt. Les seules cartes
+          que nous avaons du continent ont été écrites par les nains bleus il y
+          a 500 ans de cela. Autant dire que nos connaissance du monde extérieur
+          son limitées. Il a bien Gaston, qui est parti il y a presque 30 ans,
+          il avait soif d'aventure mais il n'est jamais revenu nous les comptés.
+          Enfin bref, pour attendre la baie il vous faudra passer par les pics
+          des montagnes nuageuses. Les légendes racontent qu'un immense dragon y
+          vis." Vous passer le reste de la soirée à discuter avec le chef du
+          village. Leurs croyances, les différents clans, la nourriture, le
+          monde au delà de la forêt. Vous repartez le lendemain matin après
+          avoir dit au revoir au village.
+        </p>
+        <div className="linkToNext">
+          <a href="#XX" className="button">
+            XXX
+          </a>
+          <a href="#XX" className="button">
+            XXX
+          </a>
         </div>
       </div>
     </main>
@@ -606,12 +1152,3 @@ const Custom404 = () => {
 };
 
 export default Custom404;
-
-// {/* 3 */}
-// <div className="containerText" id="3">
-//   <p></p>
-//   <div className="linkToNext">
-//     <a href="#"></a>
-//     <a href="#"></a>
-//   </div>
-// </div>

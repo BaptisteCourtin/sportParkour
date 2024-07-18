@@ -1,10 +1,48 @@
 .page404 {
+  background: url("../../public/page404/background.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  padding: var(--espace);
+
   .containerText {
     min-height: 100vh;
     padding-top: 2rem;
 
+    p {
+      background-color: var(--middle);
+      border-radius: var(--radius);
+      padding: var(--espace);
+    }
+
     .linkToNext {
       display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: var(--gap);
+
+      margin-top: var(--espace);
+    }
+
+    &.lanceLeDe {
+      background: url("../../public/page404/dé.jpg");
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      padding: var(--espace);
+    }
+
+    &.nainDeJardin {
+      background: url("../../public/page404/nain.png");
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      padding: var(--espace);
     }
   }
 }
