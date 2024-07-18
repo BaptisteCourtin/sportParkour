@@ -18,10 +18,21 @@ import toast from "react-hot-toast";
 import { FaEye } from "react-icons/fa6";
 import { FaEyeSlash } from "react-icons/fa6";
 
+import {
+  LENGTH_MAX_PASSWORD,
+  LENGTH_MIN_PASSWORD,
+} from "../../../../../variablesLength";
+
 let PasswordsResetPasswordSchema = object({
   password: string()
-    .min(12, "Utilisez un mot de passe avec au moins 12 caractères")
-    .max(100, "Utilisez un mot de passe avec au maximum 100 caractères")
+    .min(
+      LENGTH_MIN_PASSWORD,
+      `Utilisez un mot de passe avec au moins ${LENGTH_MIN_PASSWORD} caractères`
+    )
+    .max(
+      LENGTH_MAX_PASSWORD,
+      `Votre mot de passe fait moins de ${LENGTH_MAX_PASSWORD} caractères`
+    )
     .matches(/[A-Z]/, "Utilisez au moins une majuscule")
     .matches(/[a-z]/, "Utilisez au moins une minuscule")
     .matches(/[0-9]/, "Utilisez au moins un chiffre")
@@ -130,7 +141,7 @@ function Reset() {
                 id="password"
                 name="password"
                 type={showPassword ? "text" : "password"}
-                inputProps={{ maxLength: 100 }}
+                inputProps={{ maxLength: LENGTH_MAX_PASSWORD }}
                 onChange={(e) => handleChangeAThing("password", e.target.value)}
                 InputProps={{
                   endAdornment: (
@@ -146,7 +157,7 @@ function Reset() {
               />
               <span>
                 {values.password.length > 0
-                  ? `${values.password.length}/100`
+                  ? `${values.password.length}/${LENGTH_MAX_PASSWORD}`
                   : ""}
               </span>
               <p className="error">{errors?.password?.message}</p>
@@ -162,7 +173,7 @@ function Reset() {
                 id="password2"
                 name="password2"
                 type={showPassword2 ? "text" : "password"}
-                inputProps={{ maxLength: 100 }}
+                inputProps={{ maxLength: LENGTH_MAX_PASSWORD }}
                 onChange={(e) =>
                   handleChangeAThing("password2", e.target.value)
                 }
@@ -180,7 +191,7 @@ function Reset() {
               />
               <span>
                 {values.password2.length > 0
-                  ? `${values.password2.length}/100`
+                  ? `${values.password2.length}/${LENGTH_MAX_PASSWORD}`
                   : ""}
               </span>
               <p className="error">{errors?.password2?.message}</p>

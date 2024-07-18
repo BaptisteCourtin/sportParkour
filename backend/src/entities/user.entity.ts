@@ -14,6 +14,15 @@ import JoinUserParkourFavorisEntity from "./joinUserParkourFavoris.entity";
 import ReportEntity from "./reportEntity.entity";
 import { MaxLength } from "class-validator";
 
+import {
+  LENGTH_MAX_PASSWORD,
+  LENGTH_NOM,
+  LENGTH_EMAIL,
+  LENGTH_CITY,
+  LENGTH_CODE_POSTAL,
+  LENGTH_PHONE,
+} from "../../../variablesLength";
+
 const argon2 = require("argon2");
 
 @Entity("user")
@@ -30,24 +39,24 @@ class UserEntity {
   id: string;
 
   @Field()
-  @Column({ type: "varchar", length: 100 })
-  @MaxLength(100)
+  @Column({ type: "varchar", length: LENGTH_MAX_PASSWORD })
+  @MaxLength(LENGTH_MAX_PASSWORD)
   password: string;
 
   @Field()
-  @Column({ type: "varchar", length: 100 })
-  @MaxLength(100)
+  @Column({ type: "varchar", length: LENGTH_NOM })
+  @MaxLength(LENGTH_NOM)
   name: string;
 
   @Field()
-  @Column({ type: "varchar", length: 100 })
-  @MaxLength(100)
+  @Column({ type: "varchar", length: LENGTH_NOM })
+  @MaxLength(LENGTH_NOM)
   firstname: string;
 
   @Field()
   @Column({
     type: "varchar",
-    length: 255,
+    length: LENGTH_EMAIL,
     unique: true,
     transformer: {
       from(value: string | null): string | null {
@@ -58,13 +67,13 @@ class UserEntity {
       },
     },
   })
-  @MaxLength(255)
+  @MaxLength(LENGTH_EMAIL)
   email: string;
 
   @Field({ nullable: true })
   @Column({
     type: "varchar",
-    length: 50,
+    length: LENGTH_CITY,
     nullable: true,
     transformer: {
       from(value: string | null): string | null {
@@ -75,22 +84,22 @@ class UserEntity {
       },
     },
   })
-  @MaxLength(50)
+  @MaxLength(LENGTH_CITY)
   city: string;
 
   @Field({ nullable: true })
-  @Column({ type: "varchar", length: 5, nullable: true })
-  @MaxLength(5)
+  @Column({ type: "varchar", length: LENGTH_CODE_POSTAL, nullable: true })
+  @MaxLength(LENGTH_CODE_POSTAL)
   codePostal: string;
 
   @Field({ nullable: true })
-  @Column({ type: "varchar", length: 10, nullable: true })
-  @MaxLength(10)
+  @Column({ type: "varchar", length: LENGTH_PHONE, nullable: true })
+  @MaxLength(LENGTH_PHONE)
   phone: string;
 
   @Field({ nullable: true })
-  @Column({ type: "varchar", length: 250, nullable: true })
-  @MaxLength(250)
+  @Column({ type: "varchar", length: LENGTH_CITY, nullable: true })
+  @MaxLength(LENGTH_CITY)
   imageProfil: string;
 
   @Field(() => Role)
@@ -140,31 +149,31 @@ class UserEntity {
 @InputType()
 export class UserInputRegisterEntity {
   @Field()
-  @MaxLength(100)
+  @MaxLength(LENGTH_MAX_PASSWORD)
   password: string;
 
   @Field()
-  @MaxLength(100)
+  @MaxLength(LENGTH_NOM)
   name: string;
 
   @Field()
-  @MaxLength(100)
+  @MaxLength(LENGTH_NOM)
   firstname: string;
 
   @Field()
-  @MaxLength(255)
+  @MaxLength(LENGTH_EMAIL)
   email: string;
 
   @Field({ nullable: true })
-  @MaxLength(50)
+  @MaxLength(LENGTH_CITY)
   city: string;
 
   @Field({ nullable: true })
-  @MaxLength(5)
+  @MaxLength(LENGTH_CODE_POSTAL)
   codePostal: string;
 
   @Field({ nullable: true })
-  @MaxLength(10)
+  @MaxLength(LENGTH_PHONE)
   phone: string;
 }
 
@@ -172,11 +181,11 @@ export class UserInputRegisterEntity {
 @InputType()
 export class UserInputAuthEntity {
   @Field()
-  @MaxLength(100)
+  @MaxLength(LENGTH_MAX_PASSWORD)
   password: string;
 
   @Field()
-  @MaxLength(255)
+  @MaxLength(LENGTH_EMAIL)
   email: string;
 }
 
@@ -184,31 +193,31 @@ export class UserInputAuthEntity {
 @InputType()
 export class UserUpdateEntity {
   @Field({ nullable: true })
-  @MaxLength(100)
+  @MaxLength(LENGTH_NOM)
   name: string;
 
   @Field({ nullable: true })
-  @MaxLength(100)
+  @MaxLength(LENGTH_NOM)
   firstname: string;
 
   @Field({ nullable: true })
-  @MaxLength(255)
+  @MaxLength(LENGTH_EMAIL)
   email: string;
 
   @Field({ nullable: true })
-  @MaxLength(50)
+  @MaxLength(LENGTH_CITY)
   city: string;
 
   @Field({ nullable: true })
-  @MaxLength(5)
+  @MaxLength(LENGTH_CODE_POSTAL)
   codePostal: string;
 
   @Field({ nullable: true })
-  @MaxLength(10)
+  @MaxLength(LENGTH_PHONE)
   phone: string;
 
   @Field({ nullable: true })
-  @MaxLength(250)
+  @MaxLength(LENGTH_CITY)
   imageProfil: string;
 }
 

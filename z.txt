@@ -72,9 +72,9 @@ message sur logout
 
 ------------------------------------------------------------------------------------------------------
 
-- image parkour/epreuve isCouverture
+- image parkour/epreuve isCouverture v2
+- les liens google avec multer => couper le vrai nom du fichier (length=150)
 - image profil default
-- navbar phone => recadrer les icons et bulle
 
 ------------------------------------------------------------------------------------------------------
 

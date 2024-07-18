@@ -17,6 +17,15 @@ import ImageParkourEntity, {
 } from "./imageParkour.entity";
 import JoinUserParkourNoteEntity from "./joinUserParkourNote.entity";
 
+import {
+  LENGTH_CITY,
+  LENGTH_DESCRIPTION,
+  LENGTH_START,
+  LENGTH_TITLE,
+  MAX_LENGTH,
+  MAX_TIME,
+} from "../../../variablesLength";
+
 @Entity("parkour")
 @ObjectType()
 class ParkourEntity {
@@ -25,26 +34,26 @@ class ParkourEntity {
   id: number;
 
   @Field()
-  @Column({ type: "varchar", length: 50, unique: true })
-  @MaxLength(50)
+  @Column({ type: "varchar", length: LENGTH_TITLE, unique: true })
+  @MaxLength(LENGTH_TITLE)
   @Index()
   title: string;
 
   @Field({ nullable: true })
-  @Column({ type: "varchar", length: 1000, nullable: true })
-  @MaxLength(1000)
+  @Column({ type: "varchar", length: LENGTH_DESCRIPTION, nullable: true })
+  @MaxLength(LENGTH_DESCRIPTION)
   description: string;
 
   @Field({ nullable: true })
   @Column({ type: "int", unsigned: true, nullable: true })
   @Min(0, { message: "La valeur minimale est 0." })
-  @Max(600, { message: "La valeur maximale est 600." })
+  @Max(MAX_TIME, { message: `La valeur maximale est ${MAX_TIME}.` })
   time?: number;
 
   @Field({ nullable: true })
   @Column({ type: "int", unsigned: true, nullable: true })
   @Min(0, { message: "La valeur minimale est 0." })
-  @Max(60, { message: "La valeur maximale est 60." })
+  @Max(MAX_LENGTH, { message: `La valeur maximale est ${MAX_LENGTH}.` })
   length: number;
 
   @Field(() => Difficulty, { nullable: true })
@@ -58,7 +67,7 @@ class ParkourEntity {
   @Field({ nullable: true })
   @Column({
     type: "varchar",
-    length: 50,
+    length: LENGTH_CITY,
     nullable: true,
     transformer: {
       from(value: string | null): string | null {
@@ -69,13 +78,13 @@ class ParkourEntity {
       },
     },
   })
-  @MaxLength(50)
+  @MaxLength(LENGTH_CITY)
   city: string;
 
   // 49.421015, -1.388178
   @Field()
-  @Column({ type: "varchar", length: 50 })
-  @MaxLength(50)
+  @Column({ type: "varchar", length: LENGTH_START })
+  @MaxLength(LENGTH_START)
   start: string;
 
   // precision = maximum number of digits that are stored for the values
@@ -134,32 +143,32 @@ class ParkourEntity {
 @InputType()
 export class ParkourCreateEntity {
   @Field()
-  @MaxLength(50)
+  @MaxLength(LENGTH_TITLE)
   title: string;
 
   @Field({ nullable: true })
-  @MaxLength(1000)
+  @MaxLength(LENGTH_DESCRIPTION)
   description: string;
 
   @Field({ nullable: true })
   @Min(0)
-  @Max(600)
+  @Max(MAX_TIME)
   time: number;
 
   @Field({ nullable: true })
   @Min(0)
-  @Max(60)
+  @Max(MAX_LENGTH)
   length: number;
 
   @Field(() => Difficulty, { nullable: true })
   difficulty: Difficulty;
 
   @Field({ nullable: true })
-  @MaxLength(50)
+  @MaxLength(LENGTH_CITY)
   city: string;
 
   @Field()
-  @MaxLength(50)
+  @MaxLength(LENGTH_START)
   start: string;
 
   // ---
@@ -178,28 +187,28 @@ export class ParkourUpdateEntity {
   title: string;
 
   @Field({ nullable: true })
-  @MaxLength(1000)
+  @MaxLength(LENGTH_DESCRIPTION)
   description: string;
 
   @Field({ nullable: true })
   @Min(0)
-  @Max(600)
+  @Max(MAX_TIME)
   time: number;
 
   @Field({ nullable: true })
   @Min(0)
-  @Max(60)
+  @Max(MAX_LENGTH)
   length: number;
 
   @Field(() => Difficulty, { nullable: true })
   difficulty: Difficulty;
 
   @Field({ nullable: true })
-  @MaxLength(50)
+  @MaxLength(LENGTH_CITY)
   city: string;
 
   @Field({ nullable: true })
-  @MaxLength(50)
+  @MaxLength(LENGTH_START)
   start: string;
 
   // ---

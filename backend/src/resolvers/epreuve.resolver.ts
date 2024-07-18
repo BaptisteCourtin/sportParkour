@@ -7,7 +7,6 @@ import EpreuveEntity, {
 } from "../entities/epreuve.entity";
 
 import EpreuveService from "../services/epreuve.service";
-import { ImageEpreuveUpdateEntity } from "../entities/imageEpreuve.entity";
 
 @Resolver()
 export default class EpreuveResolver {

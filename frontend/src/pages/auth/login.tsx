@@ -19,13 +19,19 @@ import { FaEye } from "react-icons/fa6";
 import { FaEyeSlash } from "react-icons/fa6";
 import { FaArrowRight } from "react-icons/fa6";
 
+import { LENGTH_EMAIL, LENGTH_MAX_PASSWORD } from "../../../../variablesLength";
+
 let loginSchema = object({
   email: string()
+    .max(255)
     .email("Votre email doit être valide")
     .required("Veuillez entrer votre email"),
   password: string()
     // .min(12, "Votre mot de passe fait au moins 12 caractères") // pour que je continue à utiliser 0000
-    .max(100, "Votre mot de passe fait moins de 100 caractères")
+    .max(
+      LENGTH_MAX_PASSWORD,
+      `Votre mot de passe fait moins de ${LENGTH_MAX_PASSWORD} caractères`
+    )
     .required("Veuillez entrer votre mot de passe"),
 });
 
@@ -90,7 +96,7 @@ const login = () => {
             id="email"
             type="text"
             name="email"
-            inputProps={{ maxLength: 255 }}
+            inputProps={{ maxLength: LENGTH_EMAIL }}
           />
           <p className="error">{errors?.email?.message}</p>
         </div>
@@ -106,7 +112,7 @@ const login = () => {
             id="password"
             type={showPassword ? "text" : "password"}
             name="password"
-            inputProps={{ maxLength: 100 }}
+            inputProps={{ maxLength: LENGTH_MAX_PASSWORD }}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end" className="buttonEye">

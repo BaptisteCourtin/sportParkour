@@ -23,14 +23,28 @@ import { FaArrowRight } from "react-icons/fa6";
 
 import SearchBarCommuneName from "@/components/user/searchBarCommuneName";
 
+import {
+  LENGTH_EMAIL,
+  LENGTH_MIN_PASSWORD,
+  LENGTH_NOM,
+  LENGTH_MAX_PASSWORD,
+  LENGTH_PHONE,
+} from "../../../../variablesLength";
+
 let authSchema = object({
   email: string()
-    .max(255)
+    .max(LENGTH_EMAIL)
     .email("Votre email doit être valide")
     .required("Veuillez entrer votre email"),
   password: string()
-    .min(12, "Utilisez un mot de passe avec au moins 12 caractères")
-    .max(100, "Utilisez un mot de passe avec au maximum 100 caractères")
+    .min(
+      LENGTH_MIN_PASSWORD,
+      `Utilisez un mot de passe avec au moins ${LENGTH_MIN_PASSWORD} caractères`
+    )
+    .max(
+      LENGTH_MAX_PASSWORD,
+      `Utilisez un mot de passe avec au maximum ${LENGTH_MAX_PASSWORD} caractères`
+    )
     .matches(/[A-Z]/, "Utilisez au moins une majuscule")
     .matches(/[a-z]/, "Utilisez au moins une minuscule")
     .matches(/[0-9]/, "Utilisez au moins un chiffre")
@@ -40,11 +54,11 @@ let authSchema = object({
     .oneOf([ref("password")], "Les mots de passe ne correspondent pas")
     .required("Veuillez confirmer votre mot de passe"),
 
-  name: string().max(100).required("Veuillez entrer votre nom"),
-  firstname: string().max(100).required("Veuillez entrer votre prénom"),
+  name: string().max(LENGTH_NOM).required("Veuillez entrer votre nom"),
+  firstname: string().max(LENGTH_NOM).required("Veuillez entrer votre prénom"),
 
   phone: string()
-    .max(10, "tapez votre numéro sans espace et sans le +33")
+    .max(LENGTH_PHONE, "tapez votre numéro sans espace et sans le +33")
     .test(
       "len",
       "tapez les 10 chiffres de votre numéro, sans espace et sans le +33",
@@ -52,7 +66,7 @@ let authSchema = object({
         if (val == undefined) {
           return true;
         }
-        return val.length == 0 || val.length == 10;
+        return val.length == 0 || val.length == LENGTH_PHONE;
       }
     ),
 });
@@ -149,12 +163,12 @@ const inscription = () => {
             id="firstname"
             name="firstname"
             type="firstname"
-            inputProps={{ maxLength: 100 }}
+            inputProps={{ maxLength: LENGTH_NOM }}
             onChange={(e) => handleChangeAThing("firstname", e.target.value)}
           />
           <span>
             {values.firstname.length > 0
-              ? `${values.firstname.length}/100`
+              ? `${values.firstname.length}/${LENGTH_NOM}`
               : ""}
           </span>
           <p className="error">{errors?.firstname?.message}</p>
@@ -170,11 +184,13 @@ const inscription = () => {
             id="name"
             name="name"
             type="text"
-            inputProps={{ maxLength: 100 }}
+            inputProps={{ maxLength: LENGTH_NOM }}
             onChange={(e) => handleChangeAThing("name", e.target.value)}
           />
           <span>
-            {values.name.length > 0 ? `${values.name.length}/100` : ""}
+            {values.name.length > 0
+              ? `${values.name.length}/${LENGTH_NOM}`
+              : ""}
           </span>
           <p className="error">{errors?.name?.message}</p>
         </div>
@@ -215,11 +231,13 @@ const inscription = () => {
             id="phone"
             name="phone"
             type="text"
-            inputProps={{ maxLength: 10 }}
+            inputProps={{ maxLength: LENGTH_PHONE }}
             onChange={(e) => handleChangeAThing("phone", e.target.value)}
           />
           <span>
-            {values.phone.length > 0 ? `${values.phone.length}/10` : ""}
+            {values.phone.length > 0
+              ? `${values.phone.length}/${LENGTH_PHONE}`
+              : ""}
           </span>
           <p className="error">{errors?.phone?.message}</p>
         </div>
@@ -237,11 +255,13 @@ const inscription = () => {
             id="email"
             name="email"
             type="text"
-            inputProps={{ maxLength: 255 }}
+            inputProps={{ maxLength: LENGTH_EMAIL }}
             onChange={(e) => handleChangeAThing("email", e.target.value)}
           />
           <span>
-            {values.email.length > 0 ? `${values.email.length}/255` : ""}
+            {values.email.length > 0
+              ? `${values.email.length}/${LENGTH_EMAIL}`
+              : ""}
           </span>
           <p className="error">{errors?.email?.message}</p>
         </div>
@@ -256,7 +276,7 @@ const inscription = () => {
             id="password"
             name="password"
             type={showPassword ? "text" : "password"}
-            inputProps={{ maxLength: 100 }}
+            inputProps={{ maxLength: LENGTH_MAX_PASSWORD }}
             onChange={(e) => handleChangeAThing("password", e.target.value)}
             InputProps={{
               endAdornment: (
@@ -269,7 +289,9 @@ const inscription = () => {
             }}
           />
           <span>
-            {values.password.length > 0 ? `${values.password.length}/100` : ""}
+            {values.password.length > 0
+              ? `${values.password.length}/${LENGTH_MAX_PASSWORD}`
+              : ""}
           </span>
           <p className="error">{errors?.password?.message}</p>
         </div>
@@ -284,7 +306,7 @@ const inscription = () => {
             id="password2"
             name="password2"
             type={showPassword2 ? "text" : "password"}
-            inputProps={{ maxLength: 100 }}
+            inputProps={{ maxLength: LENGTH_MAX_PASSWORD }}
             onChange={(e) => handleChangeAThing("password2", e.target.value)}
             InputProps={{
               endAdornment: (
@@ -298,7 +320,7 @@ const inscription = () => {
           />
           <span>
             {values.password2.length > 0
-              ? `${values.password2.length}/100`
+              ? `${values.password2.length}/${LENGTH_MAX_PASSWORD}`
               : ""}
           </span>
           <p className="error">{errors?.password2?.message}</p>

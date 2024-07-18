@@ -15,6 +15,8 @@ import UserEntity from "./user.entity";
 import ParkourEntity from "./parkour.entity";
 import { MaxLength } from "class-validator";
 
+import { LENGTH_COMMENTAIRE } from "../../../variablesLength";
+
 @Entity("report")
 @Unique(["malfrat_id", "parkour_id", "commentaireEnFaute"])
 @ObjectType()
@@ -34,8 +36,8 @@ export class ReportEntity {
 
   // pour éviter que l'utilisateur enlève le commentaire
   @Field()
-  @Column({ type: "varchar", length: 500 })
-  @MaxLength(500)
+  @Column({ type: "varchar", length: LENGTH_COMMENTAIRE })
+  @MaxLength(LENGTH_COMMENTAIRE)
   commentaireEnFaute: string;
 
   @Field()

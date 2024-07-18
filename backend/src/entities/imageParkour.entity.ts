@@ -10,6 +10,8 @@ import { MaxLength } from "class-validator";
 
 import ParkourEntity from "./parkour.entity";
 
+import { LENGTH_LINK } from "../../../variablesLength";
+
 @Entity("image_parkour")
 @ObjectType()
 class ImageParkourEntity {
@@ -18,8 +20,8 @@ class ImageParkourEntity {
   id: number;
 
   @Field()
-  @Column({ type: "varchar", length: 250 })
-  @MaxLength(250)
+  @Column({ type: "varchar", length: LENGTH_LINK })
+  @MaxLength(LENGTH_LINK)
   lien: string;
 
   @Field()
@@ -39,7 +41,7 @@ class ImageParkourEntity {
 @InputType()
 export class ImageParkourCreateEntity {
   @Field()
-  @MaxLength(250)
+  @MaxLength(LENGTH_LINK)
   lien: string;
 
   @Field()

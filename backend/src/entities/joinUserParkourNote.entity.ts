@@ -11,6 +11,7 @@ import { Max, MaxLength, Min } from "class-validator";
 
 import UserEntity from "./user.entity";
 import ParkourEntity from "./parkour.entity";
+import { LENGTH_COMMENTAIRE } from "../../../variablesLength";
 
 // se cré si le user met une note ou un like sur un parkour
 @Entity("join_user_parkour_note")
@@ -34,8 +35,8 @@ export class JoinUserParkourNoteEntity {
   note: number;
 
   @Field({ nullable: true })
-  @Column({ type: "varchar", length: 500, nullable: true })
-  @MaxLength(500)
+  @Column({ type: "varchar", length: LENGTH_COMMENTAIRE, nullable: true })
+  @MaxLength(LENGTH_COMMENTAIRE)
   commentaire: string;
 
   // ---
@@ -66,7 +67,7 @@ export class JoinUserParkourNoteCreateEntity {
   note: number;
 
   @Field({ nullable: true })
-  @MaxLength(500)
+  @MaxLength(LENGTH_COMMENTAIRE)
   commentaire: string;
 }
 
@@ -81,7 +82,7 @@ export class JoinUserParkourNoteUpdateEntity {
   note: number;
 
   @Field({ nullable: true })
-  @MaxLength(500)
+  @MaxLength(LENGTH_COMMENTAIRE)
   commentaire: string;
 }
 

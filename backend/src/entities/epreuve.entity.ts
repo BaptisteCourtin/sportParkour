@@ -16,6 +16,13 @@ import ImageEpreuveEntity, {
 import ParkourEntity from "./parkour.entity";
 import { MaxLength } from "class-validator";
 
+import {
+  LENGTH_TITLE,
+  LENGTH_DESCRIPTION,
+  LENGTH_LITTLE_DESCRIPTION,
+  LENGTH_LINK,
+} from "../../../variablesLength";
+
 @Entity("epreuve")
 @ObjectType()
 class EpreuveEntity {
@@ -24,34 +31,46 @@ class EpreuveEntity {
   id: number;
 
   @Field()
-  @Column({ type: "varchar", length: 50, unique: true })
-  @MaxLength(50)
+  @Column({ type: "varchar", length: LENGTH_TITLE, unique: true })
+  @MaxLength(LENGTH_TITLE)
   @Index() // vu que on fait beaucoup de recherche sur le titre
   title: string;
 
   @Field({ nullable: true })
-  @Column({ type: "varchar", length: 1000, nullable: true })
-  @MaxLength(1000)
+  @Column({ type: "varchar", length: LENGTH_DESCRIPTION, nullable: true })
+  @MaxLength(LENGTH_DESCRIPTION)
   description: string;
 
   @Field({ nullable: true })
-  @Column({ type: "varchar", length: 250, nullable: true })
-  @MaxLength(250)
+  @Column({
+    type: "varchar",
+    length: LENGTH_LITTLE_DESCRIPTION,
+    nullable: true,
+  })
+  @MaxLength(LENGTH_LITTLE_DESCRIPTION)
   easyToDo: string;
 
   @Field({ nullable: true })
-  @Column({ type: "varchar", length: 250, nullable: true })
-  @MaxLength(250)
+  @Column({
+    type: "varchar",
+    length: LENGTH_LITTLE_DESCRIPTION,
+    nullable: true,
+  })
+  @MaxLength(LENGTH_LITTLE_DESCRIPTION)
   mediumToDo: string;
 
   @Field({ nullable: true })
-  @Column({ type: "varchar", length: 250, nullable: true })
-  @MaxLength(250)
+  @Column({
+    type: "varchar",
+    length: LENGTH_LITTLE_DESCRIPTION,
+    nullable: true,
+  })
+  @MaxLength(LENGTH_LITTLE_DESCRIPTION)
   hardToDo: string;
 
   @Field({ nullable: true })
-  @Column({ type: "varchar", length: 150, nullable: true })
-  @MaxLength(150)
+  @Column({ type: "varchar", length: LENGTH_LINK, nullable: true })
+  @MaxLength(LENGTH_LINK)
   videoLink: string;
 
   // pas besoin de join column en many to one
@@ -88,27 +107,27 @@ class EpreuveEntity {
 @InputType()
 export class EpreuveCreateEntity {
   @Field()
-  @MaxLength(50)
+  @MaxLength(LENGTH_TITLE)
   title: string;
 
   @Field({ nullable: true })
-  @MaxLength(1000)
+  @MaxLength(LENGTH_DESCRIPTION)
   description: string;
 
   @Field({ nullable: true })
-  @MaxLength(250)
+  @MaxLength(LENGTH_LITTLE_DESCRIPTION)
   easyToDo: string;
 
   @Field({ nullable: true })
-  @MaxLength(250)
+  @MaxLength(LENGTH_LITTLE_DESCRIPTION)
   mediumToDo: string;
 
   @Field({ nullable: true })
-  @MaxLength(250)
+  @MaxLength(LENGTH_LITTLE_DESCRIPTION)
   hardToDo: string;
 
   @Field({ nullable: true })
-  @MaxLength(150)
+  @MaxLength(LENGTH_LINK)
   videoLink: string;
 
   // ---
@@ -121,27 +140,27 @@ export class EpreuveCreateEntity {
 @InputType()
 export class EpreuveUpdateEntity {
   @Field({ nullable: true })
-  @MaxLength(50)
+  @MaxLength(LENGTH_TITLE)
   title?: string;
 
   @Field({ nullable: true })
-  @MaxLength(1000)
+  @MaxLength(LENGTH_DESCRIPTION)
   description?: string;
 
   @Field({ nullable: true })
-  @MaxLength(250)
+  @MaxLength(LENGTH_LITTLE_DESCRIPTION)
   easyToDo?: string;
 
   @Field({ nullable: true })
-  @MaxLength(250)
+  @MaxLength(LENGTH_LITTLE_DESCRIPTION)
   mediumToDo?: string;
 
   @Field({ nullable: true })
-  @MaxLength(250)
+  @MaxLength(LENGTH_LITTLE_DESCRIPTION)
   hardToDo?: string;
 
   @Field({ nullable: true })
-  @MaxLength(150)
+  @MaxLength(LENGTH_LINK)
   videoLink?: string;
 
   // ---

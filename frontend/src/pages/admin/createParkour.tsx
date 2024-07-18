@@ -23,28 +23,35 @@ import { toast } from "react-hot-toast";
 import { FaCheck } from "react-icons/fa6";
 import SearchBarCommuneName from "@/components/user/searchBarCommuneName";
 import axiosInstanceImage from "@/lib/axiosInstanceImage";
+import {
+  LENGTH_DESCRIPTION,
+  LENGTH_START,
+  LENGTH_TITLE,
+  MAX_LENGTH,
+  MAX_TIME,
+} from "../../../../variablesLength";
 
 let createParkourSchema = object({
   title: string()
-    .max(50, "Pas besoin d'avoir un titre aussi long")
+    .max(LENGTH_TITLE, "Pas besoin d'avoir un titre aussi long")
     .required("Veuillez entrer un titre"),
   description: string().max(
-    1000,
+    LENGTH_DESCRIPTION,
     "Pas besoin d'avoir une description aussi long"
   ),
 
   time: number()
     .min(0, "Remonter dans le temps n'ai pas une option")
-    .max(600, "Si ça dure plus longtemps, contacte les admins")
+    .max(MAX_TIME, "Si ça dure plus longtemps, contacte les admins")
     .required("Veuillez entrer le temps moyen pour finir ce parkour"),
   length: number()
     .min(0, "Marcher en arrière est dangereux pour votre santée")
-    .max(60, "Si ça dure plus longtemps, contacte les admins")
+    .max(MAX_LENGTH, "Si ça dure plus longtemps, contacte les admins")
     .required("Veuillez entrer la longueur du parkour"),
   difficulty: mixed<Difficulty>().oneOf(Object.values(Difficulty)),
 
   start: string()
-    .max(20, "20 caractères ça suffit")
+    .max(LENGTH_START, "coupe un peu")
     .required("Veuillez entrer un point de départ"),
 });
 
@@ -236,11 +243,13 @@ const createParkour = () => {
             id="title"
             name="title"
             type="text"
-            inputProps={{ maxLength: 50 }}
+            inputProps={{ maxLength: LENGTH_TITLE }}
             onChange={(e) => handleChangeAThing("title", e.target.value)}
           />
           <span>
-            {values.title.length > 0 ? `${values.title.length}/50` : ""}
+            {values.title.length > 0
+              ? `${values.title.length}/${LENGTH_TITLE}`
+              : ""}
           </span>
           <p className="error">{errors?.title?.message}</p>
         </div>
@@ -256,12 +265,12 @@ const createParkour = () => {
             id="description"
             name="description"
             type="text"
-            inputProps={{ maxLength: 1000 }}
+            inputProps={{ maxLength: LENGTH_DESCRIPTION }}
             onChange={(e) => handleChangeAThing("description", e.target.value)}
           />
           <span>
             {values.description.length > 0
-              ? `${values.description.length}/1000`
+              ? `${values.description.length}/${LENGTH_DESCRIPTION}`
               : ""}
           </span>
           <p className="error">{errors?.description?.message}</p>
@@ -276,7 +285,7 @@ const createParkour = () => {
               label="temps moyen pour finir le parkour"
               required
               {...register("time")}
-              InputProps={{ inputProps: { max: 600 } }}
+              InputProps={{ inputProps: { max: MAX_TIME } }}
               id="time"
               name="time"
               type="number"
@@ -291,7 +300,7 @@ const createParkour = () => {
               label="longueur du parkour"
               required
               {...register("length")}
-              InputProps={{ inputProps: { max: 60 } }}
+              InputProps={{ inputProps: { max: MAX_LENGTH } }}
               id="length"
               name="length"
               type="number"
@@ -318,11 +327,13 @@ const createParkour = () => {
               id="start"
               name="start"
               type="text"
-              inputProps={{ maxLength: 20 }}
+              inputProps={{ maxLength: LENGTH_START }}
               onChange={(e) => handleChangeAThing("start", e.target.value)}
             />
             <span>
-              {values.start.length > 0 ? `${values.start.length}/20` : ""}
+              {values.start.length > 0
+                ? `${values.start.length}/${LENGTH_START}`
+                : ""}
             </span>
             <p className="error">{errors?.start?.message}</p>
           </div>

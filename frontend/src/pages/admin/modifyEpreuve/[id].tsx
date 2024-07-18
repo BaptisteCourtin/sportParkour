@@ -25,21 +25,37 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { toast } from "react-hot-toast";
 import axiosInstanceImage from "@/lib/axiosInstanceImage";
 
+import {
+  LENGTH_TITLE,
+  LENGTH_DESCRIPTION,
+  LENGTH_LITTLE_DESCRIPTION,
+  LENGTH_LINK,
+} from "../../../../../variablesLength";
+
 let modifyEpreuveSchema = object({
   title: string()
-    .max(50, "Pas besoin d'avoir un titre aussi long")
+    .max(LENGTH_TITLE, "Pas besoin d'avoir un titre aussi long")
     .required("Veuillez entrer un titre"),
   description: string().max(
-    1000,
+    LENGTH_DESCRIPTION,
     "Pas besoin d'avoir une description aussi long"
   ),
-  easyToDo: string().max(250, "Pas besoin d'avoir une description aussi long"),
+  easyToDo: string().max(
+    LENGTH_LITTLE_DESCRIPTION,
+    "Pas besoin d'avoir une description aussi long"
+  ),
   mediumToDo: string().max(
-    250,
+    LENGTH_LITTLE_DESCRIPTION,
     "Pas besoin d'avoir une description aussi long"
   ),
-  hardToDo: string().max(250, "Pas besoin d'avoir une description aussi long"),
-  videoLink: string().max(150, "max 150, carcatères normalement ça suffit"),
+  hardToDo: string().max(
+    LENGTH_LITTLE_DESCRIPTION,
+    "Pas besoin d'avoir une description aussi long"
+  ),
+  videoLink: string().max(
+    LENGTH_LINK,
+    `max ${LENGTH_LINK}, carcatères normalement ça suffit`
+  ),
 });
 
 const modifyOneEpreuve = () => {
@@ -369,11 +385,13 @@ const modifyOneEpreuve = () => {
                   name="title"
                   type="text"
                   //
-                  inputProps={{ maxLength: 50 }}
+                  inputProps={{ maxLength: LENGTH_TITLE }}
                   onChange={(e) => handleChangeAThing("title", e.target.value)}
                 />
                 <span>
-                  {values.title.length > 0 ? `${values.title.length}/50` : ""}
+                  {values.title.length > 0
+                    ? `${values.title.length}/${LENGTH_TITLE}`
+                    : ""}
                 </span>
                 <p className="error">{errors?.title?.message}</p>
               </div>
@@ -390,14 +408,14 @@ const modifyOneEpreuve = () => {
                   id="description"
                   name="description"
                   type="text"
-                  inputProps={{ maxLength: 1000 }}
+                  inputProps={{ maxLength: LENGTH_DESCRIPTION }}
                   onChange={(e) =>
                     handleChangeAThing("description", e.target.value)
                   }
                 />
                 <span>
                   {values.description.length > 0
-                    ? `${values.description.length}/1000`
+                    ? `${values.description.length}/${LENGTH_DESCRIPTION}`
                     : ""}
                 </span>
                 <p className="error">{errors?.description?.message}</p>
@@ -416,14 +434,14 @@ const modifyOneEpreuve = () => {
                   id="easyToDo"
                   name="easyToDo"
                   type="text"
-                  inputProps={{ maxLength: 250 }}
+                  inputProps={{ maxLength: LENGTH_LITTLE_DESCRIPTION }}
                   onChange={(e) =>
                     handleChangeAThing("easyToDo", e.target.value)
                   }
                 />
                 <span>
                   {values.easyToDo.length > 0
-                    ? `${values.easyToDo.length}/250`
+                    ? `${values.easyToDo.length}/${LENGTH_LITTLE_DESCRIPTION}`
                     : ""}
                 </span>
                 <p className="error">{errors?.easyToDo?.message}</p>
@@ -441,14 +459,14 @@ const modifyOneEpreuve = () => {
                   id="mediumToDo"
                   name="mediumToDo"
                   type="text"
-                  inputProps={{ maxLength: 250 }}
+                  inputProps={{ maxLength: LENGTH_LITTLE_DESCRIPTION }}
                   onChange={(e) =>
                     handleChangeAThing("mediumToDo", e.target.value)
                   }
                 />
                 <span>
                   {values.mediumToDo.length > 0
-                    ? `${values.mediumToDo.length}/250`
+                    ? `${values.mediumToDo.length}/${LENGTH_LITTLE_DESCRIPTION}`
                     : ""}
                 </span>
                 <p className="error">{errors?.mediumToDo?.message}</p>
@@ -466,14 +484,14 @@ const modifyOneEpreuve = () => {
                   id="hardToDo"
                   name="hardToDo"
                   type="text"
-                  inputProps={{ maxLength: 250 }}
+                  inputProps={{ maxLength: LENGTH_LITTLE_DESCRIPTION }}
                   onChange={(e) =>
                     handleChangeAThing("hardToDo", e.target.value)
                   }
                 />
                 <span>
                   {values.hardToDo.length > 0
-                    ? `${values.hardToDo.length}/250`
+                    ? `${values.hardToDo.length}/${LENGTH_LITTLE_DESCRIPTION}`
                     : ""}
                 </span>
                 <p className="error">{errors?.hardToDo?.message}</p>
@@ -490,14 +508,14 @@ const modifyOneEpreuve = () => {
                   id="videoLink"
                   name="videoLink"
                   type="text"
-                  inputProps={{ maxLength: 150 }}
+                  inputProps={{ maxLength: LENGTH_LINK }}
                   onChange={(e) =>
                     handleChangeAThing("videoLink", e.target.value)
                   }
                 />
                 <span>
                   {values.videoLink.length > 0
-                    ? `${values.videoLink.length}/150`
+                    ? `${values.videoLink.length}/${LENGTH_LINK}`
                     : ""}
                 </span>
                 <p className="error">{errors?.videoLink?.message}</p>

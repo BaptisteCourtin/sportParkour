@@ -30,18 +30,24 @@ import { FaUser } from "react-icons/fa6";
 import { FaPencil } from "react-icons/fa6";
 import { FaArrowRight } from "react-icons/fa6";
 
+import {
+  LENGTH_EMAIL,
+  LENGTH_NOM,
+  LENGTH_PHONE,
+} from "../../../../variablesLength";
+
 let modifyUserSchema = object({
   imageProfil: mixed<FileList>(),
 
   email: string()
     .email("Votre email doit être valide")
-    .max(255)
+    .max(LENGTH_EMAIL)
     .required("Veuillez entrer votre email"),
-  name: string().max(100).required("Veuillez entrer votre nom"),
-  firstname: string().max(100).required("Veuillez entrer votre prénom"),
+  name: string().max(LENGTH_NOM).required("Veuillez entrer votre nom"),
+  firstname: string().max(LENGTH_NOM).required("Veuillez entrer votre prénom"),
 
   phone: string()
-    .max(10, "tapez votre numéro sans espace et sans le +33")
+    .max(LENGTH_PHONE, "tapez votre numéro sans espace et sans le +33")
     .test(
       "len",
       "tapez les 10 chiffres de votre numéro, sans espace et sans le +33",
@@ -49,7 +55,7 @@ let modifyUserSchema = object({
         if (val == undefined) {
           return true;
         }
-        return val.length == 0 || val.length == 10;
+        return val.length == 0 || val.length == LENGTH_PHONE;
       }
     ),
 });
@@ -295,14 +301,14 @@ const profil = () => {
                       id="firstname"
                       name="firstname"
                       type="firstname"
-                      inputProps={{ maxLength: 100 }}
+                      inputProps={{ maxLength: LENGTH_NOM }}
                       onChange={(e) =>
                         handleChangeAThing("firstname", e.target.value)
                       }
                     />
                     <span>
                       {values.firstname.length > 0
-                        ? `${values.firstname.length}/100`
+                        ? `${values.firstname.length}/${LENGTH_NOM}`
                         : ""}
                     </span>
                     <p className="error">{errors?.firstname?.message}</p>
@@ -320,14 +326,14 @@ const profil = () => {
                       id="name"
                       name="name"
                       type="text"
-                      inputProps={{ maxLength: 100 }}
+                      inputProps={{ maxLength: LENGTH_NOM }}
                       onChange={(e) =>
                         handleChangeAThing("name", e.target.value)
                       }
                     />
                     <span>
                       {values.name.length > 0
-                        ? `${values.name.length}/100`
+                        ? `${values.name.length}/${LENGTH_NOM}`
                         : ""}
                     </span>
                     <p className="error">{errors?.name?.message}</p>
@@ -372,14 +378,14 @@ const profil = () => {
                       id="phone"
                       name="phone"
                       type="text"
-                      inputProps={{ maxLength: 10 }}
+                      inputProps={{ maxLength: LENGTH_PHONE }}
                       onChange={(e) =>
                         handleChangeAThing("phone", e.target.value)
                       }
                     />
                     <span>
                       {values.phone.length > 0
-                        ? `${values.phone.length}/10`
+                        ? `${values.phone.length}/${LENGTH_PHONE}`
                         : ""}
                     </span>
                     <p className="error">{errors?.phone?.message}</p>
@@ -399,14 +405,14 @@ const profil = () => {
                       id="email"
                       type="text"
                       name="email"
-                      inputProps={{ maxLength: 255 }}
+                      inputProps={{ maxLength: LENGTH_EMAIL }}
                       onChange={(e) =>
                         handleChangeAThing("email", e.target.value)
                       }
                     />
                     <span>
                       {values.email.length > 0
-                        ? `${values.email.length}/255`
+                        ? `${values.email.length}/${LENGTH_EMAIL}`
                         : ""}
                     </span>
                     <p className="error">{errors?.email?.message}</p>
