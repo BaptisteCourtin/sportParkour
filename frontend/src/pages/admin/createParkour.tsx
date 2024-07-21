@@ -37,7 +37,7 @@ let createParkourSchema = object({
     .required("Veuillez entrer un titre"),
   description: string().max(
     LENGTH_DESCRIPTION,
-    "Pas besoin d'avoir une description aussi long"
+    "Pas besoin d'avoir une description aussi longue"
   ),
 
   time: number()

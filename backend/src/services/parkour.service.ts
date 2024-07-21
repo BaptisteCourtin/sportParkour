@@ -31,7 +31,7 @@ class ParkourService {
   }
 
   async getParkourWithRelationsById(id: number) {
-    const parkour = await this.db
+    const parkour: ParkourEntity | null = await this.db
       .createQueryBuilder("parkour")
       .leftJoinAndSelect("parkour.images", "imagesParkour")
       .leftJoinAndSelect("parkour.notesParkours", "notesParkours")
@@ -55,7 +55,7 @@ class ParkourService {
   }
 
   async getAllParkourForMap() {
-    const parkour = await this.db.find({});
+    const parkour: ParkourEntity[] = await this.db.find({});
     if (!parkour) {
       throw new Error("Pas de parkours en stock");
     }
@@ -181,7 +181,7 @@ class ParkourService {
   // ---
 
   async addOneNoteByParkourId(parkourId: number, note: number) {
-    const parkour = await this.getParkourById(parkourId);
+    const parkour: ParkourEntity = await this.getParkourById(parkourId);
 
     const newNbVote = parkour.nbVote + 1;
     const newNote = (parkour.note * parkour.nbVote + note) / newNbVote;
@@ -191,7 +191,7 @@ class ParkourService {
       note: newNote,
     };
 
-    const newInfos = this.db.merge(parkour, data);
+    const newInfos: ParkourEntity = this.db.merge(parkour, data);
     await this.db.save(newInfos);
   }
 
@@ -200,7 +200,7 @@ class ParkourService {
     parkourId: number,
     newNoteUser: number
   ) {
-    const parkour = await this.getParkourById(parkourId);
+    const parkour: ParkourEntity = await this.getParkourById(parkourId);
 
     const newNoteParkour =
       (parkour.note * parkour.nbVote - ancienneNoteUser + newNoteUser) /
@@ -211,12 +211,12 @@ class ParkourService {
       note: newNoteParkour,
     };
 
-    const newInfos = this.db.merge(parkour, data);
+    const newInfos: ParkourEntity = this.db.merge(parkour, data);
     await this.db.save(newInfos);
   }
 
   async deleteOneNoteByParkourId(ancienneNoteUser: number, parkourId: number) {
-    const parkour = await this.getParkourById(parkourId);
+    const parkour: ParkourEntity = await this.getParkourById(parkourId);
     let newNoteParkour: number = 0;
 
     const newNbVote = parkour.nbVote - 1;
@@ -230,7 +230,7 @@ class ParkourService {
       note: newNoteParkour,
     };
 
-    const newInfos = this.db.merge(parkour, data);
+    const newInfos: ParkourEntity = this.db.merge(parkour, data);
     await this.db.save(newInfos);
   }
 
@@ -242,7 +242,7 @@ class ParkourService {
       epreuves = await new EpreuveService().getListEpreuveByIds(data.epreuves);
     }
 
-    const newParkour = this.db.create({ ...data, epreuves });
+    const newParkour: ParkourEntity = this.db.create({ ...data, epreuves });
     await this.db.save(newParkour);
 
     if (data.images && data.images.length > 0) {
@@ -259,7 +259,7 @@ class ParkourService {
   }
 
   async modifyParkour(id: number, data: ParkourUpdateEntity) {
-    const parkour = await this.getParkourById(id);
+    const parkour: ParkourEntity = await this.getParkourById(id);
 
     for (const key of Object.keys(data) as Array<keyof ParkourUpdateEntity>) {
       if (
@@ -308,7 +308,7 @@ class ParkourService {
   }
 
   async deleteParkour(id: number) {
-    const parkour = await this.getParkourById(id);
+    const parkour: ParkourEntity = await this.getParkourById(id);
     // pour sup les relations epreuves
     parkour.epreuves = [];
     await this.db.save(parkour);

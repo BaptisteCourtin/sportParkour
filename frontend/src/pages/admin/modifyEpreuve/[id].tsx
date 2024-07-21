@@ -8,19 +8,12 @@ import {
   EpreuveUpdateEntity,
   ImageEpreuveCreateEntity,
   ImageEpreuveEntity,
-  useDeleteEpreuveMutation,
   useGetEpreuveByIdLazyQuery,
   useModifyEpreuveMutation,
   useModifyImageCouvertureEpreuveMutation,
 } from "@/types/graphql";
 
-import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
 
 import { toast } from "react-hot-toast";
 import axiosInstanceImage from "@/lib/axiosInstanceImage";
@@ -31,6 +24,7 @@ import {
   LENGTH_LITTLE_DESCRIPTION,
   LENGTH_LINK,
 } from "../../../../../variablesLength";
+import SuppEpreuveDialog from "@/components/suppression/suppEpreuveDialog";
 
 let modifyEpreuveSchema = object({
   title: string()
@@ -212,35 +206,6 @@ const modifyOneEpreuve = () => {
   const handleChangeAThing = (name: string, value: any) => {
     setValues({ ...values, [name]: value });
   };
-
-  // --- DELETE EPREUVE ---
-  const [open, setOpen] = useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClickClose = () => {
-    setOpen(false);
-  };
-
-  const [deleteEpreuve, { loading: loadingDelete, error: errorDelete }] =
-    useDeleteEpreuveMutation();
-
-  function handleDeleteEpreuve(id: string): void {
-    if (id) {
-      deleteEpreuve({
-        variables: { deleteEpreuveId: +id },
-        onCompleted(data) {
-          toast.success(data.deleteEpreuve.message);
-          router.push(`/epreuve/allEpreuves`);
-        },
-        onError(error) {
-          toast.error(error.message);
-        },
-      });
-    }
-  }
 
   // --- DELETE IMAGES ---
   const [listImagesAlreadyIn, setListImagesAlreadyIn] =
@@ -531,66 +496,10 @@ const modifyOneEpreuve = () => {
             </form>
 
             {/* --- delete --- */}
-
-            <div className="epreuveToDelete">
-              <button className="danger" onClick={handleClickOpen}>
-                Delete epreuve
-              </button>
-
-              <Dialog
-                open={open}
-                onClose={handleClickClose}
-                PaperProps={{
-                  component: "form",
-                  onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
-                    event.preventDefault();
-
-                    const formData = new FormData(event.currentTarget);
-                    const formJson = Object.fromEntries(
-                      (formData as any).entries()
-                    );
-                    const nomEpreuve = formJson.nomEpreuve;
-
-                    if (data.getEpreuveById.title == nomEpreuve) {
-                      handleDeleteEpreuve(data.getEpreuveById.id);
-
-                      if (errorDelete) {
-                        handleClickClose();
-                        toast.error(errorDelete?.message);
-                      }
-                    } else {
-                      handleClickClose();
-                      toast.error("Le nom de l'épreuve ne correspond pas");
-                    }
-                  },
-                }}
-              >
-                <DialogTitle>
-                  Delete epreuve {data.getEpreuveById.id}
-                </DialogTitle>
-                <DialogContent>
-                  <DialogContentText>
-                    Pour supprimer cette épreuve entrez son nom :
-                    {data.getEpreuveById.title}
-                  </DialogContentText>
-                  <TextField
-                    autoFocus
-                    required
-                    margin="dense"
-                    id="nomEpreuve"
-                    name="nomEpreuve"
-                    label="nom de l'épreuve"
-                    type="nomEpreuve"
-                    fullWidth
-                    variant="standard"
-                  />
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={handleClickClose}>En fait, non</Button>
-                  <Button type="submit">Hop, ça dégage!</Button>
-                </DialogActions>
-              </Dialog>
-            </div>
+            <SuppEpreuveDialog
+              epreuveTitle={data.getEpreuveById.title}
+              epreuveId={data.getEpreuveById.id}
+            />
           </>
         )
       )}

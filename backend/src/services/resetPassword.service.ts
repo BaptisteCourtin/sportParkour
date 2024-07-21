@@ -17,7 +17,7 @@ export default class ResetPasswordService {
   }
 
   async findResetToken(token: string) {
-    const resetToken = await this.db.findOne({
+    const resetToken: ResetPasswordEntity | null = await this.db.findOne({
       where: { resetToken: token },
       relations: { user: true },
     });
@@ -41,7 +41,7 @@ export default class ResetPasswordService {
   // ---
 
   async createResetToken(email: string) {
-    const user = await new UserService().getUserByEmail(email);
+    const user: UserEntity = await new UserService().getUserByEmail(email);
 
     // cherche dans la bdd reset
     let resetToken = await this.db.findOne({
@@ -58,19 +58,19 @@ export default class ResetPasswordService {
     resetToken.expirationDate = new Date(date.getTime());
     resetToken.resetToken = uuid();
 
-    const newResetToken = this.db.create(resetToken);
+    const newResetToken: ResetPasswordEntity = this.db.create(resetToken);
     return await this.db.save(newResetToken);
   }
 
   async changePassword(password: string, user: UserEntity) {
-    const editedUser = this.dbUser.create({ ...user });
+    const editedUser: UserEntity = this.dbUser.create({ ...user });
     editedUser.password = password;
 
     return await this.dbUser.save(editedUser);
   }
 
   async deleteResetToken(token: string) {
-    const tokenToDelete = await this.db.findOne({
+    const tokenToDelete: ResetPasswordEntity | null = await this.db.findOne({
       where: { resetToken: token },
     });
 

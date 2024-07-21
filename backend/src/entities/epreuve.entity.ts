@@ -7,6 +7,7 @@ import {
   ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
+  Unique,
 } from "typeorm";
 import { Field, ID, InputType, ObjectType } from "type-graphql";
 
@@ -24,6 +25,7 @@ import {
 } from "../../../variablesLength";
 
 @Entity("epreuve")
+@Unique(["title"])
 @ObjectType()
 class EpreuveEntity {
   @Field(() => ID)
@@ -73,6 +75,8 @@ class EpreuveEntity {
   @MaxLength(LENGTH_LINK)
   videoLink: string;
 
+  // ---
+
   // pas besoin de join column en many to one
   @Field(() => [ImageEpreuveEntity], { nullable: true })
   @OneToMany(() => ImageEpreuveEntity, (img) => img.epreuve_id, {
@@ -80,25 +84,22 @@ class EpreuveEntity {
   })
   images: ImageEpreuveEntity[];
 
-  // @Field(() => [ParkourEntity], { nullable: true })
-  // @ManyToMany(() => ParkourEntity, {
-  //   nullable: true,
-  // })
-  // @JoinTable({
-  //   name: "join_parkour_epreuve",
-  //   joinColumn: {
-  //     name: "epreuve_id",
-  //     referencedColumnName: "id",
-  //   },
-  //   inverseJoinColumn: {
-  //     name: "parkour_id",
-  //     referencedColumnName: "id",
-  //   },
-  // })
-  // parkours: ParkourEntity[];
-
+  // pour savoir si encore lié
   @Field(() => [ParkourEntity], { nullable: true })
-  @ManyToMany(() => ParkourEntity, { nullable: true })
+  @ManyToMany(() => ParkourEntity, {
+    nullable: true,
+  })
+  @JoinTable({
+    name: "join_parkour_epreuve",
+    joinColumn: {
+      name: "epreuve_id",
+      referencedColumnName: "id",
+    },
+    inverseJoinColumn: {
+      name: "parkour_id",
+      referencedColumnName: "id",
+    },
+  })
   parkours: ParkourEntity[];
 }
 

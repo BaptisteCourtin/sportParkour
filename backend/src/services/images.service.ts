@@ -23,7 +23,9 @@ class ImagesService {
   }
 
   async modifyImageCouvertureEpreuve(idImage: number) {
-    let image = await this.getImageEpreuveById(+idImage);
+    let image: ImageEpreuveEntity | null = await this.getImageEpreuveById(
+      +idImage
+    );
     if (image) {
       image.isCouverture = !image.isCouverture;
       return await this.dbImgEpreuve.save(image);
@@ -44,7 +46,9 @@ class ImagesService {
   }
 
   async modifyImageCouvertureParkour(idImage: number) {
-    let image = await this.getImageParkourById(+idImage);
+    let image: ImageParkourEntity | null = await this.getImageParkourById(
+      +idImage
+    );
 
     if (image) {
       image.isCouverture = !image.isCouverture;

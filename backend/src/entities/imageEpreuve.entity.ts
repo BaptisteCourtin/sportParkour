@@ -48,10 +48,4 @@ export class ImageEpreuveCreateEntity {
   isCouverture: boolean;
 }
 
-@InputType()
-export class ImageEpreuveUpdateEntity {
-  @Field()
-  isCouverture: boolean;
-}
-
 export default ImageEpreuveEntity;

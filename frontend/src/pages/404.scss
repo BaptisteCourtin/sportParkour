@@ -6,10 +6,16 @@
   background-attachment: fixed;
   padding: var(--espace);
 
+  // * {
+  //   border: 1px red solid;
+  // }
+
   .containerText {
     min-height: 100vh;
-    padding-top: 2rem;
+    min-width: 100%;
+    padding: var(--espace);
 
+    h1,
     p {
       background-color: var(--middle);
       border-radius: var(--radius);
@@ -25,6 +31,7 @@
       gap: var(--gap);
 
       margin-top: var(--espace);
+      max-width: 100%;
     }
 
     &.lanceLeDe {
@@ -33,7 +40,6 @@
       background-size: cover;
       background-repeat: no-repeat;
       background-attachment: fixed;
-      padding: var(--espace);
     }
 
     &.nainDeJardin {
@@ -42,7 +48,54 @@
       background-size: cover;
       background-repeat: no-repeat;
       background-attachment: fixed;
-      padding: var(--espace);
+    }
+
+    &.falaise {
+      background: url("../../public/page404/falaise.png");
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+
+    &.buisson {
+      background: url("../../public/page404/buisson.png");
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+
+    &.ruisseau {
+      background: url("../../public/page404/ruisseau.png");
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+
+    &.serpent {
+      background: url("../../public/page404/serpent.jpg");
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+
+    &.win {
+      background: url("../../public/page404/win.jpg");
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+
+    &.lose {
+      background: url("../../public/page404/lose.jpg");
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
     }
   }
 }

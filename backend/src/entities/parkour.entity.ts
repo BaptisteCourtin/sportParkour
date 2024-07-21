@@ -6,6 +6,7 @@ import {
   ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
+  Unique,
 } from "typeorm";
 import { Field, ID, InputType, Int, ObjectType } from "type-graphql";
 import { Max, MaxLength, Min } from "class-validator";
@@ -27,6 +28,7 @@ import {
 } from "../../../variablesLength";
 
 @Entity("parkour")
+@Unique(["title"])
 @ObjectType()
 class ParkourEntity {
   @Field(() => ID)

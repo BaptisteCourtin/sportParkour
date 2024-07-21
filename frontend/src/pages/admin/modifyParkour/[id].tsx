@@ -8,7 +8,6 @@ import {
   Difficulty,
   EpreuveEntity,
   ParkourUpdateEntity,
-  useDeleteParkourMutation,
   useGetTop20EpreuveByTitleLazyQuery,
   useGetParkourByIdLazyQuery,
   useModifyParkourMutation,
@@ -18,13 +17,7 @@ import {
   ImageParkourCreateEntity,
 } from "@/types/graphql";
 
-import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
 import Autocomplete from "@mui/material/Autocomplete";
 import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
@@ -42,6 +35,7 @@ import {
   MAX_LENGTH,
   MAX_TIME,
 } from "../../../../../variablesLength";
+import SuppParkourDialog from "@/components/suppression/suppParkourDialog";
 
 let modifyParkourSchema = object({
   title: string()
@@ -227,35 +221,6 @@ const modifyOneParkour = () => {
       });
     }
   };
-
-  // --- DELETE PARKOUR ---
-  const [open, setOpen] = useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClickClose = () => {
-    setOpen(false);
-  };
-
-  const [deleteParkour, { loading: loadingDelete, error: errorDelete }] =
-    useDeleteParkourMutation();
-
-  function handleDeleteParkour(id: string): void {
-    if (id) {
-      deleteParkour({
-        variables: { deleteParkourId: +id },
-        onCompleted(data) {
-          toast.success(data?.deleteParkour.message);
-          router.push(`/`);
-        },
-        onError(error) {
-          toast.error(error.message);
-        },
-      });
-    }
-  }
 
   // --- DEAL WITH LENGTH DURING MODIF ---
   const [values, setValues] = useState({
@@ -631,64 +596,10 @@ const modifyOneParkour = () => {
             </form>
 
             {/* --- DELETE PARKOUR --- */}
-            <div className="parkourToDelete">
-              <button onClick={handleClickOpen}>
-                Delete parkour {data.getParkourById.id}
-              </button>
-              <Dialog
-                open={open}
-                onClose={handleClickClose}
-                PaperProps={{
-                  component: "form",
-                  onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
-                    event.preventDefault();
-
-                    const formData = new FormData(event.currentTarget);
-                    const formJson = Object.fromEntries(
-                      (formData as any).entries()
-                    );
-                    const nomParkour = formJson.nomParkour;
-
-                    if (data.getParkourById.title == nomParkour) {
-                      handleDeleteParkour(data.getParkourById.id);
-
-                      if (errorDelete) {
-                        handleClickClose();
-                        toast.error(errorDelete?.message);
-                      }
-                    } else {
-                      handleClickClose();
-                      toast.error("Le nom du parkour ne correspond pas");
-                    }
-                  },
-                }}
-              >
-                <DialogTitle>
-                  Delete parkour {data.getParkourById.id}
-                </DialogTitle>
-                <DialogContent>
-                  <DialogContentText>
-                    Pour supprimer ce parkour entrez son nom :
-                    {data.getParkourById.title}
-                  </DialogContentText>
-                  <TextField
-                    autoFocus
-                    required
-                    margin="dense"
-                    id="nomParkour"
-                    name="nomParkour"
-                    label="nom du parkour"
-                    type="nomParkour"
-                    fullWidth
-                    variant="standard"
-                  />
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={handleClickClose}>En fait, non</Button>
-                  <Button type="submit">Hop, ça dégage!</Button>
-                </DialogActions>
-              </Dialog>
-            </div>
+            <SuppParkourDialog
+              parkourTitle={data.getParkourById.title}
+              parkourId={data.getParkourById.id}
+            />
           </>
         )
       )}

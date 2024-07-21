@@ -80,8 +80,9 @@ class EpreuveService {
   }
 
   // ---
+
   async createEpreuve(data: EpreuveCreateEntity) {
-    const newEpreuve = this.db.create(data);
+    const newEpreuve: EpreuveEntity = this.db.create(data);
     await this.db.save(newEpreuve);
 
     if (data.images && data.images.length > 0) {
@@ -98,7 +99,7 @@ class EpreuveService {
   }
 
   async modifyEpreuve(id: number, data: EpreuveUpdateEntity) {
-    const epreuve = await this.getEpreuveById(id);
+    const epreuve: EpreuveEntity = await this.getEpreuveById(id);
 
     // Mettre à jour les champs de l'épreuve
     for (const key of Object.keys(data) as Array<keyof EpreuveUpdateEntity>) {
@@ -134,7 +135,7 @@ class EpreuveService {
   }
 
   async deleteEpreuve(id: number) {
-    const epreuve = await this.getEpreuveById(id);
+    const epreuve: EpreuveEntity = await this.getEpreuveById(id);
     return await this.db.remove(epreuve);
   }
 }
