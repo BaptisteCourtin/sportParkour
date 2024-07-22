@@ -1,5 +1,5 @@
-import Link from "next/link";
 import React from "react";
+import Link from "next/link";
 
 import { FaMapLocationDot } from "react-icons/fa6";
 import { FaEnvelope } from "react-icons/fa6";
