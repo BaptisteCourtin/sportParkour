@@ -28,19 +28,19 @@ let createEpreuveSchema = object({
     .required("Veuillez entrer un titre"),
   description: string().max(
     LENGTH_DESCRIPTION,
-    "Pas besoin d'avoir une description aussi long"
+    "Pas besoin d'avoir une description aussi longue"
   ),
   easyToDo: string().max(
     LENGTH_LITTLE_DESCRIPTION,
-    "Pas besoin d'avoir une description aussi long"
+    "Pas besoin d'avoir une description aussi longue"
   ),
   mediumToDo: string().max(
     LENGTH_LITTLE_DESCRIPTION,
-    "Pas besoin d'avoir une description aussi long"
+    "Pas besoin d'avoir une description aussi longue"
   ),
   hardToDo: string().max(
     LENGTH_LITTLE_DESCRIPTION,
-    "Pas besoin d'avoir une description aussi long"
+    "Pas besoin d'avoir une description aussi longue"
   ),
   videoLink: string().max(
     LENGTH_LINK,

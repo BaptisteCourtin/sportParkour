@@ -5,6 +5,7 @@ import {
   Entity,
   OneToMany,
   PrimaryGeneratedColumn,
+  Unique,
 } from "typeorm";
 import { Field, ID, InputType, ObjectType } from "type-graphql";
 
@@ -26,6 +27,7 @@ import {
 const argon2 = require("argon2");
 
 @Entity("user")
+@Unique(["email"])
 @ObjectType()
 class UserEntity {
   @BeforeInsert()
@@ -112,12 +114,12 @@ class UserEntity {
 
   // nb report validé par admin
   @Field({ nullable: true })
-  @Column({ type: "int", default: 0 })
+  @Column({ type: "int", unsigned: true, default: 0 })
   nbReportValide: number;
 
   // nb report envoyé
   @Field({ nullable: true })
-  @Column({ type: "int", default: 0 })
+  @Column({ type: "int", unsigned: true, default: 0 })
   nbReportAjoute: number;
 
   // ---

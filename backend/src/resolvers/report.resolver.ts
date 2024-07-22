@@ -17,7 +17,8 @@ export default class ReportResolver {
   @Authorized("ADMIN")
   @Query(() => UserEntity)
   async getUserByIdForPageReport(@Arg("userId") userId: string) {
-    const result = await new ReportService().getUserByIdForPageReport(userId);
+    const result: UserEntity | null =
+      await new ReportService().getUserByIdForPageReport(userId);
 
     return result;
   }

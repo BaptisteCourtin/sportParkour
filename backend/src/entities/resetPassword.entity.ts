@@ -47,7 +47,7 @@ export default class ResetPasswordEntity {
 
   @Field(() => User)
   @OneToOne(() => User)
-  @JoinColumn()
+  @JoinColumn({ name: "user" })
   user: User;
 }
 

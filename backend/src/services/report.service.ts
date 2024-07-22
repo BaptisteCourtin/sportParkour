@@ -91,7 +91,7 @@ class ReportService {
       parkour_id: parkourId,
       commentaireEnFaute: commentaire,
     };
-    const newReport = this.db.create(data);
+    const newReport: ReportEntity = this.db.create(data);
     await this.db.save(newReport);
     return newReport;
   }
@@ -108,14 +108,14 @@ class ReportService {
       commentaireEnFaute: commentaire,
       status: ReportStatus.SUPPRIME,
     };
-    const newReport = this.db.create(data);
+    const newReport: ReportEntity = this.db.create(data);
     await this.db.save(newReport);
     return newReport;
   }
 
   // ajoute un nbReportAjoute au reporteur
   async addOneNbReportAjouteByToken(reporterUser: UserEntity) {
-    const editedUser = this.dbUser.create({ ...reporterUser });
+    const editedUser: UserEntity = this.dbUser.create({ ...reporterUser });
     editedUser.nbReportAjoute += 1;
 
     return await this.dbUser.save(editedUser);

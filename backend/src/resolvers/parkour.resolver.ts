@@ -12,14 +12,16 @@ import ParkourService from "../services/parkour.service";
 export default class ParkourResolver {
   @Query(() => ParkourEntity)
   async getParkourById(@Arg("id") id: number) {
-    const result = await new ParkourService().getParkourWithRelationsById(id);
+    const result: ParkourEntity =
+      await new ParkourService().getParkourWithRelationsById(id);
     return result;
   }
 
   // possiblement changer
   @Query(() => [ParkourEntity])
   async getAllParkourForMap() {
-    const result = await new ParkourService().getAllParkourForMap();
+    const result: ParkourEntity[] =
+      await new ParkourService().getAllParkourForMap();
     return result;
   }
 

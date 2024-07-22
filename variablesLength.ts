@@ -7,7 +7,7 @@ export const LENGTH_COMMENTAIRE = 500;
 export const LENGTH_CITY = 50;
 export const LENGTH_START = 50;
 
-export const LENGTH_MIN_PASSWORD = 100;
+export const LENGTH_MIN_PASSWORD = 12;
 export const LENGTH_MAX_PASSWORD = 100;
 export const LENGTH_NOM = 100;
 export const LENGTH_EMAIL = 255;

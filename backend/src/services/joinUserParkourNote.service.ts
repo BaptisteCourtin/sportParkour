@@ -95,10 +95,7 @@ class JoinUserParkourNoteService {
   // ---
 
   // fait aussi la modif
-  async createNote(
-    userId: string,
-    data: Partial<JoinUserParkourNoteCreateEntity>
-  ) {
+  async createNote(userId: string, data: JoinUserParkourNoteCreateEntity) {
     const infos = {
       user_id: userId,
       parkour_id: data.parkour_id,
@@ -106,7 +103,7 @@ class JoinUserParkourNoteService {
       commentaire: data.commentaire,
     };
 
-    const newJoinUserParkour = this.db.create(infos);
+    const newJoinUserParkour: JoinUserParkourNoteEntity = this.db.create(infos);
 
     await this.db.save(newJoinUserParkour);
 
