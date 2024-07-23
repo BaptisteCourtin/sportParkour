@@ -330,6 +330,7 @@ const inscription = () => {
           required
           control={<Checkbox />}
           label="j'accepte les CGU"
+          data-testid="accept-cgu-checkbox"
         />
         <div className="legale">
           <Link href="/infos/cgu">Voir les CGU</Link>

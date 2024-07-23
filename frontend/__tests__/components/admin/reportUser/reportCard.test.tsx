@@ -20,7 +20,7 @@ jest.mock(
       <button data-testid="button-for-report">Button for Report</button>
 );
 
-describe.only("ReportCard", () => {
+describe("ReportCard", () => {
   const mockReport = {
     id: "1",
     status: ReportStatus.NonVu,
