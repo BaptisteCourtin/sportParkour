@@ -1,6 +1,6 @@
 import { render } from "@testing-library/react";
 import { MockedProvider } from "@apollo/client/testing";
-import AllEpreuves from "@/pages/epreuve/allEpreuves"; // Adjust the import path as needed
+import AllEpreuves from "@/pages/epreuve/allEpreuves";
 import {
   useGetAllEpreuveQuery,
   useIsAdminQuery,
@@ -10,11 +10,6 @@ import {
 // Mock the next/router
 jest.mock("next/router", () => require("next-router-mock"));
 
-// // Mock the GraphQL queries
-// jest.mock("@/types/graphql", () => ({
-//   useGetAllEpreuveQuery: jest.fn(),
-//   useIsAdminQuery: jest.fn(),
-// }));
 // Mock the GraphQL queries
 jest.mock("@/types/graphql", () => ({
   useGetAllEpreuveQuery: jest.fn(),

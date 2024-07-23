@@ -1,4 +1,4 @@
-// books.test.ts
+import "reflect-metadata";
 import { buildSchemaSync } from "type-graphql";
 import { printSchema } from "graphql";
 import {
@@ -11,9 +11,8 @@ import { ApolloServer } from "@apollo/server";
 import assert from "assert";
 
 import { Role } from "../src/enum/role.enum";
-import UserEntity, { UserUpdateEntity } from "../src/entities/user.entity";
+import UserEntity from "../src/entities/user.entity";
 import UserResolver from "../src/resolvers/user.resolver";
-import { MessageEntity } from "../src/entities/message.entity";
 
 // ---------------------------------------------------------------------------------
 // --- REQUESTS ---
@@ -28,16 +27,7 @@ export const GET_USER_BY_TOKEN = `#graphql
       city
       codePostal
       phone
-      parkours {
-        user_id
-        parkour_id
-        favoris
-        note
-        parkours {
-          id
-          title
-        }
-      }
+      imageProfil
     }
   }
 `;
@@ -54,29 +44,6 @@ export const IS_CLIENT = `#graphql
   }
 `;
 
-export const MODIFY_USER = `#graphql
-  mutation ModifyUser($infos: UserUpdateEntity!) {
-    modifyUser(infos: $infos) {
-      id
-      name
-      firstname
-      email
-      city
-      codePostal
-      phone
-    }
-  }
-`;
-
-export const DELETE_USER = `#graphql
-  mutation DeleteUser($deleteUserId: String!) {
-    deleteUser(id: $deleteUserId) {
-      message
-      success
-    }
-  }
-`;
-
 // ---------------------------------------------------------------------------------
 // --- MOCKS ---
 // ---------------------------------------------------------------------------------
@@ -90,21 +57,17 @@ const userAllData: Omit<UserEntity, "hashPassword"> = {
   codePostal: "44100",
   phone: "06 06 06 06 06",
   role: Role.ADMIN,
-  parkours: [],
-};
-
-const userModifyData: UserUpdateEntity = {
-  name: "bernard",
-  firstname: "josette",
-  email: "josette75du75@gmail.com",
-  city: "15 rue du belvedere",
-  codePostal: "44100",
-  phone: "07 06 06 06 06",
+  imageProfil: "",
+  nbReportValide: 0,
+  nbReportAjoute: 0,
+  favorisParkours: [],
+  notesParkours: [],
+  reports: [],
 };
 
 // ---
 
-const userGetData: Omit<UserEntity, "hashPassword" | "password" | "role"> = {
+const userGetData = {
   id: "0",
   name: "bernard",
   firstname: "kevin",
@@ -112,26 +75,7 @@ const userGetData: Omit<UserEntity, "hashPassword" | "password" | "role"> = {
   city: "15 rue du belvedere",
   codePostal: "44100",
   phone: "06 06 06 06 06",
-  parkours: [],
-};
-
-const userGetModifyData: Omit<
-  UserEntity,
-  "hashPassword" | "password" | "role"
-> = {
-  id: "0",
-  name: "bernard",
-  firstname: "josette",
-  email: "josette75du75@gmail.com",
-  city: "15 rue du belvedere",
-  codePostal: "44100",
-  phone: "07 06 06 06 06",
-  parkours: [],
-};
-
-const userDeleteMessage: MessageEntity = {
-  message: "Vous venez de vous désintégrer 🎆",
-  success: true,
+  imageProfil: "",
 };
 
 // ---------------------------------------------------------------------------------
@@ -164,16 +108,6 @@ beforeAll(async () => {
       },
       isClient() {
         return true;
-      },
-    },
-    Mutation: {
-      // modifyUser() {
-      //   const modifyUser = { ...userAllData, ...userGetData };
-      //   console.log(modifyUser);
-      //   return modifyUser;
-      // },
-      deleteUser() {
-        return userDeleteMessage;
       },
     },
   });
@@ -225,33 +159,5 @@ describe("Test sur les users", () => {
     // Vérifiez que le résultat est true
     assert(response.body.kind === "single");
     expect(response.body.singleResult.data).toEqual({ isClient: true });
-  });
-
-  // ---
-
-  // it("modifies user information", async () => {
-  //   const response = await server.executeOperation<UserEntity>({
-  //     query: MODIFY_USER,
-  //     variables: userModifyData,
-  //   });
-
-  //   assert(response.body.kind === "single");
-  //   expect(response.body.singleResult.data).toEqual({
-  //     modifyUser: userGetModifyData,
-  //   });
-  // });
-
-  it("delete un user", async () => {
-    const response = await server.executeOperation<MessageEntity>({
-      query: DELETE_USER,
-      variables: {
-        deleteUserId: userAllData.id,
-      },
-    });
-
-    assert(response.body.kind === "single");
-    expect(response.body.singleResult.data).toEqual({
-      deleteUser: userDeleteMessage,
-    });
   });
 });

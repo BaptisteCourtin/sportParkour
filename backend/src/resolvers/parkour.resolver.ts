@@ -4,7 +4,7 @@ import ParkourEntity, {
   ParkourCreateEntity,
   ParkourUpdateEntity,
 } from "../entities/parkour.entity";
-import { MessageEntity } from "../entities/message.entity";
+import MessageEntity from "../entities/message.entity";
 
 import ParkourService from "../services/parkour.service";
 

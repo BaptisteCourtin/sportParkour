@@ -1,17 +1,12 @@
-import React from "react";
 import { fireEvent, render, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import Login from "@/pages/auth/login";
 import { MockedProvider } from "@apollo/client/testing";
 import { MemoryRouterProvider } from "next-router-mock/MemoryRouterProvider";
 import { AUTHENTIFICATION } from "@/requests/queries/auth.queries";
-import { toast } from "react-hot-toast";
 
 // Mock du module next/router pour contrôler la navigation
-jest.mock("next/router", () => ({
-  ...jest.requireActual("next-router-mock"),
-  push: jest.fn(),
-}));
+jest.mock("next/router", () => require("next-router-mock"));
 
 // Mock de react-hot-toast pour éviter les erreurs de non-implémentation dans le test
 jest.mock("react-hot-toast", () => ({
@@ -40,6 +35,8 @@ const mocks = [
     },
   },
 ];
+
+// --------------------------------------------------------------------------------------------------
 
 describe("Login", () => {
   it("Snapshot du composant login", async () => {

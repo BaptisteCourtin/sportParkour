@@ -6,7 +6,7 @@
   "scripts": {
     "start": "ts-node-dev --watch ./src ./src/index.ts",
     "loadFixtures": "ts-node ./src/fixtures/indexFixtures.ts",
-    "test": "jest --watch",
+    "test": "jest",
     "testCoverage": "jest --coverage",
     "testForCI": "jest"
   },

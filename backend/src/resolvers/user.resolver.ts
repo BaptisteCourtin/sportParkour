@@ -2,7 +2,7 @@ import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from "type-graphql";
 import Cookies from "cookies";
 import { MyContext } from "..";
 
-import { MessageEntity } from "../entities/message.entity";
+import MessageEntity from "../entities/message.entity";
 import UserEntity, { UserUpdateEntity } from "../entities/user.entity";
 
 import UserService from "../services/user.service";

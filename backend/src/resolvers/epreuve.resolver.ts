@@ -1,6 +1,6 @@
 import { Arg, Mutation, Query, Resolver, Authorized } from "type-graphql";
 
-import { MessageEntity } from "../entities/message.entity";
+import MessageEntity from "../entities/message.entity";
 import EpreuveEntity, {
   EpreuveCreateEntity,
   EpreuveUpdateEntity,

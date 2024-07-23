@@ -4,7 +4,7 @@ import { SignJWT } from "jose";
 import { MyContext } from "..";
 import Cookies from "cookies";
 
-import { MessageEntity } from "../entities/message.entity";
+import MessageEntity from "../entities/message.entity";
 import {
   UserInputRegisterEntity,
   UserInputAuthEntity,

@@ -14,5 +14,3 @@ export const customAuthChecker: AuthChecker<MyContext> = (
   // On vérifie si l'utilisateur a au moins un des rôles requis
   return roles.includes(context.user.role);
 };
-
-// @Authorized("ADMIN", "CLIENT")

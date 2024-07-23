@@ -1,6 +1,6 @@
 import { Arg, Mutation, Query, Resolver } from "type-graphql";
 
-import { MessageEntity } from "../entities/message.entity";
+import MessageEntity from "../entities/message.entity";
 import ResetPasswordEntity, {
   ResetPasswordUpdateEntity,
 } from "../entities/resetPassword.entity";

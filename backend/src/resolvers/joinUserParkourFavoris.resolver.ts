@@ -1,7 +1,7 @@
 import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from "type-graphql";
 import { MyContext } from "..";
 
-import { MessageEntity } from "../entities/message.entity";
+import MessageEntity from "../entities/message.entity";
 import JoinUserParkourFavorisEntity from "../entities/joinUserParkourFavoris.entity";
 import UserEntity from "../entities/user.entity";
 import ParkourEntity from "../entities/parkour.entity";

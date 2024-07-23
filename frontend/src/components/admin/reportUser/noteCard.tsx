@@ -1,5 +1,5 @@
-import Link from "next/link";
 import React from "react";
+import Link from "next/link";
 import ButtonForComment from "../buttonForComment";
 
 const noteCard = ({ note, malfratId }: { note: any; malfratId: string }) => {

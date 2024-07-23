@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ReportCard matches snapshot 1`] = `
+<DocumentFragment>
+  <li
+    class="NON_VU reportCard"
+  >
+    <div
+      class="top"
+    >
+      <span>
+        report émis le : 
+        <span>
+          2023-01-01
+        </span>
+      </span>
+      <button
+        data-testid="button-for-report"
+      >
+        Button for Report
+      </button>
+    </div>
+    <p
+      class="commentInFaute"
+    >
+      Commentaire en faute
+    </p>
+    <a
+      href="/parkour/parkour-1"
+    >
+      parkour du commentaire : Parkour Title
+    </a>
+  </li>
+</DocumentFragment>
+`;

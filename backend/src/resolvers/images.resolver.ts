@@ -1,5 +1,5 @@
 import { Arg, Authorized, Mutation, Resolver } from "type-graphql";
-import { MessageEntity } from "../entities/message.entity";
+import MessageEntity from "../entities/message.entity";
 import ImageEpreuveEntity from "../entities/imageEpreuve.entity";
 import ImagesService from "../services/images.service";
 import ImageParkourEntity from "../entities/imageParkour.entity";

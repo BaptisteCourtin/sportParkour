@@ -4,13 +4,7 @@ import "@testing-library/jest-dom";
 import NavbarPhone from "@/components/layout/phone/navbarPhone";
 
 // Mock du router
-jest.mock("next/router", () => ({
-  useRouter() {
-    return {
-      pathname: "/",
-    };
-  },
-}));
+jest.mock("next/router", () => require("next-router-mock"));
 
 // Mock de next link
 jest.mock("next/link", () => {

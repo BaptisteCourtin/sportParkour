@@ -24,7 +24,7 @@ jest.mock("react-icons/fa6", () => ({
   FaPhone: () => <span data-testid="fa-phone">PhoneIcon</span>,
   FaFacebook: () => <span data-testid="fa-facebook">FacebookIcon</span>,
   FaInstagram: () => <span data-testid="fa-instagram">InstagramIcon</span>,
-  FaXTwitter: () => <span data-testid="fa-x-twitter">TwitterIcon</span>,
+  FaXTwitter: () => <span data-testid="fa-twitter">TwitterIcon</span>,
   FaLinkedin: () => <span data-testid="fa-linkedin">LinkedinIcon</span>,
 }));
 
@@ -46,7 +46,7 @@ describe("Footer", () => {
     expect(screen.getByText("NOS RÉSAUX")).toBeInTheDocument();
     expect(screen.getByTestId("fa-facebook")).toBeInTheDocument();
     expect(screen.getByTestId("fa-instagram")).toBeInTheDocument();
-    expect(screen.getByTestId("fa-x-twitter")).toBeInTheDocument();
+    expect(screen.getByTestId("fa-twitter")).toBeInTheDocument();
     expect(screen.getByTestId("fa-linkedin")).toBeInTheDocument();
   });
 
@@ -66,14 +66,15 @@ describe("Footer", () => {
 
   test("renders copyright notice", () => {
     expect(
-      screen.getByText(/Site réalisé par Baptiste Courtin/)
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(/© 2024 - tous droits réservés/)
+      screen.getByText(
+        "Site réalisé par Baptiste Courtin | © 2024 - tous droits réservés"
+      )
     ).toBeInTheDocument();
   });
 
-  test("renders correct links", () => {
+  // ---
+
+  test("renders correct links 1", () => {
     expect(
       screen.getByText("20 rue de la brasserie, 44100 Nantes").closest("a")
     ).toHaveAttribute(
@@ -87,13 +88,49 @@ describe("Footer", () => {
       "href",
       "tel:+612345678"
     );
+  });
+
+  test("renders correct links 2", () => {
     expect(screen.getByTestId("fa-facebook").closest("a")).toHaveAttribute(
       "href",
       "https://www.facebook.com/"
     );
+    expect(screen.getByTestId("fa-instagram").closest("a")).toHaveAttribute(
+      "href",
+      "https://www.instagram.com/"
+    );
+    expect(screen.getByTestId("fa-twitter").closest("a")).toHaveAttribute(
+      "href",
+      "https://twitter.com/"
+    );
+    expect(screen.getByTestId("fa-linkedin").closest("a")).toHaveAttribute(
+      "href",
+      "https://www.linkedin.com/"
+    );
+  });
+
+  test("renders correct links 3", () => {
     expect(screen.getByText("Qui sommes nous ?").closest("a")).toHaveAttribute(
       "href",
       "/infos/quiSommesNous"
+    );
+    expect(screen.getByText("FAQ").closest("a")).toHaveAttribute(
+      "href",
+      "/infos/faq"
+    );
+    expect(screen.getByText("Plan du site").closest("a")).toHaveAttribute(
+      "href",
+      "/infos/planDuSite"
+    );
+    expect(
+      screen.getByText("Conditions générales d'utilisation").closest("a")
+    ).toHaveAttribute("href", "/infos/cgu");
+    expect(
+      screen.getByText("Politique de confidentialité").closest("a")
+    ).toHaveAttribute("href", "/infos/politiqueDeConfidentialite");
+    expect(screen.getByText("Mentions légales").closest("a")).toHaveAttribute(
+      "href",
+      "/infos/mentionsLegales"
     );
   });
 });

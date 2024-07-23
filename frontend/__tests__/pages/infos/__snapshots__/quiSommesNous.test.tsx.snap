@@ -1,0 +1,116 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Qui Sommes Nous Page renders correctly 1`] = `
+<DocumentFragment>
+  <main
+    class="pagesInfos"
+  >
+    <h1>
+      QUI SOMMES NOUS
+    </h1>
+    <h2>
+      et infos sur le site
+    </h2>
+    <a
+      href="https://portfolio-baptiste-courtin.netlify.app/"
+      target="_blank"
+    >
+      Créateur du site : Baptiste Courtin
+    </a>
+    <div>
+      <div
+        data-testid="accordion"
+      >
+        <div
+          data-testid="accordion-summary"
+        >
+          <h3>
+            Q : Il sert à quoi ce site ?
+          </h3>
+          <div
+            data-testid="expand-icon"
+          />
+        </div>
+        <div
+          data-testid="accordion-details"
+        >
+          Tu peux trouver des parcours sportifs, avec des épreuves dedans. Et si le coeur t'en dit tu peux les faire. En courant ou en marchant. Tu peux aussi te servir de l'appli pour trouver des balades sympas.
+        </div>
+      </div>
+      <div
+        data-testid="accordion"
+      >
+        <div
+          data-testid="accordion-summary"
+        >
+          <h3>
+            Q : Pourquoi avoir créer ce site ?
+          </h3>
+          <div
+            data-testid="expand-icon"
+          />
+        </div>
+        <div
+          data-testid="accordion-details"
+        >
+          Pour passer ma certification de concepteur développeur web. J'aimais pas le projet fait en cours, du coup j'ai fait le miens (il est mieux).
+        </div>
+      </div>
+      <div
+        data-testid="accordion"
+      >
+        <div
+          data-testid="accordion-summary"
+        >
+          <h3>
+            Q : Va-t-il y avoir des mise à jour ?
+          </h3>
+          <div
+            data-testid="expand-icon"
+          />
+        </div>
+        <div
+          data-testid="accordion-details"
+        >
+          Bah là c'est pas prévu mais j'ai des idées.
+        </div>
+      </div>
+      <div
+        data-testid="accordion"
+      >
+        <div
+          data-testid="accordion-summary"
+        >
+          <h3>
+            Q : Où peut on suivre le créateur du site? (il est sympa le gars)
+          </h3>
+          <div
+            data-testid="expand-icon"
+          />
+        </div>
+        <div
+          data-testid="accordion-details"
+        >
+          Alors! Très bonne question!
+          <br />
+          <br />
+          <a
+            href="https://github.com/BaptisteCourtin"
+          >
+            Github : https://github.com/BaptisteCourtin
+          </a>
+          <br />
+          <a
+            href="https://www.linkedin.com/in/baptistecourtin/"
+          >
+            LinkedIn : https://www.linkedin.com/in/baptistecourtin/
+          </a>
+          <br />
+          <br />
+          (Embauchez moi s'il vous plait)
+        </div>
+      </div>
+    </div>
+  </main>
+</DocumentFragment>
+`;

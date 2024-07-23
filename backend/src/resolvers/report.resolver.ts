@@ -2,7 +2,7 @@ import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from "type-graphql";
 import { MyContext } from "..";
 import { ReportStatus } from "../enum/reportStatus.enum";
 
-import { MessageEntity } from "../entities/message.entity";
+import MessageEntity from "../entities/message.entity";
 import ReportEntity from "../entities/reportEntity.entity";
 import UserEntity from "../entities/user.entity";
 import JoinUserParkourNoteEntity from "../entities/joinUserParkourNote.entity";

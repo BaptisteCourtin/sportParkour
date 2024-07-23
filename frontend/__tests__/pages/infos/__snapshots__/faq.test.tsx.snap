@@ -1,0 +1,75 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Faq Page renders correctly 1`] = `
+<DocumentFragment>
+  <main
+    class="pagesInfos"
+  >
+    <h1>
+      Questions fréquemment posées
+    </h1>
+    <div>
+      <div
+        data-testid="accordion"
+      >
+        <div
+          data-testid="accordion-summary"
+        >
+          <h3>
+            Q : Comment vous contacter ?
+          </h3>
+        </div>
+        <div
+          data-testid="accordion-details"
+        >
+          Ne le fait pas
+        </div>
+      </div>
+      <div
+        data-testid="accordion"
+      >
+        <div
+          data-testid="accordion-summary"
+        >
+          <h3>
+            Q : Vous aimez le sport ?
+          </h3>
+        </div>
+        <div
+          data-testid="accordion-details"
+        >
+          Non, mais l'argent oui.
+        </div>
+      </div>
+      <div
+        data-testid="accordion"
+      >
+        <div
+          data-testid="accordion-summary"
+        >
+          <h3>
+            Q : ça va ?
+          </h3>
+        </div>
+        <div
+          data-testid="accordion-details"
+        >
+          Moi ouais.
+        </div>
+        <div
+          data-testid="accordion-actions"
+        >
+          <div>
+            <button>
+              moi aussi ça va 👍
+            </button>
+            <button>
+              moi non, mais tout le monde s'en fout
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</DocumentFragment>
+`;

@@ -1,9 +1,11 @@
 import { Field, ObjectType } from "type-graphql";
 
 @ObjectType()
-export class MessageEntity {
+class MessageEntity {
   @Field()
   message: string;
   @Field()
   success: boolean;
 }
+
+export default MessageEntity;

@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NoteCard matches snapshot 1`] = `
+<DocumentFragment>
+  <li
+    class="NON_VU noteCard"
+  >
+    <div
+      class="top"
+    >
+      <p
+        class="commentInFaute"
+      >
+        Commentaire en faute
+      </p>
+      <button
+        data-testid="button-for-comment"
+      >
+        Button for Comment
+      </button>
+    </div>
+    <a
+      href="/parkour/parkour-1"
+    >
+      parkour du commentaire : Parkour Title
+    </a>
+  </li>
+</DocumentFragment>
+`;

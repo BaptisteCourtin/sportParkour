@@ -1,16 +1,10 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import NavbarOrdi from "../../src/components/layout/ordi/navbarOrdi";
+import NavbarOrdi from "@/components/layout/ordi/navbarOrdi";
 
 // Mock du router
-jest.mock("next/router", () => ({
-  useRouter() {
-    return {
-      pathname: "/",
-    };
-  },
-}));
+jest.mock("next/router", () => require("next-router-mock"));
 
 // Mock du dark/light
 jest.mock("@/context/themeContext", () => ({

@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ReportCardForSearchUser matches snapshot 1`] = `
+<DocumentFragment>
+  <li
+    class="nbRep-3 reportCardForSearchUser"
+  >
+    <div
+      class="userProfil"
+    >
+      <img
+        class="imgProfil"
+        src="/userDefault.png"
+      />
+      <a
+        href="/admin/reports/user/123"
+      >
+        John Doe
+      </a>
+    </div>
+    <p>
+      L'utilisateur a 3 report valide contre lui
+    </p>
+    <p>
+      L'utilisateur a émis 5 reports
+    </p>
+  </li>
+</DocumentFragment>
+`;
