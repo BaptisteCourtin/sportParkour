@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import ButtonForComment from "../buttonForComment";
 
+// card d'un commentaire, version page modo d'un user
 const noteCard = ({ note, malfratId }: { note: any; malfratId: string }) => {
   return (
     <li className={`${note.status} noteCard`}>

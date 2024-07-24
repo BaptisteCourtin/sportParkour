@@ -5,6 +5,7 @@ import {
 import React from "react";
 import toast from "react-hot-toast";
 
+// button pour mettre un like ou de l'enlever
 const likeParkour = ({
   isLiked,
   setIsLiked,

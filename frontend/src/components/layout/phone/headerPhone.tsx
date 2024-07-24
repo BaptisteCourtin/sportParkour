@@ -5,6 +5,7 @@ import { FaArrowLeft } from "react-icons/fa6";
 
 import DarkLightPhone from "./darkLightPhone";
 
+// header phone avec retour + dark/light
 const headerPhone = () => {
   return (
     <div className="headerPhone elementsNavigation">

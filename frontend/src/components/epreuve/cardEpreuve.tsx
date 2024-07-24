@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { GetEpreuveByIdQuery } from "@/types/graphql";
 
+// card pour une épreuve
 const cardEpreuve = ({
   epreuve,
 }: {

@@ -1,9 +1,10 @@
+import React from "react";
 import { FaMoon } from "react-icons/fa6";
 import { FaSun } from "react-icons/fa6";
 
-import React from "react";
 import { useDarkLightContext } from "@/context/themeContext";
 
+// button dark/light en version desktop
 const DarkLight = () => {
   const { isDarkTheme, toggleTheme } = useDarkLightContext();
 

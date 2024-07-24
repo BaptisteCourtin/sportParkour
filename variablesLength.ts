@@ -1,3 +1,4 @@
+// variables utilisées en front (length input) et en back (entity length)
 export const LENGTH_TITLE = 50;
 export const LENGTH_DESCRIPTION = 1000;
 export const LENGTH_LITTLE_DESCRIPTION = 250;

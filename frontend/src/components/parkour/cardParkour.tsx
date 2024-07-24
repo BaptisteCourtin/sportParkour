@@ -11,6 +11,8 @@ import { FaStopwatch } from "react-icons/fa6";
 import { FaArrowUpRightDots } from "react-icons/fa6";
 import { FaCircleArrowRight } from "react-icons/fa6";
 
+// affiche la card d'un parkour
+// color => par rapport à où on l'utilise
 const cardParkour = ({
   parkour,
   color,

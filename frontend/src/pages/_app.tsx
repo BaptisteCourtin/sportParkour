@@ -12,7 +12,7 @@ import { Toaster } from "react-hot-toast";
 import { DarkLightProvider } from "@/context/themeContext";
 
 export default function MyApp({ Component, pageProps }: AppProps) {
-  // pour l'authenthification
+  // pour utiliser apollo
   const client = new ApolloClient({
     uri: "http://localhost:4000",
     cache: new InMemoryCache(),
@@ -20,6 +20,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   });
 
   return (
+    // utilisation de apollo
     <ApolloProvider client={client}>
       <Head>
         <title>Create Next App</title>
@@ -28,14 +29,19 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 
         <link rel="icon" href="/Icon-White.svg" />
       </Head>
+
+      {/* contexte du thème de couleur */}
       <DarkLightProvider>
+        {/* Layout => sur toutes les pages (navbar et footer) */}
         <Layout>
+          {/* dépendance pour faire des toast */}
           <Toaster
             position="bottom-center"
             toastOptions={{
               duration: 5000,
             }}
           />
+          {/* la page que l'on va voir */}
           <Component {...pageProps} />
         </Layout>
       </DarkLightProvider>

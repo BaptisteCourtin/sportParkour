@@ -20,7 +20,7 @@ const uploadDocToGoogleCloud = (file: Express.Multer.File) =>
     const newName = uniqueSuffix + "-" + originalname;
 
     // mise dans google cloud
-    const blob = bucket.file(newName.replace(/ /g, "_")); // utilise le nouveau nom
+    const blob = bucket.file(newName.substring(150).replace(/ /g, "_")); // utilise le nouveau nom
     const blobStream = blob.createWriteStream({
       resumable: false,
     });

@@ -17,7 +17,6 @@ export default class ParkourResolver {
     return result;
   }
 
-  // possiblement changer
   @Query(() => [ParkourEntity])
   async getAllParkourForMap() {
     const result: ParkourEntity[] =

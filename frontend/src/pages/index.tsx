@@ -357,7 +357,7 @@ export default function Home() {
               <button onClick={() => resetChoosen()}>reset la recherche</button>
             </section>
 
-            {/* --- */}
+            {/* --- pagination au dessus des cards --- */}
 
             {dataTotal?.getTheParkourTotalForSearch ? (
               <Stack spacing={2}>
@@ -374,7 +374,7 @@ export default function Home() {
               ""
             )}
 
-            {/* --- */}
+            {/* --- cards des parkour --- */}
 
             <ul className="cardsParkoursUl">
               {data?.getTop20ParkourBySearch.map((parkour: any) => (
@@ -382,7 +382,7 @@ export default function Home() {
               ))}
             </ul>
 
-            {/* --- */}
+            {/* --- pagination en dessous des cards --- */}
 
             {dataTotal?.getTheParkourTotalForSearch ? (
               <Stack spacing={2}>

@@ -13,6 +13,7 @@ import Rating from "@mui/material/Rating";
 
 import toast from "react-hot-toast";
 
+// dialog pour mettre une note et un commentaire à un parkour ou modifier
 const putNoteParkour = ({
   myNote,
   setMyNote,

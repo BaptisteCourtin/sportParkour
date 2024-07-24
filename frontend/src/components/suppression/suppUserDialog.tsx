@@ -13,6 +13,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import toast from "react-hot-toast";
 import router from "next/router";
 
+// dialog pour supprimer son compte
 const suppUserDialog = ({
   userEmail,
   userId,

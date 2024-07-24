@@ -3,6 +3,7 @@ import Link from "next/link";
 import ButtonForRepport from "../buttonForReport";
 import DateFormatter from "@/components/DateFormatter";
 
+// card report d'un commentaire, version page modo d'un user
 const reportCard = ({
   report,
   malfratId,

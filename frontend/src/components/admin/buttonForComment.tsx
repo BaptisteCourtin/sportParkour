@@ -9,6 +9,7 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { FaEllipsisVertical } from "react-icons/fa6";
 
+// button action sur un commentaire, version page du parkour
 const buttonForComment = ({
   malfratId,
   parkourId,

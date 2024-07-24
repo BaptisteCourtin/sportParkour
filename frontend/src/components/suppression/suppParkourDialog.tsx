@@ -13,6 +13,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 
 import toast from "react-hot-toast";
 
+// dialog pour supprimer un parkour
 const suppParkourDialog = ({
   parkourTitle,
   parkourId,

@@ -5,6 +5,7 @@ import { FaSun } from "react-icons/fa6";
 
 import { useDarkLightContext } from "@/context/themeContext";
 
+// button dark/light en version téléphone
 const DarkLightPhone = () => {
   const { isDarkTheme, toggleTheme } = useDarkLightContext();
 

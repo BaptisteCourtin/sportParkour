@@ -3,6 +3,7 @@ import Link from "next/link";
 import ButtonForRepport from "./buttonForReport";
 import DateFormatter from "../DateFormatter";
 
+// card pour afficher un commentaire report, page modo
 const reportCardForSearch = ({ report }: any) => {
   return (
     <li className={`${report.status} reportCard`}>

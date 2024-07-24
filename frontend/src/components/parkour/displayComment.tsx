@@ -3,6 +3,7 @@ import React from "react";
 import Rating from "@mui/material/Rating";
 import ButtonForComment from "../admin/buttonForComment";
 
+// affiche un commentaire
 const displayComment = ({
   comment,
   parkourId,

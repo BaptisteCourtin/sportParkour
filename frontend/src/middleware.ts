@@ -1,3 +1,5 @@
+// middleware pour savoir si tu as le droit d'accéder à la page demandée
+
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { jwtVerify } from "jose";

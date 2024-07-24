@@ -1,5 +1,6 @@
 import React from "react";
 
+// renvoie une date lisible
 const DateFormatter = ({ datetime }: { datetime: string }) => {
   const date = new Date(datetime);
   if (isNaN(date.getTime())) {

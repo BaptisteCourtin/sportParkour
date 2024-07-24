@@ -11,6 +11,7 @@ import { useDarkLightContext } from "@/context/themeContext";
 import DarkLight from "@/components/layout/ordi/darkLightOrdi";
 import Tooltip from "@mui/material/Tooltip";
 
+// navbar ordi (en haut) avec logo + dark/light + liens pages
 const navbarOrdi = () => {
   const router = useRouter();
   const { isDarkTheme, toggleTheme } = useDarkLightContext();

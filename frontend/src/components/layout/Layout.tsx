@@ -7,6 +7,7 @@ import NavbarPhone from "./phone/navbarPhone";
 import HeaderPhone from "./phone/headerPhone";
 import { useDarkLightContext } from "@/context/themeContext";
 
+// base du layout
 const Layout = ({ children }: React.PropsWithChildren<{}>) => {
   const { isDarkTheme, toggleTheme } = useDarkLightContext();
 

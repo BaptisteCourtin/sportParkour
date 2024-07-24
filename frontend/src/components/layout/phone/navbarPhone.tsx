@@ -7,6 +7,7 @@ import { FaHouse } from "react-icons/fa6";
 import { FaMapLocationDot } from "react-icons/fa6";
 import { FaFlagCheckered } from "react-icons/fa6";
 
+// navbar phone (an bas) avec liens pages
 const navbarPhone = () => {
   const router = useRouter();
   return (

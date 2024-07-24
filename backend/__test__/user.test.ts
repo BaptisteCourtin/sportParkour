@@ -17,32 +17,11 @@ import UserResolver from "../src/resolvers/user.resolver";
 // ---------------------------------------------------------------------------------
 // --- REQUESTS ---
 // ---------------------------------------------------------------------------------
-export const GET_USER_BY_TOKEN = `#graphql
-  query GetUserByToken {
-    getUserByToken {
-      id
-      name
-      firstname
-      email
-      city
-      codePostal
-      phone
-      imageProfil
-    }
-  }
-`;
-
-export const IS_ADMIN = `#graphql
-  query IsAdmin {
-    isAdmin
-  }
-`;
-
-export const IS_CLIENT = `#graphql
-  query IsClient {
-    isClient
-  }
-`;
+import {
+  IS_ADMIN,
+  IS_CLIENT,
+  GET_USER_BY_TOKEN,
+} from "../../frontend/src/requests/queries/user.queries";
 
 // ---------------------------------------------------------------------------------
 // --- MOCKS ---
@@ -76,6 +55,10 @@ const userGetData = {
   codePostal: "44100",
   phone: "06 06 06 06 06",
   imageProfil: "",
+};
+
+type ResponseGetUser = {
+  user: UserEntity;
 };
 
 // ---------------------------------------------------------------------------------

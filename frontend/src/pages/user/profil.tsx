@@ -202,7 +202,7 @@ const profil = () => {
         data?.getUserByToken && (
           <>
             {isModifMode ? (
-              // --- modif ---
+              // --- modif profil ---
               <>
                 <form
                   className="bigForm"
@@ -478,7 +478,7 @@ const profil = () => {
               </section>
             )}
 
-            {/* --- favoris / note / modo --- */}
+            {/* --- liens pour les pages de favoris / note / modo --- */}
             {dataIsClient ? (
               <div className="buttMyPages">
                 <Link className="button" href="/user/notes">

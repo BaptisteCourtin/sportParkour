@@ -11,6 +11,7 @@ import {
   useAdvancedMarkerRef,
 } from "@vis.gl/react-google-maps";
 
+// affiche un point sur la map
 const PoiMarker = ({ poi }: { poi: GetParkourByIdQuery["getParkourById"] }) => {
   const [markerRef, marker] = useAdvancedMarkerRef();
   const [activeMarkerId, setActiveMarkerId] = useState("0");

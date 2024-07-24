@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 
+// card pour aficher un user rechercher, page modo
 const reportCardForSearchUser = ({ reportUser }: any) => {
   return (
     <li

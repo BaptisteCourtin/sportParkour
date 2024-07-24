@@ -9,6 +9,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import toast from "react-hot-toast";
 
+// dialog pour supprimer une note et le commentaire
 const suppNoteParkour = ({
   myNote,
   setMyNote,
