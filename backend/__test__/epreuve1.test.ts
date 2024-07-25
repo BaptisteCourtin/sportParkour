@@ -11,7 +11,7 @@ import datasource from "../src/lib/datasource";
 // ---------------------------------------------------------------------------------
 // --- REQUESTS ---
 // ---------------------------------------------------------------------------------
-import { GET_EPREUVE_BY_ID } from "../../frontend/src/requests/queries/epreuve.queries";
+import { GET_EPREUVE_BY_ID } from "./requests/queries/epreuve.queries";
 
 // ---------------------------------------------------------------------------------
 // --- MOCKS ---

@@ -16,7 +16,7 @@ import assert from "assert";
 import {
   GET_ALL_EPREUVE,
   GET_EPREUVE_BY_ID,
-} from "../../frontend/src/requests/queries/epreuve.queries";
+} from "./requests/queries/epreuve.queries";
 
 // ---------------------------------------------------------------------------------
 // --- MOCKS ---

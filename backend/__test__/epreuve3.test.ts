@@ -1,7 +1,9 @@
+// avec le store
 import "reflect-metadata";
-
 import assert from "assert";
-import EpreuveEntity from "../src/entities/epreuve.entity";
+import EpreuveEntity, {
+  EpreuveCreateEntity,
+} from "../src/entities/epreuve.entity";
 import ImageEpreuveEntity from "../src/entities/imageEpreuve.entity";
 import EpreuveResolver from "../src/resolvers/epreuve.resolver";
 import {
@@ -17,7 +19,8 @@ import { makeExecutableSchema } from "@graphql-tools/schema";
 // ---------------------------------------------------------------------------------
 // --- REQUESTS ---
 // ---------------------------------------------------------------------------------
-import { GET_ALL_EPREUVE } from "../../frontend/src/requests/queries/epreuve.queries";
+import { GET_ALL_EPREUVE } from "./requests/queries/epreuve.queries";
+import { CREATE_EPREUVE } from "./requests/mutations/epreuve.mutations";
 
 // ---------------------------------------------------------------------------------
 // --- MOCKS ---
@@ -28,9 +31,10 @@ type EpreuveGetAll = {
   title: string;
   images: ImageEpreuveEntity[];
 };
+type EpreuveWithoutParkoursAndId = Omit<EpreuveEntity, "parkours" | "id">;
 
 // ---
-// à mettre dans le store
+// à mettre dans le store de base
 const epreuvesData: EpreuveWithoutParkours[] = [
   {
     id: 1,
@@ -54,7 +58,7 @@ const epreuvesData: EpreuveWithoutParkours[] = [
   },
 ];
 
-// pour vérifier ce qu'il sort du store
+// pour vérifier ce qu'il sort du store (get1)
 const getAllEpreuveData: EpreuveGetAll[] = [
   {
     id: 1,
@@ -67,6 +71,17 @@ const getAllEpreuveData: EpreuveGetAll[] = [
     images: [],
   },
 ];
+
+// create
+const createEpreuveData: EpreuveWithoutParkoursAndId = {
+  title: "titre de test epreuve3",
+  description: "description de test epreuve3",
+  easyToDo: "description easy de test epreuve3",
+  mediumToDo: "description medium de test epreuve3",
+  hardToDo: "description hard de test epreuve3",
+  videoLink: "lien video de test epreuve3",
+  images: [],
+};
 
 // ---------------------------------------------------------------------------------
 // --- SERVER ---
@@ -92,7 +107,14 @@ beforeAll(async () => {
         return store.get("Query", "ROOT", "getAllEpreuve");
       },
     },
+    Mutation: {
+      createEpreuve: (_: null, { infos }: { infos: EpreuveCreateEntity }) => {
+        store.set("EpreuveEntity", "3", infos);
+        return store.get("EpreuveEntity", "3");
+      },
+    },
   });
+
   server = new ApolloServer({
     schema: addMocksToSchema({
       schema: baseSchema,
@@ -101,7 +123,7 @@ beforeAll(async () => {
     }),
   });
 
-  //remplissage du store
+  //remplissage du store de base
   store.set("Query", "ROOT", "getAllEpreuve", epreuvesData);
 });
 
@@ -110,7 +132,7 @@ beforeAll(async () => {
 // ---------------------------------------------------------------------------------
 
 describe("Test sur les épreuves v3", () => {
-  it("Récupération des epreuves depuis le store", async () => {
+  it("Récupération des épreuves depuis le store", async () => {
     const response = await server.executeOperation<{
       getAllEpreuve: EpreuveGetAll[];
     }>({
@@ -123,22 +145,26 @@ describe("Test sur les épreuves v3", () => {
       ...epreuve,
       id: epreuve.id.toString(),
     }));
-
     expect(response.body.singleResult.data).toEqual({
       getAllEpreuve: expectedData,
     });
-    console.log(response);
+  });
 
-    // assert(response.body.singleResult.data);
-    // const epreuves = response.body.singleResult.data.getAllEpreuve;
+  it("Création d'une épreuve et stockage dans le store", async () => {
+    const response = await server.executeOperation({
+      query: CREATE_EPREUVE,
+      variables: {
+        infos: createEpreuveData,
+      },
+    });
 
-    // assert(Array.isArray(epreuves));
-    // assert(epreuves.length === epreuvesData.length);
-    // epreuves.forEach((epreuve, index) => {
-    //   assert(epreuve.id === epreuvesData[index].id);
-    //   assert(epreuve.title === epreuvesData[index].title);
-    // });
+    assert(response.body.kind === "single");
+
+    expect(response.body.singleResult.data).toEqual({
+      createEpreuve: {
+        id: "3",
+        title: "titre de test epreuve3",
+      },
+    });
   });
 });
-
-// but => create + get + modify + get + delete + get

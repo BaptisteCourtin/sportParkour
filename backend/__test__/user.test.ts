@@ -21,7 +21,7 @@ import {
   IS_ADMIN,
   IS_CLIENT,
   GET_USER_BY_TOKEN,
-} from "../../frontend/src/requests/queries/user.queries";
+} from "./requests/queries/user.queries";
 
 // ---------------------------------------------------------------------------------
 // --- MOCKS ---
