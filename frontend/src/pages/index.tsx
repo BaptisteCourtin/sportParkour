@@ -268,9 +268,9 @@ export default function Home() {
                     <MenuItem value="">
                       <em>None</em>
                     </MenuItem>
-                    <MenuItem value="EASY">{Difficulty.Facile}</MenuItem>
-                    <MenuItem value="MEDIUM">{Difficulty.Moyen}</MenuItem>
-                    <MenuItem value="HARD">{Difficulty.Difficile}</MenuItem>
+                    <MenuItem value="EASY">facile</MenuItem>
+                    <MenuItem value="MEDIUM">moyen</MenuItem>
+                    <MenuItem value="HARD">difficile</MenuItem>
                   </Select>
                 </FormControl>
               </div>

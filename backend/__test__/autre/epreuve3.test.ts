@@ -3,9 +3,9 @@ import "reflect-metadata";
 import assert from "assert";
 import EpreuveEntity, {
   EpreuveCreateEntity,
-} from "../src/entities/epreuve.entity";
-import ImageEpreuveEntity from "../src/entities/imageEpreuve.entity";
-import EpreuveResolver from "../src/resolvers/epreuve.resolver";
+} from "../../src/entities/epreuve.entity";
+import ImageEpreuveEntity from "../../src/entities/imageEpreuve.entity";
+import EpreuveResolver from "../../src/resolvers/epreuve.resolver";
 import {
   IMockStore,
   addMocksToSchema,
@@ -19,8 +19,8 @@ import { makeExecutableSchema } from "@graphql-tools/schema";
 // ---------------------------------------------------------------------------------
 // --- REQUESTS ---
 // ---------------------------------------------------------------------------------
-import { GET_ALL_EPREUVE } from "./requests/queries/epreuve.queries";
-import { CREATE_EPREUVE } from "./requests/mutations/epreuve.mutations";
+import { GET_ALL_EPREUVE } from "../requests/queries/epreuve.queries";
+import { CREATE_EPREUVE } from "../requests/mutations/epreuve.mutations";
 
 // ---------------------------------------------------------------------------------
 // --- MOCKS ---

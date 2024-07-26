@@ -538,11 +538,9 @@ const modifyOneParkour = () => {
                       <MenuItem value="">
                         <em>None</em>
                       </MenuItem>
-                      <MenuItem value="facile">{Difficulty.Facile}</MenuItem>
-                      <MenuItem value="moyen">{Difficulty.Moyen}</MenuItem>
-                      <MenuItem value="difficile">
-                        {Difficulty.Difficile}
-                      </MenuItem>
+                      <MenuItem value="EASY">facile</MenuItem>
+                      <MenuItem value="MEDIUM">moyen</MenuItem>
+                      <MenuItem value="HARD">difficile</MenuItem>
                     </Select>
                   </FormControl>
                   <p className="error">{errors?.difficulty?.message}</p>

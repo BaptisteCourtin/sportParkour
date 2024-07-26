@@ -3,9 +3,9 @@ import "reflect-metadata";
 import { buildSchemaSync } from "type-graphql";
 import { ApolloServer } from "@apollo/server";
 
-import EpreuveEntity from "../src/entities/epreuve.entity";
-import ImageEpreuveEntity from "../src/entities/imageEpreuve.entity";
-import EpreuveResolver from "../src/resolvers/epreuve.resolver";
+import EpreuveEntity from "../../src/entities/epreuve.entity";
+import ImageEpreuveEntity from "../../src/entities/imageEpreuve.entity";
+import EpreuveResolver from "../../src/resolvers/epreuve.resolver";
 
 import { addMocksToSchema } from "@graphql-tools/mock";
 import assert from "assert";
@@ -16,7 +16,7 @@ import assert from "assert";
 import {
   GET_ALL_EPREUVE,
   GET_EPREUVE_BY_ID,
-} from "./requests/queries/epreuve.queries";
+} from "../requests/queries/epreuve.queries";
 
 // ---------------------------------------------------------------------------------
 // --- MOCKS ---

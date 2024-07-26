@@ -11,7 +11,7 @@ import UserEntity from "../../src/entities/user.entity";
 
 export default new DataSource({
   type: "sqlite",
-  database: "sportParkourTest.sqlite",
+  database: ":memory:", // base de données en mémoire pour éviter => QueryFailedError: SQLITE_BUSY: database is locked
   synchronize: true,
   entities: [
     EpreuveEntity,
@@ -23,6 +23,6 @@ export default new DataSource({
     ImageParkourEntity,
     ResetPasswordEntity,
     ReportEntity,
-  ], // mettre les entities
-  logging: ["query", "error"],
+  ],
+  logging: ["error"],
 });

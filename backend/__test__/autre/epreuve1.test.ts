@@ -3,15 +3,15 @@ import "reflect-metadata";
 import { buildSchemaSync } from "type-graphql";
 import { ApolloServer } from "@apollo/server";
 
-import EpreuveEntity from "../src/entities/epreuve.entity";
-import EpreuveResolver from "../src/resolvers/epreuve.resolver";
+import EpreuveEntity from "../../src/entities/epreuve.entity";
+import EpreuveResolver from "../../src/resolvers/epreuve.resolver";
 
-import datasource from "../src/lib/datasource";
+import datasource from "../../src/lib/datasource";
 
 // ---------------------------------------------------------------------------------
 // --- REQUESTS ---
 // ---------------------------------------------------------------------------------
-import { GET_EPREUVE_BY_ID } from "./requests/queries/epreuve.queries";
+import { GET_EPREUVE_BY_ID } from "../requests/queries/epreuve.queries";
 
 // ---------------------------------------------------------------------------------
 // --- MOCKS ---

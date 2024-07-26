@@ -20,9 +20,9 @@ export type Scalars = {
 
 /** Difficulty enum */
 export enum Difficulty {
-  Difficile = 'difficile',
-  Facile = 'facile',
-  Moyen = 'moyen'
+  Easy = 'EASY',
+  Hard = 'HARD',
+  Medium = 'MEDIUM'
 }
 
 export type EpreuveCreateEntity = {

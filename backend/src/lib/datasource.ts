@@ -56,4 +56,6 @@ export default new DataSource({
   ], // mettre les entities
   synchronize: true, //à ne pas utiliser en production
   logging: ["error", "query"], //à ne pas utiliser en production
+  // synchronize: false,
+  // logging: false,
 });

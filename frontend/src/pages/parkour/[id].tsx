@@ -7,14 +7,13 @@ import {
   useGetUserFavByTokenAndParkourIdLazyQuery,
   useIsAdminQuery,
   useIsClientQuery,
-  useCreateJoinUserParkourNoteMutation,
   useGetUserNoteByTokenAndParkourIdLazyQuery,
+  Difficulty,
 } from "@/types/graphql";
 
 import Rating from "@mui/material/Rating";
 
 import Carousel from "react-material-ui-carousel";
-import { toast } from "react-hot-toast";
 import { FaAngleRight } from "react-icons/fa6";
 import { FaAngleLeft } from "react-icons/fa6";
 import { FaLocationDot } from "react-icons/fa6";
@@ -196,7 +195,12 @@ const OneParkour = () => {
                 <FaPersonRunning /> {data.getParkourById.length} km
               </p>
               <p>
-                <FaArrowUpRightDots /> {data.getParkourById.difficulty}
+                <FaArrowUpRightDots />
+                {data.getParkourById.difficulty == Difficulty.Easy
+                  ? "facile"
+                  : data.getParkourById.difficulty == Difficulty.Medium
+                  ? "moyen"
+                  : "difficile"}
               </p>
             </div>
 

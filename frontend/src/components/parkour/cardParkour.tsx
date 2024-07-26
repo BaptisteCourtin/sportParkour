@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import Rating from "@mui/material/Rating";
 
-import { GetParkourByIdQuery } from "@/types/graphql";
+import { Difficulty, GetParkourByIdQuery } from "@/types/graphql";
 
 import { FaLocationDot } from "react-icons/fa6";
 import { FaPersonRunning } from "react-icons/fa6";
@@ -47,7 +47,12 @@ const cardParkour = ({
           <FaPersonRunning /> {parkour.length} km
         </p>
         <p>
-          <FaArrowUpRightDots /> {parkour.difficulty}
+          <FaArrowUpRightDots />{" "}
+          {parkour.difficulty == Difficulty.Easy
+            ? "facile"
+            : parkour.difficulty == Difficulty.Medium
+            ? "moyen"
+            : "difficile"}
         </p>
       </div>
 
