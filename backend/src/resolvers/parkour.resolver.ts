@@ -55,10 +55,10 @@ export default class ParkourResolver {
 
         startPage,
         city,
-        timeMin,
-        timeMax,
         lengthMin,
         lengthMax,
+        timeMin,
+        timeMax,
         difficulty,
         noteMin
       );
@@ -79,10 +79,10 @@ export default class ParkourResolver {
     const result: Number =
       await new ParkourService().getTheParkourTotalForSearch(
         city,
-        timeMin,
-        timeMax,
         lengthMin,
         lengthMax,
+        timeMin,
+        timeMax,
         difficulty,
         noteMin
       );

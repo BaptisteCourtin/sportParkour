@@ -144,10 +144,10 @@ export default function Home() {
         triParSort: tri.split("_")[1],
         startPage: (page - 1) * 20,
         city: selectedCommuneName.toLowerCase(),
-        timeMin: valueTime[0],
-        timeMax: valueTime[1],
         lengthMin: valueLength[0],
         lengthMax: valueLength[1],
+        timeMin: valueTime[0],
+        timeMax: valueTime[1],
         difficulty: choosenDificulty,
         noteMin: choosenNoteMin,
       },
@@ -239,8 +239,7 @@ export default function Home() {
               <button type="submit">Chercher par numéro</button>
             </form>
 
-            {/* --- */}
-
+            {/* --- BIG SEACRH --- */}
             <section className="formSearchParkour littleForm">
               <div className="champ">
                 <SearchBarCommuneName

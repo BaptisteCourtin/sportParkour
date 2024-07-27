@@ -81,10 +81,10 @@ class ParkourService {
 
     startPage?: number,
     city?: string,
-    timeMin?: number,
-    timeMax?: number,
     lengthMin?: number,
     lengthMax?: number,
+    timeMin?: number,
+    timeMax?: number,
     difficulty?: string,
     noteMin?: number
   ) {
@@ -103,18 +103,14 @@ class ParkourService {
         city: `%${city}%`,
       });
     }
-    if (timeMin && timeMax) {
-      query.andWhere("parkour.time BETWEEN :timeMin AND :timeMax", {
-        timeMin,
-        timeMax,
-      });
-    }
-    if (lengthMin && lengthMax) {
-      query.andWhere("parkour.length BETWEEN :lengthMin AND :lengthMax", {
-        lengthMin,
-        lengthMax,
-      });
-    }
+    query.andWhere("parkour.length BETWEEN :lengthMin AND :lengthMax", {
+      lengthMin,
+      lengthMax,
+    });
+    query.andWhere("parkour.time BETWEEN :timeMin AND :timeMax", {
+      timeMin,
+      timeMax,
+    });
     if (difficulty) {
       query.andWhere("parkour.difficulty = :difficulty", { difficulty });
     }
@@ -146,24 +142,21 @@ class ParkourService {
 
   async getTheParkourTotalForSearch(
     city?: string,
-    timeMin?: number,
-    timeMax?: number,
     lengthMin?: number,
     lengthMax?: number,
+    timeMin?: number,
+    timeMax?: number,
     difficulty?: string,
     noteMin?: number
   ) {
     const whereConditions: any = {};
+    console.log(lengthMin, lengthMax, timeMin, timeMax);
 
     if (city) {
       whereConditions.city = Like(`%${city}%`);
     }
-    if (timeMin && timeMax) {
-      whereConditions.time = Between(timeMin, timeMax);
-    }
-    if (lengthMin && lengthMax) {
-      whereConditions.length = Between(lengthMin, lengthMax);
-    }
+    whereConditions.time = Between(timeMin, timeMax);
+    whereConditions.length = Between(lengthMin, lengthMax);
     if (difficulty) {
       whereConditions.difficulty = difficulty;
     }
