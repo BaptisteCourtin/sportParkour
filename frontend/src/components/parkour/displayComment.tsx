@@ -20,9 +20,9 @@ const displayComment = ({
       <div className="topComment">
         <div className="userProfil">
           {comment.user.imageProfil ? (
-            <img src={comment.user.imageProfil} className="imgProfil" />
+            <img src={comment.user.imageProfil} className="imgProfil" alt="" />
           ) : (
-            <img src="/userDefault.png" className="imgProfil" />
+            <img src="/userDefault.png" className="imgProfil" alt="" />
           )}
 
           <p>

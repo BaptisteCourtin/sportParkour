@@ -81,8 +81,8 @@ afterAll(async () => {
 // ---------------------------------------------------------------------------------
 // --- TESTS ---
 // ---------------------------------------------------------------------------------
-describe("Test sur les livres avec la base de données", () => {
-  it("récupération de la liste des parkours en base (y'en a pas)", async () => {
+describe("0. Test de base sur les parkour", () => {
+  test("get pas de parkour", async () => {
     const response = await server.executeOperation<ResponseDataAllParkour>({
       query: GET_ALL_PARKOUR_FOR_MAP,
     });
@@ -93,13 +93,13 @@ describe("Test sur les livres avec la base de données", () => {
     );
   });
 
-  it("Création d'une parkour et stockage dans le store", async () => {
+  test("1. création parkour", async () => {
     const response = await server.executeOperation<ResponseDataCreate>({
       query: CREATE_PARKOUR,
       variables: {
         infos: {
-          title: "titre test parkour bdd",
-          description: "description de test parkour avec bdd",
+          title: "titre test parkour",
+          description: "description de test parkour",
           time: 30,
           length: 20,
           difficulty: Difficulty.EASY,
@@ -112,24 +112,24 @@ describe("Test sur les livres avec la base de données", () => {
     });
 
     assert(response.body.kind === "single");
-
     expect(response.body.singleResult.data?.createParkour.id).not.toBeNull();
     expect(response.body.singleResult.data?.createParkour.title).toEqual(
-      "titre test parkour bdd"
+      "titre test parkour"
     );
   });
 
-  it("récupération de la liste des livres en base après l'ajout d'un livre", async () => {
+  test("2. get liste parkour après création", async () => {
     const response = await server.executeOperation<ResponseDataAllParkour>({
       query: GET_ALL_PARKOUR_FOR_MAP,
     });
+
     assert(response.body.kind === "single");
     expect(response.body.singleResult.data?.getAllParkourForMap).toHaveLength(
       1
     );
   });
 
-  it("Modification d'une parkour et stockage dans le store", async () => {
+  test("3. modification parkour", async () => {
     const response = await server.executeOperation<ResponseDataModify>({
       query: MODIFY_PARKOUR,
       variables: {
@@ -150,47 +150,48 @@ describe("Test sur les livres avec la base de données", () => {
     });
 
     assert(response.body.kind === "single");
-
     expect(response.body.singleResult.data?.modifyParkour.id).not.toBeNull();
     expect(response.body.singleResult.data?.modifyParkour.title).toEqual(
       "titre test apres modif"
     );
   });
 
-  it("récupération de la liste des épreuves", async () => {
+  test("4. get list parkour après modification", async () => {
     const response = await server.executeOperation<ResponseDataAllParkour>({
       query: GET_ALL_PARKOUR_FOR_MAP,
     });
+
     assert(response.body.kind === "single");
     expect(response.body.singleResult.data?.getAllParkourForMap).toHaveLength(
       1
     );
   });
 
-  it("récupération de l'épreuve 1", async () => {
+  test("5. get 1 parkour by id", async () => {
     const response = await server.executeOperation<ResponseDataOneParkour>({
       query: GET_PARKOUR_BY_ID,
       variables: {
         getParkourByIdId: 1,
       },
     });
-    assert(response.body.kind === "single");
 
+    assert(response.body.kind === "single");
     expect(response.body.singleResult.data?.getParkourById.title).toEqual(
       "titre test apres modif"
     );
     expect(response.body.singleResult.data?.getParkourById.description).toEqual(
-      "description de test parkour avec bdd"
+      "description de test parkour"
     );
   });
 
-  it("delete du parkour", async () => {
+  test("6. delete du parkour", async () => {
     const response = await server.executeOperation<ResponseDataDelete>({
       query: DELETE_PARKOUR,
       variables: {
         deleteParkourId: 1,
       },
     });
+
     assert(response.body.kind === "single");
     expect(response.body.singleResult.data?.deleteParkour.success).toBeTruthy();
     expect(response.body.singleResult.data?.deleteParkour.message).toEqual(
@@ -198,10 +199,11 @@ describe("Test sur les livres avec la base de données", () => {
     );
   });
 
-  it("récupération de la liste des épreuves", async () => {
+  test("7. get list parkour après delete", async () => {
     const response = await server.executeOperation<ResponseDataAllParkour>({
       query: GET_ALL_PARKOUR_FOR_MAP,
     });
+
     assert(response.body.kind === "single");
     expect(response.body.singleResult.data?.getAllParkourForMap).toHaveLength(
       0
@@ -209,4 +211,4 @@ describe("Test sur les livres avec la base de données", () => {
   });
 });
 
-// but => create - get - modify - get - getOne - delete - get
+// but => get - create - get - modify - get - getOne - delete - get

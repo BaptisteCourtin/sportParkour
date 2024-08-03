@@ -6,4 +6,13 @@ export default defineConfig({
       // implement node event listeners here
     },
   },
+
+  component: {
+    devServer: {
+      framework: "next",
+      bundler: "webpack",
+    },
+    viewportWidth: 1920,
+    viewportHeight: 1080,
+  },
 });

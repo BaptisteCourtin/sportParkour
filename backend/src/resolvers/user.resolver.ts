@@ -43,11 +43,18 @@ export default class UserResolver {
     const returnMessage = new MessageEntity();
 
     if (user) {
-      await new UserService().modifyUser(user, infos);
-      returnMessage.message = "Bien joué, vous venez de vous modifier";
-      returnMessage.success = true;
+      try {
+        await new UserService().modifyUser(user, infos);
+        returnMessage.message = "Bien joué, vous venez de vous modifier";
+        returnMessage.success = true;
+      } catch (error) {
+        console.error("Error in modifyUser resolver:", error);
+        returnMessage.message =
+          "Une erreur s'est produite lors de la modification";
+        returnMessage.success = false;
+      }
     } else {
-      returnMessage.message = "Une erreur ... (oups)";
+      returnMessage.message = "Utilisateur non trouvé";
       returnMessage.success = false;
     }
 

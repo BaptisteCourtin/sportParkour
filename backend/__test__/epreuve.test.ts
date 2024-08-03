@@ -80,8 +80,8 @@ afterAll(async () => {
 // ---------------------------------------------------------------------------------
 // --- TESTS ---
 // ---------------------------------------------------------------------------------
-describe("Test sur les livres avec la base de données", () => {
-  it("récupération de la liste des epreuves en base (y'en a pas)", async () => {
+describe("0. Test de base sur les épreuves", () => {
+  test("get pas d'épreuve", async () => {
     const response = await server.executeOperation<ResponseData>({
       query: GET_ALL_EPREUVE,
     });
@@ -90,39 +90,39 @@ describe("Test sur les livres avec la base de données", () => {
     expect(response.body.singleResult.data?.getAllEpreuve).toHaveLength(0);
   });
 
-  it("Création d'une epreuve et stockage dans le store", async () => {
+  test("1. création épreuve", async () => {
     const response = await server.executeOperation<ResponseDataCreate>({
       query: CREATE_EPREUVE,
       variables: {
         infos: {
-          title: "titre test epreuve bdd",
-          description: "description de test epreuve avec bdd",
-          easyToDo: "description easy de test epreuve avec bdd",
-          mediumToDo: "description medium de test epreuve avec bdd",
-          hardToDo: "description hard de test epreuve avec bdd",
-          videoLink: "lien video de test epreuve avec bdd",
+          title: "titre test epreuve",
+          description: "description de test epreuve",
+          easyToDo: "description easy de test epreuve",
+          mediumToDo: "description medium de test epreuve",
+          hardToDo: "description hard de test epreuve",
+          videoLink: "lien video de test epreuve",
           images: [],
         },
       },
     });
 
     assert(response.body.kind === "single");
-
     expect(response.body.singleResult.data?.createEpreuve.id).not.toBeNull();
     expect(response.body.singleResult.data?.createEpreuve.title).toEqual(
-      "titre test epreuve bdd"
+      "titre test epreuve"
     );
   });
 
-  it("récupération de la liste des livres en base après l'ajout d'un livre", async () => {
+  test("2. get liste épreuve après création", async () => {
     const response = await server.executeOperation<ResponseData>({
       query: GET_ALL_EPREUVE,
     });
+
     assert(response.body.kind === "single");
     expect(response.body.singleResult.data?.getAllEpreuve).toHaveLength(1);
   });
 
-  it("Modification d'une epreuve et stockage dans le store", async () => {
+  test("3. modification épreuve", async () => {
     const response = await server.executeOperation<ResponseDataModify>({
       query: MODIFY_EPREUVE,
       variables: {
@@ -140,48 +140,49 @@ describe("Test sur les livres avec la base de données", () => {
     });
 
     assert(response.body.kind === "single");
-
     expect(response.body.singleResult.data?.modifyEpreuve.id).not.toBeNull();
     expect(response.body.singleResult.data?.modifyEpreuve.title).toEqual(
       "titre test apres modif"
     );
   });
 
-  it("récupération de la liste des épreuves", async () => {
+  test("4. get list épreuve après modification", async () => {
     const response = await server.executeOperation<ResponseData>({
       query: GET_ALL_EPREUVE,
     });
+
     assert(response.body.kind === "single");
     expect(response.body.singleResult.data?.getAllEpreuve).toHaveLength(1);
   });
 
-  it("récupération de l'épreuve 1", async () => {
+  test("5. get 1 épreuve by id", async () => {
     const response = await server.executeOperation<ResponseDataOneEpreuve>({
       query: GET_EPREUVE_BY_ID,
       variables: {
         getEpreuveByIdId: 1,
       },
     });
-    assert(response.body.kind === "single");
 
+    assert(response.body.kind === "single");
     expect(response.body.singleResult.data?.getEpreuveById.title).toEqual(
       "titre test apres modif"
     );
     expect(response.body.singleResult.data?.getEpreuveById.description).toEqual(
-      "description de test epreuve avec bdd"
+      "description de test epreuve"
     );
     expect(response.body.singleResult.data?.getEpreuveById.easyToDo).toEqual(
-      "description easy de test epreuve avec bdd"
+      "description easy de test epreuve"
     );
   });
 
-  it("delete de l'épreuve", async () => {
+  test("6. delete de l'épreuve", async () => {
     const response = await server.executeOperation<ResponseDataDelete>({
       query: DELETE_EPREUVE,
       variables: {
         deleteEpreuveId: 1,
       },
     });
+
     assert(response.body.kind === "single");
     expect(response.body.singleResult.data?.deleteEpreuve.success).toBeTruthy();
     expect(response.body.singleResult.data?.deleteEpreuve.message).toEqual(
@@ -189,13 +190,14 @@ describe("Test sur les livres avec la base de données", () => {
     );
   });
 
-  it("récupération de la liste des épreuves", async () => {
+  test("7. get list épreuve après delete", async () => {
     const response = await server.executeOperation<ResponseData>({
       query: GET_ALL_EPREUVE,
     });
+
     assert(response.body.kind === "single");
     expect(response.body.singleResult.data?.getAllEpreuve).toHaveLength(0);
   });
 });
 
-// but => create - get - modify - get - getOne - delete - get
+// but => get - create - get - modify - get - getOne - delete - get

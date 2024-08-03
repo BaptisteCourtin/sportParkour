@@ -41,13 +41,20 @@ class UserService {
   // ---
 
   async modifyUser(user: UserEntity, data: UserUpdateEntity) {
-    for (const key of Object.keys(data) as Array<keyof UserUpdateEntity>) {
-      if (data[key] !== null) {
-        (user as any)[key] = data[key];
+    try {
+      const updateData: Partial<UserEntity> = {};
+      for (const key of Object.keys(data) as Array<keyof UserUpdateEntity>) {
+        if (data[key] !== null) {
+          updateData[key] = data[key];
+        }
       }
-    }
 
-    return await this.db.save(user);
+      await this.db.update(user.id, updateData);
+      return await this.db.findOne({ where: { id: user.id } });
+    } catch (error) {
+      console.error("Error modifying user:", error);
+      throw new Error("Failed to modify user");
+    }
   }
 
   async deleteUser(user: UserEntity) {
