@@ -98,7 +98,7 @@ afterAll(async () => {
 // ---------------------------------------------------------------------------------
 // --- TESTS ---
 // ---------------------------------------------------------------------------------
-describe.only("Flux complet utilisateur", () => {
+describe("Flux complet utilisateur", () => {
   // Créer une instance réelle de UserEntity
   const mockUser = new UserEntity();
   Object.assign(mockUser, {
