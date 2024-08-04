@@ -26,9 +26,12 @@ import ReportResolver from "./resolvers/report.resolver";
 
 // authent
 import dotenv from "dotenv";
-dotenv.config({
-  path: "../.env",
-});
+import path from "path";
+// dotenv.config({
+//   path: "../.env",
+// });
+
+dotenv.config({ path: path.resolve(__dirname, "../.env") }); // Charge les variables d'environnement du fichier .env s'il existe (il n'existe pas en CI)
 
 import Cookies from "cookies";
 import { jwtVerify } from "jose";
