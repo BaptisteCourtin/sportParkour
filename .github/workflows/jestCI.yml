@@ -7,20 +7,8 @@ on:
     branches:
       - main
 
-# jobs:
-#   # les tests du back
-#   test-back:
-#     runs-on: ubuntu-latest
-#     env:
-#       SECRET_KEY: ${{ secrets.SECRET_KEY }}
-#       JWT_EXPIRATION_TIME: ${{ secrets.JWT_EXPIRATION_TIME }}
-#     steps:
-#       - name: Check out code
-#         uses: actions/checkout@v2
-#       - name: Goto backend and run testForCI
-#         run: cd backend && npm i && npm run testForCI
-
 jobs:
+  # les tests du back
   test-back:
     runs-on: ubuntu-latest
     env:
@@ -29,6 +17,7 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v2
+      # vérifie si les variables sont définies (dans github ne pas mettre de "" comme dans le .env)
       - name: Debug environment variables
         run: |
           echo "SECRET_KEY is set: ${{ env.SECRET_KEY != '' }}"
