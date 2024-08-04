@@ -27,8 +27,9 @@ import ReportResolver from "./resolvers/report.resolver";
 // authent
 import dotenv from "dotenv";
 dotenv.config({
-  path: "../.env", // je ne sais pas pk le path est pas le bon mais ça marche
+  path: "../.env",
 });
+
 import Cookies from "cookies";
 import { jwtVerify } from "jose";
 import { customAuthChecker } from "./lib/authChecker";

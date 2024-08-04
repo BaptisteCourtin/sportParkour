@@ -11,6 +11,9 @@ jobs:
   # les tests du back
   test-back:
     runs-on: ubuntu-latest
+    env:
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      JWT_EXPIRATION_TIME: ${{ secrets.JWT_EXPIRATION_TIME }}
     steps:
       - name: Check out code
         uses: actions/checkout@v2
