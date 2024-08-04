@@ -144,6 +144,9 @@ describe("Flux complet utilisateur", () => {
     expect(response.body.singleResult.data?.inscription.message).toEqual(
       "Bien joué! Vous avez maintenant un compte chez nous!"
     );
+
+    console.log("SECRET_KEY is set:", !!process.env.SECRET_KEY);
+    console.log("JWT_EXPIRATION_TIME:", process.env.JWT_EXPIRATION_TIME);
   });
 
   test("2. Authentification", async () => {
