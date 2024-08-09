@@ -15,7 +15,7 @@ const multerMid = multer({
 
 // put profile picture in cloud
 app.post(
-  "/uploadPhotoProfil",
+  "/uploadPhoto",
   multerMid.single("file"),
   async (req: Request, res: Response) => {
     try {

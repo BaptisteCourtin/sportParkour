@@ -11,10 +11,9 @@ import {
   useGetTop20EpreuveByTitleLazyQuery,
   useGetParkourByIdLazyQuery,
   useModifyParkourMutation,
-  ImageEpreuveEntity,
-  ImageEpreuveCreateEntity,
   useModifyImageCouvertureParkourMutation,
   ImageParkourCreateEntity,
+  ImageParkourEntity,
 } from "@/types/graphql";
 
 import TextField from "@mui/material/TextField";
@@ -27,7 +26,8 @@ import InputLabel from "@mui/material/InputLabel";
 import { toast } from "react-hot-toast";
 import { FaCheck } from "react-icons/fa6";
 import SearchBarCommuneName from "@/components/user/searchBarCommuneName";
-import axiosInstanceImage from "@/lib/axiosInstanceImage";
+import { uploadImages } from "@/components/uploadImage/uploadImages";
+
 import {
   LENGTH_DESCRIPTION,
   LENGTH_START,
@@ -36,6 +36,9 @@ import {
   MAX_TIME,
 } from "../../../../../variablesLength";
 import SuppParkourDialog from "@/components/suppression/suppParkourDialog";
+import FormCreateImages from "@/components/uploadImage/formCreateImages";
+import DisplayImagesInBase from "@/components/uploadImage/displayImagesInBase";
+import { modifyIsCouverture } from "@/components/uploadImage/modifyImagesCouverture";
 
 let modifyParkourSchema = object({
   title: string()
@@ -85,7 +88,7 @@ const modifyOneParkour = () => {
           setChooseEpreuves(data.getParkourById.epreuves as EpreuveEntity[]);
 
           setListImagesAlreadyIn(
-            data.getParkourById.images as [ImageEpreuveEntity]
+            data.getParkourById.images as [ImageParkourEntity]
           );
 
           if (data.getParkourById.images) {
@@ -121,7 +124,7 @@ const modifyOneParkour = () => {
     fetchPolicy: "no-cache",
   });
 
-  const [choosenDificulty, setChoosenDifficulty] = useState<Difficulty>();
+  const [choosenDifficulty, setChoosenDifficulty] = useState<Difficulty>();
 
   const [
     modifyImageParkour,
@@ -134,48 +137,16 @@ const modifyOneParkour = () => {
     fetchPolicy: "no-cache",
   });
 
-  const uploadImages = async (): Promise<ImageParkourCreateEntity[]> => {
-    try {
-      const uploadPromises = filesToUpload.map(async (image, index) => {
-        const formData = new FormData();
-        formData.append("file", image, image.name);
-
-        const resultImage = await axiosInstanceImage.post(
-          "/uploadPhotoProfil",
-          formData
-        );
-        const imageLien =
-          "https://storage.cloud.google.com" +
-          resultImage.data.split("https://storage.googleapis.com")[1];
-
-        let isCouv = false;
-        if (isMyCouverture == index) {
-          isCouv = true;
-        }
-
-        return {
-          lien: imageLien,
-          isCouverture: isCouv,
-        };
-      });
-
-      return await Promise.all(uploadPromises);
-    } catch (error) {
-      console.error("Erreur lors de l'upload des images :", error);
-      return [];
-    }
-  };
-
   const handleModifyParkour = async (
     dataForm: ParkourUpdateEntity
   ): Promise<void> => {
-    let allLienImages: ImageEpreuveCreateEntity[] = [];
+    let allLienImages: ImageParkourCreateEntity[] = [];
     if (filesToUpload.length !== 0) {
-      allLienImages = await uploadImages();
+      allLienImages = await uploadImages(filesToUpload, isMyCouverture); // fonction à part
     }
 
     const dataAggregate: ParkourUpdateEntity = {
-      difficulty: choosenDificulty,
+      difficulty: choosenDifficulty,
       city: selectedCommuneName,
       epreuves: selectedEpreuveIds,
       images: allLienImages,
@@ -183,25 +154,12 @@ const modifyOneParkour = () => {
       ...dataForm,
     };
 
-    // une requete ici pour enlevé le isCouverture
-    if (myLastCouverture && isMyCouverture != myLastCouverture) {
-      modifyImageParkour({
-        variables: { idImage: myLastCouverture },
-      });
-    }
-    // une requete ici pour ajouter le isCouverture
-    if (data?.getParkourById.images && isMyCouverture != myLastCouverture) {
-      for (let i = 0; i < data?.getParkourById.images.length; i++) {
-        // si isCouv est sur une ancienne image => va changer
-        // si isCouv est sur une nouvelle image => va rien faire
-        if (+data?.getParkourById.images[i].id == isMyCouverture) {
-          modifyImageParkour({
-            variables: { idImage: isMyCouverture },
-          });
-          break;
-        }
-      }
-    }
+    await modifyIsCouverture(
+      modifyImageParkour,
+      myLastCouverture,
+      isMyCouverture,
+      data.getParkourById
+    ); // fonction à part
 
     if (dataAggregate.title && id) {
       modifyParkour({
@@ -277,41 +235,15 @@ const modifyOneParkour = () => {
   // --- API COMMUNES ---
   const [selectedCommuneName, setSelectedCommuneName] = useState("");
 
-  // --- DELETE IMAGES ---
-  const [listImagesAlreadyIn, setListImagesAlreadyIn] =
-    useState<[ImageEpreuveEntity]>();
-  const [idsImagesToSupp, setIdsImagesToSupp] = useState<number[]>([]); // à envoyer dans le modify en temps que "deletedImageIds"
-
-  function handleSuppOneImage(event: any, thisId: number) {
-    event.preventDefault();
-
-    if (idsImagesToSupp.includes(thisId)) {
-      setIdsImagesToSupp((prevIdsImagesToSupp) => {
-        return prevIdsImagesToSupp.filter((id) => id !== thisId);
-      });
-    } else {
-      setIdsImagesToSupp((prevIdsImagesToSupp) => [
-        ...prevIdsImagesToSupp,
-        thisId,
-      ]);
-    }
-  }
-
   // --- UPLOAD IMAGES ---
   const [filesToUpload, setFilesToUpload] = useState<File[]>([]); // à envoyer dans le modify en temps que "images"
   const [isMyCouverture, setIsMyCouverture] = useState<number>(); // celui à mettre en isCouverture
   const [myLastCouverture, setMyLastCouverture] = useState<number>(); // pour vérifier
 
-  const addSingleFileToPreview = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      setFilesToUpload((prevFiles) => [...prevFiles, file]);
-    }
-  };
-
-  const removeImage = (index: number) => {
-    setFilesToUpload((prevFiles) => prevFiles.filter((_, i) => i !== index));
-  };
+  // --- DELETE IMAGES ---
+  const [listImagesAlreadyIn, setListImagesAlreadyIn] =
+    useState<[ImageParkourEntity]>();
+  const [idsImagesToSupp, setIdsImagesToSupp] = useState<number[]>([]); // à envoyer dans le modify en temps que "deletedImageIds"
 
   return (
     <main className="modifyOneParkour">
@@ -324,83 +256,24 @@ const modifyOneParkour = () => {
           <>
             <h1>MODIFIER LE PARKOUR</h1>
 
-            {/* --- */}
+            {/* --- display images in base --- */}
+            <DisplayImagesInBase
+              listImagesAlreadyIn={listImagesAlreadyIn}
+              setIsMyCouverture={setIsMyCouverture}
+              isMyCouverture={isMyCouverture}
+              setIdsImagesToSupp={setIdsImagesToSupp}
+              idsImagesToSupp={idsImagesToSupp}
+            />
 
-            <ul className="imageAlredyInBase">
-              {listImagesAlreadyIn &&
-                listImagesAlreadyIn.map((img) => (
-                  <li
-                    key={img.id}
-                    className={`${
-                      idsImagesToSupp.includes(parseInt(img.id))
-                        ? "toDelete"
-                        : ""
-                    }
-                        ${isMyCouverture == +img.id ? "isCouv" : ""}`}
-                  >
-                    <img src={img.lien} alt="image de présentation" />
-                    <button
-                      className="toCouv"
-                      onClick={() => setIsMyCouverture(+img.id)}
-                    >
-                      image de couverture
-                    </button>
-                    <button
-                      onClick={(e) => handleSuppOneImage(e, Number(img.id))}
-                    >
-                      {idsImagesToSupp.includes(parseInt(img.id))
-                        ? "Pas supp"
-                        : "Supp"}
-                    </button>
-                  </li>
-                ))}
-            </ul>
+            {/* --- form create images --- */}
+            <FormCreateImages
+              setFilesToUpload={setFilesToUpload}
+              filesToUpload={filesToUpload}
+              setIsMyCouverture={setIsMyCouverture}
+              isMyCouverture={isMyCouverture}
+            />
 
-            {/* --- */}
-
-            <div className="formForImages">
-              {/* remove and preview */}
-              {filesToUpload.map((file, index) => (
-                <div
-                  className={`${
-                    isMyCouverture == index ? "isCouv" : ""
-                  } imager`}
-                  key={index}
-                >
-                  <img
-                    src={URL.createObjectURL(file)}
-                    alt={`Preview ${file.name}`}
-                  />
-                  <button onClick={() => setIsMyCouverture(index)}>
-                    image de couverture
-                  </button>
-                  <span
-                    className="remove_img"
-                    onClick={() => removeImage(index)}
-                  >
-                    supprimer cette image
-                  </span>
-                </div>
-              ))}
-
-              {/* input */}
-              <div className="inputer">
-                <label className="button" htmlFor="oneMoreFile">
-                  Ajouter une image
-                </label>
-                <input
-                  id="oneMoreFile"
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => {
-                    addSingleFileToPreview(e);
-                  }}
-                />
-              </div>
-            </div>
-
-            {/* --- */}
-
+            {/* --- form modify parkour --- */}
             <form
               onSubmit={handleSubmit(handleModifyParkour)}
               className="bigForm"

@@ -2,7 +2,6 @@ import {
   Column,
   Entity,
   Index,
-  JoinColumn,
   JoinTable,
   ManyToMany,
   OneToMany,
@@ -24,6 +23,11 @@ import {
   LENGTH_LINK,
 } from "../../../variablesLength";
 
+import dotenv from "dotenv";
+dotenv.config({
+  path: "../.env",
+});
+
 @Entity("epreuve")
 @Unique(["title"])
 @ObjectType()
@@ -33,7 +37,7 @@ class EpreuveEntity {
   id: number;
 
   @Field()
-  @Column({ type: "varchar", length: LENGTH_TITLE, unique: true })
+  @Column({ type: "varchar", length: process.env.LENGTH_TITLE, unique: true })
   @MaxLength(LENGTH_TITLE)
   @Index() // vu que on fait beaucoup de recherche sur le titre
   title: string;

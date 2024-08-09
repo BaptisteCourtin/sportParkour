@@ -1,4 +1,4 @@
-import React, { FormEvent, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { object, string } from "yup";
@@ -16,7 +16,7 @@ import {
 import TextField from "@mui/material/TextField";
 
 import { toast } from "react-hot-toast";
-import axiosInstanceImage from "@/lib/axiosInstanceImage";
+import { uploadImages } from "@/components/uploadImage/uploadImages";
 
 import {
   LENGTH_TITLE,
@@ -25,6 +25,9 @@ import {
   LENGTH_LINK,
 } from "../../../../../variablesLength";
 import SuppEpreuveDialog from "@/components/suppression/suppEpreuveDialog";
+import FormCreateImages from "@/components/uploadImage/formCreateImages";
+import DisplayImagesInBase from "@/components/uploadImage/displayImagesInBase";
+import { modifyIsCouverture } from "@/components/uploadImage/modifyImagesCouverture";
 
 let modifyEpreuveSchema = object({
   title: string()
@@ -111,44 +114,12 @@ const modifyOneEpreuve = () => {
     fetchPolicy: "no-cache",
   });
 
-  const uploadImages = async (): Promise<ImageEpreuveCreateEntity[]> => {
-    try {
-      const uploadPromises = filesToUpload.map(async (image, index) => {
-        const formData = new FormData();
-        formData.append("file", image, image.name);
-
-        const resultImage = await axiosInstanceImage.post(
-          "/uploadPhotoProfil",
-          formData
-        );
-        const imageLien =
-          "https://storage.cloud.google.com" +
-          resultImage.data.split("https://storage.googleapis.com")[1];
-
-        let isCouv = false;
-        if (isMyCouverture == index) {
-          isCouv = true;
-        }
-
-        return {
-          lien: imageLien,
-          isCouverture: isCouv,
-        };
-      });
-
-      return await Promise.all(uploadPromises);
-    } catch (error) {
-      console.error("Erreur lors de l'upload des images :", error);
-      return [];
-    }
-  };
-
   const handleModifyEpreuve = async (
     dataForm: EpreuveUpdateEntity
   ): Promise<void> => {
     let allLienImages: ImageEpreuveCreateEntity[] = [];
     if (filesToUpload.length !== 0) {
-      allLienImages = await uploadImages();
+      allLienImages = await uploadImages(filesToUpload, isMyCouverture); // fonction à part
     }
 
     const updatedDataForm = {
@@ -157,25 +128,12 @@ const modifyOneEpreuve = () => {
       ...dataForm,
     };
 
-    // une requete ici pour enlevé le isCouverture
-    if (myLastCouverture && isMyCouverture != myLastCouverture) {
-      modifyImageEpreuve({
-        variables: { idImage: myLastCouverture },
-      });
-    }
-    // une requete ici pour ajouter le isCouverture
-    if (data?.getEpreuveById.images && isMyCouverture != myLastCouverture) {
-      for (let i = 0; i < data.getEpreuveById.images.length; i++) {
-        // si isCouv est sur une ancienne image => va changer
-        // si isCouv est sur une nouvelle image => va rien faire
-        if (+data.getEpreuveById.images[i].id == isMyCouverture) {
-          modifyImageEpreuve({
-            variables: { idImage: isMyCouverture },
-          });
-          break;
-        }
-      }
-    }
+    await modifyIsCouverture(
+      modifyImageEpreuve,
+      myLastCouverture,
+      isMyCouverture,
+      data.getEpreuveById
+    ); // fonction à part
 
     if (updatedDataForm.title && id) {
       modifyEpreuve({
@@ -207,41 +165,15 @@ const modifyOneEpreuve = () => {
     setValues({ ...values, [name]: value });
   };
 
+  // --- UPLOAD IMAGES ---
+  const [filesToUpload, setFilesToUpload] = useState<File[]>([]); // à envoyer dans le modify en temps que "images"
+  const [isMyCouverture, setIsMyCouverture] = useState<number>(); // celui à mettre en isCouverture
+  const [myLastCouverture, setMyLastCouverture] = useState<number>(); // pour vérifier pour le back
+
   // --- DELETE IMAGES ---
   const [listImagesAlreadyIn, setListImagesAlreadyIn] =
     useState<[ImageEpreuveEntity]>();
   const [idsImagesToSupp, setIdsImagesToSupp] = useState<number[]>([]); // à envoyer dans le modify en temps que "deletedImageIds"
-
-  function handleSuppOneImage(event: any, thisId: number) {
-    event.preventDefault();
-
-    if (idsImagesToSupp.includes(thisId)) {
-      setIdsImagesToSupp((prevIdsImagesToSupp) => {
-        return prevIdsImagesToSupp.filter((id) => id !== thisId);
-      });
-    } else {
-      setIdsImagesToSupp((prevIdsImagesToSupp) => [
-        ...prevIdsImagesToSupp,
-        thisId,
-      ]);
-    }
-  }
-
-  // --- UPLOAD IMAGES ---
-  const [filesToUpload, setFilesToUpload] = useState<File[]>([]); // à envoyer dans le modify en temps que "images"
-  const [isMyCouverture, setIsMyCouverture] = useState<number>(); // celui à mettre en isCouverture
-  const [myLastCouverture, setMyLastCouverture] = useState<number>(); // pour vérifier
-
-  const addSingleFileToPreview = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      setFilesToUpload((prevFiles) => [...prevFiles, file]);
-    }
-  };
-
-  const removeImage = (index: number) => {
-    setFilesToUpload((prevFiles) => prevFiles.filter((_, i) => i !== index));
-  };
 
   return (
     <main className="modifyOneEpreuve">
@@ -254,83 +186,24 @@ const modifyOneEpreuve = () => {
           <>
             <h1>MODIFIER L'ÉPREUVE</h1>
 
-            {/* --- */}
+            {/* --- display images in base --- */}
+            <DisplayImagesInBase
+              listImagesAlreadyIn={listImagesAlreadyIn}
+              setIsMyCouverture={setIsMyCouverture}
+              isMyCouverture={isMyCouverture}
+              setIdsImagesToSupp={setIdsImagesToSupp}
+              idsImagesToSupp={idsImagesToSupp}
+            />
 
-            <ul className="imageAlredyInBase">
-              {listImagesAlreadyIn &&
-                listImagesAlreadyIn.map((img) => (
-                  <li
-                    key={img.id}
-                    className={`${
-                      idsImagesToSupp.includes(parseInt(img.id))
-                        ? "toDelete"
-                        : ""
-                    }
-                        ${isMyCouverture == +img.id ? "isCouv" : ""}`}
-                  >
-                    <img src={img.lien} alt="image de présentation" />
-                    <button
-                      className="toCouv"
-                      onClick={() => setIsMyCouverture(+img.id)}
-                    >
-                      image de couverture
-                    </button>
-                    <button
-                      onClick={(e) => handleSuppOneImage(e, Number(img.id))}
-                    >
-                      {idsImagesToSupp.includes(parseInt(img.id))
-                        ? "Pas supp"
-                        : "Supp"}
-                    </button>
-                  </li>
-                ))}
-            </ul>
+            {/* --- form create images --- */}
+            <FormCreateImages
+              setFilesToUpload={setFilesToUpload}
+              filesToUpload={filesToUpload}
+              setIsMyCouverture={setIsMyCouverture}
+              isMyCouverture={isMyCouverture}
+            />
 
-            {/* --- */}
-
-            <div className="formForImages">
-              {/* remove and preview */}
-              {filesToUpload.map((file, index) => (
-                <div
-                  className={`${
-                    isMyCouverture == index ? "isCouv" : ""
-                  } imager`}
-                  key={index}
-                >
-                  <img
-                    src={URL.createObjectURL(file)}
-                    alt={`Preview ${file.name}`}
-                  />
-                  <button onClick={() => setIsMyCouverture(index)}>
-                    image de couverture
-                  </button>
-                  <span
-                    className="remove_img"
-                    onClick={() => removeImage(index)}
-                  >
-                    supprimer cette image
-                  </span>
-                </div>
-              ))}
-
-              {/* input */}
-              <div className="inputer">
-                <label className="button" htmlFor="oneMoreFile">
-                  Ajouter une image
-                </label>
-                <input
-                  id="oneMoreFile"
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => {
-                    addSingleFileToPreview(e);
-                  }}
-                />
-              </div>
-            </div>
-
-            {/* --- */}
-
+            {/* --- form modify epreuve --- */}
             <form
               onSubmit={handleSubmit(handleModifyEpreuve)}
               className="bigForm"

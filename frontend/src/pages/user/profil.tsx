@@ -1,73 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/router";
 import Link from "next/link";
-import { useForm } from "react-hook-form";
-import { mixed, object, string } from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
 
 import {
   useGetUserByTokenLazyQuery,
   useIsAdminQuery,
   useIsClientQuery,
-  useModifyUserMutation,
 } from "@/types/graphql";
 
-import TextField from "@mui/material/TextField";
-
-import { toast } from "react-hot-toast";
-
-import SearchBarCommuneName from "@/components/user/searchBarCommuneName";
-import axiosInstanceImage from "@/lib/axiosInstanceImage";
-
-import { FaUser } from "react-icons/fa6";
 import { FaPencil } from "react-icons/fa6";
 import { FaArrowRight } from "react-icons/fa6";
 
-import {
-  LENGTH_EMAIL,
-  LENGTH_NOM,
-  LENGTH_PHONE,
-} from "../../../../variablesLength";
 import SuppUserDialog from "@/components/suppression/suppUserDialog";
+import SeeProfil from "@/components/user/seeProfil";
+import ModifyProfil from "@/components/user/modifyProfil";
 
-let modifyUserSchema = object({
-  imageProfil: mixed<FileList>(),
-
-  email: string()
-    .email("Votre email doit être valide")
-    .max(LENGTH_EMAIL)
-    .required("Veuillez entrer votre email"),
-  name: string().max(LENGTH_NOM).required("Veuillez entrer votre nom"),
-  firstname: string().max(LENGTH_NOM).required("Veuillez entrer votre prénom"),
-
-  phone: string()
-    .max(LENGTH_PHONE, "tapez votre numéro sans espace et sans le +33")
-    .test(
-      "len",
-      "tapez les 10 chiffres de votre numéro, sans espace et sans le +33",
-      (val) => {
-        if (val == undefined) {
-          return true;
-        }
-        return val.length == 0 || val.length == LENGTH_PHONE;
-      }
-    ),
-});
-
-// on peut pas utiliser UserUpdateEntity à cause du FileList qui va devenir un string
-type FormType = {
-  email: string;
-  name: string;
-  firstname: string;
-  phone?: string;
-  city?: string;
-  codePostal?: string;
-  imageProfil?: FileList;
-};
-
-// mettre les infos dans un form
 const profil = () => {
-  const router = useRouter();
   const [isModifMode, setIsModifMode] = useState(false);
 
   const {
@@ -88,109 +35,11 @@ const profil = () => {
 
   useEffect(() => {
     getUser({
-      onCompleted(data) {
-        setSelectedCommuneName(
-          data.getUserByToken.city ? data.getUserByToken.city : ""
-        );
-        setSelectedCommuneCodePostal(
-          data.getUserByToken.codePostal ? data.getUserByToken.codePostal : ""
-        );
-      },
       onError(err: any) {
         console.error("error", err);
       },
     });
   }, [isModifMode]);
-
-  // --- MODIFY USER ---
-  const [preview, setPreview] = useState<string>("");
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormType>({
-    resolver: yupResolver(modifyUserSchema),
-  });
-
-  const [
-    modifyUser,
-    { data: dataModify, loading: loadingModify, error: errorModify },
-  ] = useModifyUserMutation({
-    fetchPolicy: "no-cache",
-  });
-
-  const handleModifyUser = ({ imageProfil, ...dataForm }: FormType): void => {
-    const { codePostal, ...data } = dataForm;
-    const infos = {
-      city: selectedCommuneName,
-      codePostal: selectedCommuneCodePostal,
-      ...data,
-    };
-
-    if (imageProfil?.length) {
-      const formData = new FormData();
-      formData.append("file", imageProfil[0], imageProfil[0].name);
-
-      axiosInstanceImage
-        .post("/uploadPhotoProfil", formData)
-        .then((resultImage) => {
-          console.log(resultImage);
-          const imageProfilLien =
-            "https://storage.cloud.google.com" +
-            resultImage.data.split("https://storage.googleapis.com")[1];
-          modifyUser({
-            variables: {
-              infos: { ...infos, imageProfil: imageProfilLien },
-            },
-            onCompleted(data) {
-              if (data.modifyUser.success) {
-                setIsModifMode(false);
-                toast.success(data.modifyUser.message);
-                router.push(`/user/profil`);
-              }
-            },
-            onError(error) {
-              toast.error(error.message);
-            },
-          });
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    } else {
-      modifyUser({
-        variables: { infos: infos },
-        onCompleted(data) {
-          if (data.modifyUser.success) {
-            setIsModifMode(false);
-            toast.success(data.modifyUser.message);
-            router.push(`/user/profil`);
-          }
-        },
-        onError(error) {
-          toast.error(error.message);
-        },
-      });
-    }
-  };
-
-  // --- DEAL WITH LENGTH DURING MODIF ---
-  const [values, setValues] = useState({
-    firstname: "",
-    name: "",
-    phone: "",
-    email: "",
-    password: "",
-  });
-
-  const handleChangeAThing = (name: string, value: any) => {
-    setValues({ ...values, [name]: value });
-  };
-
-  // --- API COMMUNES ---
-  const [selectedCommuneName, setSelectedCommuneName] = useState("");
-  const [selectedCommuneCodePostal, setSelectedCommuneCodePostal] =
-    useState("");
 
   return (
     <main className="profil">
@@ -203,203 +52,11 @@ const profil = () => {
           <>
             {isModifMode ? (
               // --- modif profil ---
-              <>
-                <form
-                  className="bigForm"
-                  onSubmit={handleSubmit(handleModifyUser)}
-                >
-                  <button
-                    className="closeModif"
-                    onClick={() => setIsModifMode(!isModifMode)}
-                  >
-                    Arrêter de modifier mon profil
-                  </button>
-
-                  <div className="champ imageInput">
-                    <label htmlFor="img-profil">
-                      <input
-                        id="img-profil"
-                        type="file"
-                        accept="image/*"
-                        {...register("imageProfil", {
-                          onChange(e) {
-                            setPreview(URL.createObjectURL(e.target.files[0]));
-                          },
-                        })}
-                        placeholder="Photo"
-                      />
-
-                      <div className="container-imageProfil">
-                        {data.getUserByToken.imageProfil ? (
-                          <img
-                            className="photoProfil"
-                            src={data.getUserByToken.imageProfil}
-                            alt="avatar"
-                          />
-                        ) : (
-                          <FaUser className="photoProfil" />
-                        )}
-                      </div>
-                    </label>
-
-                    <p>{errors?.imageProfil?.message}</p>
-                    {preview && (
-                      <div>
-                        <img
-                          src={preview}
-                          alt="preview"
-                          width={50}
-                          height={50}
-                        />
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="champ">
-                    <TextField
-                      className="mui-input"
-                      fullWidth
-                      variant="outlined"
-                      label="Votre prénom"
-                      defaultValue={data.getUserByToken.firstname}
-                      required
-                      {...register("firstname")}
-                      id="firstname"
-                      name="firstname"
-                      type="firstname"
-                      inputProps={{ maxLength: LENGTH_NOM }}
-                      onChange={(e) =>
-                        handleChangeAThing("firstname", e.target.value)
-                      }
-                    />
-                    <span>
-                      {values.firstname.length > 0
-                        ? `${values.firstname.length}/${LENGTH_NOM}`
-                        : ""}
-                    </span>
-                    <p className="error">{errors?.firstname?.message}</p>
-                  </div>
-
-                  <div className="champ">
-                    <TextField
-                      className="mui-input"
-                      fullWidth
-                      variant="outlined"
-                      label="Votre nom"
-                      defaultValue={data.getUserByToken.name}
-                      required
-                      {...register("name")}
-                      id="name"
-                      name="name"
-                      type="text"
-                      inputProps={{ maxLength: LENGTH_NOM }}
-                      onChange={(e) =>
-                        handleChangeAThing("name", e.target.value)
-                      }
-                    />
-                    <span>
-                      {values.name.length > 0
-                        ? `${values.name.length}/${LENGTH_NOM}`
-                        : ""}
-                    </span>
-                    <p className="error">{errors?.name?.message}</p>
-                  </div>
-
-                  <div className="containerMiniChamp">
-                    <div className="champ">
-                      <SearchBarCommuneName
-                        userValue={selectedCommuneName}
-                        setSelectedCommuneName={setSelectedCommuneName}
-                        setSelectedCommuneCodePostal={
-                          setSelectedCommuneCodePostal
-                        }
-                      />
-                    </div>
-
-                    <div className="champ">
-                      <TextField
-                        className="mui-input codePostal"
-                        fullWidth
-                        variant="outlined"
-                        label="Votre code postal"
-                        value={selectedCommuneCodePostal}
-                        id="codePostal"
-                        name="codePostal"
-                        type="text"
-                        InputProps={{
-                          readOnly: true,
-                        }}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="champ">
-                    <TextField
-                      className="mui-input"
-                      fullWidth
-                      variant="outlined"
-                      label="Votre numéro de téléphone"
-                      defaultValue={data.getUserByToken.phone}
-                      {...register("phone")}
-                      id="phone"
-                      name="phone"
-                      type="text"
-                      inputProps={{ maxLength: LENGTH_PHONE }}
-                      onChange={(e) =>
-                        handleChangeAThing("phone", e.target.value)
-                      }
-                    />
-                    <span>
-                      {values.phone.length > 0
-                        ? `${values.phone.length}/${LENGTH_PHONE}`
-                        : ""}
-                    </span>
-                    <p className="error">{errors?.phone?.message}</p>
-                  </div>
-
-                  <hr />
-
-                  <div className="champ">
-                    <TextField
-                      className="mui-input"
-                      fullWidth
-                      variant="outlined"
-                      label="Votre email"
-                      defaultValue={data.getUserByToken.email}
-                      required
-                      {...register("email")}
-                      id="email"
-                      type="text"
-                      name="email"
-                      inputProps={{ maxLength: LENGTH_EMAIL }}
-                      onChange={(e) =>
-                        handleChangeAThing("email", e.target.value)
-                      }
-                    />
-                    <span>
-                      {values.email.length > 0
-                        ? `${values.email.length}/${LENGTH_EMAIL}`
-                        : ""}
-                    </span>
-                    <p className="error">{errors?.email?.message}</p>
-                  </div>
-
-                  <button type="submit" disabled={loadingModify}>
-                    Enregistrer
-                  </button>
-
-                  <div>
-                    <span>{errorModify?.message}</span>
-                  </div>
-                </form>
-
-                <Link
-                  className="oublie button danger"
-                  href="/auth/resetPassword/resetPassword"
-                >
-                  Modifier mon mot de passe
-                </Link>
-              </>
+              <ModifyProfil
+                dataProfil={data.getUserByToken}
+                setIsModifMode={setIsModifMode}
+                isModifMode={isModifMode}
+              />
             ) : (
               // --- profil ---
               <section className="seeProfil">
@@ -416,53 +73,7 @@ const profil = () => {
                   </button>
                 </div>
 
-                <div className="containerInfosProfil">
-                  <div className="container-imageProfil">
-                    {data.getUserByToken.imageProfil ? (
-                      <img
-                        className="photoProfil"
-                        src={data.getUserByToken.imageProfil}
-                        alt="avatar"
-                      />
-                    ) : (
-                      <FaUser className="photoProfil" />
-                    )}
-                  </div>
-
-                  <div className="infoProfil">
-                    <div>
-                      <p>Email</p>
-                      <span>{data.getUserByToken.email}</span>
-                    </div>
-                    <div className="ville">
-                      <div>
-                        <p>Ville</p>
-                        <span>
-                          {data.getUserByToken.city
-                            ? data.getUserByToken.city
-                            : "non renseigné"}
-                        </span>
-                      </div>
-                      <div>
-                        <p>Code postal</p>
-                        <span>
-                          {data.getUserByToken.codePostal
-                            ? data.getUserByToken.codePostal
-                            : "non renseigné"}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div>
-                      <p>Téléphone</p>
-                      <span>
-                        {data.getUserByToken.phone
-                          ? data.getUserByToken.phone
-                          : "non renseigné"}
-                      </span>
-                    </div>
-                  </div>
-                </div>
+                <SeeProfil dataProfil={data.getUserByToken} />
 
                 {/* --- déconnection et supp --- */}
                 <div className="bottomButt">

@@ -13,7 +13,7 @@ import {
 import TextField from "@mui/material/TextField";
 
 import { toast } from "react-hot-toast";
-import axiosInstanceImage from "@/lib/axiosInstanceImage";
+import { uploadImages } from "@/components/uploadImage/uploadImages";
 
 import {
   LENGTH_DESCRIPTION,
@@ -21,6 +21,7 @@ import {
   LENGTH_LITTLE_DESCRIPTION,
   LENGTH_TITLE,
 } from "../../../../variablesLength";
+import FormCreateImages from "@/components/uploadImage/formCreateImages";
 
 let createEpreuveSchema = object({
   title: string()
@@ -63,44 +64,12 @@ const createEpreuve = () => {
     fetchPolicy: "no-cache",
   });
 
-  const uploadImages = async (): Promise<ImageEpreuveCreateEntity[]> => {
-    try {
-      const uploadPromises = filesToUpload.map(async (image, index) => {
-        const formData = new FormData();
-        formData.append("file", image, image.name);
-
-        const resultImage = await axiosInstanceImage.post(
-          "/uploadPhotoProfil",
-          formData
-        );
-        const imageLien =
-          "https://storage.cloud.google.com" +
-          resultImage.data.split("https://storage.googleapis.com")[1];
-
-        let isCouv = false;
-        if (isMyCouverture == index) {
-          isCouv = true;
-        }
-
-        return {
-          lien: imageLien,
-          isCouverture: isCouv,
-        };
-      });
-
-      return await Promise.all(uploadPromises);
-    } catch (error) {
-      console.error("Erreur lors de l'upload des images :", error);
-      return [];
-    }
-  };
-
   const handleCreateEpreuve = async (
     dataForm: EpreuveCreateEntity
   ): Promise<void> => {
     let allLienImages: ImageEpreuveCreateEntity[] = [];
     if (filesToUpload.length !== 0) {
-      allLienImages = await uploadImages();
+      allLienImages = await uploadImages(filesToUpload, isMyCouverture); // fonction à part
     }
 
     const updatedDataForm = {
@@ -144,56 +113,19 @@ const createEpreuve = () => {
   const [filesToUpload, setFilesToUpload] = useState<File[]>([]); // à envoyer dans le create en temps que "images"
   const [isMyCouverture, setIsMyCouverture] = useState<number>();
 
-  const addSingleFileToPreview = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      setFilesToUpload((prevFiles) => [...prevFiles, file]);
-    }
-  };
-
-  const removeImage = (index: number) => {
-    setFilesToUpload((prevFiles) => prevFiles.filter((_, i) => i !== index));
-  };
-
   return (
     <main className="createEpreuve">
       <h1>Créer une épreuve</h1>
 
-      <div className="formForImages">
-        {/* remove and preview */}
-        {filesToUpload.map((file, index) => (
-          <div
-            key={index}
-            className={`${isMyCouverture == index ? "isCouv" : ""} imager`}
-          >
-            <img src={URL.createObjectURL(file)} alt={`Preview ${file.name}`} />
-            <button onClick={() => setIsMyCouverture(index)}>
-              image de couverture
-            </button>
-            <span className="remove_img" onClick={() => removeImage(index)}>
-              supprimer cette image
-            </span>
-          </div>
-        ))}
+      {/* --- form create images --- */}
+      <FormCreateImages
+        setFilesToUpload={setFilesToUpload}
+        filesToUpload={filesToUpload}
+        setIsMyCouverture={setIsMyCouverture}
+        isMyCouverture={isMyCouverture}
+      />
 
-        {/* input */}
-        <div className="inputer">
-          <label className="button" htmlFor="oneMoreFile">
-            Ajouter une image
-          </label>
-          <input
-            id="oneMoreFile"
-            type="file"
-            accept="image/*"
-            onChange={(e) => {
-              addSingleFileToPreview(e);
-            }}
-          />
-        </div>
-      </div>
-
-      {/* --- */}
-
+      {/* --- form create epreuve --- */}
       <form onSubmit={handleSubmit(handleCreateEpreuve)} className="bigForm">
         <div className="champ">
           <TextField

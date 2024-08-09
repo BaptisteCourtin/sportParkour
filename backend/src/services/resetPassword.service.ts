@@ -40,9 +40,7 @@ export default class ResetPasswordService {
 
   // ---
 
-  async createResetToken(email: string) {
-    const user: UserEntity = await new UserService().getUserByEmail(email);
-
+  async createResetToken(user: UserEntity) {
     // cherche dans la bdd reset
     let resetToken = await this.db.findOne({
       where: { user },

@@ -106,7 +106,7 @@ const inscription = () => {
       onCompleted(data) {
         if (data.inscription.success) {
           toast.success(data.inscription.message);
-          router.push("/");
+          router.push("/auth/login");
         }
       },
       onError(error) {

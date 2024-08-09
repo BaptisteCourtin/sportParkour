@@ -54,8 +54,8 @@ export default new DataSource({
     ResetPasswordEntity,
     ReportEntity,
   ], // mettre les entities
-  synchronize: true, //à ne pas utiliser en production
-  logging: ["error", "query"], //à ne pas utiliser en production
-  // synchronize: false,
-  // logging: false,
+  // synchronize: true, //à ne pas utiliser en production
+  // logging: ["error", "query"], //à ne pas utiliser en production
+  synchronize: false,
+  logging: false,
 });

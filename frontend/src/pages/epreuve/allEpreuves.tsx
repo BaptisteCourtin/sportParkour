@@ -16,6 +16,7 @@ import { FaArrowRight } from "react-icons/fa6";
 
 const allEpreuves = () => {
   const router = useRouter();
+  const [searchByNumber, setSearchByNumber] = useState(true);
   const [tri, setTri] = useState<string>("Titre A-Z");
 
   const {
@@ -52,27 +53,33 @@ const allEpreuves = () => {
               </Link>
             ) : null}
 
-            <form className="littleForm">
-              <div className="champ">
-                <SearchBarEpreuve />
-              </div>
-            </form>
+            <button onClick={() => setSearchByNumber(!searchByNumber)}>
+              Rechercher par {searchByNumber ? "titre" : "numéro"}
+            </button>
 
-            <form onSubmit={handleSearchById} className="littleForm">
-              <div className="champ">
-                <TextField
-                  className="mui-input"
-                  fullWidth
-                  variant="outlined"
-                  label="numéro de l'épreuve"
-                  required
-                  id="idEpreuve"
-                  name="idEpreuve"
-                  type="number"
-                />
-              </div>
-              <button type="submit">Chercher par numéro</button>
-            </form>
+            {searchByNumber ? (
+              <form onSubmit={handleSearchById} className="littleForm">
+                <div className="champ">
+                  <TextField
+                    className="mui-input"
+                    fullWidth
+                    variant="outlined"
+                    label="numéro de l'épreuve"
+                    required
+                    id="idEpreuve"
+                    name="idEpreuve"
+                    type="number"
+                  />
+                </div>
+                <button type="submit">Rechercher</button>
+              </form>
+            ) : (
+              <form className="littleForm">
+                <div className="champ">
+                  <SearchBarEpreuve />
+                </div>
+              </form>
+            )}
 
             <form className="littleForm">
               <div className="champ ">

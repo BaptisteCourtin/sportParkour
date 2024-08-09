@@ -12,8 +12,17 @@ import EpreuveService from "../services/epreuve.service";
 export default class EpreuveResolver {
   @Query(() => EpreuveEntity)
   async getEpreuveById(@Arg("id") id: number) {
-    const result: EpreuveEntity = await new EpreuveService().getEpreuveById(id);
-    return result;
+    try {
+      const result: EpreuveEntity = await new EpreuveService().getEpreuveById(
+        id
+      );
+      return result;
+    } catch (err) {
+      const error = err as Error;
+      throw new Error(
+        `Erreur lors de la récupération de l'épreuve : ${error.message}`
+      );
+    }
   }
 
   // utilise le get by ids mais sans parametre => all

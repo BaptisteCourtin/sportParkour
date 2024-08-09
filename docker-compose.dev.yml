@@ -8,7 +8,6 @@ services:
       - "./backend/sportParkour.sqlite:/app/sportParkour.sqlite"
     env_file:
       - ./.env
-      - ./.env
     healthcheck:
       test:
         - CMD-SHELL

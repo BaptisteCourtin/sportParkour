@@ -5,6 +5,15 @@
     align-self: flex-start;
   }
 
+  .buttonToSearch {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--gap);
+  }
+
   .pagination {
     button {
       color: var(--text2);

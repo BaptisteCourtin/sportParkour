@@ -40,10 +40,6 @@ class EpreuveService {
       .where(ids && ids.length > 0 ? "epreuve.id IN (:...ids)" : "1=1", { ids })
       .getMany();
 
-    if (!listEpreuves) {
-      throw new Error("Pas d'epreuves");
-    }
-
     return listEpreuves;
   }
 
@@ -53,10 +49,6 @@ class EpreuveService {
       relations: ["images"],
       take: 20,
     });
-
-    if (!listEpreuves) {
-      throw new Error("Pas d'épreuve portant ce nom");
-    }
 
     return listEpreuves;
   }
@@ -69,13 +61,10 @@ class EpreuveService {
       relations: ["parkours"],
     });
 
-    if (!epreuve) {
-      throw new Error("Cette épreuve n'existe pas");
-    }
-
     if (epreuve?.parkours && epreuve.parkours.length > 0) {
       return true;
     }
+
     return false;
   }
 

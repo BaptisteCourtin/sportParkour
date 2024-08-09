@@ -6,6 +6,8 @@ import ResetPasswordEntity, {
 } from "../entities/resetPassword.entity";
 
 import ResetPasswordService from "../services/resetPassword.service";
+import UserService from "../services/user.service";
+import UserEntity from "../entities/user.entity";
 
 // pas de @auth car non connecté
 @Resolver()
@@ -14,7 +16,13 @@ export default class ResetPasswordResolver {
   // générer un token
   @Mutation(() => ResetPasswordEntity)
   async resetPassword(@Arg("email") email: string) {
-    const resetToken = await new ResetPasswordService().createResetToken(email);
+    // vérification email
+    const user: UserEntity = await new UserService().getUserByEmail(email);
+    if (!user) {
+      throw new Error("Cet email n'existe pas");
+    }
+
+    const resetToken = await new ResetPasswordService().createResetToken(user);
     return resetToken;
   }
 

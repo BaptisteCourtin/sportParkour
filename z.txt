@@ -1,29 +1,3 @@
-les images EpreuveImageEntity / ParkourImageEntity : 
-  -> ne pas les create en même temps que les entity avec EpreuveCreateEntity / ParkourCreateEntity
-  -> on les uploads avec le service image
-    -> on met le lien + l'id_epreuve / id_parkour dans la bdd image_epreuve/ image_parkour
-  => on pourra les reprendre normalement avec apollo
-
-
-relier les epreuves aux parkours :
-  -> dans la partie admin des parkours, y'a une recherche sur les epreuves
-    -> on voie juste le nom
-    -> on envoie juste les id pour la création / modification des epreuves
-
-
-pour ModifyParkour => 
-  pour les epreuves => [1,2,5]
-  rien modifier => null
-  enlever tout => []
-
-
-on ne peux pas supprimer une epreuve si elle est relier à un parkour
-on peux supprimer un parkour si y'a une relation avec epreuve, ça supprime aussi les relations
-
-pas de tri par NOUVEAU, des annonces en haut de page ?
-
-------------------------------------------------------------------------------------------------------
-
 https://api-adresse.data.gouv.fr/search/?q=caen&postcode=14000&type=municipality
 
 resolver => ce qui va etre utilisé à partir du front
@@ -40,20 +14,6 @@ options       |              |
 
 ------------------------------------------------------------------------------------------------------
 
-Pour les images de couverture => 
-    un seul isCouverture possible par parkour,
-    en front on regarde si il y a un true 
-        on met celui qui est à true
-        si pas de true on s'en fout
-
-------------------------------------------------------------------------------------------------------
-
-vérifier enlevage de note quand on supp un user
-  - enlève les notes au parkour ?
-  - rien sur la note du parkour ?
-
-------------------------------------------------------------------------------------------------------
-
 DROP TABLE epreuve;
 DROP TABLE image_epreuve;
 DROP TABLE parkour;
@@ -65,16 +25,6 @@ DROP TABLE join_user_parkour_favoris;
 DROP TABLE join_user_parkour_note;
 DROP TABLE report
 DROP TABLE reset_password
-
-------------------------------------------------------------------------------------------------------
-
-message sur logout
-
-------------------------------------------------------------------------------------------------------
-
-- image parkour/epreuve isCouverture v2
-- les liens google avec multer => couper le vrai nom du fichier (length=150)
-- image profil default
 
 ------------------------------------------------------------------------------------------------------
 

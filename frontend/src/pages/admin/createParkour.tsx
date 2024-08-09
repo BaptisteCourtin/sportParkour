@@ -6,7 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 import {
   Difficulty,
-  ImageEpreuveCreateEntity,
+  ImageParkourCreateEntity,
   ParkourCreateEntity,
   useCreateParkourMutation,
   useGetTop20EpreuveByTitleLazyQuery,
@@ -22,7 +22,8 @@ import Autocomplete from "@mui/material/Autocomplete";
 import { toast } from "react-hot-toast";
 import { FaCheck } from "react-icons/fa6";
 import SearchBarCommuneName from "@/components/user/searchBarCommuneName";
-import axiosInstanceImage from "@/lib/axiosInstanceImage";
+import { uploadImages } from "@/components/uploadImage/uploadImages";
+
 import {
   LENGTH_DESCRIPTION,
   LENGTH_START,
@@ -30,6 +31,7 @@ import {
   MAX_LENGTH,
   MAX_TIME,
 } from "../../../../variablesLength";
+import FormCreateImages from "@/components/uploadImage/formCreateImages";
 
 let createParkourSchema = object({
   title: string()
@@ -72,45 +74,12 @@ const createParkour = () => {
 
   const [choosenDifficulty, setChoosenDifficulty] = useState<Difficulty>();
 
-  const uploadImages = async (): Promise<ImageEpreuveCreateEntity[]> => {
-    try {
-      const uploadPromises = filesToUpload.map(async (image, index) => {
-        const formData = new FormData();
-        formData.append("file", image, image.name);
-
-        const resultImage = await axiosInstanceImage.post(
-          "/uploadPhotoProfil",
-          formData
-        );
-        const imageLien =
-          "https://storage.cloud.google.com" +
-          resultImage.data.split("https://storage.googleapis.com")[1];
-
-        let isCouv = false;
-        console.log(index);
-        if (isMyCouverture == index) {
-          isCouv = true;
-        }
-
-        return {
-          lien: imageLien,
-          isCouverture: isCouv,
-        };
-      });
-
-      return await Promise.all(uploadPromises);
-    } catch (error) {
-      console.error("Erreur lors de l'upload des images :", error);
-      return [];
-    }
-  };
-
   const handleCreateParkour = async (
     dataForm: ParkourCreateEntity
   ): Promise<void> => {
-    let allLienImages: ImageEpreuveCreateEntity[] = [];
+    let allLienImages: ImageParkourCreateEntity[] = [];
     if (filesToUpload.length !== 0) {
-      allLienImages = await uploadImages();
+      allLienImages = await uploadImages(filesToUpload, isMyCouverture); // fonction à part
     }
 
     const dataAggregate: ParkourCreateEntity = {
@@ -183,54 +152,19 @@ const createParkour = () => {
   const [filesToUpload, setFilesToUpload] = useState<File[]>([]); // à envoyer dans le modify en temps que "images"
   const [isMyCouverture, setIsMyCouverture] = useState<number>();
 
-  const addSingleFileToPreview = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      setFilesToUpload((prevFiles) => [...prevFiles, file]);
-    }
-  };
-
-  const removeImage = (index: number) => {
-    setFilesToUpload((prevFiles) => prevFiles.filter((_, i) => i !== index));
-  };
-
   return (
     <main className="createParkour">
       <h1>create parkour</h1>
 
-      <div className="formForImages">
-        {/* remove and preview */}
-        {filesToUpload.map((file, index) => (
-          <div
-            className={`${isMyCouverture == index ? "isCouv" : ""} imager`}
-            key={index}
-          >
-            <img src={URL.createObjectURL(file)} alt={`Preview ${file.name}`} />
-            <button onClick={() => setIsMyCouverture(index)}>
-              image de couverture
-            </button>
-            <span className="remove_img" onClick={() => removeImage(index)}>
-              supprimer cette image
-            </span>
-          </div>
-        ))}
+      {/* --- form create images --- */}
+      <FormCreateImages
+        setFilesToUpload={setFilesToUpload}
+        filesToUpload={filesToUpload}
+        setIsMyCouverture={setIsMyCouverture}
+        isMyCouverture={isMyCouverture}
+      />
 
-        {/* input */}
-        <div className="inputer">
-          <label className="button" htmlFor="oneMoreFile">
-            Ajouter une image
-          </label>
-          <input
-            id="oneMoreFile"
-            type="file"
-            accept="image/*"
-            onChange={(e) => {
-              addSingleFileToPreview(e);
-            }}
-          />
-        </div>
-      </div>
-
+      {/* --- form create parkour --- */}
       <form onSubmit={handleSubmit(handleCreateParkour)} className="bigForm">
         <div className="champ">
           <TextField

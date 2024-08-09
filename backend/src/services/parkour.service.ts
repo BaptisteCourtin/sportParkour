@@ -150,7 +150,6 @@ class ParkourService {
     noteMin?: number
   ) {
     const whereConditions: any = {};
-    console.log(lengthMin, lengthMax, timeMin, timeMax);
 
     if (city) {
       whereConditions.city = Like(`%${city}%`);
