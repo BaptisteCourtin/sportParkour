@@ -68,6 +68,7 @@ services:
     env_file:
       - ./images/.env
     volumes:
+      - "./images/src:/app/src"
       - "./images/google.cloud-key.json:/app/google.cloud-key.json:ro"
     environment:
       - GOOGLE_APPLICATION_CREDENTIALS=/app/google.cloud-key.json

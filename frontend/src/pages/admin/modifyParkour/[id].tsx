@@ -28,13 +28,6 @@ import { FaCheck } from "react-icons/fa6";
 import SearchBarCommuneName from "@/components/user/searchBarCommuneName";
 import { uploadImages } from "@/components/uploadImage/uploadImages";
 
-import {
-  LENGTH_DESCRIPTION,
-  LENGTH_START,
-  LENGTH_TITLE,
-  MAX_LENGTH,
-  MAX_TIME,
-} from "../../../../../variablesLength";
 import SuppParkourDialog from "@/components/suppression/suppParkourDialog";
 import FormCreateImages from "@/components/uploadImage/formCreateImages";
 import DisplayImagesInBase from "@/components/uploadImage/displayImagesInBase";
@@ -42,25 +35,34 @@ import { modifyIsCouverture } from "@/components/uploadImage/modifyImagesCouvert
 
 let modifyParkourSchema = object({
   title: string()
-    .max(LENGTH_TITLE, "Pas besoin d'avoir un titre aussi long")
+    .max(
+      parseInt(process.env.NEXT_PUBLIC_LENGTH_TITLE),
+      "Pas besoin d'avoir un titre aussi long"
+    )
     .required("Veuillez entrer un titre"),
   description: string().max(
-    LENGTH_DESCRIPTION,
+    parseInt(process.env.NEXT_PUBLIC_LENGTH_DESCRIPTION),
     "Pas besoin d'avoir une description aussi long"
   ),
 
   time: number()
     .min(0, "Remonter dans le temps n'ai pas une option")
-    .max(MAX_TIME, "Si ça dure plus longtemps, contacte les admins")
+    .max(
+      parseInt(process.env.NEXT_PUBLIC_MAX_TIME),
+      "Si ça dure plus longtemps, contacte les admins"
+    )
     .required("Veuillez entrer le temps moyen pour finir ce parkour"),
   length: number()
     .min(0, "Marcher en arrière est dangereux pour votre santée")
-    .max(MAX_LENGTH, "Si ça dure plus longtemps, contacte les admins")
+    .max(
+      parseInt(process.env.NEXT_PUBLIC_MAX_LENGTH),
+      "Si ça dure plus longtemps, contacte les admins"
+    )
     .required("Veuillez entrer la longueur du parkour"),
   difficulty: mixed<Difficulty>().oneOf(Object.values(Difficulty)),
 
   start: string()
-    .max(LENGTH_START, "réduit un peu")
+    .max(parseInt(process.env.NEXT_PUBLIC_LENGTH_START), "réduit un peu")
     .required("Veuillez entrer un point de départ"),
 });
 
@@ -290,12 +292,14 @@ const modifyOneParkour = () => {
                   id="title"
                   name="title"
                   type="text"
-                  inputProps={{ maxLength: LENGTH_TITLE }}
+                  inputProps={{
+                    maxLength: process.env.NEXT_PUBLIC_LENGTH_TITLE,
+                  }}
                   onChange={(e) => handleChangeAThing("title", e.target.value)}
                 />
                 <span>
                   {values.title.length > 0
-                    ? `${values.title.length}/${LENGTH_TITLE}`
+                    ? `${values.title.length}/${process.env.NEXT_PUBLIC_LENGTH_TITLE}`
                     : ""}
                 </span>
                 <p className="error">{errors?.title?.message}</p>
@@ -313,14 +317,16 @@ const modifyOneParkour = () => {
                   id="description"
                   name="description"
                   type="text"
-                  inputProps={{ maxLength: LENGTH_DESCRIPTION }}
+                  inputProps={{
+                    maxLength: process.env.NEXT_PUBLIC_LENGTH_DESCRIPTION,
+                  }}
                   onChange={(e) =>
                     handleChangeAThing("description", e.target.value)
                   }
                 />
                 <span>
                   {values.description.length > 0
-                    ? `${values.description.length}/${LENGTH_DESCRIPTION}`
+                    ? `${values.description.length}/${process.env.NEXT_PUBLIC_LENGTH_DESCRIPTION}`
                     : ""}
                 </span>
                 <p className="error">{errors?.description?.message}</p>
@@ -335,7 +341,9 @@ const modifyOneParkour = () => {
                   defaultValue={data.getParkourById.time}
                   required
                   {...register("time")}
-                  InputProps={{ inputProps: { max: MAX_TIME } }}
+                  InputProps={{
+                    inputProps: { max: process.env.NEXT_PUBLIC_MAX_TIME },
+                  }}
                   id="time"
                   name="time"
                   type="number"
@@ -351,7 +359,9 @@ const modifyOneParkour = () => {
                   defaultValue={data.getParkourById.length}
                   required
                   {...register("length")}
-                  InputProps={{ inputProps: { max: MAX_LENGTH } }}
+                  InputProps={{
+                    inputProps: { max: process.env.NEXT_PUBLIC_MAX_LENGTH },
+                  }}
                   id="length"
                   name="length"
                   type="number"
@@ -378,14 +388,16 @@ const modifyOneParkour = () => {
                     id="start"
                     name="start"
                     type="text"
-                    inputProps={{ maxLength: LENGTH_START }}
+                    inputProps={{
+                      maxLength: process.env.NEXT_PUBLIC_LENGTH_START,
+                    }}
                     onChange={(e) =>
                       handleChangeAThing("start", e.target.value)
                     }
                   />
                   <span>
                     {values.start.length > 0
-                      ? `${values.start.length}/${LENGTH_START}`
+                      ? `${values.start.length}/${process.env.NEXT_PUBLIC_LENGTH_START}`
                       : ""}
                   </span>
                   <p className="error">{errors?.start?.message}</p>

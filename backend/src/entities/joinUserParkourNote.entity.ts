@@ -11,7 +11,11 @@ import { Max, MaxLength, Min } from "class-validator";
 
 import UserEntity from "./user.entity";
 import ParkourEntity from "./parkour.entity";
-import { LENGTH_COMMENTAIRE } from "../../../variablesLength";
+
+import dotenv from "dotenv";
+dotenv.config({
+  path: "../.env",
+});
 
 // se cré si le user met une note ou un like sur un parkour
 @Entity("join_user_parkour_note")
@@ -35,8 +39,12 @@ export class JoinUserParkourNoteEntity {
   note: number;
 
   @Field({ nullable: true })
-  @Column({ type: "varchar", length: LENGTH_COMMENTAIRE, nullable: true })
-  @MaxLength(LENGTH_COMMENTAIRE)
+  @Column({
+    type: "varchar",
+    length: process.env.NEXT_PUBLIC_LENGTH_COMMENTAIRE,
+    nullable: true,
+  })
+  @MaxLength(parseInt(process.env.NEXT_PUBLIC_LENGTH_COMMENTAIRE as string))
   commentaire: string;
 
   // ---
@@ -67,7 +75,7 @@ export class JoinUserParkourNoteCreateEntity {
   note: number;
 
   @Field({ nullable: true })
-  @MaxLength(LENGTH_COMMENTAIRE)
+  @MaxLength(parseInt(process.env.NEXT_PUBLIC_LENGTH_COMMENTAIRE as string))
   commentaire: string;
 }
 
@@ -82,7 +90,7 @@ export class JoinUserParkourNoteUpdateEntity {
   note: number;
 
   @Field({ nullable: true })
-  @MaxLength(LENGTH_COMMENTAIRE)
+  @MaxLength(parseInt(process.env.NEXT_PUBLIC_LENGTH_COMMENTAIRE as string))
   commentaire: string;
 }
 

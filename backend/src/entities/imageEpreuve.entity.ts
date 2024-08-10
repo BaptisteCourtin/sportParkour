@@ -10,7 +10,10 @@ import { MaxLength } from "class-validator";
 
 import EpreuveEntity from "./epreuve.entity";
 
-import { LENGTH_LINK } from "../../../variablesLength";
+import dotenv from "dotenv";
+dotenv.config({
+  path: "../.env",
+});
 
 @Entity("image_epreuve")
 @ObjectType()
@@ -20,8 +23,8 @@ class ImageEpreuveEntity {
   id: number;
 
   @Field()
-  @Column({ type: "varchar", length: LENGTH_LINK })
-  @MaxLength(LENGTH_LINK)
+  @Column({ type: "varchar", length: process.env.NEXT_PUBLIC_LENGTH_LINK })
+  @MaxLength(parseInt(process.env.NEXT_PUBLIC_LENGTH_LINK as string))
   lien: string;
 
   @Field()
@@ -41,7 +44,7 @@ class ImageEpreuveEntity {
 @InputType()
 export class ImageEpreuveCreateEntity {
   @Field()
-  @MaxLength(LENGTH_LINK)
+  @MaxLength(parseInt(process.env.NEXT_PUBLIC_LENGTH_LINK as string))
   lien: string;
 
   @Field()

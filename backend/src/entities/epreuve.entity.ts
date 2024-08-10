@@ -16,13 +16,6 @@ import ImageEpreuveEntity, {
 import ParkourEntity from "./parkour.entity";
 import { MaxLength } from "class-validator";
 
-import {
-  LENGTH_TITLE,
-  LENGTH_DESCRIPTION,
-  LENGTH_LITTLE_DESCRIPTION,
-  LENGTH_LINK,
-} from "../../../variablesLength";
-
 import dotenv from "dotenv";
 dotenv.config({
   path: "../.env",
@@ -37,46 +30,64 @@ class EpreuveEntity {
   id: number;
 
   @Field()
-  @Column({ type: "varchar", length: process.env.LENGTH_TITLE, unique: true })
-  @MaxLength(LENGTH_TITLE)
+  @Column({
+    type: "varchar",
+    length: process.env.NEXT_PUBLIC_LENGTH_TITLE,
+    unique: true,
+  })
+  @MaxLength(parseInt(process.env.NEXT_PUBLIC_LENGTH_TITLE as string))
   @Index() // vu que on fait beaucoup de recherche sur le titre
   title: string;
 
   @Field({ nullable: true })
-  @Column({ type: "varchar", length: LENGTH_DESCRIPTION, nullable: true })
-  @MaxLength(LENGTH_DESCRIPTION)
+  @Column({
+    type: "varchar",
+    length: process.env.NEXT_PUBLIC_LENGTH_DESCRIPTION,
+    nullable: true,
+  })
+  @MaxLength(parseInt(process.env.NEXT_PUBLIC_LENGTH_DESCRIPTION as string))
   description: string;
 
   @Field({ nullable: true })
   @Column({
     type: "varchar",
-    length: LENGTH_LITTLE_DESCRIPTION,
+    length: process.env.NEXT_PUBLIC_LENGTH_LITTLE_DESCRIPTION,
     nullable: true,
   })
-  @MaxLength(LENGTH_LITTLE_DESCRIPTION)
+  @MaxLength(
+    parseInt(process.env.NEXT_PUBLIC_LENGTH_LITTLE_DESCRIPTION as string)
+  )
   easyToDo: string;
 
   @Field({ nullable: true })
   @Column({
     type: "varchar",
-    length: LENGTH_LITTLE_DESCRIPTION,
+    length: process.env.NEXT_PUBLIC_LENGTH_LITTLE_DESCRIPTION,
     nullable: true,
   })
-  @MaxLength(LENGTH_LITTLE_DESCRIPTION)
+  @MaxLength(
+    parseInt(process.env.NEXT_PUBLIC_LENGTH_LITTLE_DESCRIPTION as string)
+  )
   mediumToDo: string;
 
   @Field({ nullable: true })
   @Column({
     type: "varchar",
-    length: LENGTH_LITTLE_DESCRIPTION,
+    length: process.env.NEXT_PUBLIC_LENGTH_LITTLE_DESCRIPTION,
     nullable: true,
   })
-  @MaxLength(LENGTH_LITTLE_DESCRIPTION)
+  @MaxLength(
+    parseInt(process.env.NEXT_PUBLIC_LENGTH_LITTLE_DESCRIPTION as string)
+  )
   hardToDo: string;
 
   @Field({ nullable: true })
-  @Column({ type: "varchar", length: LENGTH_LINK, nullable: true })
-  @MaxLength(LENGTH_LINK)
+  @Column({
+    type: "varchar",
+    length: process.env.NEXT_PUBLIC_LENGTH_LINK,
+    nullable: true,
+  })
+  @MaxLength(parseInt(process.env.NEXT_PUBLIC_LENGTH_LINK as string))
   videoLink: string;
 
   // ---
@@ -112,27 +123,33 @@ class EpreuveEntity {
 @InputType()
 export class EpreuveCreateEntity {
   @Field()
-  @MaxLength(LENGTH_TITLE)
+  @MaxLength(parseInt(process.env.NEXT_PUBLIC_LENGTH_TITLE as string))
   title: string;
 
   @Field({ nullable: true })
-  @MaxLength(LENGTH_DESCRIPTION)
+  @MaxLength(parseInt(process.env.NEXT_PUBLIC_LENGTH_DESCRIPTION as string))
   description: string;
 
   @Field({ nullable: true })
-  @MaxLength(LENGTH_LITTLE_DESCRIPTION)
+  @MaxLength(
+    parseInt(process.env.NEXT_PUBLIC_LENGTH_LITTLE_DESCRIPTION as string)
+  )
   easyToDo: string;
 
   @Field({ nullable: true })
-  @MaxLength(LENGTH_LITTLE_DESCRIPTION)
+  @MaxLength(
+    parseInt(process.env.NEXT_PUBLIC_LENGTH_LITTLE_DESCRIPTION as string)
+  )
   mediumToDo: string;
 
   @Field({ nullable: true })
-  @MaxLength(LENGTH_LITTLE_DESCRIPTION)
+  @MaxLength(
+    parseInt(process.env.NEXT_PUBLIC_LENGTH_LITTLE_DESCRIPTION as string)
+  )
   hardToDo: string;
 
   @Field({ nullable: true })
-  @MaxLength(LENGTH_LINK)
+  @MaxLength(parseInt(process.env.NEXT_PUBLIC_LENGTH_LINK as string))
   videoLink: string;
 
   // ---
@@ -145,27 +162,33 @@ export class EpreuveCreateEntity {
 @InputType()
 export class EpreuveUpdateEntity {
   @Field({ nullable: true })
-  @MaxLength(LENGTH_TITLE)
+  @MaxLength(parseInt(process.env.NEXT_PUBLIC_LENGTH_TITLE as string))
   title?: string;
 
   @Field({ nullable: true })
-  @MaxLength(LENGTH_DESCRIPTION)
+  @MaxLength(parseInt(process.env.NEXT_PUBLIC_LENGTH_DESCRIPTION as string))
   description?: string;
 
   @Field({ nullable: true })
-  @MaxLength(LENGTH_LITTLE_DESCRIPTION)
+  @MaxLength(
+    parseInt(process.env.NEXT_PUBLIC_LENGTH_LITTLE_DESCRIPTION as string)
+  )
   easyToDo?: string;
 
   @Field({ nullable: true })
-  @MaxLength(LENGTH_LITTLE_DESCRIPTION)
+  @MaxLength(
+    parseInt(process.env.NEXT_PUBLIC_LENGTH_LITTLE_DESCRIPTION as string)
+  )
   mediumToDo?: string;
 
   @Field({ nullable: true })
-  @MaxLength(LENGTH_LITTLE_DESCRIPTION)
+  @MaxLength(
+    parseInt(process.env.NEXT_PUBLIC_LENGTH_LITTLE_DESCRIPTION as string)
+  )
   hardToDo?: string;
 
   @Field({ nullable: true })
-  @MaxLength(LENGTH_LINK)
+  @MaxLength(parseInt(process.env.NEXT_PUBLIC_LENGTH_LINK as string))
   videoLink?: string;
 
   // ---

@@ -1,7 +1,6 @@
 // mise dans le google cloud des images et fichiers
 import storage from "./configGoogleCloud"; // de là viens la config google cloud
 const bucket = storage.bucket("parkour-images"); // le bucket avec les images dedans
-import { LENGTH_LINK } from "../../variablesLength";
 
 /**
  *
@@ -18,10 +17,7 @@ const uploadDocToGoogleCloud = (file: Express.Multer.File) =>
 
     // nouveau nom
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 10000); // rename un peu random
-    const newName = (uniqueSuffix + "-" + originalname).substring(
-      0,
-      LENGTH_LINK
-    ); // max length = 150
+    const newName = (uniqueSuffix + "-" + originalname).substring(0, 150); // max length = 150
 
     // mise dans google cloud
     const blob = bucket.file(newName.replace(/ /g, "_")); // utilise le nouveau nom

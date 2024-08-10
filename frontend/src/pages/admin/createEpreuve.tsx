@@ -15,37 +15,34 @@ import TextField from "@mui/material/TextField";
 import { toast } from "react-hot-toast";
 import { uploadImages } from "@/components/uploadImage/uploadImages";
 
-import {
-  LENGTH_DESCRIPTION,
-  LENGTH_LINK,
-  LENGTH_LITTLE_DESCRIPTION,
-  LENGTH_TITLE,
-} from "../../../../variablesLength";
 import FormCreateImages from "@/components/uploadImage/formCreateImages";
 
 let createEpreuveSchema = object({
   title: string()
-    .max(LENGTH_TITLE, "Pas besoin d'avoir un titre aussi long")
+    .max(
+      parseInt(process.env.NEXT_PUBLIC_LENGTH_TITLE),
+      "Pas besoin d'avoir un titre aussi long"
+    )
     .required("Veuillez entrer un titre"),
   description: string().max(
-    LENGTH_DESCRIPTION,
+    parseInt(process.env.NEXT_PUBLIC_LENGTH_DESCRIPTION),
     "Pas besoin d'avoir une description aussi longue"
   ),
   easyToDo: string().max(
-    LENGTH_LITTLE_DESCRIPTION,
+    parseInt(process.env.NEXT_PUBLIC_LENGTH_LITTLE_DESCRIPTION),
     "Pas besoin d'avoir une description aussi longue"
   ),
   mediumToDo: string().max(
-    LENGTH_LITTLE_DESCRIPTION,
+    parseInt(process.env.NEXT_PUBLIC_LENGTH_LITTLE_DESCRIPTION),
     "Pas besoin d'avoir une description aussi longue"
   ),
   hardToDo: string().max(
-    LENGTH_LITTLE_DESCRIPTION,
+    parseInt(process.env.NEXT_PUBLIC_LENGTH_LITTLE_DESCRIPTION),
     "Pas besoin d'avoir une description aussi longue"
   ),
   videoLink: string().max(
-    LENGTH_LINK,
-    `max ${LENGTH_LINK} carcatères, normalement ça suffit`
+    parseInt(process.env.NEXT_PUBLIC_LENGTH_LINK),
+    `max ${process.env.NEXT_PUBLIC_LENGTH_LINK} carcatères, normalement ça suffit`
   ),
 });
 
@@ -138,12 +135,12 @@ const createEpreuve = () => {
             id="title"
             name="title"
             type="text"
-            inputProps={{ maxLength: LENGTH_TITLE }}
+            inputProps={{ maxLength: process.env.NEXT_PUBLIC_LENGTH_TITLE }}
             onChange={(e) => handleChangeAThing("title", e.target.value)}
           />
           <span>
             {values.title.length > 0
-              ? `${values.title.length}/${LENGTH_TITLE}`
+              ? `${values.title.length}/${process.env.NEXT_PUBLIC_LENGTH_TITLE}`
               : ""}
           </span>
           <p className="error">{errors?.title?.message}</p>
@@ -160,12 +157,14 @@ const createEpreuve = () => {
             id="description"
             name="description"
             type="text"
-            inputProps={{ maxLength: LENGTH_DESCRIPTION }}
+            inputProps={{
+              maxLength: process.env.NEXT_PUBLIC_LENGTH_DESCRIPTION,
+            }}
             onChange={(e) => handleChangeAThing("description", e.target.value)}
           />
           <span>
             {values.description.length > 0
-              ? `${values.description.length}/${LENGTH_DESCRIPTION}`
+              ? `${values.description.length}/${process.env.NEXT_PUBLIC_LENGTH_DESCRIPTION}`
               : ""}
           </span>
           <p className="error">{errors?.description?.message}</p>
@@ -183,12 +182,14 @@ const createEpreuve = () => {
             id="easyToDo"
             name="easyToDo"
             type="text"
-            inputProps={{ maxLength: LENGTH_LITTLE_DESCRIPTION }}
+            inputProps={{
+              maxLength: process.env.NEXT_PUBLIC_LENGTH_LITTLE_DESCRIPTION,
+            }}
             onChange={(e) => handleChangeAThing("easyToDo", e.target.value)}
           />
           <span>
             {values.easyToDo.length > 0
-              ? `${values.easyToDo.length}/${LENGTH_LITTLE_DESCRIPTION}`
+              ? `${values.easyToDo.length}/${process.env.NEXT_PUBLIC_LENGTH_LITTLE_DESCRIPTION}`
               : ""}
           </span>
           <p className="error">{errors?.easyToDo?.message}</p>
@@ -205,12 +206,14 @@ const createEpreuve = () => {
             id="mediumToDo"
             name="mediumToDo"
             type="text"
-            inputProps={{ maxLength: LENGTH_LITTLE_DESCRIPTION }}
+            inputProps={{
+              maxLength: process.env.NEXT_PUBLIC_LENGTH_LITTLE_DESCRIPTION,
+            }}
             onChange={(e) => handleChangeAThing("mediumToDo", e.target.value)}
           />
           <span>
             {values.mediumToDo.length > 0
-              ? `${values.mediumToDo.length}/${LENGTH_LITTLE_DESCRIPTION}`
+              ? `${values.mediumToDo.length}/${process.env.NEXT_PUBLIC_LENGTH_LITTLE_DESCRIPTION}`
               : ""}
           </span>
           <p className="error">{errors?.mediumToDo?.message}</p>
@@ -227,12 +230,14 @@ const createEpreuve = () => {
             id="hardToDo"
             name="hardToDo"
             type="text"
-            inputProps={{ maxLength: LENGTH_LITTLE_DESCRIPTION }}
+            inputProps={{
+              maxLength: process.env.NEXT_PUBLIC_LENGTH_LITTLE_DESCRIPTION,
+            }}
             onChange={(e) => handleChangeAThing("hardToDo", e.target.value)}
           />
           <span>
             {values.hardToDo.length > 0
-              ? `${values.hardToDo.length}/${LENGTH_LITTLE_DESCRIPTION}`
+              ? `${values.hardToDo.length}/${process.env.NEXT_PUBLIC_LENGTH_LITTLE_DESCRIPTION}`
               : ""}
           </span>
           <p className="error">{errors?.hardToDo?.message}</p>
@@ -248,12 +253,12 @@ const createEpreuve = () => {
             id="videoLink"
             name="videoLink"
             type="text"
-            inputProps={{ maxLength: LENGTH_LINK }}
+            inputProps={{ maxLength: process.env.NEXT_PUBLIC_LENGTH_LINK }}
             onChange={(e) => handleChangeAThing("videoLink", e.target.value)}
           />
           <span>
             {values.videoLink.length > 0
-              ? `${values.videoLink.length}/${LENGTH_LINK}`
+              ? `${values.videoLink.length}/${process.env.NEXT_PUBLIC_LENGTH_LINK}`
               : ""}
           </span>
           <p className="error">{errors?.videoLink?.message}</p>

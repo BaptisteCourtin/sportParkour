@@ -14,7 +14,6 @@ import Mailer from "../lib/mailer";
 
 import dotenv from "dotenv";
 import { MaxLength } from "class-validator";
-import { LENGTH_MAX_PASSWORD } from "../../../variablesLength";
 dotenv.config({
   path: "../.env",
 });
@@ -57,6 +56,6 @@ export class ResetPasswordUpdateEntity {
   token: string;
 
   @Field()
-  @MaxLength(LENGTH_MAX_PASSWORD)
+  @MaxLength(parseInt(process.env.NEXT_PUBLIC_LENGTH_MAX_PASSWORD as string))
   password: string;
 }

@@ -168,11 +168,6 @@ describe("Flux complet utilisateur", () => {
 
     assert(response.body.kind === "single");
 
-    console.log(
-      "Authentication response",
-      JSON.stringify(response.body, null, 2)
-    );
-
     expect(
       response.body.singleResult.data?.authentification.success
     ).toBeTruthy();

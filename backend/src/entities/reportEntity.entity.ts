@@ -15,7 +15,10 @@ import UserEntity from "./user.entity";
 import ParkourEntity from "./parkour.entity";
 import { MaxLength } from "class-validator";
 
-import { LENGTH_COMMENTAIRE } from "../../../variablesLength";
+import dotenv from "dotenv";
+dotenv.config({
+  path: "../.env",
+});
 
 @Entity("report")
 @Unique(["malfrat_id", "parkour_id", "commentaireEnFaute"])
@@ -36,8 +39,11 @@ export class ReportEntity {
 
   // pour éviter que l'utilisateur enlève le commentaire
   @Field()
-  @Column({ type: "varchar", length: LENGTH_COMMENTAIRE })
-  @MaxLength(LENGTH_COMMENTAIRE)
+  @Column({
+    type: "varchar",
+    length: process.env.NEXT_PUBLIC_LENGTH_COMMENTAIRE,
+  })
+  @MaxLength(parseInt(process.env.NEXT_PUBLIC_LENGTH_COMMENTAIRE as string))
   commentaireEnFaute: string;
 
   @Field()

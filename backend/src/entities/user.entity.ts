@@ -15,14 +15,10 @@ import JoinUserParkourFavorisEntity from "./joinUserParkourFavoris.entity";
 import ReportEntity from "./reportEntity.entity";
 import { MaxLength } from "class-validator";
 
-import {
-  LENGTH_MAX_PASSWORD,
-  LENGTH_NOM,
-  LENGTH_EMAIL,
-  LENGTH_CITY,
-  LENGTH_CODE_POSTAL,
-  LENGTH_PHONE,
-} from "../../../variablesLength";
+import dotenv from "dotenv";
+dotenv.config({
+  path: "../.env",
+});
 
 const argon2 = require("argon2");
 
@@ -41,24 +37,27 @@ class UserEntity {
   id: string;
 
   @Field()
-  @Column({ type: "varchar", length: LENGTH_MAX_PASSWORD })
-  @MaxLength(LENGTH_MAX_PASSWORD)
+  @Column({
+    type: "varchar",
+    length: process.env.NEXT_PUBLIC_LENGTH_MAX_PASSWORD,
+  })
+  @MaxLength(parseInt(process.env.NEXT_PUBLIC_LENGTH_MAX_PASSWORD as string))
   password: string;
 
   @Field()
-  @Column({ type: "varchar", length: LENGTH_NOM })
-  @MaxLength(LENGTH_NOM)
+  @Column({ type: "varchar", length: process.env.NEXT_PUBLIC_LENGTH_NOM })
+  @MaxLength(parseInt(process.env.NEXT_PUBLIC_LENGTH_NOM as string))
   name: string;
 
   @Field()
-  @Column({ type: "varchar", length: LENGTH_NOM })
-  @MaxLength(LENGTH_NOM)
+  @Column({ type: "varchar", length: process.env.NEXT_PUBLIC_LENGTH_NOM })
+  @MaxLength(parseInt(process.env.NEXT_PUBLIC_LENGTH_NOM as string))
   firstname: string;
 
   @Field()
   @Column({
     type: "varchar",
-    length: LENGTH_EMAIL,
+    length: process.env.NEXT_PUBLIC_LENGTH_EMAIL,
     unique: true,
     transformer: {
       from(value: string | null): string | null {
@@ -69,13 +68,13 @@ class UserEntity {
       },
     },
   })
-  @MaxLength(LENGTH_EMAIL)
+  @MaxLength(parseInt(process.env.NEXT_PUBLIC_LENGTH_EMAIL as string))
   email: string;
 
   @Field({ nullable: true })
   @Column({
     type: "varchar",
-    length: LENGTH_CITY,
+    length: process.env.NEXT_PUBLIC_LENGTH_CITY,
     nullable: true,
     transformer: {
       from(value: string | null): string | null {
@@ -86,22 +85,34 @@ class UserEntity {
       },
     },
   })
-  @MaxLength(LENGTH_CITY)
+  @MaxLength(parseInt(process.env.NEXT_PUBLIC_LENGTH_CITY as string))
   city: string;
 
   @Field({ nullable: true })
-  @Column({ type: "varchar", length: LENGTH_CODE_POSTAL, nullable: true })
-  @MaxLength(LENGTH_CODE_POSTAL)
+  @Column({
+    type: "varchar",
+    length: process.env.NEXT_PUBLIC_LENGTH_CODE_POSTAL,
+    nullable: true,
+  })
+  @MaxLength(parseInt(process.env.NEXT_PUBLIC_LENGTH_CODE_POSTAL as string))
   codePostal: string;
 
   @Field({ nullable: true })
-  @Column({ type: "varchar", length: LENGTH_PHONE, nullable: true })
-  @MaxLength(LENGTH_PHONE)
+  @Column({
+    type: "varchar",
+    length: process.env.NEXT_PUBLIC_LENGTH_PHONE,
+    nullable: true,
+  })
+  @MaxLength(parseInt(process.env.NEXT_PUBLIC_LENGTH_PHONE as string))
   phone: string;
 
   @Field({ nullable: true })
-  @Column({ type: "varchar", length: LENGTH_CITY, nullable: true })
-  @MaxLength(LENGTH_CITY)
+  @Column({
+    type: "varchar",
+    length: process.env.NEXT_PUBLIC_LENGTH_LINK,
+    nullable: true,
+  })
+  @MaxLength(parseInt(process.env.NEXT_PUBLIC_LENGTH_LINK as string))
   imageProfil: string;
 
   @Field(() => Role)
@@ -151,31 +162,31 @@ class UserEntity {
 @InputType()
 export class UserInputRegisterEntity {
   @Field()
-  @MaxLength(LENGTH_MAX_PASSWORD)
+  @MaxLength(parseInt(process.env.NEXT_PUBLIC_LENGTH_MAX_PASSWORD as string))
   password: string;
 
   @Field()
-  @MaxLength(LENGTH_NOM)
+  @MaxLength(parseInt(process.env.NEXT_PUBLIC_LENGTH_NOM as string))
   name: string;
 
   @Field()
-  @MaxLength(LENGTH_NOM)
+  @MaxLength(parseInt(process.env.NEXT_PUBLIC_LENGTH_NOM as string))
   firstname: string;
 
   @Field()
-  @MaxLength(LENGTH_EMAIL)
+  @MaxLength(parseInt(process.env.NEXT_PUBLIC_LENGTH_EMAIL as string))
   email: string;
 
   @Field({ nullable: true })
-  @MaxLength(LENGTH_CITY)
+  @MaxLength(parseInt(process.env.NEXT_PUBLIC_LENGTH_CITY as string))
   city: string;
 
   @Field({ nullable: true })
-  @MaxLength(LENGTH_CODE_POSTAL)
+  @MaxLength(parseInt(process.env.NEXT_PUBLIC_LENGTH_CODE_POSTAL as string))
   codePostal: string;
 
   @Field({ nullable: true })
-  @MaxLength(LENGTH_PHONE)
+  @MaxLength(parseInt(process.env.NEXT_PUBLIC_LENGTH_PHONE as string))
   phone: string;
 }
 
@@ -183,11 +194,11 @@ export class UserInputRegisterEntity {
 @InputType()
 export class UserInputAuthEntity {
   @Field()
-  @MaxLength(LENGTH_MAX_PASSWORD)
+  @MaxLength(parseInt(process.env.NEXT_PUBLIC_LENGTH_MAX_PASSWORD as string))
   password: string;
 
   @Field()
-  @MaxLength(LENGTH_EMAIL)
+  @MaxLength(parseInt(process.env.NEXT_PUBLIC_LENGTH_EMAIL as string))
   email: string;
 }
 
@@ -195,31 +206,31 @@ export class UserInputAuthEntity {
 @InputType()
 export class UserUpdateEntity {
   @Field({ nullable: true })
-  @MaxLength(LENGTH_NOM)
+  @MaxLength(parseInt(process.env.NEXT_PUBLIC_LENGTH_NOM as string))
   name: string;
 
   @Field({ nullable: true })
-  @MaxLength(LENGTH_NOM)
+  @MaxLength(parseInt(process.env.NEXT_PUBLIC_LENGTH_NOM as string))
   firstname: string;
 
   @Field({ nullable: true })
-  @MaxLength(LENGTH_EMAIL)
+  @MaxLength(parseInt(process.env.NEXT_PUBLIC_LENGTH_EMAIL as string))
   email: string;
 
   @Field({ nullable: true })
-  @MaxLength(LENGTH_CITY)
+  @MaxLength(parseInt(process.env.NEXT_PUBLIC_LENGTH_CITY as string))
   city: string;
 
   @Field({ nullable: true })
-  @MaxLength(LENGTH_CODE_POSTAL)
+  @MaxLength(parseInt(process.env.NEXT_PUBLIC_LENGTH_CODE_POSTAL as string))
   codePostal: string;
 
   @Field({ nullable: true })
-  @MaxLength(LENGTH_PHONE)
+  @MaxLength(parseInt(process.env.NEXT_PUBLIC_LENGTH_PHONE as string))
   phone: string;
 
   @Field({ nullable: true })
-  @MaxLength(LENGTH_CITY)
+  @MaxLength(parseInt(process.env.NEXT_PUBLIC_LENGTH_LINK as string))
   imageProfil: string;
 }
 

@@ -8,11 +8,10 @@ import { useResetPasswordMutation } from "@/types/graphql";
 import TextField from "@mui/material/TextField";
 
 import toast from "react-hot-toast";
-import { LENGTH_EMAIL } from "../../../../../variablesLength";
 
 let EmailResetPasswordSchema = object({
   email: string()
-    .max(LENGTH_EMAIL)
+    .max(parseInt(process.env.NEXT_PUBLIC_LENGTH_EMAIL))
     .email("Votre email doit être valide")
     .required("Veuillez entrer votre email"),
 });
@@ -64,7 +63,7 @@ function ResetByEmail() {
               id="email"
               name="email"
               type="text"
-              inputProps={{ maxLength: LENGTH_EMAIL }}
+              inputProps={{ maxLength: process.env.NEXT_PUBLIC_LENGTH_EMAIL }}
             />
             <p className="error">{errors?.email?.message}</p>
           </div>

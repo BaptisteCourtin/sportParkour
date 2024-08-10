@@ -18,14 +18,10 @@ import ImageParkourEntity, {
 } from "./imageParkour.entity";
 import JoinUserParkourNoteEntity from "./joinUserParkourNote.entity";
 
-import {
-  LENGTH_CITY,
-  LENGTH_DESCRIPTION,
-  LENGTH_START,
-  LENGTH_TITLE,
-  MAX_LENGTH,
-  MAX_TIME,
-} from "../../../variablesLength";
+import dotenv from "dotenv";
+dotenv.config({
+  path: "../.env",
+});
 
 @Entity("parkour")
 @Unique(["title"])
@@ -36,26 +32,38 @@ class ParkourEntity {
   id: number;
 
   @Field()
-  @Column({ type: "varchar", length: LENGTH_TITLE, unique: true })
-  @MaxLength(LENGTH_TITLE)
+  @Column({
+    type: "varchar",
+    length: process.env.NEXT_PUBLIC_LENGTH_TITLE,
+    unique: true,
+  })
+  @MaxLength(parseInt(process.env.NEXT_PUBLIC_LENGTH_TITLE as string))
   @Index()
   title: string;
 
   @Field({ nullable: true })
-  @Column({ type: "varchar", length: LENGTH_DESCRIPTION, nullable: true })
-  @MaxLength(LENGTH_DESCRIPTION)
+  @Column({
+    type: "varchar",
+    length: process.env.NEXT_PUBLIC_LENGTH_DESCRIPTION,
+    nullable: true,
+  })
+  @MaxLength(parseInt(process.env.NEXT_PUBLIC_LENGTH_DESCRIPTION as string))
   description: string;
 
   @Field({ nullable: true })
   @Column({ type: "int", unsigned: true, nullable: true })
   @Min(0, { message: "La valeur minimale est 0." })
-  @Max(MAX_TIME, { message: `La valeur maximale est ${MAX_TIME}.` })
+  @Max(parseInt(process.env.NEXT_PUBLIC_MAX_TIME as string), {
+    message: `La valeur maximale est ${process.env.NEXT_PUBLIC_MAX_TIME}.`,
+  })
   time?: number;
 
   @Field({ nullable: true })
   @Column({ type: "int", unsigned: true, nullable: true })
   @Min(0, { message: "La valeur minimale est 0." })
-  @Max(MAX_LENGTH, { message: `La valeur maximale est ${MAX_LENGTH}.` })
+  @Max(parseInt(process.env.NEXT_PUBLIC_MAX_LENGTH as string), {
+    message: `La valeur maximale est ${process.env.NEXT_PUBLIC_MAX_LENGTH}.`,
+  })
   length: number;
 
   @Field(() => Difficulty, { nullable: true })
@@ -69,7 +77,7 @@ class ParkourEntity {
   @Field({ nullable: true })
   @Column({
     type: "varchar",
-    length: LENGTH_CITY,
+    length: process.env.NEXT_PUBLIC_LENGTH_CITY,
     nullable: true,
     transformer: {
       from(value: string | null): string | null {
@@ -80,13 +88,13 @@ class ParkourEntity {
       },
     },
   })
-  @MaxLength(LENGTH_CITY)
+  @MaxLength(parseInt(process.env.NEXT_PUBLIC_LENGTH_CITY as string))
   city: string;
 
   // 49.421015, -1.388178
   @Field()
-  @Column({ type: "varchar", length: LENGTH_START })
-  @MaxLength(LENGTH_START)
+  @Column({ type: "varchar", length: process.env.NEXT_PUBLIC_LENGTH_START })
+  @MaxLength(parseInt(process.env.NEXT_PUBLIC_LENGTH_START as string))
   start: string;
 
   // precision = maximum number of digits that are stored for the values
@@ -145,32 +153,32 @@ class ParkourEntity {
 @InputType()
 export class ParkourCreateEntity {
   @Field()
-  @MaxLength(LENGTH_TITLE)
+  @MaxLength(parseInt(process.env.NEXT_PUBLIC_LENGTH_TITLE as string))
   title: string;
 
   @Field({ nullable: true })
-  @MaxLength(LENGTH_DESCRIPTION)
+  @MaxLength(parseInt(process.env.NEXT_PUBLIC_LENGTH_DESCRIPTION as string))
   description: string;
 
   @Field({ nullable: true })
   @Min(0)
-  @Max(MAX_TIME)
+  @Max(parseInt(process.env.NEXT_PUBLIC_MAX_TIME as string))
   time: number;
 
   @Field({ nullable: true })
   @Min(0)
-  @Max(MAX_LENGTH)
+  @Max(parseInt(process.env.NEXT_PUBLIC_MAX_LENGTH as string))
   length: number;
 
   @Field(() => Difficulty, { nullable: true })
   difficulty: Difficulty;
 
   @Field({ nullable: true })
-  @MaxLength(LENGTH_CITY)
+  @MaxLength(parseInt(process.env.NEXT_PUBLIC_LENGTH_CITY as string))
   city: string;
 
   @Field()
-  @MaxLength(LENGTH_START)
+  @MaxLength(parseInt(process.env.NEXT_PUBLIC_LENGTH_START as string))
   start: string;
 
   // ---
@@ -189,28 +197,28 @@ export class ParkourUpdateEntity {
   title: string;
 
   @Field({ nullable: true })
-  @MaxLength(LENGTH_DESCRIPTION)
+  @MaxLength(parseInt(process.env.NEXT_PUBLIC_LENGTH_DESCRIPTION as string))
   description: string;
 
   @Field({ nullable: true })
   @Min(0)
-  @Max(MAX_TIME)
+  @Max(parseInt(process.env.NEXT_PUBLIC_MAX_TIME as string))
   time: number;
 
   @Field({ nullable: true })
   @Min(0)
-  @Max(MAX_LENGTH)
+  @Max(parseInt(process.env.NEXT_PUBLIC_MAX_LENGTH as string))
   length: number;
 
   @Field(() => Difficulty, { nullable: true })
   difficulty: Difficulty;
 
   @Field({ nullable: true })
-  @MaxLength(LENGTH_CITY)
+  @MaxLength(parseInt(process.env.NEXT_PUBLIC_LENGTH_CITY as string))
   city: string;
 
   @Field({ nullable: true })
-  @MaxLength(LENGTH_START)
+  @MaxLength(parseInt(process.env.NEXT_PUBLIC_LENGTH_START as string))
   start: string;
 
   // ---

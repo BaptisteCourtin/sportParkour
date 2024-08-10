@@ -13,24 +13,26 @@ import SearchBarCommuneName from "@/components/user/searchBarCommuneName";
 import { uploadImageProfil } from "../uploadImage/uploadImageProfil";
 
 import { useModifyUserMutation } from "@/types/graphql";
-import {
-  LENGTH_EMAIL,
-  LENGTH_NOM,
-  LENGTH_PHONE,
-} from "../../../../variablesLength";
 
 let modifyUserSchema = object({
   imageProfil: mixed<FileList>(),
 
   email: string()
     .email("Votre email doit être valide")
-    .max(LENGTH_EMAIL)
+    .max(parseInt(process.env.NEXT_PUBLIC_LENGTH_EMAIL))
     .required("Veuillez entrer votre email"),
-  name: string().max(LENGTH_NOM).required("Veuillez entrer votre nom"),
-  firstname: string().max(LENGTH_NOM).required("Veuillez entrer votre prénom"),
+  name: string()
+    .max(parseInt(process.env.NEXT_PUBLIC_LENGTH_NOM))
+    .required("Veuillez entrer votre nom"),
+  firstname: string()
+    .max(parseInt(process.env.NEXT_PUBLIC_LENGTH_NOM))
+    .required("Veuillez entrer votre prénom"),
 
   phone: string()
-    .max(LENGTH_PHONE, "tapez votre numéro sans espace et sans le +33")
+    .max(
+      parseInt(process.env.NEXT_PUBLIC_LENGTH_PHONE),
+      "tapez votre numéro sans espace et sans le +33"
+    )
     .test(
       "len",
       "tapez les 10 chiffres de votre numéro, sans espace et sans le +33",
@@ -38,7 +40,10 @@ let modifyUserSchema = object({
         if (val == undefined) {
           return true;
         }
-        return val.length == 0 || val.length == LENGTH_PHONE;
+        return (
+          val.length == 0 ||
+          val.length == parseInt(process.env.NEXT_PUBLIC_LENGTH_PHONE)
+        );
       }
     ),
 });
@@ -104,7 +109,7 @@ const modifyProfil = ({ dataProfil, setIsModifMode, isModifMode }) => {
     });
   };
 
-  // --- DEAL WITH LENGTH DURING MODIF ---
+  // --- DEAL WITH process.env.LENGTH DURING MODIF ---
   const [values, setValues] = useState({
     firstname: "",
     name: "",
@@ -179,12 +184,12 @@ const modifyProfil = ({ dataProfil, setIsModifMode, isModifMode }) => {
             id="firstname"
             name="firstname"
             type="firstname"
-            inputProps={{ maxLength: LENGTH_NOM }}
+            inputProps={{ maxLength: process.env.NEXT_PUBLIC_LENGTH_NOM }}
             onChange={(e) => handleChangeAThing("firstname", e.target.value)}
           />
           <span>
             {values.firstname.length > 0
-              ? `${values.firstname.length}/${LENGTH_NOM}`
+              ? `${values.firstname.length}/${process.env.NEXT_PUBLIC_LENGTH_NOM}`
               : ""}
           </span>
           <p className="error">{errors?.firstname?.message}</p>
@@ -202,12 +207,12 @@ const modifyProfil = ({ dataProfil, setIsModifMode, isModifMode }) => {
             id="name"
             name="name"
             type="text"
-            inputProps={{ maxLength: LENGTH_NOM }}
+            inputProps={{ maxLength: process.env.NEXT_PUBLIC_LENGTH_NOM }}
             onChange={(e) => handleChangeAThing("name", e.target.value)}
           />
           <span>
             {values.name.length > 0
-              ? `${values.name.length}/${LENGTH_NOM}`
+              ? `${values.name.length}/${process.env.NEXT_PUBLIC_LENGTH_NOM}`
               : ""}
           </span>
           <p className="error">{errors?.name?.message}</p>
@@ -250,12 +255,12 @@ const modifyProfil = ({ dataProfil, setIsModifMode, isModifMode }) => {
             id="phone"
             name="phone"
             type="text"
-            inputProps={{ maxLength: LENGTH_PHONE }}
+            inputProps={{ maxLength: process.env.NEXT_PUBLIC_LENGTH_PHONE }}
             onChange={(e) => handleChangeAThing("phone", e.target.value)}
           />
           <span>
             {values.phone.length > 0
-              ? `${values.phone.length}/${LENGTH_PHONE}`
+              ? `${values.phone.length}/${process.env.NEXT_PUBLIC_LENGTH_PHONE}`
               : ""}
           </span>
           <p className="error">{errors?.phone?.message}</p>
@@ -275,12 +280,12 @@ const modifyProfil = ({ dataProfil, setIsModifMode, isModifMode }) => {
             id="email"
             type="text"
             name="email"
-            inputProps={{ maxLength: LENGTH_EMAIL }}
+            inputProps={{ maxLength: process.env.NEXT_PUBLIC_LENGTH_EMAIL }}
             onChange={(e) => handleChangeAThing("email", e.target.value)}
           />
           <span>
             {values.email.length > 0
-              ? `${values.email.length}/${LENGTH_EMAIL}`
+              ? `${values.email.length}/${process.env.NEXT_PUBLIC_LENGTH_EMAIL}`
               : ""}
           </span>
           <p className="error">{errors?.email?.message}</p>
