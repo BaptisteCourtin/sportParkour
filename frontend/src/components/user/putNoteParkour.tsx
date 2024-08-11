@@ -53,7 +53,7 @@ const putNoteParkour = ({
         variables: {
           infos: {
             parkour_id: +parkourId,
-            note: +noteThisParkour,
+            note: noteThisParkour,
             commentaire: commentThisParkour,
           },
         },
@@ -99,7 +99,7 @@ const putNoteParkour = ({
 
                 // if une note => handlePutNote
                 if (noteThisParkour) {
-                  handleNote(noteThisParkour, commentThisParkour);
+                  handleNote(+noteThisParkour, commentThisParkour);
 
                   if (errorNote) {
                     handleClickClose();

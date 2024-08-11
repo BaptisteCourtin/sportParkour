@@ -33,7 +33,7 @@ export class JoinUserParkourNoteEntity {
   // precision = maximum number of digits that are stored for the values
   // scale = the number of digits to the right of the decimal point
   @Field()
-  @Column("decimal", { precision: 2, scale: 1, unsigned: true })
+  @Column("numeric", { precision: 2, scale: 1, unsigned: true })
   @Min(0, { message: "La valeur minimale est 0" })
   @Max(5, { message: "La valeur maximale est 5" })
   note: number;

@@ -49,8 +49,14 @@ export default function Home() {
   const [choosenDifficulty, setChoosenDifficulty] = useState<Difficulty | "">(
     ""
   );
-  const [valueLength, setValueLength] = useState<number[]>([0, 60]);
-  const [valueTime, setValueTime] = useState<number[]>([0, 600]);
+  const [valueLength, setValueLength] = useState<number[]>([
+    0,
+    parseInt(process.env.NEXT_PUBLIC_MAX_LENGTH),
+  ]);
+  const [valueTime, setValueTime] = useState<number[]>([
+    0,
+    parseInt(process.env.NEXT_PUBLIC_MAX_TIME),
+  ]);
   const [choosenNoteMin, setChoosenNoteMin] = useState(0);
   const [tri, setTri] = useState("id_DESC");
 
@@ -105,7 +111,7 @@ export default function Home() {
   return (
     <main className="pageIndex">
       {error ? (
-        <h2>une erreur... (déso)</h2>
+        <h2>une erreur... (déso) {error.message}</h2>
       ) : loading ? (
         <h2>Chargement en cours</h2>
       ) : (
@@ -174,8 +180,12 @@ export default function Home() {
               />
             )}
 
-            {/* --- pagination au dessus des cards --- */}
+            {/* --- message pas de parkour --- */}
+            {data?.getTop20ParkourBySearch.length == 0
+              ? "aucun parkour ne correspond à cette demande"
+              : ""}
 
+            {/* --- pagination au dessus des cards --- */}
             {dataTotal?.getTheParkourTotalForSearch ? (
               <Stack spacing={2}>
                 <Pagination
@@ -192,7 +202,6 @@ export default function Home() {
             )}
 
             {/* --- cards des parkour --- */}
-
             <ul className="cardsParkoursUl">
               {data?.getTop20ParkourBySearch.map((parkour: any) => (
                 <CardParkour parkour={parkour} key={parkour.id} color="blue" />
@@ -200,7 +209,6 @@ export default function Home() {
             </ul>
 
             {/* --- pagination en dessous des cards --- */}
-
             {dataTotal?.getTheParkourTotalForSearch ? (
               <Stack spacing={2}>
                 <Pagination

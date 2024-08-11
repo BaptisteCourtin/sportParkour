@@ -189,7 +189,10 @@ const OneParkour = () => {
 
             <div className="infos">
               <p>
-                <FaStopwatch /> {data.getParkourById.time} min
+                <FaStopwatch />{" "}
+                {(data.getParkourById.time - (data.getParkourById.time % 60)) /
+                  60}
+                h {data.getParkourById.time % 60}
               </p>
               <p>
                 <FaPersonRunning /> {data.getParkourById.length} km

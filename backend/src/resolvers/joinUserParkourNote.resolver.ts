@@ -78,9 +78,9 @@ export default class JoinUserParkourNoteResolver {
       if (result) {
         if (joinUserParkourLastNote) {
           await new ParkourService().changeOneNoteByParkourId(
-            joinUserParkourLastNote.note,
-            result.parkour_id,
-            result.note
+            +joinUserParkourLastNote.note,
+            +result.parkour_id,
+            +result.note
           );
         } else {
           await new ParkourService().addOneNoteByParkourId(

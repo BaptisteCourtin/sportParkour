@@ -7,6 +7,11 @@ import ImageParkourEntity from "../entities/imageParkour.entity";
 import UserEntity from "../entities/user.entity";
 import JoinUserParkourNoteEntity from "../entities/joinUserParkourNote.entity";
 
+import dotenv from "dotenv";
+dotenv.config({
+  path: "../.env",
+});
+
 export async function createParkours(
   dataSource: DataSource,
   numParkours: number,
@@ -32,11 +37,18 @@ export async function createParkours(
 
     // ---------------------------------------------------------------------------------
 
-    // time / length
-    const thisLength = faker.number.int({ min: 0, max: 60 });
-    let thisTime = thisLength * Math.floor(Math.random() * (15 - 7) + 6);
-    if (thisTime > 600) {
-      thisTime = 600;
+    // length / time
+    const thisLength = faker.number.int({
+      min: 1,
+      max: parseInt(process.env.NEXT_PUBLIC_MAX_LENGTH as string),
+    });
+
+    // (longueur / (random * nb à modifier + km/h moyen)) * 1h => (longueur / vitesse random entre 9 et 16) * 1h
+    let thisTime = Math.floor(
+      (thisLength / Math.floor(Math.random() * 8 + 9)) * 60
+    );
+    if (thisTime > parseInt(process.env.NEXT_PUBLIC_MAX_TIME as string)) {
+      thisTime = parseInt(process.env.NEXT_PUBLIC_MAX_TIME as string);
     }
 
     // ---------------------------------------------------------------------------------
@@ -79,10 +91,13 @@ export async function createParkours(
     parkour.id = i + 1;
     parkour.title = faker.word
       .words({ count: { min: 2, max: 5 } })
-      .substring(0, 50);
+      .substring(0, parseInt(process.env.NEXT_PUBLIC_LENGTH_TITLE as string));
     parkour.description = faker.lorem
       .paragraphs({ min: 3, max: 5 }, "\n\n")
-      .substring(0, 1000);
+      .substring(
+        0,
+        parseInt(process.env.NEXT_PUBLIC_LENGTH_DESCRIPTION as string)
+      );
     parkour.length = thisLength;
     parkour.time = thisTime;
     parkour.difficulty = randomDifficulty;
@@ -118,7 +133,7 @@ export async function createParkours(
         const thisNote = faker.number.float({
           min: 0,
           max: 5,
-          multipleOf: 0.25,
+          multipleOf: 0.5,
         });
 
         joinUserParkourNote.user_id = users[idUser].id;
@@ -126,7 +141,10 @@ export async function createParkours(
         joinUserParkourNote.note = thisNote;
         joinUserParkourNote.commentaire = faker.lorem
           .paragraphs({ min: 1, max: 3 }, "\n\n")
-          .substring(0, 500);
+          .substring(
+            0,
+            parseInt(process.env.NEXT_PUBLIC_LENGTH_COMMENTAIRE as string)
+          );
         joinUserParkoursNotes.push(joinUserParkourNote);
 
         noteTotalThisParkour += thisNote;

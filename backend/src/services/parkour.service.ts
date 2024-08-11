@@ -133,10 +133,6 @@ class ParkourService {
 
     const listParkours = await query.getMany();
 
-    if (listParkours.length === 0) {
-      throw new Error("Pas de parkour avec cette recherche");
-    }
-
     return listParkours;
   }
 

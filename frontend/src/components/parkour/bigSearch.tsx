@@ -13,19 +13,34 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 let createSearchByAllSchema = object({
-  city: string().max(50, "Une ville, pas un lieu-dit paumé"),
+  city: string().max(
+    parseInt(process.env.NEXT_PUBLIC_LENGTH_CITY),
+    "Une ville, pas un lieu-dit paumé"
+  ),
   timeMin: number()
     .min(0, "Remonter dans le temps n'ai pas une option")
-    .max(600, "Tu va déjà avoir mal à ce niveau"),
+    .max(
+      parseInt(process.env.NEXT_PUBLIC_MAX_TIME),
+      "Tu va déjà avoir mal à ce niveau"
+    ),
   timeMax: number()
     .min(0, "Remonter dans le temps n'ai pas une option")
-    .max(600, "Tu va déjà avoir mal à ce niveau"),
+    .max(
+      parseInt(process.env.NEXT_PUBLIC_MAX_TIME),
+      "Tu va déjà avoir mal à ce niveau"
+    ),
   lengthMin: number()
     .min(0, "Marcher en arrière est dangereux pour votre santée")
-    .max(60, "Tu va déjà avoir mal à ce niveau"),
+    .max(
+      parseInt(process.env.NEXT_PUBLIC_MAX_LENGTH),
+      "Tu va déjà avoir mal à ce niveau"
+    ),
   lengthMax: number()
     .min(0, "Marcher en arrière est dangereux pour votre santée")
-    .max(60, "Tu va déjà avoir mal à ce niveau"),
+    .max(
+      parseInt(process.env.NEXT_PUBLIC_MAX_LENGTH),
+      "Tu va déjà avoir mal à ce niveau"
+    ),
   difficulty: mixed<Difficulty>().oneOf(Object.values(Difficulty)),
   noteMin: number()
     .min(
@@ -34,6 +49,29 @@ let createSearchByAllSchema = object({
     )
     .max(5, "5/5 c'est déjà bien. Non?"),
 });
+
+const marks = [
+  {
+    value: 60,
+    label: "1h",
+  },
+  {
+    value: 120,
+    label: "2h",
+  },
+  {
+    value: 180,
+    label: "3h",
+  },
+  {
+    value: 240,
+    label: "4h",
+  },
+  {
+    value: 300,
+    label: "5h",
+  },
+];
 
 const bigSearch = ({
   loading,
@@ -74,7 +112,10 @@ const bigSearch = ({
 
     if (newValue[1] - newValue[0] < minDistance) {
       if (activeThumb === 0) {
-        const clamped = Math.min(newValue[0], 60 - minDistance);
+        const clamped = Math.min(
+          newValue[0],
+          parseInt(process.env.NEXT_PUBLIC_MAX_LENGTH) - minDistance
+        );
         setValueLength([clamped, clamped + minDistance]);
       } else {
         const clamped = Math.max(newValue[1], minDistance);
@@ -96,7 +137,10 @@ const bigSearch = ({
 
     if (newValue[1] - newValue[0] < minDistance) {
       if (activeThumb === 0) {
-        const clamped = Math.min(newValue[0], 600 - minDistance);
+        const clamped = Math.min(
+          newValue[0],
+          parseInt(process.env.NEXT_PUBLIC_MAX_TIME) - minDistance
+        );
         setValueTime([clamped, clamped + minDistance]);
       } else {
         const clamped = Math.max(newValue[1], minDistance);
@@ -116,8 +160,8 @@ const bigSearch = ({
   const resetChoosen = () => {
     setSelectedCommuneName("");
     setChoosenDifficulty("");
-    setValueLength([0, 60]);
-    setValueTime([0, 600]);
+    setValueLength([0, parseInt(process.env.NEXT_PUBLIC_MAX_LENGTH)]);
+    setValueTime([0, parseInt(process.env.NEXT_PUBLIC_MAX_TIME)]);
     setChoosenNoteMin(0);
     setTri("id_DESC");
   };
@@ -156,7 +200,7 @@ const bigSearch = ({
       </div>
 
       <div className="champ">
-        <label>distance :</label>
+        <label>distance (km) :</label>
         <Slider
           sx={{ width: 300 }}
           value={valueLength}
@@ -165,11 +209,11 @@ const bigSearch = ({
           disableSwap
           step={5}
           min={0}
-          max={60}
+          max={parseInt(process.env.NEXT_PUBLIC_MAX_LENGTH)}
         />
       </div>
       <div className="champ">
-        <label>temps :</label>
+        <label>temps (min) :</label>
         <Slider
           sx={{ width: 300 }}
           value={valueTime}
@@ -178,7 +222,8 @@ const bigSearch = ({
           disableSwap
           step={10}
           min={0}
-          max={600}
+          max={parseInt(process.env.NEXT_PUBLIC_MAX_TIME)}
+          marks={marks}
         />
       </div>
 

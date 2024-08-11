@@ -101,7 +101,7 @@ class ParkourEntity {
   // scale = the number of digits to the right of the decimal point
   // Avec decimal(6,5), vous pouvez gérer précisément jusqu'à environ 100,000 votes avant de commencer à perdre en précision.
   @Field({ nullable: true })
-  @Column("decimal", {
+  @Column("numeric", {
     precision: 6,
     scale: 5,
     unsigned: true,

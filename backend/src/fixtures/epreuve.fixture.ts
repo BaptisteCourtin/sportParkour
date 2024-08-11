@@ -63,19 +63,31 @@ export async function createEpreuves(
     epreuve.id = i + 1;
     epreuve.title = faker.word
       .words({ count: { min: 2, max: 5 } })
-      .substring(0, 50);
+      .substring(0, parseInt(process.env.NEXT_PUBLIC_LENGTH_TITLE as string));
     epreuve.description = faker.lorem
       .paragraphs({ min: 2, max: 4 }, "\n\n")
-      .substring(0, 1000);
+      .substring(
+        0,
+        parseInt(process.env.NEXT_PUBLIC_LENGTH_DESCRIPTION as string)
+      );
     epreuve.easyToDo = faker.lorem
       .paragraphs({ min: 1, max: 3 }, "\n\n")
-      .substring(0, 250);
+      .substring(
+        0,
+        parseInt(process.env.NEXT_PUBLIC_LENGTH_LITTLE_DESCRIPTION as string)
+      );
     epreuve.mediumToDo = faker.lorem
       .paragraphs({ min: 1, max: 3 }, "\n\n")
-      .substring(0, 250);
+      .substring(
+        0,
+        parseInt(process.env.NEXT_PUBLIC_LENGTH_LITTLE_DESCRIPTION as string)
+      );
     epreuve.hardToDo = faker.lorem
       .paragraphs({ min: 1, max: 3 }, "\n\n")
-      .substring(0, 250);
+      .substring(
+        0,
+        parseInt(process.env.NEXT_PUBLIC_LENGTH_LITTLE_DESCRIPTION as string)
+      );
     epreuve.videoLink = tabVideo[idVideo];
     epreuve.images = imagesEpreuve;
 

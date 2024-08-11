@@ -41,7 +41,8 @@ const cardParkour = ({
 
       <div className="infos">
         <p>
-          <FaStopwatch /> {parkour.time} min
+          <FaStopwatch />
+          {(parkour.time - (parkour.time % 60)) / 60}h {parkour.time % 60}
         </p>
         <p>
           <FaPersonRunning /> {parkour.length} km
