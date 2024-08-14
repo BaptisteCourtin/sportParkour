@@ -83,7 +83,7 @@ describe("CardParkour", () => {
 
   it("renders the parkour time, length, and difficulty with respective icons", () => {
     render(<CardParkour parkour={mockParkour} color="red" />);
-    expect(screen.getByText("60 min")).toBeInTheDocument();
+    expect(screen.getByText("1h")).toBeInTheDocument();
     expect(screen.getByTestId("FaStopwatch")).toBeInTheDocument();
     expect(screen.getByText("5 km")).toBeInTheDocument();
     expect(screen.getByTestId("FaPersonRunning")).toBeInTheDocument();

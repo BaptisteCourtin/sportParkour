@@ -30,18 +30,50 @@ class ParkourService {
     return parkour;
   }
 
+  async getListParkourByIds(ids?: number[]) {
+    // cherche les parkours suivant la table de ids (all si pas de table)
+    // prend les images qui ont isCouverture à true
+    const listParkours: ParkourEntity[] = await this.db
+      .createQueryBuilder("parkour")
+      .leftJoinAndSelect(
+        "parkour.images",
+        "images",
+        "images.isCouverture = true"
+      )
+      .where(ids && ids.length > 0 ? "parkour.id IN (:...ids)" : "1=1", { ids })
+      .getMany();
+
+    return listParkours;
+  }
+
   async getParkourWithRelationsById(id: number) {
     const parkour: ParkourEntity | null = await this.db
       .createQueryBuilder("parkour")
       .leftJoinAndSelect("parkour.images", "imagesParkour")
-      .leftJoinAndSelect("parkour.notesParkours", "notesParkours")
-      .leftJoinAndSelect("parkour.epreuves", "epreuves")
 
+      .leftJoinAndSelect("parkour.notesParkours", "notesParkours")
       .leftJoinAndSelect("notesParkours.user", "user")
+
+      .leftJoinAndSelect("parkour.epreuves", "epreuves")
       .leftJoinAndSelect(
         "epreuves.images",
         "imagesEpreuves",
         "imagesEpreuves.isCouverture = true"
+      )
+
+      // Récupérer les connexions où le parkour est parkour_A_id
+      .leftJoinAndSelect("parkour.parkourConnect", "connectedParkoursA")
+      .leftJoinAndSelect(
+        "connectedParkoursA.images",
+        "connectedParkourImagesA",
+        "connectedParkourImagesA.isCouverture = true"
+      )
+      // Récupérer les connexions où le parkour est parkour_B_id
+      .leftJoinAndSelect("parkour.parkourConnectInverse", "connectedParkoursB")
+      .leftJoinAndSelect(
+        "connectedParkoursB.images",
+        "connectedParkourImagesB",
+        "connectedParkourImagesB.isCouverture = true"
       )
 
       .where("parkour.id = :id", { id })
@@ -230,7 +262,18 @@ class ParkourService {
       epreuves = await new EpreuveService().getListEpreuveByIds(data.epreuves);
     }
 
-    const newParkour: ParkourEntity = this.db.create({ ...data, epreuves });
+    let connectedParkours: ParkourEntity[] = [];
+    if (data.parkourConnect?.length) {
+      connectedParkours = await new ParkourService().getListParkourByIds(
+        data.parkourConnect
+      );
+    }
+
+    const newParkour: ParkourEntity = this.db.create({
+      ...data,
+      epreuves,
+      parkourConnect: connectedParkours,
+    });
     await this.db.save(newParkour);
 
     if (data.images && data.images.length > 0) {
@@ -254,12 +297,15 @@ class ParkourService {
         data[key] !== null &&
         key !== "epreuves" &&
         key !== "images" &&
-        key !== "deletedImageIds"
+        key !== "deletedImageIds" &&
+        key !== "parkourConnect"
       ) {
         (parkour as any)[key] = data[key];
       }
     }
 
+    // si il y a qqch dans le tableau, les ajout et suppressiosn se font.
+    // si le tableau est vide => tout est supprimé
     // Gérer les relations avec epreuves
     if (data.epreuves !== null && data.epreuves.length > 0) {
       const epreuveIds = data.epreuves;
@@ -268,6 +314,19 @@ class ParkourService {
       );
     } else if (data.epreuves?.length == 0) {
       parkour.epreuves = [];
+    }
+
+    // Gérer les connexions entre Parkours
+    if (data.parkourConnect !== null && data.parkourConnect.length > 0) {
+      if (data.parkourConnect.length > 0) {
+        const parkourConnectIds = data.parkourConnect;
+        parkour.parkourConnect = [];
+        parkour.parkourConnectInverse =
+          await new ParkourService().getListParkourByIds(parkourConnectIds);
+      } else if (data.epreuves?.length == 0) {
+        parkour.parkourConnect = [];
+        parkour.parkourConnectInverse = [];
+      }
     }
 
     await this.db.save(parkour);

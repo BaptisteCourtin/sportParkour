@@ -255,6 +255,31 @@ const OneParkour = () => {
               )}
             </div>
 
+            <div className="container-parkour-connect">
+              <h3>Les parkours en relations :</h3>
+              {data.getParkourById.parkourConnect?.length ? (
+                <ul>
+                  {data.getParkourById.parkourConnect?.map((parkourConnect) => (
+                    <li>{parkourConnect.title}</li>
+                  ))}
+                </ul>
+              ) : null}
+              {data.getParkourById.parkourConnectInverse?.length ? (
+                <ul>
+                  {data.getParkourById.parkourConnectInverse?.map(
+                    (parkourConnect) => (
+                      <li>{parkourConnect.title}</li>
+                    )
+                  )}
+                </ul>
+              ) : null}
+
+              {!data.getParkourById.parkourConnect?.length &&
+              !data.getParkourById.parkourConnectInverse?.length
+                ? "y'en a pas"
+                : null}
+            </div>
+
             {/* --- NOTES ET COMMENTAIRES --- */}
             <hr />
 

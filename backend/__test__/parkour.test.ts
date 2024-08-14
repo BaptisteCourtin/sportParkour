@@ -107,6 +107,7 @@ describe("0. Test de base sur les parkour", () => {
           start: "5.63, 8.13",
           epreuves: [],
           images: [],
+          parkourConnect: [],
         },
       },
     });
@@ -145,6 +146,7 @@ describe("0. Test de base sur les parkour", () => {
           images: null,
           epreuves: null,
           deletedImageIds: null,
+          parkourConnect: null,
         },
       },
     });

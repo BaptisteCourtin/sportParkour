@@ -9,6 +9,7 @@ import {
   ImageParkourCreateEntity,
   ParkourCreateEntity,
   useCreateParkourMutation,
+  useGetListTop20ParkourByTitleLazyQuery,
   useGetTop20EpreuveByTitleLazyQuery,
 } from "@/types/graphql";
 
@@ -90,6 +91,7 @@ const createParkour = () => {
       city: selectedCommuneName,
       epreuves: selectedEpreuveIds,
       images: allLienImages,
+      parkourConnect: selectedParkoursConnectIds,
     };
 
     if (dataAggregate.title) {
@@ -145,6 +147,38 @@ const createParkour = () => {
       parseInt(option.id)
     );
     setSelectedEpreuveIds(selectedIds);
+  };
+
+  // --- DEAL WITH IDS PARKOURS CONNECT ---
+  const [
+    getListParkoursConnectByTitle,
+    {
+      data: dataParkoursConnect,
+      loading: loadingParkoursConnect,
+      error: errorParkoursConnect,
+    },
+  ] = useGetListTop20ParkourByTitleLazyQuery();
+
+  const handleSearchTitleParkourConnect = (
+    e: SyntheticEvent<Element, Event>,
+    value: string
+  ) => {
+    getListParkoursConnectByTitle({ variables: { title: value as string } });
+  };
+
+  useEffect(() => {
+    getListParkoursConnectByTitle();
+  }, []);
+
+  const [selectedParkoursConnectIds, setSelectedParkoursConnectIds] = useState<
+    number[]
+  >([]);
+
+  const handleParkoursConnectSelection = (value: any) => {
+    const selectedIds = value.map((option: { id: string }) =>
+      parseInt(option.id)
+    );
+    setSelectedParkoursConnectIds(selectedIds);
   };
 
   // --- API COMMUNES ---
@@ -281,32 +315,32 @@ const createParkour = () => {
           </div>
         </div>
 
-        <div className="containerFlexChamp">
-          <div className="champ">
-            <FormControl sx={{ m: 1, minWidth: 150 }}>
-              <InputLabel>Difficultée</InputLabel>
-              <Select
-                className="mui-input"
-                variant="outlined"
-                id="difficulty"
-                name="difficulty"
-                label="Difficultée"
-                required
-                onChange={(e) =>
-                  setChoosenDifficulty(e.target.value as Difficulty)
-                }
-              >
-                <MenuItem value="">
-                  <em>None</em>
-                </MenuItem>
-                <MenuItem value="EASY">facile</MenuItem>
-                <MenuItem value="MEDIUM">moyen</MenuItem>
-                <MenuItem value="HARD">difficile</MenuItem>
-              </Select>
-            </FormControl>
-            <p className="error">{errors?.difficulty?.message}</p>
-          </div>
+        <div className="champ difficulty">
+          <FormControl sx={{ m: 1, minWidth: 150 }}>
+            <InputLabel>Difficultée</InputLabel>
+            <Select
+              className="mui-input"
+              variant="outlined"
+              id="difficulty"
+              name="difficulty"
+              label="Difficultée"
+              required
+              onChange={(e) =>
+                setChoosenDifficulty(e.target.value as Difficulty)
+              }
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              <MenuItem value="EASY">facile</MenuItem>
+              <MenuItem value="MEDIUM">moyen</MenuItem>
+              <MenuItem value="HARD">difficile</MenuItem>
+            </Select>
+          </FormControl>
+          <p className="error">{errors?.difficulty?.message}</p>
+        </div>
 
+        <div className="containerMultiComplete">
           <div className="champ">
             <Autocomplete
               id="epreuves"
@@ -339,11 +373,64 @@ const createParkour = () => {
               )}
             />
           </div>
+
+          <div className="champ">
+            <Autocomplete
+              id="parkourConnect"
+              className="mui-input"
+              multiple
+              fullWidth
+              loading={loadingParkoursConnect}
+              disableCloseOnSelect
+              // on change
+              onInputChange={handleSearchTitleParkourConnect}
+              onChange={(e, value, detail) =>
+                handleParkoursConnectSelection(value)
+              }
+              // pour rechercher dans le back
+              options={dataParkoursConnect?.getTop20ParkourByTitle ?? []}
+              // render qui veut un string
+              getOptionLabel={(option) => option.title}
+              // pour le style autour
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  variant="outlined"
+                  label="Recherche par titre un parkour à connecté"
+                />
+              )}
+              // pour la liste déroulante
+              renderOption={(props, option, { selected }) => (
+                <li {...props} key={option.id} value={option.id}>
+                  {option.title}
+                  {selected ? <FaCheck /> : null}
+                </li>
+              )}
+            />
+          </div>
         </div>
 
         <button type="submit" disabled={loading}>
           Créer le parkour
         </button>
+
+        <section className="usefullLink">
+          <p>liens utiles : </p>
+          <a
+            className="button"
+            href="https://www.google.fr/maps/preview"
+            target="_blank"
+          >
+            maps
+          </a>
+          <a
+            className="button"
+            href="https://www.calculitineraires.fr/"
+            target="_blank"
+          >
+            calcul itinéraires
+          </a>
+        </section>
 
         <div>
           <span>{error?.message}</span>

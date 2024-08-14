@@ -262,6 +262,7 @@ export type ParkourCreateEntity = {
   epreuves?: InputMaybe<Array<Scalars['Int']['input']>>;
   images?: InputMaybe<Array<ImageParkourCreateEntity>>;
   length?: InputMaybe<Scalars['Float']['input']>;
+  parkourConnect?: InputMaybe<Array<Scalars['Int']['input']>>;
   start: Scalars['String']['input'];
   time?: InputMaybe<Scalars['Float']['input']>;
   title: Scalars['String']['input'];
@@ -279,6 +280,8 @@ export type ParkourEntity = {
   nbVote?: Maybe<Scalars['Float']['output']>;
   note?: Maybe<Scalars['Float']['output']>;
   notesParkours?: Maybe<Array<JoinUserParkourNoteEntity>>;
+  parkourConnect?: Maybe<Array<ParkourEntity>>;
+  parkourConnectInverse?: Maybe<Array<ParkourEntity>>;
   start: Scalars['String']['output'];
   time?: Maybe<Scalars['Float']['output']>;
   title: Scalars['String']['output'];
@@ -292,6 +295,7 @@ export type ParkourUpdateEntity = {
   epreuves?: InputMaybe<Array<Scalars['Int']['input']>>;
   images?: InputMaybe<Array<ImageParkourCreateEntity>>;
   length?: InputMaybe<Scalars['Float']['input']>;
+  parkourConnect?: InputMaybe<Array<Scalars['Int']['input']>>;
   start?: InputMaybe<Scalars['String']['input']>;
   time?: InputMaybe<Scalars['Float']['input']>;
   title?: InputMaybe<Scalars['String']['input']>;
@@ -699,7 +703,7 @@ export type GetParkourByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetParkourByIdQuery = { __typename?: 'Query', getParkourById: { __typename?: 'ParkourEntity', id: string, title: string, description?: string | null, time?: number | null, length?: number | null, difficulty?: Difficulty | null, city?: string | null, start: string, note?: number | null, nbVote?: number | null, images?: Array<{ __typename?: 'ImageParkourEntity', id: string, lien: string, isCouverture: boolean }> | null, notesParkours?: Array<{ __typename?: 'JoinUserParkourNoteEntity', note: number, commentaire?: string | null, user: { __typename?: 'UserEntity', id: string, name: string, firstname: string, imageProfil?: string | null } }> | null, epreuves?: Array<{ __typename?: 'EpreuveEntity', id: string, title: string, images?: Array<{ __typename?: 'ImageEpreuveEntity', id: string, lien: string, isCouverture: boolean }> | null }> | null } };
+export type GetParkourByIdQuery = { __typename?: 'Query', getParkourById: { __typename?: 'ParkourEntity', id: string, title: string, description?: string | null, time?: number | null, length?: number | null, difficulty?: Difficulty | null, city?: string | null, start: string, note?: number | null, nbVote?: number | null, images?: Array<{ __typename?: 'ImageParkourEntity', id: string, lien: string, isCouverture: boolean }> | null, notesParkours?: Array<{ __typename?: 'JoinUserParkourNoteEntity', note: number, commentaire?: string | null, user: { __typename?: 'UserEntity', id: string, name: string, firstname: string, imageProfil?: string | null } }> | null, epreuves?: Array<{ __typename?: 'EpreuveEntity', id: string, title: string, images?: Array<{ __typename?: 'ImageEpreuveEntity', id: string, lien: string, isCouverture: boolean }> | null }> | null, parkourConnect?: Array<{ __typename?: 'ParkourEntity', id: string, title: string, images?: Array<{ __typename?: 'ImageParkourEntity', id: string, lien: string, isCouverture: boolean }> | null }> | null, parkourConnectInverse?: Array<{ __typename?: 'ParkourEntity', id: string, title: string, images?: Array<{ __typename?: 'ImageParkourEntity', id: string, lien: string, isCouverture: boolean }> | null }> | null } };
 
 export type GetAllParkourForMapQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1993,6 +1997,24 @@ export const GetParkourByIdDocument = gql`
       }
     }
     epreuves {
+      id
+      title
+      images {
+        id
+        lien
+        isCouverture
+      }
+    }
+    parkourConnect {
+      id
+      title
+      images {
+        id
+        lien
+        isCouverture
+      }
+    }
+    parkourConnectInverse {
       id
       title
       images {

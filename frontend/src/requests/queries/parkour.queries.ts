@@ -37,6 +37,24 @@ export const GET_PARKOUR_BY_ID = gql`
           isCouverture
         }
       }
+      parkourConnect {
+        id
+        title
+        images {
+          id
+          lien
+          isCouverture
+        }
+      }
+      parkourConnectInverse {
+        id
+        title
+        images {
+          id
+          lien
+          isCouverture
+        }
+      }
     }
   }
 `;

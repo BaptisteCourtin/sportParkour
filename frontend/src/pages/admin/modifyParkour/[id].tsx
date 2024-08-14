@@ -14,6 +14,8 @@ import {
   useModifyImageCouvertureParkourMutation,
   ImageParkourCreateEntity,
   ImageParkourEntity,
+  useGetListTop20ParkourByTitleLazyQuery,
+  ParkourEntity,
 } from "@/types/graphql";
 
 import TextField from "@mui/material/TextField";
@@ -77,6 +79,8 @@ const modifyOneParkour = () => {
       getParkour({
         variables: { getParkourByIdId: +id },
         onCompleted(data) {
+          console.log(data);
+
           setSelectedCommuneName(
             data.getParkourById.city ? data.getParkourById.city : ""
           );
@@ -88,6 +92,15 @@ const modifyOneParkour = () => {
             : setSelectedEpreuveIds([]);
 
           setChooseEpreuves(data.getParkourById.epreuves as EpreuveEntity[]);
+
+          // Combinez les deux tableaux en un seul
+          const combinedParkours = [
+            ...(data.getParkourById.parkourConnect || []),
+            ...(data.getParkourById.parkourConnectInverse || []),
+          ];
+
+          // Mettez à jour le useState avec les deux tableaux combinés
+          setChooseParkoursConnect(combinedParkours as ParkourEntity[]);
 
           setListImagesAlreadyIn(
             data.getParkourById.images as [ImageParkourEntity]
@@ -153,6 +166,7 @@ const modifyOneParkour = () => {
       epreuves: selectedEpreuveIds,
       images: allLienImages,
       deletedImageIds: idsImagesToSupp,
+      parkourConnect: selectedParkoursConnectIds,
       ...dataForm,
     };
 
@@ -232,6 +246,55 @@ const modifyOneParkour = () => {
       parseInt(option.id)
     );
     setSelectedEpreuveIds(selectedIds);
+  };
+
+  // --- DEAL WITH IDS PARKOURS CONNECT ---
+  const [
+    getListParkoursConnectByTitle,
+    {
+      data: dataParkoursConnect,
+      loading: loadingParkoursConnect,
+      error: errorParkoursConnect,
+    },
+  ] = useGetListTop20ParkourByTitleLazyQuery();
+
+  const handleSearchTitleParkourConnect = (
+    e: SyntheticEvent<Element, Event>,
+    value: string
+  ) => {
+    getListParkoursConnectByTitle({ variables: { title: value as string } });
+  };
+
+  useEffect(() => {
+    getListParkoursConnectByTitle();
+  }, []);
+
+  const [selectedParkoursConnectIds, setSelectedParkoursConnectIds] = useState<
+    number[]
+  >([]);
+  const [chooseParkoursConnect, setChooseParkoursConnect] = useState<
+    ParkourEntity[]
+  >([]);
+
+  const handleParkoursConnectSelection = (values: any) => {
+    // je sais pas mais ok
+    const idCounts: { [key: string]: number } = {};
+    const tableauFiltre: ParkourEntity[] = values.filter((objet: any) => {
+      idCounts[objet.id] = (idCounts[objet.id] || 0) + 1;
+      return idCounts[objet.id] === 1;
+    });
+
+    const tableauSansDoublons: ParkourEntity[] = tableauFiltre.filter(
+      (objet) => idCounts[objet.id] === 1
+    );
+    // voilà voilà
+
+    setChooseParkoursConnect(tableauSansDoublons);
+
+    const selectedIds = tableauSansDoublons.map((option: { id: string }) =>
+      parseInt(option.id)
+    );
+    setSelectedParkoursConnectIds(selectedIds);
   };
 
   // --- API COMMUNES ---
@@ -404,33 +467,33 @@ const modifyOneParkour = () => {
                 </div>
               </div>
 
-              <div className="containerFlexChamp">
-                <div className="champ">
-                  <FormControl sx={{ m: 1, minWidth: 150 }}>
-                    <InputLabel>Difficultée</InputLabel>
-                    <Select
-                      className="mui-input"
-                      variant="outlined"
-                      id="difficulty"
-                      name="difficulty"
-                      label="Difficultée"
-                      required
-                      defaultValue={data.getParkourById.difficulty}
-                      onChange={(e) =>
-                        setChoosenDifficulty(e.target.value as Difficulty)
-                      }
-                    >
-                      <MenuItem value="">
-                        <em>None</em>
-                      </MenuItem>
-                      <MenuItem value="EASY">facile</MenuItem>
-                      <MenuItem value="MEDIUM">moyen</MenuItem>
-                      <MenuItem value="HARD">difficile</MenuItem>
-                    </Select>
-                  </FormControl>
-                  <p className="error">{errors?.difficulty?.message}</p>
-                </div>
+              <div className="champ difficulty">
+                <FormControl sx={{ m: 1, minWidth: 150 }}>
+                  <InputLabel>Difficultée</InputLabel>
+                  <Select
+                    className="mui-input"
+                    variant="outlined"
+                    id="difficulty"
+                    name="difficulty"
+                    label="Difficultée"
+                    required
+                    defaultValue={data.getParkourById.difficulty}
+                    onChange={(e) =>
+                      setChoosenDifficulty(e.target.value as Difficulty)
+                    }
+                  >
+                    <MenuItem value="">
+                      <em>None</em>
+                    </MenuItem>
+                    <MenuItem value="EASY">facile</MenuItem>
+                    <MenuItem value="MEDIUM">moyen</MenuItem>
+                    <MenuItem value="HARD">difficile</MenuItem>
+                  </Select>
+                </FormControl>
+                <p className="error">{errors?.difficulty?.message}</p>
+              </div>
 
+              <div className="containerMultiComplete">
                 <div className="champ">
                   <Autocomplete
                     sx={{ width: 300 }}
@@ -467,11 +530,66 @@ const modifyOneParkour = () => {
                     )}
                   />
                 </div>
+
+                <div className="champ">
+                  <Autocomplete
+                    sx={{ width: 300 }}
+                    id="parkourConnect"
+                    className="mui-input"
+                    multiple
+                    loading={loadingParkoursConnect}
+                    disableCloseOnSelect
+                    // valeur de base (repris de la bdd) (sous forme de parkour)
+                    value={chooseParkoursConnect}
+                    // on change
+                    onInputChange={handleSearchTitleParkourConnect}
+                    onChange={(e, value, detail) =>
+                      handleParkoursConnectSelection(value)
+                    }
+                    // pour rechercher dans le back
+                    options={dataParkoursConnect?.getTop20ParkourByTitle ?? []}
+                    // render qui veut un string
+                    getOptionLabel={(option) => option.title}
+                    // pour le style autour
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        variant="outlined"
+                        label="Recherche par titre un parkour à connecté"
+                      />
+                    )}
+                    // pour la liste déroulante
+                    renderOption={(props, option, { selected }) => (
+                      <li {...props} key={option.id} value={option.id}>
+                        {option.title}
+                        {selected ? <FaCheck /> : null}
+                      </li>
+                    )}
+                  />
+                </div>
               </div>
 
               <button type="submit" disabled={loadingModify}>
                 Modifier le parkour
               </button>
+
+              <section className="usefullLink">
+                <p>liens utiles : </p>
+                <a
+                  className="button"
+                  href="https://www.google.fr/maps/preview"
+                  target="_blank"
+                >
+                  maps
+                </a>
+                <a
+                  className="button"
+                  href="https://www.calculitineraires.fr/"
+                  target="_blank"
+                >
+                  calcul itinéraires
+                </a>
+              </section>
 
               <div>
                 <span>{errorModify?.message}</span>

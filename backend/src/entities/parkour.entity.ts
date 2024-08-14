@@ -19,6 +19,7 @@ import ImageParkourEntity, {
 import JoinUserParkourNoteEntity from "./joinUserParkourNote.entity";
 
 import dotenv from "dotenv";
+// import ParkourConnectEntity from "./parkourConnect.entity";
 dotenv.config({
   path: "../.env",
 });
@@ -146,6 +147,42 @@ class ParkourEntity {
     },
   })
   epreuves: EpreuveEntity[];
+
+  @Field(() => [ParkourEntity], { nullable: true })
+  @ManyToMany(() => ParkourEntity, (parkour) => parkour.parkourConnectInverse, {
+    nullable: true,
+    onDelete: "CASCADE",
+  })
+  @JoinTable({
+    name: "parkour_connect",
+    joinColumn: {
+      name: "parkour_A_id",
+      referencedColumnName: "id",
+    },
+    inverseJoinColumn: {
+      name: "parkour_B_id",
+      referencedColumnName: "id",
+    },
+  })
+  parkourConnect: ParkourEntity[];
+
+  @Field(() => [ParkourEntity], { nullable: true })
+  @ManyToMany(() => ParkourEntity, (parkour) => parkour.parkourConnect, {
+    nullable: true,
+    onDelete: "CASCADE",
+  })
+  @JoinTable({
+    name: "parkour_connect",
+    joinColumn: {
+      name: "parkour_B_id",
+      referencedColumnName: "id",
+    },
+    inverseJoinColumn: {
+      name: "parkour_A_id",
+      referencedColumnName: "id",
+    },
+  })
+  parkourConnectInverse: ParkourEntity[];
 }
 
 // ---
@@ -188,6 +225,9 @@ export class ParkourCreateEntity {
 
   @Field(() => [ImageParkourCreateEntity], { nullable: true })
   images: ImageParkourCreateEntity[];
+
+  @Field(() => [Int], { nullable: true })
+  parkourConnect: number[];
 }
 
 @InputType()
@@ -231,6 +271,9 @@ export class ParkourUpdateEntity {
 
   @Field(() => [Number], { nullable: true })
   deletedImageIds: number[];
+
+  @Field(() => [Int], { nullable: true })
+  parkourConnect: number[];
 }
 
 @InputType()
