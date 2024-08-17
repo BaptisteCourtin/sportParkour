@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import router from "next/router";
 
 import { useDeleteUserMutation } from "@/types/graphql";
 
@@ -9,9 +10,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-
 import toast from "react-hot-toast";
-import router from "next/router";
 
 // dialog pour supprimer son compte
 const suppUserDialog = ({
@@ -83,7 +82,7 @@ const suppUserDialog = ({
         <DialogTitle>Vous êtes entrain de vous supprimer</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Pour vous supprimer, entrez votre mail : {userEmail}
+            Pour vous supprimer, entrez votre email : {userEmail}
           </DialogContentText>
           <TextField
             autoFocus

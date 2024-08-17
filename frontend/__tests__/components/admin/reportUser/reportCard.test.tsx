@@ -51,7 +51,7 @@ describe("ReportCard", () => {
     expect(screen.getByText("Commentaire en faute")).toBeInTheDocument();
     expect(screen.getByTestId("button-for-report")).toBeInTheDocument();
     expect(
-      screen.getByText("parkour du commentaire : Parkour Title")
+      screen.getByText("Parkour du commentaire : Parkour Title")
     ).toBeInTheDocument();
   });
 

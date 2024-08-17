@@ -8,12 +8,12 @@ import {
 import { Field, ID, InputType, ObjectType } from "type-graphql";
 import { MaxLength } from "class-validator";
 
-import ParkourEntity from "./parkour.entity";
-
 import dotenv from "dotenv";
 dotenv.config({
   path: "../.env",
 });
+
+import ParkourEntity from "./parkour.entity";
 
 @Entity("image_parkour")
 @ObjectType()

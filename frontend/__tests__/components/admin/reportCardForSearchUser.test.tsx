@@ -28,7 +28,7 @@ describe("ReportCardForSearchUser", () => {
 
     // Vérifier la présence des informations sur les reports
     expect(
-      screen.getByText("L'utilisateur a 3 report valide contre lui")
+      screen.getByText("L'utilisateur a 3 reports valides contre lui")
     ).toBeInTheDocument();
     expect(
       screen.getByText("L'utilisateur a émis 5 reports")

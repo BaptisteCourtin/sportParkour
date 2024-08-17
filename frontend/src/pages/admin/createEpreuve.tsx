@@ -1,8 +1,6 @@
-import React, { useState } from "react";
-import { useRouter } from "next/router";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { object, string } from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { useRouter } from "next/router";
 
 import {
   EpreuveCreateEntity,
@@ -10,12 +8,14 @@ import {
   useCreateEpreuveMutation,
 } from "@/types/graphql";
 
+import { object, string } from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 import TextField from "@mui/material/TextField";
-
 import { toast } from "react-hot-toast";
-import { uploadImages } from "@/components/uploadImage/uploadImages";
 
 import FormCreateImages from "@/components/uploadImage/formCreateImages";
+import GoToHome from "@/components/goBack";
+import { uploadImages } from "@/components/uploadImage/uploadImages";
 
 let createEpreuveSchema = object({
   title: string()
@@ -112,6 +112,8 @@ const createEpreuve = () => {
 
   return (
     <main className="createEpreuve">
+      <GoToHome />
+
       <h1>Créer une épreuve</h1>
 
       {/* --- form create images --- */}

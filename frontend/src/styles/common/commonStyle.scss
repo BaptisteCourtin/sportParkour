@@ -4,7 +4,7 @@ button,
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  gap: var(--miniEspace);
+  gap: var(--espaceButton);
 
   width: max-content;
   padding: var(--padButton);
@@ -17,6 +17,10 @@ button,
   color: var(--text1);
   font-weight: var(--fw-button);
   font-size: var(--fs-base);
+
+  &.goBack {
+    align-self: flex-start;
+  }
 }
 
 input[type="number"]::-webkit-inner-spin-button,
@@ -26,13 +30,6 @@ input[type="number"]::-webkit-outer-spin-button {
   appearance: none;
   margin: 0;
 }
-
-// .retourTopButton {
-//   width: 50px;
-//   height: 50px;
-//   border-radius: 50%;
-//   text-align: center;
-// }
 
 .titreAvecLosange {
   display: flex;
@@ -57,4 +54,12 @@ input[type="number"]::-webkit-outer-spin-button {
 
 .error {
   color: var(--red);
+}
+
+.turnRightTop {
+  transform: rotate(-45deg);
+}
+
+.turnRightDown {
+  transform: rotate(45deg);
 }

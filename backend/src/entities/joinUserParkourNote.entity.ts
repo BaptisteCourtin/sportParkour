@@ -9,13 +9,13 @@ import {
 import { Field, ID, InputType, ObjectType } from "type-graphql";
 import { Max, MaxLength, Min } from "class-validator";
 
-import UserEntity from "./user.entity";
-import ParkourEntity from "./parkour.entity";
-
 import dotenv from "dotenv";
 dotenv.config({
   path: "../.env",
 });
+
+import UserEntity from "./user.entity";
+import ParkourEntity from "./parkour.entity";
 
 // se cré si le user met une note ou un like sur un parkour
 @Entity("join_user_parkour_note")

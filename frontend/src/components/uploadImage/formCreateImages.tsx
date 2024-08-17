@@ -1,5 +1,3 @@
-import React from "react";
-
 const formCreateImages = ({
   setFilesToUpload,
   filesToUpload,
@@ -29,11 +27,11 @@ const formCreateImages = ({
             <img src={URL.createObjectURL(file)} alt={`Preview ${file.name}`} />
             <button onClick={() => setIsMyCouverture(index)}>
               {isMyCouverture == index
-                ? "image de couverture"
-                : "définir comme image de couverture"}
+                ? "Image de couverture"
+                : "Définir comme image de couverture"}
             </button>
             <span className="remove_img" onClick={() => removeImage(index)}>
-              supprimer cette image
+              Supprimer cette image
             </span>
           </div>
         ))}

@@ -1,4 +1,7 @@
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
+
 import {
   Difficulty,
   useGetTheParkourTotalForSearchLazyQuery,
@@ -6,15 +9,13 @@ import {
   useIsAdminQuery,
 } from "@/types/graphql";
 
-import CardParkour from "@/components/parkour/cardParkour";
 import TextField from "@mui/material/TextField";
-import Link from "next/link";
-import SearchBarParkour from "@/components/parkour/searchBarParkour";
 import Stack from "@mui/material/Stack";
 import Pagination from "@mui/material/Pagination";
-import { useEffect, useState } from "react";
-
 import { FaArrowRight } from "react-icons/fa6";
+
+import CardParkour from "@/components/parkour/cardParkour";
+import SearchBarParkour from "@/components/parkour/searchBarParkour";
 import BigSearch from "@/components/parkour/bigSearch";
 
 export default function Home() {
@@ -44,7 +45,6 @@ export default function Home() {
   };
 
   // --- VALUES SEARCH BY ALL ---
-  const minDistance = 10;
   const [selectedCommuneName, setSelectedCommuneName] = useState("");
   const [choosenDifficulty, setChoosenDifficulty] = useState<Difficulty | "">(
     ""
@@ -121,7 +121,7 @@ export default function Home() {
 
             {dataIsAdmin ? (
               <Link className="button forAdmin" href="/admin/createParkour">
-                créer un parkour <FaArrowRight />
+                Créer un parkour <FaArrowRight />
               </Link>
             ) : null}
 

@@ -22,7 +22,7 @@ exports[`NoteCard matches snapshot 1`] = `
     <a
       href="/parkour/parkour-1"
     >
-      parkour du commentaire : Parkour Title
+      Parkour du commentaire : Parkour Title
     </a>
   </li>
 </DocumentFragment>

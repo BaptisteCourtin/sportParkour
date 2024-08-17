@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 
-import NavbarOrdi from "./ordi/navbarOrdi";
-import Footer from "./ordi/footer";
+import NavbarOrdi from "@/components/layout/ordi/navbarOrdi";
+import Footer from "@/components/layout/ordi/footer";
+import NavbarPhone from "@/components/layout/phone/navbarPhone";
+import HeaderPhone from "@/components/layout/phone/headerPhone";
 
-import NavbarPhone from "./phone/navbarPhone";
-import HeaderPhone from "./phone/headerPhone";
 import { useDarkLightContext } from "@/context/themeContext";
 
 // base du layout

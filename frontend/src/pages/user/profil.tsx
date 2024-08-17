@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 
 import {
@@ -7,8 +7,7 @@ import {
   useIsClientQuery,
 } from "@/types/graphql";
 
-import { FaPencil } from "react-icons/fa6";
-import { FaArrowRight } from "react-icons/fa6";
+import { FaPencil, FaArrowRight } from "react-icons/fa6";
 
 import SuppUserDialog from "@/components/suppression/suppUserDialog";
 import SeeProfil from "@/components/user/seeProfil";

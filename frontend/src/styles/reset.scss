@@ -99,7 +99,7 @@ h4 {
     padding: var(--espace); // permet de ne pas coller le bord
 
     width: 100%;
-    max-width: 1370px;
+    max-width: var(--maxWidth);
 
     display: flex;
     flex-direction: column;

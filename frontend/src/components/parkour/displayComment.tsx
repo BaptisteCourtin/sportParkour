@@ -1,7 +1,6 @@
-import React from "react";
-
 import Rating from "@mui/material/Rating";
-import ButtonForComment from "../admin/buttonForComment";
+
+import ButtonForComment from "@/components/admin/buttonForComment";
 
 // affiche un commentaire
 const displayComment = ({

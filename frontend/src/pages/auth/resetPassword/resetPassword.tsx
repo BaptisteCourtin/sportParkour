@@ -1,12 +1,10 @@
-import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { object, string } from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
 
 import { useResetPasswordMutation } from "@/types/graphql";
 
+import { object, string } from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 import TextField from "@mui/material/TextField";
-
 import toast from "react-hot-toast";
 
 let EmailResetPasswordSchema = object({

@@ -5,8 +5,6 @@ import { uuid } from "uuidv4";
 import ResetPasswordEntity from "../entities/resetPassword.entity";
 import UserEntity from "../entities/user.entity";
 
-import UserService from "./user.service";
-
 export default class ResetPasswordService {
   db: Repository<ResetPasswordEntity>;
   dbUser: Repository<UserEntity>;

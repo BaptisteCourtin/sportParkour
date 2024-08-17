@@ -1,14 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 
 import { useGetAllUserFavByTokenLazyQuery } from "@/types/graphql";
 
-import InputLabel from "@mui/material/InputLabel";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-
 import CardParkour from "@/components/parkour/cardParkour";
+import GoToHome from "@/components/goBack";
+import BigTriPar from "@/components/bigTriPar";
 
 const favoris = () => {
   const [getFav, { data, loading, error }] = useGetAllUserFavByTokenLazyQuery();
@@ -25,36 +22,10 @@ const favoris = () => {
 
   return (
     <main className="favorisOrNotes">
+      <GoToHome />
+
       <form className="littleForm">
-        <div className="champ ">
-          <FormControl
-            className="containerInputTri"
-            sx={{ m: 1, minWidth: 250 }}
-          >
-            <InputLabel htmlFor="tri">Trier par :</InputLabel>
-            <Select
-              className="mui-input"
-              variant="outlined"
-              id="orderFavorite"
-              name="orderFavorite"
-              label="Trier par :"
-              value={tri}
-              onChange={(event) => setTri(event.target.value as string)}
-            >
-              <MenuItem value="default">Par défaut</MenuItem>
-              <MenuItem value="noteDecroissant">note décroissant</MenuItem>
-              <MenuItem value="noteCroissant">note croissant</MenuItem>
-              <MenuItem value="nomAZ">nom A-Z</MenuItem>
-              <MenuItem value="nomZA">nom Z-A</MenuItem>
-              <MenuItem value="tempsDecroissant">temps décroissant</MenuItem>
-              <MenuItem value="tempsCroissant">temps croissant</MenuItem>
-              <MenuItem value="longueurDecroissant">
-                longueur décroissant
-              </MenuItem>
-              <MenuItem value="longueurCroissant">longueur croissant</MenuItem>
-            </Select>
-          </FormControl>
-        </div>
+        <BigTriPar tri={tri} setTri={setTri} />
       </form>
 
       {data?.getAllUserFavByToken.length ? (

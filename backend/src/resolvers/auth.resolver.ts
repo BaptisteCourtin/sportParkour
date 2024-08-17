@@ -1,8 +1,5 @@
 import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
-const argon2 = require("argon2");
-import { SignJWT } from "jose";
 import { MyContext } from "..";
-import Cookies from "cookies";
 
 import MessageEntity from "../entities/message.entity";
 import {
@@ -11,6 +8,10 @@ import {
 } from "../entities/user.entity";
 
 import AuthService from "../services/auth.service";
+
+const argon2 = require("argon2");
+import { SignJWT } from "jose";
+import Cookies from "cookies";
 
 @Resolver()
 export default class AuthResolver {

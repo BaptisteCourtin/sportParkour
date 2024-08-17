@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
 
 import { useLogoutLazyQuery } from "@/types/graphql";
@@ -17,7 +17,7 @@ const logout = () => {
         router.push("/auth/login");
       },
     });
-  }, [router.isReady]);
+  }, []);
 
   return (
     <main className="logout">

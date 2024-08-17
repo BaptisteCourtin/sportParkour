@@ -74,14 +74,14 @@ describe("Qui Sommes Nous Page", () => {
       screen.getByText("Q : Il sert à quoi ce site ?")
     ).toBeInTheDocument();
     expect(
-      screen.getByText("Q : Pourquoi avoir créer ce site ?")
+      screen.getByText("Q : Pourquoi avoir créé ce site ?")
     ).toBeInTheDocument();
     expect(
-      screen.getByText("Q : Va-t-il y avoir des mise à jour ?")
+      screen.getByText("Q : Va-t-il y avoir des mises à jour ?")
     ).toBeInTheDocument();
     expect(
       screen.getByText(
-        "Q : Où peut on suivre le créateur du site? (il est sympa le gars)"
+        "Q : Où peut-on suivre le créateur du site ? (il est sympa le gars)"
       )
     ).toBeInTheDocument();
   });
@@ -97,9 +97,11 @@ describe("Qui Sommes Nous Page", () => {
       )
     ).toBeInTheDocument();
     expect(
-      screen.getByText(/Bah là c'est pas prévu mais j'ai des idées/)
+      screen.getByText(/Bah, là, ce n'est pas prévu, mais j'ai des idées./)
     ).toBeInTheDocument();
-    expect(screen.getByText(/Alors! Très bonne question!/)).toBeInTheDocument();
+    expect(
+      screen.getByText(/Alors ! Très bonne question !/)
+    ).toBeInTheDocument();
   });
 
   it("renders social media links", () => {
@@ -127,7 +129,7 @@ describe("Qui Sommes Nous Page", () => {
   it("renders the hiring please", () => {
     render(<QuiSommesNous />);
     expect(
-      screen.getByText(/(Embauchez moi s'il vous plait)/)
+      screen.getByText(/(Embauchez-moi s'il vous plaît)/)
     ).toBeInTheDocument();
   });
 });

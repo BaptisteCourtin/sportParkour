@@ -1,18 +1,18 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
 import { useGetAllEpreuveQuery, useIsAdminQuery } from "@/types/graphql";
 
 import TextField from "@mui/material/TextField";
-import CardEpreuve from "@/components/epreuve/cardEpreuve";
-import SearchBarEpreuve from "@/components/epreuve/searchBarEpreuve";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-
 import { FaArrowRight } from "react-icons/fa6";
+
+import SearchBarEpreuve from "@/components/epreuve/searchBarEpreuve";
+import CardEpreuve from "@/components/epreuve/cardEpreuve";
 
 const allEpreuves = () => {
   const router = useRouter();
@@ -41,7 +41,7 @@ const allEpreuves = () => {
   return (
     <main className="allEpreuves">
       {error ? (
-        <h2>une erreur... (déso)</h2>
+        <h2>une erreur... (déso) {error.message}</h2>
       ) : loading ? (
         <h2>Chargement en cours</h2>
       ) : (
@@ -49,7 +49,7 @@ const allEpreuves = () => {
           <>
             {dataIsAdmin ? (
               <Link className="button forAdmin" href="/admin/createEpreuve">
-                créer une épreuve <FaArrowRight />
+                Créer une épreuve <FaArrowRight />
               </Link>
             ) : null}
 
@@ -97,8 +97,8 @@ const allEpreuves = () => {
                     value={tri}
                     onChange={(event) => setTri(event.target.value as string)}
                   >
-                    <MenuItem value="Titre A-Z">Titre A-Z</MenuItem>
-                    <MenuItem value="Titre Z-A">Titre Z-A</MenuItem>
+                    <MenuItem value="Titre A-Z">nom A-Z</MenuItem>
+                    <MenuItem value="Titre Z-A">nom Z-A</MenuItem>
                   </Select>
                 </FormControl>
               </div>

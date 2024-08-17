@@ -1,14 +1,19 @@
 // les variables utilisées pour le style
 
 :root {
+  --maxWidth: 1380px;
+
   // style
   --line: 5px;
   --losange: 15px;
 
-  // espace
-  --cardEspace: 10px;
+  // espace et gap
+  --cardEspaceUpDown: 10px;
   --espace: 20px;
-  --miniEspace: 5px;
+  --espaceButton: 5px;
+
+  --gap: 1rem;
+  --cardGap: 0.5rem;
 
   // radius
   --radius: 8px;
@@ -26,10 +31,6 @@
   --fs-mini: 14px;
 
   --fw-button: 600;
-
-  // gap pour les flex
-  --gap: 1rem;
-  --cardGap: 0.5rem;
 
   // couleurs
   --text1: rgb(255, 255, 255);

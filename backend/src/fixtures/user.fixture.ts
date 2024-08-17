@@ -1,7 +1,8 @@
 import { faker } from "@faker-js/faker/locale/fr";
 import { DataSource } from "typeorm";
-import UserEntity from "../entities/user.entity";
+
 import { Role } from "../enum/role.enum";
+import UserEntity from "../entities/user.entity";
 
 faker.seed(123);
 

@@ -1,10 +1,10 @@
-import React, { SyntheticEvent, useEffect } from "react";
+import { SyntheticEvent, useEffect } from "react";
 import Link from "next/link";
+
+import { useGetListTop20ParkourByTitleLazyQuery } from "@/types/graphql";
 
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-
-import { useGetListTop20ParkourByTitleLazyQuery } from "@/types/graphql";
 
 // style le link pour prendre toute la place
 const titleBarParkour = () => {

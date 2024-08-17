@@ -1,5 +1,3 @@
-import { useModifyImageCouvertureEpreuveMutation } from "@/types/graphql";
-
 export const modifyIsCouverture = async (
   modifyImageAny: any,
   myLastCouverture: number,

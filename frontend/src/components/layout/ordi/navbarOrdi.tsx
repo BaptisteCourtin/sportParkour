@@ -1,15 +1,16 @@
-import React from "react";
-import Link from "next/link";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
-import { FaUser } from "react-icons/fa6";
-import { FaHouse } from "react-icons/fa6";
-import { FaMapLocationDot } from "react-icons/fa6";
-import { FaFlagCheckered } from "react-icons/fa6";
+import Tooltip from "@mui/material/Tooltip";
+import {
+  FaUser,
+  FaHouse,
+  FaMapLocationDot,
+  FaFlagCheckered,
+} from "react-icons/fa6";
 
 import { useDarkLightContext } from "@/context/themeContext";
 import DarkLight from "@/components/layout/ordi/darkLightOrdi";
-import Tooltip from "@mui/material/Tooltip";
 
 // navbar ordi (en haut) avec logo + dark/light + liens pages
 const navbarOrdi = () => {
@@ -34,7 +35,7 @@ const navbarOrdi = () => {
         <div className="links">
           <DarkLight />
 
-          <Tooltip title="Epreuves" arrow>
+          <Tooltip title="Épreuves" arrow>
             <Link
               href="/epreuve/allEpreuves"
               className={router.pathname.startsWith("/epreuve") ? "active" : ""}
@@ -62,7 +63,7 @@ const navbarOrdi = () => {
             </Link>
           </Tooltip>
 
-          <Tooltip title="Map" arrow>
+          <Tooltip title="Maps" arrow>
             <Link
               href="/parkour/parkourMap"
               className={

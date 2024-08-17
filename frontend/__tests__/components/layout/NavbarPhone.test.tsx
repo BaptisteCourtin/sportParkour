@@ -26,9 +26,9 @@ describe("NavbarPhone", () => {
   test("les liens existent", () => {
     render(<NavbarPhone />);
 
-    expect(screen.getByText("Epreuves")).toBeInTheDocument();
+    expect(screen.getByText("Épreuves")).toBeInTheDocument();
     expect(screen.getByText("Accueil")).toBeInTheDocument();
-    expect(screen.getByText("Map")).toBeInTheDocument();
+    expect(screen.getByText("Maps")).toBeInTheDocument();
     expect(screen.getByText("Profil")).toBeInTheDocument();
   });
 
@@ -45,6 +45,6 @@ describe("NavbarPhone", () => {
     rerender(<NavbarPhone />);
 
     // Test pour la page des épreuves
-    expect(screen.getByText("Epreuves").closest("a")).toHaveClass("active");
+    expect(screen.getByText("Épreuves").closest("a")).toHaveClass("active");
   });
 });

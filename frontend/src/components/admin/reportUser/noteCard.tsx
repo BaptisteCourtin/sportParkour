@@ -1,6 +1,6 @@
-import React from "react";
 import Link from "next/link";
-import ButtonForComment from "../buttonForComment";
+
+import ButtonForComment from "@/components/admin/buttonForComment";
 
 // card d'un commentaire, version page modo d'un user
 const noteCard = ({ note, malfratId }: { note: any; malfratId: string }) => {
@@ -19,7 +19,7 @@ const noteCard = ({ note, malfratId }: { note: any; malfratId: string }) => {
       </div>
 
       <Link href={`/parkour/${note.parkour?.id}`}>
-        parkour du commentaire : {note.parkour?.title}
+        Parkour du commentaire : {note.parkour?.title}
       </Link>
     </li>
   );

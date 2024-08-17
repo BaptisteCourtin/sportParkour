@@ -9,16 +9,16 @@ import {
   Index,
 } from "typeorm";
 import { Field, ObjectType, ID } from "type-graphql";
-
-import { ReportStatus } from "../enum/reportStatus.enum";
-import UserEntity from "./user.entity";
-import ParkourEntity from "./parkour.entity";
 import { MaxLength } from "class-validator";
 
 import dotenv from "dotenv";
 dotenv.config({
   path: "../.env",
 });
+
+import { ReportStatus } from "../enum/reportStatus.enum";
+import UserEntity from "./user.entity";
+import ParkourEntity from "./parkour.entity";
 
 @Entity("report")
 @Unique(["malfrat_id", "parkour_id", "commentaireEnFaute"])

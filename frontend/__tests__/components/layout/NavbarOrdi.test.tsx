@@ -59,9 +59,9 @@ describe("Navbar", () => {
     render(<NavbarOrdi />);
 
     expect(screen.getByText("DarkLight")).toBeInTheDocument();
-    expect(screen.getByTitle("Epreuves")).toBeInTheDocument();
+    expect(screen.getByTitle("Épreuves")).toBeInTheDocument();
     expect(screen.getByTitle("Parkour")).toBeInTheDocument();
-    expect(screen.getByTitle("Map")).toBeInTheDocument();
+    expect(screen.getByTitle("Maps")).toBeInTheDocument();
     expect(screen.getByTitle("Profil")).toBeInTheDocument();
   });
 });

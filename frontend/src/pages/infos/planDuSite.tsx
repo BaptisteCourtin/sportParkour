@@ -1,4 +1,3 @@
-import React from "react";
 import Link from "next/link";
 
 import { FaCaretRight } from "react-icons/fa6";
@@ -71,14 +70,14 @@ const planDuSite = () => {
         <li>
           <Link href="/user/notes">
             <FaCaretRight />
-            Vos avis
+            Les parkours où vous avez mis un avis
           </Link>
         </li>
 
         <br />
         <br />
 
-        <h3>les infos</h3>
+        <h3>Les infos</h3>
         <li>
           <Link href="/infos/cgu">
             <FaCaretRight />

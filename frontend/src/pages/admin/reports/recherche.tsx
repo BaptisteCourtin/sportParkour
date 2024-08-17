@@ -1,12 +1,16 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import router from "next/router";
+
 import {
   useGetReportsBySearchLazyQuery,
   useGetUsersWithReportsLazyQuery,
 } from "@/types/graphql";
-import ReportCardForSearch from "@/components/admin/reportCardForSearch";
+
 import TextField from "@mui/material/TextField";
-import router from "next/router";
+
+import ReportCardForSearch from "@/components/admin/reportCardForSearch";
 import ReportCardForSearchUser from "@/components/admin/reportCardForSearchUser";
+import GoToHome from "@/components/goBack";
 
 const recherche = () => {
   const [isUserCard, setIsUserCard] = useState(false);
@@ -66,7 +70,9 @@ const recherche = () => {
 
   return (
     <main className="reportSearch">
-      <h1>recherche les reports</h1>
+      <GoToHome />
+
+      <h1>RECHERCHER LES REPORTS</h1>
 
       <form onSubmit={handleSearchById} className="littleForm">
         <div className="champ">

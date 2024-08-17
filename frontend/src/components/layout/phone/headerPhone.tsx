@@ -1,9 +1,8 @@
-import React from "react";
 import router from "next/router";
 
 import { FaArrowLeft } from "react-icons/fa6";
 
-import DarkLightPhone from "./darkLightPhone";
+import DarkLightPhone from "@/components/layout/phone/darkLightPhone";
 
 // header phone avec retour + dark/light
 const headerPhone = () => {

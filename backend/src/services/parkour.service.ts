@@ -7,9 +7,9 @@ import ParkourEntity, {
   ParkourUpdateNoteEntity,
 } from "../entities/parkour.entity";
 import EpreuveEntity from "../entities/epreuve.entity";
+import ImageParkourEntity from "../entities/imageParkour.entity";
 
 import EpreuveService from "./epreuve.service";
-import ImageParkourEntity from "../entities/imageParkour.entity";
 
 class ParkourService {
   db: Repository<ParkourEntity>;

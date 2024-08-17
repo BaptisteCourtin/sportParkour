@@ -1,16 +1,18 @@
-import React from "react";
+import { useForm } from "react-hook-form";
 
+import { Difficulty } from "@/types/graphql";
+
+import { mixed, number, object, string } from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import Rating from "@mui/material/Rating";
 import Slider from "@mui/material/Slider";
+
 import SearchBarCommuneName from "@/components/user/searchBarCommuneName";
-import { Difficulty } from "@/types/graphql";
-import { mixed, number, object, string } from "yup";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
+import BigTriPar from "@/components/bigTriPar";
 
 let createSearchByAllSchema = object({
   city: string().max(
@@ -178,19 +180,19 @@ const bigSearch = ({
       <div className="champ difficulty">
         <FormControl sx={{ m: 1, minWidth: 150 }}>
           <InputLabel id="demo-simple-select-autowidth-label">
-            Difficultée
+            Difficulté
           </InputLabel>
           <Select
             className="mui-input"
             variant="outlined"
             id="difficulty"
             name="difficulty"
-            label="Difficultée"
+            label="Difficulté"
             value={choosenDifficulty}
             onChange={(e) => setChoosenDifficulty(e.target.value as Difficulty)}
           >
             <MenuItem value="">
-              <em>None</em>
+              <em>toutes</em>
             </MenuItem>
             <MenuItem value="EASY">facile</MenuItem>
             <MenuItem value="MEDIUM">moyen</MenuItem>
@@ -239,34 +241,11 @@ const bigSearch = ({
           }}
         />
         <button className="button" onClick={() => setChoosenNoteMin(0)}>
-          reset note voulue
+          Remettre la note à 0
         </button>
       </div>
 
-      <div className="champ">
-        <FormControl className="containerInputTri" sx={{ m: 1, minWidth: 250 }}>
-          <InputLabel htmlFor="tri">Trier par :</InputLabel>
-          <Select
-            className="mui-input"
-            variant="outlined"
-            id="orderParkour"
-            name="orderParkour"
-            label="Difficultée"
-            value={tri}
-            onChange={(event) => setTri(event.target.value as string)}
-          >
-            <MenuItem value="id_DESC">Par défaut</MenuItem>
-            <MenuItem value="note_DESC">note décroissant</MenuItem>
-            <MenuItem value="note_ASC">note croissant</MenuItem>
-            <MenuItem value="title_ASC">nom A-Z</MenuItem>
-            <MenuItem value="title_DESC">nom Z-A</MenuItem>
-            <MenuItem value="time_DESC">temps décroissant</MenuItem>
-            <MenuItem value="time_ASC">temps croissant</MenuItem>
-            <MenuItem value="length_DESC">longueur décroissant</MenuItem>
-            <MenuItem value="length_ASC">longueur croissant</MenuItem>
-          </Select>
-        </FormControl>
-      </div>
+      <BigTriPar tri={tri} setTri={setTri} />
 
       <button disabled={loading} onClick={handleSubmit(handleSearchByAll)}>
         Chercher

@@ -8,17 +8,17 @@ import {
   Unique,
 } from "typeorm";
 import { Field, ID, InputType, ObjectType } from "type-graphql";
-
-import { Role } from "../enum/role.enum";
-import JoinUserParkourNoteEntity from "./joinUserParkourNote.entity";
-import JoinUserParkourFavorisEntity from "./joinUserParkourFavoris.entity";
-import ReportEntity from "./reportEntity.entity";
 import { MaxLength } from "class-validator";
 
 import dotenv from "dotenv";
 dotenv.config({
   path: "../.env",
 });
+
+import { Role } from "../enum/role.enum";
+import JoinUserParkourNoteEntity from "./joinUserParkourNote.entity";
+import JoinUserParkourFavorisEntity from "./joinUserParkourFavoris.entity";
+import ReportEntity from "./reportEntity.entity";
 
 const argon2 = require("argon2");
 

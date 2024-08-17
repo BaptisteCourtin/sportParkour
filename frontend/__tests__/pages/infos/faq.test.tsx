@@ -68,21 +68,21 @@ describe("Faq Page", () => {
       screen.getByText("Q : Comment vous contacter ?")
     ).toBeInTheDocument();
     expect(screen.getByText("Q : Vous aimez le sport ?")).toBeInTheDocument();
-    expect(screen.getByText("Q : ça va ?")).toBeInTheDocument();
+    expect(screen.getByText("Q : Ça va ?")).toBeInTheDocument();
   });
 
   it("renders correct answers", () => {
     render(<Faq />);
-    expect(screen.getByText("Ne le fait pas")).toBeInTheDocument();
+    expect(screen.getByText("Ne le fais pas.")).toBeInTheDocument();
     expect(screen.getByText("Non, mais l'argent oui.")).toBeInTheDocument();
     expect(screen.getByText("Moi ouais.")).toBeInTheDocument();
   });
 
   it("handles user interaction correctly", () => {
     render(<Faq />);
-    const positiveButton = screen.getByText("moi aussi ça va 👍");
+    const positiveButton = screen.getByText("Moi aussi ça va. 👍");
     const negativeButton = screen.getByText(
-      "moi non, mais tout le monde s'en fout"
+      "Moi non, mais tout le monde s'en fout."
     );
 
     fireEvent.click(positiveButton);

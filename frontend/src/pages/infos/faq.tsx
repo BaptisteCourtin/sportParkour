@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 import Accordion from "@mui/material/Accordion";
 import AccordionActions from "@mui/material/AccordionActions";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Button from "@mui/material/Button";
-
 import { FaAngleDown } from "react-icons/fa6";
 
 const faq = () => {
@@ -23,7 +22,7 @@ const faq = () => {
           >
             <h3>Q : Comment vous contacter ?</h3>
           </AccordionSummary>
-          <AccordionDetails>Ne le fait pas</AccordionDetails>
+          <AccordionDetails>Ne le fais pas.</AccordionDetails>
         </Accordion>
 
         <Accordion>
@@ -43,7 +42,7 @@ const faq = () => {
             aria-controls="panel3-content"
             id="panel3-header"
           >
-            <h3>Q : ça va ?</h3>
+            <h3>Q : Ça va ?</h3>
           </AccordionSummary>
           <AccordionDetails>Moi ouais.</AccordionDetails>
           <AccordionActions>
@@ -52,13 +51,13 @@ const faq = () => {
                 onClick={() => setIsUserOk("oui")}
                 className={isUserOk == "oui" ? "userChoose" : ""}
               >
-                moi aussi ça va 👍
+                Moi aussi ça va. 👍
               </Button>
               <Button
                 onClick={() => setIsUserOk("non")}
                 className={isUserOk == "non" ? "userChoose" : ""}
               >
-                moi non, mais tout le monde s'en fout
+                Moi non, mais tout le monde s'en fout.
               </Button>
             </div>
             {isUserOk == "oui" ? (

@@ -9,17 +9,17 @@ import {
   Unique,
 } from "typeorm";
 import { Field, ID, InputType, ObjectType } from "type-graphql";
-
-import ImageEpreuveEntity, {
-  ImageEpreuveCreateEntity,
-} from "./imageEpreuve.entity";
-import ParkourEntity from "./parkour.entity";
 import { MaxLength } from "class-validator";
 
 import dotenv from "dotenv";
 dotenv.config({
   path: "../.env",
 });
+
+import ImageEpreuveEntity, {
+  ImageEpreuveCreateEntity,
+} from "./imageEpreuve.entity";
+import ParkourEntity from "./parkour.entity";
 
 @Entity("epreuve")
 @Unique(["title"])

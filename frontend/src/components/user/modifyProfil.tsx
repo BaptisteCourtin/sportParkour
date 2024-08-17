@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import Link from "next/link";
 import { useRouter } from "next-router-mock";
-import { InferType, mixed, object, string } from "yup";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
 
+import { useModifyUserMutation } from "@/types/graphql";
+
+import { InferType, mixed, object, string } from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 import TextField from "@mui/material/TextField";
 import { FaUser } from "react-icons/fa6";
 import { toast } from "react-hot-toast";
 
 import SearchBarCommuneName from "@/components/user/searchBarCommuneName";
-import { uploadImageProfil } from "../uploadImage/uploadImageProfil";
-
-import { useModifyUserMutation } from "@/types/graphql";
+import { uploadImageProfil } from "@/components/uploadImage/uploadImageProfil";
 
 let modifyUserSchema = object({
   imageProfil: mixed<FileList>(),

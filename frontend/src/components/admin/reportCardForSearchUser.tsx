@@ -1,4 +1,3 @@
-import React from "react";
 import Link from "next/link";
 
 // card pour aficher un user rechercher, page modo
@@ -19,7 +18,7 @@ const reportCardForSearchUser = ({ reportUser }: any) => {
         </Link>
       </div>
       <p>
-        L'utilisateur a {reportUser.nbReportValide} report valide contre lui
+        L'utilisateur a {reportUser.nbReportValide} reports valides contre lui
       </p>
       <p>L'utilisateur a émis {reportUser.nbReportAjoute} reports</p>
     </li>

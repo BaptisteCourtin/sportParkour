@@ -7,6 +7,19 @@
     width: 100%;
     gap: var(--gap);
     margin-bottom: var(--espace);
+
+    .topButtLinker {
+      display: flex;
+      flex-direction: column;
+      gap: var(--gap);
+    }
+
+    .topButtPutter {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      gap: var(--gap);
+    }
   }
 
   h1 {
@@ -64,36 +77,12 @@
     justify-content: space-between;
 
     p {
-      display: flex;
-      align-items: center;
-      gap: var(--miniEspace);
-
-      background-color: var(--blue);
-      color: var(--text1);
-
-      padding: var(--padButton);
-      border-radius: var(--radiusButton);
+      font-weight: initial;
     }
   }
 
-  .carrouselParkour {
-    width: 360px;
-    height: 340px;
-
-    .imageContainer {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      img {
-        width: 360px;
-        height: 300px;
-        border-radius: var(--radius);
-      }
-    }
-  }
-
-  .container-epreuves {
+  .container-epreuves,
+  .container-parkour-connect {
     width: 100%;
 
     h3 {
@@ -126,7 +115,9 @@
 @media screen and (min-width: 800px) {
   .oneParkour {
     .topButt {
-      flex-direction: row;
+      .topButtPutter {
+        flex-direction: row;
+      }
     }
   }
 }

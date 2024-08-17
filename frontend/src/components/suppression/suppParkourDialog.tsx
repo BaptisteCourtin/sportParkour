@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import router from "next/router";
 
 import { useDeleteParkourMutation } from "@/types/graphql";
@@ -10,7 +10,6 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-
 import toast from "react-hot-toast";
 
 // dialog pour supprimer un parkour
@@ -52,7 +51,7 @@ const suppParkourDialog = ({
   return (
     <div className="parkourToDelete">
       <button className="danger" onClick={handleClickOpen}>
-        Delete parkour
+        Supprimer ce parkour
       </button>
 
       <Dialog
@@ -81,10 +80,10 @@ const suppParkourDialog = ({
           },
         }}
       >
-        <DialogTitle>Delete parkour {parkourId}</DialogTitle>
+        <DialogTitle>Supprimer le parkour {parkourId}</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Pour supprimer cette épreuve entrez son nom : {parkourTitle}
+            Pour supprimer cette épreuve, entrez son nom : {parkourTitle}
           </DialogContentText>
           <TextField
             autoFocus

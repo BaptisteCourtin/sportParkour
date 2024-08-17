@@ -17,8 +17,8 @@ export const MODIFY_USER = gql`
 //     "city": null,
 //     "codePostal": null,
 //     "phone": null
+//     "imageProfil": null
 //   },
-//   "modifyUserId": "a02ee680-bc7a-4291-ad25-8e307f976424"
 // }
 
 export const DELETE_USER = gql`

@@ -8,15 +8,15 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { Field, InputType, ObjectType } from "type-graphql";
-
-import User from "./user.entity";
-import Mailer from "../lib/mailer";
+import { MaxLength } from "class-validator";
 
 import dotenv from "dotenv";
-import { MaxLength } from "class-validator";
 dotenv.config({
   path: "../.env",
 });
+
+import Mailer from "../lib/mailer";
+import User from "./user.entity";
 
 @Entity("reset_password")
 @ObjectType()

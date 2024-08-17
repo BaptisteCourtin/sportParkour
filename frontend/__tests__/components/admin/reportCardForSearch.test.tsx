@@ -51,10 +51,12 @@ describe("ReportCardForSearch", () => {
     render(<ReportCardForSearch report={mockReport} />);
 
     expect(screen.getByText("John Doe")).toBeInTheDocument();
-    expect(screen.getByText("nombre de report valide : 5")).toBeInTheDocument();
+    expect(
+      screen.getByText("Nombre de reports valides : 5")
+    ).toBeInTheDocument();
     expect(screen.getByText("This is a test comment")).toBeInTheDocument();
     expect(
-      screen.getByText("parkour du commentaire : Test Parkour")
+      screen.getByText("Parkour du commentaire : Test Parkour")
     ).toBeInTheDocument();
   });
 
@@ -106,7 +108,7 @@ describe("ReportCardForSearch", () => {
     expect(userLink).toHaveAttribute("href", "/admin/reports/user/123");
 
     const parkourLink = screen
-      .getByText("parkour du commentaire : Test Parkour")
+      .getByText("Parkour du commentaire : Test Parkour")
       .closest("a");
     expect(parkourLink).toHaveAttribute("href", "/parkour/456");
   });

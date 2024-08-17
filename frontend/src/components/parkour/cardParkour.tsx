@@ -1,15 +1,15 @@
-import React from "react";
 import Link from "next/link";
-
-import Rating from "@mui/material/Rating";
 
 import { Difficulty, GetParkourByIdQuery } from "@/types/graphql";
 
-import { FaLocationDot } from "react-icons/fa6";
-import { FaPersonRunning } from "react-icons/fa6";
-import { FaStopwatch } from "react-icons/fa6";
-import { FaArrowUpRightDots } from "react-icons/fa6";
-import { FaCircleArrowRight } from "react-icons/fa6";
+import Rating from "@mui/material/Rating";
+import {
+  FaLocationDot,
+  FaPersonRunning,
+  FaStopwatch,
+  FaArrowUpRightDots,
+  FaCircleArrowRight,
+} from "react-icons/fa6";
 
 // affiche la card d'un parkour
 // color => par rapport à où on l'utilise

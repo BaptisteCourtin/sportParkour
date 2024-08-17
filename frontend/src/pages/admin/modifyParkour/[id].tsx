@@ -1,8 +1,6 @@
-import React, { SyntheticEvent, useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import { SyntheticEvent, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { mixed, number, object, string } from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { useRouter } from "next/router";
 
 import {
   Difficulty,
@@ -18,22 +16,24 @@ import {
   ParkourEntity,
 } from "@/types/graphql";
 
+import { mixed, number, object, string } from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
-
-import { toast } from "react-hot-toast";
 import { FaCheck } from "react-icons/fa6";
-import SearchBarCommuneName from "@/components/user/searchBarCommuneName";
-import { uploadImages } from "@/components/uploadImage/uploadImages";
+import { toast } from "react-hot-toast";
 
+import SearchBarCommuneName from "@/components/user/searchBarCommuneName";
 import SuppParkourDialog from "@/components/suppression/suppParkourDialog";
 import FormCreateImages from "@/components/uploadImage/formCreateImages";
 import DisplayImagesInBase from "@/components/uploadImage/displayImagesInBase";
+import GoToHome from "@/components/goBack";
 import { modifyIsCouverture } from "@/components/uploadImage/modifyImagesCouverture";
+import { uploadImages } from "@/components/uploadImage/uploadImages";
 
 let modifyParkourSchema = object({
   title: string()
@@ -79,8 +79,6 @@ const modifyOneParkour = () => {
       getParkour({
         variables: { getParkourByIdId: +id },
         onCompleted(data) {
-          console.log(data);
-
           setSelectedCommuneName(
             data.getParkourById.city ? data.getParkourById.city : ""
           );
@@ -121,7 +119,7 @@ const modifyOneParkour = () => {
         },
       });
     }
-  }, [router.isReady]);
+  }, [id]);
 
   // --- MODIFY PARKOUR ---
   const {
@@ -313,12 +311,14 @@ const modifyOneParkour = () => {
   return (
     <main className="modifyOneParkour">
       {error ? (
-        <h2>une erreur... (déso)</h2>
+        <h2>une erreur... (déso) {error.message}</h2>
       ) : loading ? (
         <h2>Chargement en cours</h2>
       ) : (
         data?.getParkourById && (
           <>
+            <GoToHome />
+
             <h1>MODIFIER LE PARKOUR</h1>
 
             {/* --- display images in base --- */}
@@ -570,24 +570,24 @@ const modifyOneParkour = () => {
               </div>
 
               <button type="submit" disabled={loadingModify}>
-                Modifier le parkour
+                Enregistrer les modifications
               </button>
 
               <section className="usefullLink">
-                <p>liens utiles : </p>
+                <p>Liens utiles : </p>
                 <a
                   className="button"
                   href="https://www.google.fr/maps/preview"
                   target="_blank"
                 >
-                  maps
+                  Maps
                 </a>
                 <a
                   className="button"
                   href="https://www.calculitineraires.fr/"
                   target="_blank"
                 >
-                  calcul itinéraires
+                  Calcul d'itinéraires
                 </a>
               </section>
 

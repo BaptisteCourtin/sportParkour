@@ -34,7 +34,7 @@ exports[`Qui Sommes Nous Page renders correctly 1`] = `
         <div
           data-testid="accordion-details"
         >
-          Tu peux trouver des parcours sportifs, avec des épreuves dedans. Et si le coeur t'en dit tu peux les faire. En courant ou en marchant. Tu peux aussi te servir de l'appli pour trouver des balades sympas.
+          Tu peux trouver des parcours sportifs, avec des épreuves dedans. Et si le cœur t'en dit, tu peux les faire. En courant ou en marchant. Tu peux aussi te servir de l'appli pour trouver des balades sympas.
         </div>
       </div>
       <div
@@ -44,7 +44,7 @@ exports[`Qui Sommes Nous Page renders correctly 1`] = `
           data-testid="accordion-summary"
         >
           <h3>
-            Q : Pourquoi avoir créer ce site ?
+            Q : Pourquoi avoir créé ce site ?
           </h3>
           <div
             data-testid="expand-icon"
@@ -53,7 +53,7 @@ exports[`Qui Sommes Nous Page renders correctly 1`] = `
         <div
           data-testid="accordion-details"
         >
-          Pour passer ma certification de concepteur développeur web. J'aimais pas le projet fait en cours, du coup j'ai fait le miens (il est mieux).
+          Pour passer ma certification de concepteur développeur web. Je n'aimais pas le projet fait en cours, du coup, j'ai fait le mien (il est mieux).
         </div>
       </div>
       <div
@@ -63,7 +63,7 @@ exports[`Qui Sommes Nous Page renders correctly 1`] = `
           data-testid="accordion-summary"
         >
           <h3>
-            Q : Va-t-il y avoir des mise à jour ?
+            Q : Va-t-il y avoir des mises à jour ?
           </h3>
           <div
             data-testid="expand-icon"
@@ -72,7 +72,7 @@ exports[`Qui Sommes Nous Page renders correctly 1`] = `
         <div
           data-testid="accordion-details"
         >
-          Bah là c'est pas prévu mais j'ai des idées.
+          Bah, là, ce n'est pas prévu, mais j'ai des idées.
         </div>
       </div>
       <div
@@ -82,7 +82,7 @@ exports[`Qui Sommes Nous Page renders correctly 1`] = `
           data-testid="accordion-summary"
         >
           <h3>
-            Q : Où peut on suivre le créateur du site? (il est sympa le gars)
+            Q : Où peut-on suivre le créateur du site ? (il est sympa le gars)
           </h3>
           <div
             data-testid="expand-icon"
@@ -91,7 +91,7 @@ exports[`Qui Sommes Nous Page renders correctly 1`] = `
         <div
           data-testid="accordion-details"
         >
-          Alors! Très bonne question!
+          Alors ! Très bonne question !
           <br />
           <br />
           <a
@@ -107,7 +107,7 @@ exports[`Qui Sommes Nous Page renders correctly 1`] = `
           </a>
           <br />
           <br />
-          (Embauchez moi s'il vous plait)
+          (Embauchez-moi s'il vous plaît)
         </div>
       </div>
     </div>

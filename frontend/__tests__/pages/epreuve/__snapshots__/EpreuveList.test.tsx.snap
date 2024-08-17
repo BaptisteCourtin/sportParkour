@@ -18,7 +18,7 @@ exports[`allEpreuves component renders correctly when there is an error 1`] = `
     class="allEpreuves"
   >
     <h2>
-      une erreur... (déso)
+      une erreur... (déso) Test error
     </h2>
   </main>
 </DocumentFragment>
@@ -33,7 +33,7 @@ exports[`allEpreuves component renders correctly with data for admin user 1`] = 
       class="button forAdmin"
       href="/admin/createEpreuve"
     >
-      créer une épreuve 
+      Créer une épreuve 
       <svg
         fill="currentColor"
         height="1em"
@@ -136,7 +136,7 @@ exports[`allEpreuves component renders correctly with data for admin user 1`] = 
               role="combobox"
               tabindex="0"
             >
-              Titre A-Z
+              nom A-Z
             </div>
             <input
               aria-hidden="true"
@@ -218,7 +218,7 @@ exports[`allEpreuves component renders correctly with data for non-admin user 1`
       class="button forAdmin"
       href="/admin/createEpreuve"
     >
-      créer une épreuve 
+      Créer une épreuve 
       <svg
         fill="currentColor"
         height="1em"
@@ -321,7 +321,7 @@ exports[`allEpreuves component renders correctly with data for non-admin user 1`
               role="combobox"
               tabindex="0"
             >
-              Titre A-Z
+              nom A-Z
             </div>
             <input
               aria-hidden="true"

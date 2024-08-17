@@ -1,25 +1,16 @@
 .oneEpreuve {
   gap: var(--gap);
 
-  h1 {
-    text-transform: uppercase;
+  .topButtLinker {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: var(--gap);
+    margin-bottom: var(--espace);
   }
 
-  .carrouselEpreuve {
-    width: 360px;
-    height: 340px;
-
-    .imageContainer {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      img {
-        width: 360px;
-        height: 300px;
-        border-radius: var(--radius);
-      }
-    }
+  h1 {
+    text-transform: uppercase;
   }
 
   .infoDifficulty {

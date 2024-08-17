@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import router from "next/router";
 
 import { useDeleteEpreuveMutation } from "@/types/graphql";
@@ -10,7 +10,6 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-
 import toast from "react-hot-toast";
 
 // dialog pour supprimer une epreuve
@@ -56,7 +55,7 @@ const suppEpreuveDialog = ({
   return (
     <div className="epreuveToDelete">
       <button className="danger" onClick={handleClickOpen}>
-        Delete epreuve
+        Supprimer cette épreuve
       </button>
 
       <Dialog
@@ -85,10 +84,10 @@ const suppEpreuveDialog = ({
           },
         }}
       >
-        <DialogTitle>Delete epreuve {epreuveId}</DialogTitle>
+        <DialogTitle>Supprimer l'épreuve {epreuveId}</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Pour supprimer cette épreuve entrez son nom : {epreuveTitle}
+            Pour supprimer cette épreuve, entrez son nom : {epreuveTitle}
           </DialogContentText>
           <TextField
             autoFocus

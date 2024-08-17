@@ -1,7 +1,7 @@
-import React from "react";
 import Link from "next/link";
-import ButtonForRepport from "./buttonForReport";
-import DateFormatter from "../DateFormatter";
+
+import ButtonForRepport from "@/components/admin/buttonForReport";
+import DateFormatter from "@/components/DateFormatter";
 
 // card pour afficher un commentaire report, page modo
 const reportCardForSearch = ({ report }: any) => {
@@ -29,18 +29,18 @@ const reportCardForSearch = ({ report }: any) => {
           />
         ) : null}
       </div>
-      <p>nombre de report valide : {report.malfrat?.nbReportValide}</p>
+      <p>Nombre de reports valides : {report.malfrat?.nbReportValide}</p>
 
       <div className="commentInFaute">
         <span>
-          report émis le : <DateFormatter datetime={report.createdAt} />
+          Report émis le : <DateFormatter datetime={report.createdAt} />
         </span>
 
         <p>{report.commentaireEnFaute}</p>
       </div>
 
       <Link href={`/parkour/${report.parkour?.id}`}>
-        parkour du commentaire : {report.parkour?.title}
+        Parkour du commentaire : {report.parkour?.title}
       </Link>
     </li>
   );

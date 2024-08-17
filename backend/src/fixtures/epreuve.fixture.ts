@@ -1,7 +1,13 @@
 import { faker } from "@faker-js/faker/locale/fr";
 import { DataSource } from "typeorm";
+
 import EpreuveEntity from "../entities/epreuve.entity";
 import ImageEpreuveEntity from "../entities/imageEpreuve.entity";
+
+import dotenv from "dotenv";
+dotenv.config({
+  path: "../.env",
+});
 
 export async function createEpreuves(
   dataSource: DataSource,

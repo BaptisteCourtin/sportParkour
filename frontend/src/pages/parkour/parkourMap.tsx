@@ -1,10 +1,10 @@
-import React from "react";
 import {
   GetParkourByIdQuery,
   useGetAllParkourForMapQuery,
 } from "@/types/graphql";
 
 import { APIProvider, Map } from "@vis.gl/react-google-maps";
+
 import PoiMarker from "@/components/parkour/poiMarker";
 
 // mettre la clé api dans un .env

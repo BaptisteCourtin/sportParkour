@@ -4,10 +4,10 @@ import MessageEntity from "../entities/message.entity";
 import ResetPasswordEntity, {
   ResetPasswordUpdateEntity,
 } from "../entities/resetPassword.entity";
+import UserEntity from "../entities/user.entity";
 
 import ResetPasswordService from "../services/resetPassword.service";
 import UserService from "../services/user.service";
-import UserEntity from "../entities/user.entity";
 
 // pas de @auth car non connecté
 @Resolver()

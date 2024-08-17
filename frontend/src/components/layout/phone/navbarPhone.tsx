@@ -1,11 +1,12 @@
-import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-import { FaUser } from "react-icons/fa6";
-import { FaHouse } from "react-icons/fa6";
-import { FaMapLocationDot } from "react-icons/fa6";
-import { FaFlagCheckered } from "react-icons/fa6";
+import {
+  FaUser,
+  FaHouse,
+  FaMapLocationDot,
+  FaFlagCheckered,
+} from "react-icons/fa6";
 
 // navbar phone (an bas) avec liens pages
 const navbarPhone = () => {
@@ -19,7 +20,7 @@ const navbarPhone = () => {
         <span className="icon">
           <FaFlagCheckered />
         </span>
-        <p>Epreuves</p>
+        <p>Épreuves</p>
       </Link>
 
       <Link
@@ -46,7 +47,7 @@ const navbarPhone = () => {
         <span className="icon">
           <FaMapLocationDot />
         </span>
-        <p>Map</p>
+        <p>Maps</p>
       </Link>
 
       <Link

@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
+
 import { useGetEpreuveByIdLazyQuery, useIsAdminQuery } from "@/types/graphql";
 
-import Carousel from "react-material-ui-carousel";
+import { FaArrowRight } from "react-icons/fa6";
 
-import { FaAngleRight } from "react-icons/fa6";
-import { FaAngleLeft } from "react-icons/fa6";
+import GoToHome from "@/components/goBack";
+import MyCarousel from "@/components/myCarousel";
 
 const OneEpreuve = () => {
   // savoir la taille de l'écran (en temps réel)
@@ -42,26 +43,30 @@ const OneEpreuve = () => {
         },
       });
     }
-  }, [router.isReady]);
+  }, [id]);
 
   return (
     <div>
       {error ? (
-        <h2>{error.message}</h2>
+        <h2>une erreur... (déso) {error.message}</h2>
       ) : loading ? (
         <h2>Chargement en cours</h2>
       ) : (
         data?.getEpreuveById && (
           <main className="oneEpreuve">
             {/* --- LIEN MODIFIER --- */}
-            {dataIsAdmin ? (
-              <Link
-                className="button"
-                href={`/admin/modifyEpreuve/${data.getEpreuveById.id}`}
-              >
-                Modifier cette épreuve
-              </Link>
-            ) : null}
+            <div className="topButtLinker">
+              {dataIsAdmin ? (
+                <Link
+                  className="button"
+                  href={`/admin/modifyEpreuve/${data.getEpreuveById.id}`}
+                >
+                  Modifier cette épreuve <FaArrowRight />
+                </Link>
+              ) : null}
+
+              <GoToHome />
+            </div>
 
             {/* --- DATA EPREUVE --- */}
             <div className="titreAvecLosange">
@@ -73,35 +78,7 @@ const OneEpreuve = () => {
 
             {data.getEpreuveById.images &&
               data.getEpreuveById.images.length > 0 && (
-                <Carousel
-                  className="carrouselEpreuve"
-                  NextIcon={<FaAngleRight />}
-                  PrevIcon={<FaAngleLeft />}
-                  autoPlay={false}
-                  indicators={true}
-                  swipe={true}
-                  cycleNavigation={true}
-                  navButtonsAlwaysVisible={
-                    data.getEpreuveById.images.length > 1 ? true : false
-                  }
-                  navButtonsAlwaysInvisible={
-                    data.getEpreuveById.images.length > 1 ? false : true
-                  }
-                  fullHeightHover={false}
-                  animation="slide"
-                >
-                  {data.getEpreuveById.images
-                    ?.slice()
-                    .sort(function compare(a: any, b: any) {
-                      if (a.isCouverture > b.isCouverture) return -1;
-                      return 1;
-                    })
-                    .map((image) => (
-                      <div className="imageContainer">
-                        <img src={image.lien as string} alt="" />
-                      </div>
-                    ))}
-                </Carousel>
+                <MyCarousel dataImages={data.getEpreuveById.images} />
               )}
 
             <div className="infoDifficulty">

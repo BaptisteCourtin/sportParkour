@@ -5,7 +5,7 @@ import {
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import React, { useState } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 import { FaEllipsisVertical } from "react-icons/fa6";
 
@@ -112,11 +112,11 @@ const buttonForComment = ({
       >
         {/* mettre ou non suivant le status actuel */}
         {isClient ? (
-          <MenuItem onClick={handleReportNote}>reporter</MenuItem>
+          <MenuItem onClick={handleReportNote}>Reporter</MenuItem>
         ) : null}
         {isAdmin ? (
           <MenuItem onClick={handleSuppAndCreateReport}>
-            supprimer et 1 pt de report
+            Supprimer et 1 pt de report
           </MenuItem>
         ) : null}
       </Menu>

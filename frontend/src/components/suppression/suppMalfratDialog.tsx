@@ -1,5 +1,7 @@
-import React, { useState } from "react";
-import toast from "react-hot-toast";
+import { useState } from "react";
+import { useRouter } from "next-router-mock";
+
+import { useDeleteUserByAdminMutation } from "@/types/graphql";
 
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -8,9 +10,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
-
-import { useDeleteUserByAdminMutation } from "@/types/graphql";
-import { useRouter } from "next-router-mock";
+import toast from "react-hot-toast";
 
 const suppMalfratDialog = ({ dataMalfrat }) => {
   const [open, setOpen] = useState(false);

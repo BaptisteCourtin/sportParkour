@@ -16,6 +16,7 @@
     padding: var(--espace);
     border-radius: var(--radius);
     border-top: var(--line) solid var(--blue);
+    position: relative;
 
     .topProfil {
       display: flex;
@@ -23,6 +24,17 @@
 
       h1 {
         text-transform: uppercase;
+
+        &::before {
+          content: "";
+          width: var(--losange);
+          height: var(--losange);
+          background-color: var(--blue);
+          position: absolute;
+          transform: rotate(45deg);
+          top: 32px;
+          left: -7.5px;
+        }
       }
     }
 

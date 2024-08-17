@@ -1,4 +1,5 @@
 import { DataSource } from "typeorm";
+
 import { JoinUserParkourFavorisEntity } from "../entities/joinUserParkourFavoris.entity";
 import UserEntity from "../entities/user.entity";
 import ParkourEntity from "../entities/parkour.entity";

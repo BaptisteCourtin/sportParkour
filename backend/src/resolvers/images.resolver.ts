@@ -1,8 +1,10 @@
 import { Arg, Authorized, Mutation, Resolver } from "type-graphql";
+
 import MessageEntity from "../entities/message.entity";
 import ImageEpreuveEntity from "../entities/imageEpreuve.entity";
-import ImagesService from "../services/images.service";
 import ImageParkourEntity from "../entities/imageParkour.entity";
+
+import ImagesService from "../services/images.service";
 
 @Resolver()
 export default class ImagesResolver {

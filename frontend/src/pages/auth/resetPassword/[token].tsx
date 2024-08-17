@@ -2,21 +2,20 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { object, ref, string } from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
 
 import {
   useChangePasswordMutation,
   useCheckResetTokenValidityLazyQuery,
 } from "@/types/graphql";
 
+import { object, ref, string } from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
-
-import toast from "react-hot-toast";
 import { FaEye } from "react-icons/fa6";
 import { FaEyeSlash } from "react-icons/fa6";
+import toast from "react-hot-toast";
 
 let PasswordsResetPasswordSchema = object({
   password: string()
@@ -77,7 +76,7 @@ function Reset() {
         });
       }
     }
-  }, [router.isReady]);
+  }, [token]);
 
   // --- RESET PASSWORD ---
 
@@ -120,7 +119,7 @@ function Reset() {
         <p>Vérification en cours</p>
       ) : dataCheck?.checkResetTokenValidity.success && !dataChange ? (
         <>
-          <h1>Réinitialisation de mot de passe</h1>
+          <h1>Réinitialisation de votre mot de passe</h1>
           <form
             className="bigForm"
             onSubmit={handleSubmit(handlePasswordsResetPassword)}
@@ -206,8 +205,8 @@ function Reset() {
         </div>
       ) : (
         <div>
-          Vous n'avez pas un jeton valide, merci de relancer la réinitialisation
-          du mot de passe
+          Vous n'avez pas de jeton valide, merci de relancer la réinitialisation
+          du mot de passe.
         </div>
       )}
     </main>

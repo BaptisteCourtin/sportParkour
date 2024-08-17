@@ -1,25 +1,22 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useForm } from "react-hook-form";
-import { object, ref, string } from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
 
 import {
   UserInputRegisterEntity,
   useInscriptionMutation,
 } from "@/types/graphql";
 
+import { object, ref, string } from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
-
+import { FaEye, FaEyeSlash, FaArrowRight } from "react-icons/fa6";
 import { toast } from "react-hot-toast";
-import { FaEye } from "react-icons/fa6";
-import { FaEyeSlash } from "react-icons/fa6";
-import { FaArrowRight } from "react-icons/fa6";
 
 import SearchBarCommuneName from "@/components/user/searchBarCommuneName";
 
@@ -143,7 +140,7 @@ const inscription = () => {
   return (
     <main className="auth">
       <div className="imageTop">
-        <h1>POSSEDEZ UN COMPTE PARKOUR</h1>
+        <h1>POSSÉDEZ UN COMPTE PARKOUR</h1>
       </div>
 
       <form onSubmit={handleSubmit(handleInscription)} className="bigForm">

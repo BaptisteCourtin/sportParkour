@@ -1,13 +1,14 @@
-import React from "react";
 import Link from "next/link";
 
-import { FaMapLocationDot } from "react-icons/fa6";
-import { FaEnvelope } from "react-icons/fa6";
-import { FaPhone } from "react-icons/fa6";
-import { FaFacebook } from "react-icons/fa6";
-import { FaInstagram } from "react-icons/fa6";
-import { FaXTwitter } from "react-icons/fa6";
-import { FaLinkedin } from "react-icons/fa6";
+import {
+  FaMapLocationDot,
+  FaEnvelope,
+  FaPhone,
+  FaFacebook,
+  FaInstagram,
+  FaXTwitter,
+  FaLinkedin,
+} from "react-icons/fa6";
 
 // footer (ordi et téléphone), en bas de chaque page
 const footer = () => {
@@ -31,7 +32,7 @@ const footer = () => {
             </a>
           </section>
           <section>
-            <h4>NOS RÉSAUX</h4>
+            <h4>NOS RÉSEAUX</h4>
             <div className="reseaux">
               <a href="https://www.facebook.com/" target="_blank">
                 <FaFacebook />
@@ -49,7 +50,7 @@ const footer = () => {
           </section>
           <section>
             <h4>RESSOURCES</h4>
-            <Link href="/infos/quiSommesNous">Qui sommes nous ?</Link>
+            <Link href="/infos/quiSommesNous">Qui sommes-nous ?</Link>
             <Link href="/infos/faq">FAQ</Link>
             <Link href="/infos/planDuSite">Plan du site</Link>
             <Link href="/infos/cgu">Conditions générales d'utilisation</Link>

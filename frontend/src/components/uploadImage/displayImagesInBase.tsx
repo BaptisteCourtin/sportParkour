@@ -1,5 +1,3 @@
-import React from "react";
-
 const displayImagesInBase = ({
   listImagesAlreadyIn,
   setIsMyCouverture,
@@ -33,14 +31,14 @@ const displayImagesInBase = ({
             } 
 						${isMyCouverture == +img.id ? "isCouv" : ""}`}
           >
-            <img src={img.lien} alt="image de présentation" />
+            <img src={img.lien} alt="Image de présentation" />
             <button
               className="toCouv"
               onClick={() => setIsMyCouverture(+img.id)}
             >
               {isMyCouverture == +img.id
-                ? "image de couverture"
-                : "définir comme image de couverture"}
+                ? "Image de couverture"
+                : "Définir comme image de couverture"}
             </button>
             <span
               className="remove_img"

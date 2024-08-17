@@ -1,7 +1,8 @@
 import { faker } from "@faker-js/faker/locale/fr";
 import { DataSource } from "typeorm";
-import ParkourEntity from "../entities/parkour.entity";
+
 import { Difficulty } from "../enum/difficulty.enum";
+import ParkourEntity from "../entities/parkour.entity";
 import EpreuveEntity from "../entities/epreuve.entity";
 import ImageParkourEntity from "../entities/imageParkour.entity";
 import UserEntity from "../entities/user.entity";
@@ -131,7 +132,7 @@ export async function createParkours(
       if (!usersTabForNote.includes(idUser)) {
         const joinUserParkourNote = new JoinUserParkourNoteEntity();
         const thisNote = faker.number.float({
-          min: 0,
+          min: 0.5,
           max: 5,
           multipleOf: 0.5,
         });

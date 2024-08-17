@@ -43,7 +43,7 @@ describe("Footer", () => {
   });
 
   test("renders social media section", () => {
-    expect(screen.getByText("NOS RÉSAUX")).toBeInTheDocument();
+    expect(screen.getByText("NOS RÉSEAUX")).toBeInTheDocument();
     expect(screen.getByTestId("fa-facebook")).toBeInTheDocument();
     expect(screen.getByTestId("fa-instagram")).toBeInTheDocument();
     expect(screen.getByTestId("fa-twitter")).toBeInTheDocument();
@@ -52,7 +52,7 @@ describe("Footer", () => {
 
   test("renders resources section", () => {
     expect(screen.getByText("RESSOURCES")).toBeInTheDocument();
-    expect(screen.getByText("Qui sommes nous ?")).toBeInTheDocument();
+    expect(screen.getByText("Qui sommes-nous ?")).toBeInTheDocument();
     expect(screen.getByText("FAQ")).toBeInTheDocument();
     expect(screen.getByText("Plan du site")).toBeInTheDocument();
     expect(
@@ -110,7 +110,7 @@ describe("Footer", () => {
   });
 
   test("renders correct links 3", () => {
-    expect(screen.getByText("Qui sommes nous ?").closest("a")).toHaveAttribute(
+    expect(screen.getByText("Qui sommes-nous ?").closest("a")).toHaveAttribute(
       "href",
       "/infos/quiSommesNous"
     );

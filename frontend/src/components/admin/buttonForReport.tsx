@@ -5,7 +5,7 @@ import {
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import React, { useState } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 import { FaEllipsisVertical } from "react-icons/fa6";
 
@@ -113,9 +113,9 @@ const buttonForReport = ({
         }}
       >
         {/* mettre ou non suivant le status actuel */}
-        <MenuItem onClick={handleLetNote}>laisser</MenuItem>
+        <MenuItem onClick={handleLetNote}>Laisser</MenuItem>
         <MenuItem onClick={handleSuppAndReport}>
-          supprimer et 1 pt de report
+          Supprimer et 1 pt de report
         </MenuItem>
       </Menu>
     </div>

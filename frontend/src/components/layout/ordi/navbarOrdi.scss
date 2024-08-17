@@ -25,7 +25,7 @@
     padding: 0 2rem;
     height: 70px;
 
-    width: 1380px;
+    width: var(--maxWidth);
     max-width: calc(100% - 2rem);
     background-color: var(--middle);
     border-bottom-left-radius: var(--radius);
@@ -64,14 +64,14 @@
 
   @media screen and (max-width: 420px) {
     .navbar {
-      padding: 0 1rem;
+      padding: 0 var(--gap);
 
       .links {
         display: flex;
         flex-direction: row;
         align-items: center;
         justify-content: flex-end;
-        gap: 1rem;
+        gap: var(--gap);
       }
     }
   }

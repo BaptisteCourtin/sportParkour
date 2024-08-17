@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 import { useCreateJoinUserParkourNoteMutation } from "@/types/graphql";
 
@@ -10,7 +10,6 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Rating from "@mui/material/Rating";
-
 import toast from "react-hot-toast";
 
 // dialog pour mettre une note et un commentaire à un parkour ou modifier

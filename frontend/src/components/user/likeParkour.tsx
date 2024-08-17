@@ -2,7 +2,6 @@ import {
   useCreateJoinUserParkourFavorisMutation,
   useDeleteJoinUserParkourFavorisMutation,
 } from "@/types/graphql";
-import React from "react";
 import toast from "react-hot-toast";
 
 // button pour mettre un like ou de l'enlever

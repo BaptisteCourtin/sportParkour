@@ -1,4 +1,3 @@
-import React from "react";
 import CardEpreuve from "../../src/components/epreuve/cardEpreuve"; // Assurez-vous d'ajuster le chemin d'importation
 
 describe("CardEpreuve.cy.tsx", () => {

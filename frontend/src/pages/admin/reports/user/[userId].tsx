@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
 
 import { useGetUserByIdForPageReportLazyQuery } from "@/types/graphql";
@@ -6,6 +6,7 @@ import { useGetUserByIdForPageReportLazyQuery } from "@/types/graphql";
 import NoteCard from "@/components/admin/reportUser/noteCard";
 import ReportCard from "@/components/admin/reportUser/reportCard";
 import SuppMalfratDialog from "@/components/suppression/suppMalfratDialog";
+import GoToHome from "@/components/goBack";
 
 const OneUserByReports = () => {
   const router = useRouter();
@@ -24,7 +25,7 @@ const OneUserByReports = () => {
         },
       });
     }
-  }, [router.isReady]);
+  }, [userId]);
 
   return (
     <div>
@@ -35,6 +36,8 @@ const OneUserByReports = () => {
       ) : (
         data?.getUserByIdForPageReport && (
           <main className="userIdByReports">
+            <GoToHome />
+
             <section className="infosMalfrat">
               <div>
                 <h1>
@@ -60,7 +63,7 @@ const OneUserByReports = () => {
               <div>
                 <p>
                   L'utilisateur a {data.getUserByIdForPageReport.nbReportValide}{" "}
-                  report valide contre lui
+                  reports valides contre lui.
                 </p>
                 <p>
                   L'utilisateur a émis{" "}
@@ -89,7 +92,7 @@ const OneUserByReports = () => {
 
             <section>
               <ul className="listNotes">
-                <h3>L'utilisateur à mis ces commentaires : </h3>
+                <h3>L'utilisateur a mis ces commentaires : </h3>
                 {data.getUserByIdForPageReport.notesParkours?.map(
                   (note, index) => (
                     <NoteCard

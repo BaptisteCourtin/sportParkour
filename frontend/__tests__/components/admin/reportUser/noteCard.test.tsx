@@ -44,7 +44,7 @@ describe("NoteCard", () => {
 
     // Vérifier la présence du lien vers le parkour
     expect(
-      screen.getByText("parkour du commentaire : Parkour Title")
+      screen.getByText("Parkour du commentaire : Parkour Title")
     ).toBeInTheDocument();
   });
 });

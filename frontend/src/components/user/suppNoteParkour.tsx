@@ -1,5 +1,6 @@
+import { useState } from "react";
+
 import { useDeleteJoinUserParkourNoteMutation } from "@/types/graphql";
-import React, { useState } from "react";
 
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -69,7 +70,7 @@ const suppNoteParkour = ({
             <DialogTitle id="alert-dialog-title">Supprimer ?</DialogTitle>
             <DialogContent>
               <DialogContentText id="alert-dialog-description">
-                Voulez vous vraiment supprimer cette note et ce commentaire
+                Voulez-vous vraiment supprimer cette note et ce commentaire ?
               </DialogContentText>
             </DialogContent>
             <DialogActions>

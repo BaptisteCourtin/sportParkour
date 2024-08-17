@@ -1,5 +1,3 @@
-import React from "react";
-
 const mentionsLegales = () => {
   return (
     <main className="pagesInfos ml">

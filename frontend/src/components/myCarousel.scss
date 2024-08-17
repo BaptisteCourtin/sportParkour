@@ -1,0 +1,39 @@
+.myCarousel {
+  .carrouselImages {
+    width: 360px;
+    height: 340px;
+
+    .imageContainer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      img {
+        width: 360px;
+        height: 300px;
+        border-radius: var(--radius);
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.carouselAggrandi {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  button {
+    border: none;
+    cursor: pointer;
+    font-size: 2rem;
+    color: white;
+    background-color: transparent;
+  }
+
+  img {
+    max-width: 70%;
+    cursor: pointer;
+  }
+}

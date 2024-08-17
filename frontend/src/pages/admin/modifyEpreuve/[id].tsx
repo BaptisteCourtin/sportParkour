@@ -1,8 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { object, string } from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { useRouter } from "next/router";
 
 import {
   EpreuveUpdateEntity,
@@ -13,14 +11,16 @@ import {
   useModifyImageCouvertureEpreuveMutation,
 } from "@/types/graphql";
 
+import { object, string } from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 import TextField from "@mui/material/TextField";
-
 import { toast } from "react-hot-toast";
-import { uploadImages } from "@/components/uploadImage/uploadImages";
 
 import SuppEpreuveDialog from "@/components/suppression/suppEpreuveDialog";
 import FormCreateImages from "@/components/uploadImage/formCreateImages";
 import DisplayImagesInBase from "@/components/uploadImage/displayImagesInBase";
+import GoToHome from "@/components/goBack";
+import { uploadImages } from "@/components/uploadImage/uploadImages";
 import { modifyIsCouverture } from "@/components/uploadImage/modifyImagesCouverture";
 
 let modifyEpreuveSchema = object({
@@ -82,7 +82,7 @@ const modifyOneEpreuve = () => {
         },
       });
     }
-  }, [router.isReady]);
+  }, [id]);
 
   // --- MODIFY EPREUVE ---
   const {
@@ -181,6 +181,8 @@ const modifyOneEpreuve = () => {
       ) : (
         data?.getEpreuveById && (
           <>
+            <GoToHome />
+
             <h1>MODIFIER L'ÉPREUVE</h1>
 
             {/* --- display images in base --- */}

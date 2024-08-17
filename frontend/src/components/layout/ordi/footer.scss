@@ -12,11 +12,11 @@ footer {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 1rem;
+    gap: var(--gap);
 
-    padding: 1rem 2rem;
+    padding: var(--gap) 2rem;
 
-    width: 1380px;
+    width: var(--maxWidth);
     max-width: calc(100% - 2rem);
     height: 100%;
 
@@ -31,7 +31,7 @@ footer {
       flex-direction: row;
       align-items: flex-start;
       justify-content: space-around;
-      gap: 1rem;
+      gap: var(--gap);
 
       section {
         display: flex;
@@ -47,8 +47,7 @@ footer {
           display: flex;
           align-items: flex-start;
           justify-content: flex-start;
-          gap: 1rem;
-          font-size: var(--fs-h4);
+          gap: var(--gap);
         }
       }
     }

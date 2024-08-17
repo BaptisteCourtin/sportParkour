@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
+
 import {
   GetEpreuveByIdQuery,
   useGetParkourByIdLazyQuery,
@@ -12,21 +13,22 @@ import {
 } from "@/types/graphql";
 
 import Rating from "@mui/material/Rating";
-
-import Carousel from "react-material-ui-carousel";
-import { FaAngleRight } from "react-icons/fa6";
-import { FaAngleLeft } from "react-icons/fa6";
-import { FaLocationDot } from "react-icons/fa6";
-import { FaPersonRunning } from "react-icons/fa6";
-import { FaStopwatch } from "react-icons/fa6";
-import { FaArrowUpRightDots } from "react-icons/fa6";
-import { FaArrowRight } from "react-icons/fa6";
+import {
+  FaLocationDot,
+  FaPersonRunning,
+  FaStopwatch,
+  FaArrowUpRightDots,
+  FaArrowRight,
+} from "react-icons/fa6";
 
 import DisplayComment from "@/components/parkour/displayComment";
 import CardEpreuve from "@/components/epreuve/cardEpreuve";
 import LikeParkour from "@/components/user/likeParkour";
 import SuppNoteParkour from "@/components/user/suppNoteParkour";
 import PutNoteParkour from "@/components/user/putNoteParkour";
+import GoToHome from "@/components/goBack";
+import MyCarousel from "@/components/myCarousel";
+import MiniCardParkour from "@/components/parkour/miniCardParkour";
 
 const OneParkour = () => {
   const router = useRouter();
@@ -96,7 +98,7 @@ const OneParkour = () => {
         },
       });
     }
-  }, [router.isReady]);
+  }, [id]);
 
   // --- MODIF LIKE ---
   const [isLiked, setIsLiked] = useState(false);
@@ -116,41 +118,47 @@ const OneParkour = () => {
           <main className="oneParkour">
             {/* --- LIEN MODIFIER --- */}
             <section className="topButt">
-              {dataIsAdmin && (
-                <Link
-                  className="button"
-                  href={`/admin/modifyParkour/${data.getParkourById.id}`}
-                >
-                  Modifier ce parkour <FaArrowRight />
-                </Link>
-              )}
+              <div className="topButtLinker">
+                {dataIsAdmin && (
+                  <Link
+                    className="button"
+                    href={`/admin/modifyParkour/${data.getParkourById.id}`}
+                  >
+                    Modifier ce parkour <FaArrowRight />
+                  </Link>
+                )}
 
-              {/* --- METTRE NOTE --- */}
-              <PutNoteParkour
-                myNote={myNote}
-                setMyNote={setMyNote}
-                myComment={myComment}
-                setMyComment={setMyComment}
-                parkourId={id as string}
-                dataIsClient={dataIsClient?.isClient}
-              />
+                <GoToHome />
+              </div>
 
-              {/* --- SUPPRIMER NOTE --- */}
-              <SuppNoteParkour
-                myNote={myNote}
-                setMyNote={setMyNote}
-                setMyComment={setMyComment}
-                parkourId={id as string}
-                dataIsClient={dataIsClient?.isClient}
-              />
+              <div className="topButtPutter">
+                {/* --- METTRE NOTE --- */}
+                <PutNoteParkour
+                  myNote={myNote}
+                  setMyNote={setMyNote}
+                  myComment={myComment}
+                  setMyComment={setMyComment}
+                  parkourId={id as string}
+                  dataIsClient={dataIsClient?.isClient}
+                />
 
-              {/* --- LIKE --- */}
-              <LikeParkour
-                isLiked={isLiked}
-                setIsLiked={setIsLiked}
-                parkourId={id as string}
-                dataIsClient={dataIsClient?.isClient}
-              />
+                {/* --- SUPPRIMER NOTE --- */}
+                <SuppNoteParkour
+                  myNote={myNote}
+                  setMyNote={setMyNote}
+                  setMyComment={setMyComment}
+                  parkourId={id as string}
+                  dataIsClient={dataIsClient?.isClient}
+                />
+
+                {/* --- LIKE --- */}
+                <LikeParkour
+                  isLiked={isLiked}
+                  setIsLiked={setIsLiked}
+                  parkourId={id as string}
+                  dataIsClient={dataIsClient?.isClient}
+                />
+              </div>
             </section>
 
             {/* --- DATA PARKOUR --- */}
@@ -188,16 +196,16 @@ const OneParkour = () => {
             <p>{data.getParkourById.description}</p>
 
             <div className="infos">
-              <p>
+              <p className="button">
                 <FaStopwatch />{" "}
                 {(data.getParkourById.time - (data.getParkourById.time % 60)) /
                   60}
                 h {data.getParkourById.time % 60}
               </p>
-              <p>
+              <p className="button">
                 <FaPersonRunning /> {data.getParkourById.length} km
               </p>
-              <p>
+              <p className="button">
                 <FaArrowUpRightDots />
                 {data.getParkourById.difficulty == Difficulty.Easy
                   ? "facile"
@@ -209,35 +217,7 @@ const OneParkour = () => {
 
             {data.getParkourById.images &&
               data.getParkourById.images.length > 0 && (
-                <Carousel
-                  className="carrouselParkour"
-                  NextIcon={<FaAngleRight />}
-                  PrevIcon={<FaAngleLeft />}
-                  autoPlay={false}
-                  indicators={true}
-                  swipe={true}
-                  cycleNavigation={true}
-                  navButtonsAlwaysVisible={
-                    data.getParkourById.images.length > 1 ? true : false
-                  }
-                  navButtonsAlwaysInvisible={
-                    data.getParkourById.images.length > 1 ? false : true
-                  }
-                  fullHeightHover={false}
-                  animation="slide"
-                >
-                  {data.getParkourById.images
-                    ?.slice()
-                    .sort(function compare(a: any, b: any) {
-                      if (a.isCouverture > b.isCouverture) return -1;
-                      return 1;
-                    })
-                    .map((image) => (
-                      <div className="imageContainer">
-                        <img src={image.lien as string} alt="" />
-                      </div>
-                    ))}
-                </Carousel>
+                <MyCarousel dataImages={data.getParkourById.images} />
               )}
 
             <div className="container-epreuves">
@@ -260,7 +240,7 @@ const OneParkour = () => {
               {data.getParkourById.parkourConnect?.length ? (
                 <ul>
                   {data.getParkourById.parkourConnect?.map((parkourConnect) => (
-                    <li>{parkourConnect.title}</li>
+                    <MiniCardParkour parkourConnect={parkourConnect} />
                   ))}
                 </ul>
               ) : null}
@@ -268,7 +248,7 @@ const OneParkour = () => {
                 <ul>
                   {data.getParkourById.parkourConnectInverse?.map(
                     (parkourConnect) => (
-                      <li>{parkourConnect.title}</li>
+                      <MiniCardParkour parkourConnect={parkourConnect} />
                     )
                   )}
                 </ul>
@@ -276,7 +256,7 @@ const OneParkour = () => {
 
               {!data.getParkourById.parkourConnect?.length &&
               !data.getParkourById.parkourConnectInverse?.length
-                ? "y'en a pas"
+                ? "Y'en a pas"
                 : null}
             </div>
 
@@ -287,7 +267,7 @@ const OneParkour = () => {
               <section className="allComms">
                 <div className="titreAvecLosange">
                   <i className="losange"></i>
-                  <h2>AVIS SUR LE PARCOURS</h2>
+                  <h2>AVIS SUR LE PARKOUR</h2>
                 </div>
                 {data.getParkourById.notesParkours.map((comment, index) => (
                   <DisplayComment

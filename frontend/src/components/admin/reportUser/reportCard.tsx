@@ -1,6 +1,6 @@
-import React from "react";
 import Link from "next/link";
-import ButtonForRepport from "../buttonForReport";
+
+import ButtonForRepport from "@/components/admin/buttonForReport";
 import DateFormatter from "@/components/DateFormatter";
 
 // card report d'un commentaire, version page modo d'un user
@@ -15,7 +15,7 @@ const reportCard = ({
     <li className={`${report.status} reportCard`}>
       <div className="top">
         <span>
-          report émis le : <DateFormatter datetime={report.createdAt} />
+          Report émis le : <DateFormatter datetime={report.createdAt} />
         </span>
 
         {report.status != "SUPPRIME" ? (
@@ -31,7 +31,7 @@ const reportCard = ({
       <p className="commentInFaute">{report.commentaireEnFaute}</p>
 
       <Link href={`/parkour/${report.parkour?.id}`}>
-        parkour du commentaire : {report.parkour?.title}
+        Parkour du commentaire : {report.parkour?.title}
       </Link>
     </li>
   );

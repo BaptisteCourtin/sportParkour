@@ -19,7 +19,7 @@ exports[`ReportCardForSearchUser matches snapshot 1`] = `
       </a>
     </div>
     <p>
-      L'utilisateur a 3 report valide contre lui
+      L'utilisateur a 3 reports valides contre lui
     </p>
     <p>
       L'utilisateur a émis 5 reports

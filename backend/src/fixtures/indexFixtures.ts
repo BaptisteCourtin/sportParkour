@@ -1,5 +1,6 @@
 import "reflect-metadata";
 import dataSource from "../lib/datasource";
+
 import { createUsers } from "./user.fixture";
 import { createEpreuves } from "./epreuve.fixture";
 import { createParkours } from "./parkour.fixture";

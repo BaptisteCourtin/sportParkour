@@ -11,18 +11,17 @@ import {
 import { Field, ID, InputType, Int, ObjectType } from "type-graphql";
 import { Max, MaxLength, Min } from "class-validator";
 
+import dotenv from "dotenv";
+dotenv.config({
+  path: "../.env",
+});
+
 import { Difficulty } from "../enum/difficulty.enum";
 import EpreuveEntity from "./epreuve.entity";
 import ImageParkourEntity, {
   ImageParkourCreateEntity,
 } from "./imageParkour.entity";
 import JoinUserParkourNoteEntity from "./joinUserParkourNote.entity";
-
-import dotenv from "dotenv";
-// import ParkourConnectEntity from "./parkourConnect.entity";
-dotenv.config({
-  path: "../.env",
-});
 
 @Entity("parkour")
 @Unique(["title"])

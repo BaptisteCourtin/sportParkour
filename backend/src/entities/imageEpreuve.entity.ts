@@ -8,12 +8,12 @@ import {
 import { Field, ID, InputType, ObjectType } from "type-graphql";
 import { MaxLength } from "class-validator";
 
-import EpreuveEntity from "./epreuve.entity";
-
 import dotenv from "dotenv";
 dotenv.config({
   path: "../.env",
 });
+
+import EpreuveEntity from "./epreuve.entity";
 
 @Entity("image_epreuve")
 @ObjectType()

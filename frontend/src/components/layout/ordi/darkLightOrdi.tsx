@@ -1,6 +1,4 @@
-import React from "react";
-import { FaMoon } from "react-icons/fa6";
-import { FaSun } from "react-icons/fa6";
+import { FaMoon, FaSun } from "react-icons/fa6";
 
 import { useDarkLightContext } from "@/context/themeContext";
 

@@ -1,8 +1,9 @@
+import axiosInstanceImage from "@/lib/axiosInstanceImage";
+
 import {
   ImageEpreuveCreateEntity,
   ImageParkourCreateEntity,
 } from "@/types/graphql";
-import axiosInstanceImage from "@/lib/axiosInstanceImage";
 
 export const uploadImages = async (
   filesToUpload: File[],

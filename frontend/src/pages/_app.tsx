@@ -5,11 +5,10 @@ import type { AppProps } from "next/app";
 import Head from "next/head";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 
-import Layout from "../components/layout/Layout";
-
 import { Toaster } from "react-hot-toast";
 
 import { DarkLightProvider } from "@/context/themeContext";
+import Layout from "@/components/layout/Layout";
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   // pour utiliser apollo

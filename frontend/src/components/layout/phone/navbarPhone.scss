@@ -51,7 +51,7 @@
       transform: translateX(calc(100vw - 112.75vw));
     }
     &:nth-child(3).active ~ .indicator {
-      transform: translateX(calc(100vw - 87vw));
+      transform: translateX(calc(100vw - 87.75vw));
     }
     &:nth-child(4).active ~ .indicator {
       transform: translateX(calc(100vw - 62.75vw));

@@ -71,3 +71,7 @@ Il n'affecte pas le schéma GraphQL, mais plutôt la logique de validation dans 
 
 Vous n'avez pas besoin d'ajouter des @JoinColumn pour ces relations @OneToMany.
 @JoinColumn est généralement utilisé du côté "propriétaire" de la relation, qui est typiquement le côté "Many" dans une relation @ManyToOne.
+
+------------------------------------------------------------------------------------------------------
+
+voir pour auto-refresh les "reports" et les "commentaires sur parkour"

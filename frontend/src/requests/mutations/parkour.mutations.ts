@@ -11,16 +11,21 @@ export const CREATE_PARKOUR = gql`
 
 // {
 //   "infos": {
-//     "title": "abc",
+//     "title": "test",
 //     "description": null,
 //     "time": null,
 //     "length": null,
 //     "difficulty": null,
 //     "city": null,
-//     "start": "0",
-//     "note": null,
-//     "nbVote": null,
-//     "epreuves": []
+//     "start": "0.0",
+//     "epreuves": [6,8,22],
+//     "images": [
+//       {
+//         "lien": "aaa",
+//         "isCouverture": false
+//       }
+//     ],
+//     "parkourConnect": [1,5]
 //   }
 // }
 
@@ -46,9 +51,14 @@ export const MODIFY_PARKOUR = gql`
 //     "difficulty": null,
 //     "city": null,
 //     "start": null,
-//     "note": null,
-//     "nbVote": null,
-//     "epreuves": []
+//     "epreuves": [6,8,22],
+//     "images": [
+//       {
+//         "lien": "aaa",
+//         "isCouverture": false
+//       }
+//     ],
+//     "parkourConnect": [1,5]
 //   },
 // }
 

@@ -1,18 +1,13 @@
 import "reflect-metadata";
 import datasource from "./lib/datasource";
-
-import { buildSchema } from "type-graphql";
-
-import { ApolloServer } from "@apollo/server";
-import { expressMiddleware } from "@apollo/server/express4";
-import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
-
 import express from "express";
 import http from "http";
 import cors from "cors";
 
-const app = express();
-const httpServer = http.createServer(app);
+import { buildSchema } from "type-graphql";
+import { ApolloServer } from "@apollo/server";
+import { expressMiddleware } from "@apollo/server/express4";
+import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
 
 // import les resolvers
 import EpreuveResolver from "./resolvers/epreuve.resolver";
@@ -23,6 +18,7 @@ import JoinUserParkourFavorisResolver from "./resolvers/joinUserParkourFavoris.r
 import JoinUserParkourNoteResolver from "./resolvers/joinUserParkourNote.resolver";
 import ResetPasswordResolver from "./resolvers/resetPassword.resolver";
 import ReportResolver from "./resolvers/report.resolver";
+import ImagesResolver from "./resolvers/images.resolver";
 
 // authent
 import dotenv from "dotenv";
@@ -34,11 +30,13 @@ import { jwtVerify } from "jose";
 import { customAuthChecker } from "./lib/authChecker";
 import UserEntity from "./entities/user.entity";
 import UserService from "./services/user.service";
-import ImagesResolver from "./resolvers/images.resolver";
 
 // ---------------------------------------------
 // ---------------------------------------------
 // ---------------------------------------------
+
+const app = express();
+const httpServer = http.createServer(app);
 
 export interface MyContext {
   req: express.Request;

@@ -1,8 +1,4 @@
-import React from "react";
-
 const cgu = () => {
-  // faire accepter les cgu avec une case devant "Je reconnais avoir lu et compris les CGU et je les accepte"
-
   return (
     <main className="pagesInfos cgu">
       <h1>CONDITIONS GÉNÉRALES D'UTILISATION</h1>

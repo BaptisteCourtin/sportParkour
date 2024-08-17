@@ -1,8 +1,6 @@
-import React, { SyntheticEvent, useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import { SyntheticEvent, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { mixed, number, object, string } from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { useRouter } from "next/router";
 
 import {
   Difficulty,
@@ -13,19 +11,21 @@ import {
   useGetTop20EpreuveByTitleLazyQuery,
 } from "@/types/graphql";
 
+import { mixed, number, object, string } from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 import TextField from "@mui/material/TextField";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import Autocomplete from "@mui/material/Autocomplete";
-
-import { toast } from "react-hot-toast";
 import { FaCheck } from "react-icons/fa6";
-import SearchBarCommuneName from "@/components/user/searchBarCommuneName";
-import { uploadImages } from "@/components/uploadImage/uploadImages";
+import { toast } from "react-hot-toast";
 
+import SearchBarCommuneName from "@/components/user/searchBarCommuneName";
 import FormCreateImages from "@/components/uploadImage/formCreateImages";
+import GoToHome from "@/components/goBack";
+import { uploadImages } from "@/components/uploadImage/uploadImages";
 
 let createParkourSchema = object({
   title: string()
@@ -190,7 +190,9 @@ const createParkour = () => {
 
   return (
     <main className="createParkour">
-      <h1>create parkour</h1>
+      <GoToHome />
+
+      <h1>Créer un parkour</h1>
 
       {/* --- form create images --- */}
       <FormCreateImages
@@ -415,20 +417,20 @@ const createParkour = () => {
         </button>
 
         <section className="usefullLink">
-          <p>liens utiles : </p>
+          <p>Liens utiles : </p>
           <a
             className="button"
             href="https://www.google.fr/maps/preview"
             target="_blank"
           >
-            maps
+            Maps
           </a>
           <a
             className="button"
             href="https://www.calculitineraires.fr/"
             target="_blank"
           >
-            calcul itinéraires
+            Calcul d'itinéraires
           </a>
         </section>
 
