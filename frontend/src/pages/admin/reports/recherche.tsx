@@ -10,22 +10,25 @@ import TextField from "@mui/material/TextField";
 
 import ReportCardForSearch from "@/components/admin/reportCardForSearch";
 import ReportCardForSearchUser from "@/components/admin/reportCardForSearchUser";
-import GoToHome from "@/components/goBack";
+import GoBack from "@/components/goBack";
 
 const recherche = () => {
   const [isUserCard, setIsUserCard] = useState(false);
 
   // --- REQUEST SEARCH BY COMMENTS ---
+  const [reports, setReports] = useState([]);
+
   const [getReportsBySearch, { data, loading, error }] =
-    useGetReportsBySearchLazyQuery();
+    useGetReportsBySearchLazyQuery({ fetchPolicy: "no-cache" });
 
   const makeTheRequestForNote = (status: string) => {
     getReportsBySearch({
       variables: {
         status: status,
       },
-      onCompleted() {
+      onCompleted(data) {
         setIsUserCard(false);
+        setReports(data.getReportsBySearch);
       },
       onError(err: any) {
         console.error("error", err);
@@ -37,7 +40,13 @@ const recherche = () => {
     makeTheRequestForNote("nonVu");
   }, []);
 
-  // --- REQUEST SEARCH BY COMMENTS ---
+  const removeReportFromList = (idToRemove: number) => {
+    setReports((prevReports) =>
+      prevReports.filter((report) => report.id != idToRemove)
+    );
+  };
+
+  // --- REQUEST SEARCH BY USER ---
   const [
     getUsersWithReports,
     {
@@ -70,7 +79,7 @@ const recherche = () => {
 
   return (
     <main className="reportSearch">
-      <GoToHome />
+      <GoBack />
 
       <h1>RECHERCHER LES REPORTS</h1>
 
@@ -105,12 +114,16 @@ const recherche = () => {
       ) : loading ? (
         <h2>Chargement en cours</h2>
       ) : (
-        data?.getReportsBySearch &&
+        reports &&
         !isUserCard && (
           <section>
             <ul className="listReports">
-              {data.getReportsBySearch.map((report, index) => (
-                <ReportCardForSearch report={report} key={index} />
+              {reports.map((report, index) => (
+                <ReportCardForSearch
+                  report={report}
+                  key={index}
+                  removeReportFromList={removeReportFromList}
+                />
               ))}
             </ul>
           </section>

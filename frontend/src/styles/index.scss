@@ -20,6 +20,8 @@
 @import "../components/layout/phone/navbarPhone.scss";
 
 // --- COMPONENTS ---
+@import "../components/myCarousel.scss";
+
 @import "../components/epreuve/cardEpreuve.scss";
 
 @import "../components/parkour/cardParkour.scss";
@@ -28,13 +30,15 @@
 
 @import "../components/admin/reportCardForSearch.scss";
 @import "../components/admin/reportCardForSearchUser.scss";
+@import "../components/admin/mailToAdminCard.scss";
+
 @import "../components/admin/reportUser/noteCard.scss";
 @import "../components/admin/reportUser/reportCard.scss";
-@import "../components/myCarousel.scss";
 
 // --- PAGES ADMIN ---
 @import "../pages/admin/createEpreuve.scss";
 @import "../pages/admin/createParkour.scss";
+
 @import "../pages/admin/modifyEpreuve/modifyEpreuve.scss";
 @import "../pages/admin/modifyParkour/modifyParkour.scss";
 
@@ -50,6 +54,7 @@
 @import "../pages/epreuve/allEpreuves.scss";
 
 @import "../pages/infos/pagesInfos.scss";
+@import "../pages/infos/mailToAdmin.scss";
 
 @import "../pages/parkour/parkourById.scss";
 @import "../pages/parkour/parkourMap.scss";

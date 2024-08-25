@@ -24,7 +24,7 @@ import { toast } from "react-hot-toast";
 
 import SearchBarCommuneName from "@/components/user/searchBarCommuneName";
 import FormCreateImages from "@/components/uploadImage/formCreateImages";
-import GoToHome from "@/components/goBack";
+import GoBack from "@/components/goBack";
 import { uploadImages } from "@/components/uploadImage/uploadImages";
 
 let createParkourSchema = object({
@@ -190,7 +190,7 @@ const createParkour = () => {
 
   return (
     <main className="createParkour">
-      <GoToHome />
+      <GoBack />
 
       <h1>Créer un parkour</h1>
 

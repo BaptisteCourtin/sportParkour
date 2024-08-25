@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useGetAllUserFavByTokenLazyQuery } from "@/types/graphql";
 
 import CardParkour from "@/components/parkour/cardParkour";
-import GoToHome from "@/components/goBack";
+import GoBack from "@/components/goBack";
 import BigTriPar from "@/components/bigTriPar";
 
 const favoris = () => {
@@ -22,7 +22,7 @@ const favoris = () => {
 
   return (
     <main className="favorisOrNotes">
-      <GoToHome />
+      <GoBack />
 
       <form className="littleForm">
         <BigTriPar tri={tri} setTri={setTri} />

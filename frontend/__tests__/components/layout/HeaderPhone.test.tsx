@@ -1,7 +1,7 @@
-import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import HeaderPhone from "@/components/layout/phone/headerPhone"; // Ajustez le chemin d'importation si nécessaire
+import { render, screen, fireEvent } from "@testing-library/react";
+
+import HeaderPhone from "@/components/layout/phone/headerPhone";
 
 // Mock pour next/router
 jest.mock("next/router", () => ({

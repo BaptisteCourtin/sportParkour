@@ -1,4 +1,5 @@
 import { render } from "@testing-library/react";
+
 import MentionsLegales from "@/pages/infos/mentionsLegales";
 
 describe("mentionsLegales", () => {

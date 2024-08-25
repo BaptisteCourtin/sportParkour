@@ -1,7 +1,8 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import Footer from "@/components/layout/ordi/footer"; // Ajustez le chemin d'importation si nécessaire
+import { render, screen } from "@testing-library/react";
+
+import Footer from "@/components/layout/ordi/footer";
 
 // Mock de next link
 jest.mock("next/link", () => {

@@ -1,10 +1,12 @@
-import React from "react";
+import { useRouter } from "next/router";
 import { render, screen, waitFor } from "@testing-library/react";
 import { MockedProvider } from "@apollo/client/testing";
-import { useRouter } from "next/router";
-import toast from "react-hot-toast";
-import Logout from "@/pages/user/logout";
+
 import { LogoutDocument } from "@/types/graphql";
+
+import toast from "react-hot-toast";
+
+import Logout from "@/pages/user/logout";
 
 // Mock des dépendances
 jest.mock("next/router", () => ({

@@ -19,6 +19,7 @@ import JoinUserParkourNoteResolver from "./resolvers/joinUserParkourNote.resolve
 import ResetPasswordResolver from "./resolvers/resetPassword.resolver";
 import ReportResolver from "./resolvers/report.resolver";
 import ImagesResolver from "./resolvers/images.resolver";
+import MailToAdminResolver from "./resolvers/mailToAdmin.resolver";
 
 // authent
 import dotenv from "dotenv";
@@ -61,6 +62,7 @@ async function main() {
       ResetPasswordResolver,
       ReportResolver,
       ImagesResolver,
+      MailToAdminResolver,
     ],
     validate: false,
     authChecker: customAuthChecker,

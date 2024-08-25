@@ -1,4 +1,5 @@
 import { render } from "@testing-library/react";
+
 import PolitiqueDeConfidentialite from "@/pages/infos/politiqueDeConfidentialite";
 
 describe("politiqueDeConfidentialite", () => {

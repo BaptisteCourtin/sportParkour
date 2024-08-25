@@ -1,11 +1,35 @@
+volumes:
+  parkour-database:
+
 services:
+  db:
+    image: postgres
+    restart: always
+    env_file:
+      - ./.env
+    ports:
+      - 5432:5432
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d parkour -U kevin"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    volumes:
+      - parkour-database:/var/lib/postgresql/data
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
   backend:
     build: ./backend
     ports:
       - "4000:4000"
     volumes:
       - "./backend/src:/app/src"
-      - "./backend/sportParkour.sqlite:/app/sportParkour.sqlite"
+      # - "./backend/sportParkour.sqlite:/app/sportParkour.sqlite"
     env_file:
       - ./.env
     healthcheck:
@@ -31,36 +55,6 @@ services:
     env_file:
       - ./.env
 
-  db:
-    image: postgres
-    restart: always
-    env_file:
-      - ./.env
-    ports:
-      - 5432:5432
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -d parkour -U kevin"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    volumes:
-      - parkour-database:/var/lib/postgresql/data
-
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - 8080:8080
-
-  # fixtures:
-  #   build: ./backend
-  #   command: npm run loadFixtures
-  #   depends_on:
-  #     db:
-  #       condition: service_healthy
-  #   env_file:
-  #     - ./.env
-
   images:
     build: ./images
     ports:
@@ -73,5 +67,11 @@ services:
     environment:
       - GOOGLE_APPLICATION_CREDENTIALS=/app/google.cloud-key.json
 
-volumes:
-  parkour-database:
+  # fixtures:
+  #   build: ./backend
+  #   command: npm run loadFixtures
+  #   depends_on:
+  #     db:
+  #       condition: service_healthy
+  #   env_file:
+  #     - ./.env

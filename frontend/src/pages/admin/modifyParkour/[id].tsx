@@ -31,7 +31,7 @@ import SearchBarCommuneName from "@/components/user/searchBarCommuneName";
 import SuppParkourDialog from "@/components/suppression/suppParkourDialog";
 import FormCreateImages from "@/components/uploadImage/formCreateImages";
 import DisplayImagesInBase from "@/components/uploadImage/displayImagesInBase";
-import GoToHome from "@/components/goBack";
+import GoBack from "@/components/goBack";
 import { modifyIsCouverture } from "@/components/uploadImage/modifyImagesCouverture";
 import { uploadImages } from "@/components/uploadImage/uploadImages";
 
@@ -317,7 +317,7 @@ const modifyOneParkour = () => {
       ) : (
         data?.getParkourById && (
           <>
-            <GoToHome />
+            <GoBack />
 
             <h1>MODIFIER LE PARKOUR</h1>
 

@@ -19,7 +19,7 @@ import { toast } from "react-hot-toast";
 import SuppEpreuveDialog from "@/components/suppression/suppEpreuveDialog";
 import FormCreateImages from "@/components/uploadImage/formCreateImages";
 import DisplayImagesInBase from "@/components/uploadImage/displayImagesInBase";
-import GoToHome from "@/components/goBack";
+import GoBack from "@/components/goBack";
 import { uploadImages } from "@/components/uploadImage/uploadImages";
 import { modifyIsCouverture } from "@/components/uploadImage/modifyImagesCouverture";
 
@@ -181,7 +181,7 @@ const modifyOneEpreuve = () => {
       ) : (
         data?.getEpreuveById && (
           <>
-            <GoToHome />
+            <GoBack />
 
             <h1>MODIFIER L'ÉPREUVE</h1>
 

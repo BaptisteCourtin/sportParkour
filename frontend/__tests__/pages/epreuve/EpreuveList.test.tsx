@@ -1,11 +1,13 @@
 import { render } from "@testing-library/react";
 import { MockedProvider } from "@apollo/client/testing";
-import AllEpreuves from "@/pages/epreuve/allEpreuves";
+
 import {
   useGetAllEpreuveQuery,
   useIsAdminQuery,
   useGetTop20EpreuveByTitleLazyQuery,
 } from "@/types/graphql";
+
+import AllEpreuves from "@/pages/epreuve/allEpreuves";
 
 // Mock the next/router
 jest.mock("next/router", () => require("next-router-mock"));

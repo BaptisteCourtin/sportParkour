@@ -1,8 +1,9 @@
-import React from "react";
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
-import ReportCard from "@/components/admin/reportUser/reportCard";
+
 import { ReportStatus } from "@/types/graphql";
+
+import ReportCard from "@/components/admin/reportUser/reportCard";
 
 jest.mock("next/router", () => require("next-router-mock"));
 

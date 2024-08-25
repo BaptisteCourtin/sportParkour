@@ -79,7 +79,8 @@ form.bigForm {
       transform: translate(7px, 18px);
     }
 
-    &.difficulty {
+    &.difficulty,
+    &.sujet {
       width: 60%;
       align-self: center;
 

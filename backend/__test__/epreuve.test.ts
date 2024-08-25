@@ -1,10 +1,11 @@
 // avec la database de tests
-import assert from "assert";
-import datasource_test from "./lib/datasource_test";
 import datasource from "../src/lib/datasource";
+import datasource_test from "./lib/datasource_test";
 
-import { ApolloServer } from "@apollo/server";
+import assert from "assert";
 import { buildSchemaSync } from "type-graphql";
+import { ApolloServer } from "@apollo/server";
+
 import MessageEntity from "../src/entities/message.entity";
 import EpreuveEntity from "../src/entities/epreuve.entity";
 import EpreuveResolver from "../src/resolvers/epreuve.resolver";

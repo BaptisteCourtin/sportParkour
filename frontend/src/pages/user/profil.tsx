@@ -101,9 +101,14 @@ const profil = () => {
             ) : null}
 
             {dataIsAdmin ? (
-              <Link className="goModo button" href="/admin/reports/recherche">
-                MODÉRATION <FaArrowRight />
-              </Link>
+              <div className="buttMyPages">
+                <Link className="goModo button" href="/admin/reports/recherche">
+                  MODÉRATION <FaArrowRight />
+                </Link>
+                <Link className="goModo button" href="/admin/mailReceived">
+                  MAILS <FaArrowRight />
+                </Link>
+              </div>
             ) : null}
           </>
         )

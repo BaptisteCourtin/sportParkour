@@ -1,20 +1,21 @@
 // avec le store
 import "reflect-metadata";
 import assert from "assert";
-import EpreuveEntity, {
-  EpreuveCreateEntity,
-} from "../../src/entities/epreuve.entity";
-import ImageEpreuveEntity from "../../src/entities/imageEpreuve.entity";
-import EpreuveResolver from "../../src/resolvers/epreuve.resolver";
+import { printSchema } from "graphql";
 import {
   IMockStore,
   addMocksToSchema,
   createMockStore,
 } from "@graphql-tools/mock";
-import { ApolloServer } from "@apollo/server";
-import { buildSchemaSync } from "type-graphql";
-import { printSchema } from "graphql";
 import { makeExecutableSchema } from "@graphql-tools/schema";
+import { buildSchemaSync } from "type-graphql";
+import { ApolloServer } from "@apollo/server";
+
+import EpreuveEntity, {
+  EpreuveCreateEntity,
+} from "../../src/entities/epreuve.entity";
+import ImageEpreuveEntity from "../../src/entities/imageEpreuve.entity";
+import EpreuveResolver from "../../src/resolvers/epreuve.resolver";
 
 // ---------------------------------------------------------------------------------
 // --- REQUESTS ---

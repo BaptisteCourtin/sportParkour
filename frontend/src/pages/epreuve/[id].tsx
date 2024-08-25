@@ -6,7 +6,7 @@ import { useGetEpreuveByIdLazyQuery, useIsAdminQuery } from "@/types/graphql";
 
 import { FaArrowRight } from "react-icons/fa6";
 
-import GoToHome from "@/components/goBack";
+import GoBack from "@/components/goBack";
 import MyCarousel from "@/components/myCarousel";
 
 const OneEpreuve = () => {
@@ -65,7 +65,7 @@ const OneEpreuve = () => {
                 </Link>
               ) : null}
 
-              <GoToHome />
+              <GoBack />
             </div>
 
             {/* --- DATA EPREUVE --- */}

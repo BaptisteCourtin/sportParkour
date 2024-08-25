@@ -4,7 +4,7 @@ import ButtonForRepport from "@/components/admin/buttonForReport";
 import DateFormatter from "@/components/DateFormatter";
 
 // card pour afficher un commentaire report, page modo
-const reportCardForSearch = ({ report }: any) => {
+const reportCardForSearch = ({ report, removeReportFromList }: any) => {
   return (
     <li className={`${report.status} reportCard`}>
       <div className="topComment">
@@ -26,6 +26,7 @@ const reportCardForSearch = ({ report }: any) => {
             malfratId={report.malfrat.id}
             parkourId={report.parkour.id}
             commentaire={report.commentaireEnFaute}
+            removeReportFromList={removeReportFromList}
           />
         ) : null}
       </div>

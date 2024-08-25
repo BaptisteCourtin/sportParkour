@@ -1,6 +1,7 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
+import { render, screen } from "@testing-library/react";
+
 import NavbarPhone from "@/components/layout/phone/navbarPhone";
 
 // Mock du router

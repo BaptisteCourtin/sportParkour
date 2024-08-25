@@ -1,14 +1,13 @@
 // avec mock
 import "reflect-metadata";
+import assert from "assert";
+import { addMocksToSchema } from "@graphql-tools/mock";
 import { buildSchemaSync } from "type-graphql";
 import { ApolloServer } from "@apollo/server";
 
 import EpreuveEntity from "../../src/entities/epreuve.entity";
 import ImageEpreuveEntity from "../../src/entities/imageEpreuve.entity";
 import EpreuveResolver from "../../src/resolvers/epreuve.resolver";
-
-import { addMocksToSchema } from "@graphql-tools/mock";
-import assert from "assert";
 
 // ---------------------------------------------------------------------------------
 // --- REQUESTS ---

@@ -14,7 +14,7 @@ import TextField from "@mui/material/TextField";
 import { toast } from "react-hot-toast";
 
 import FormCreateImages from "@/components/uploadImage/formCreateImages";
-import GoToHome from "@/components/goBack";
+import GoBack from "@/components/goBack";
 import { uploadImages } from "@/components/uploadImage/uploadImages";
 
 let createEpreuveSchema = object({
@@ -112,7 +112,7 @@ const createEpreuve = () => {
 
   return (
     <main className="createEpreuve">
-      <GoToHome />
+      <GoBack />
 
       <h1>Créer une épreuve</h1>
 

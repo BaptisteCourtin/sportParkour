@@ -1,5 +1,6 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
+
 import ReportCardForSearch from "@/components/admin/reportCardForSearch";
 
 // Mock the next/link component

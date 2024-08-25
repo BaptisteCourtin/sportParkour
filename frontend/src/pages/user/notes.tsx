@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useGetAllUserNoteByTokenLazyQuery } from "@/types/graphql";
 
 import CardParkour from "@/components/parkour/cardParkour";
-import GoToHome from "@/components/goBack";
+import GoBack from "@/components/goBack";
 import BigTriPar from "@/components/bigTriPar";
 
 const notes = () => {
@@ -23,7 +23,7 @@ const notes = () => {
 
   return (
     <main className="favorisOrNotes">
-      <GoToHome />
+      <GoBack />
 
       <form className="littleForm">
         <BigTriPar tri={tri} setTri={setTri} />

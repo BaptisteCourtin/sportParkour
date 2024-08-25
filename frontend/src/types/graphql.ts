@@ -109,6 +109,24 @@ export type JoinUserParkourNoteEntity = {
   user_id: Scalars['ID']['output'];
 };
 
+export type MailToAdminCreateEntity = {
+  emailUser: Scalars['String']['input'];
+  firstname: Scalars['String']['input'];
+  messageToAdmin: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+  sujet: SujetMailToAdmin;
+};
+
+export type MailToAdminEntity = {
+  __typename?: 'MailToAdminEntity';
+  emailUser: Scalars['String']['output'];
+  firstname: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  messageToAdmin: Scalars['String']['output'];
+  name: Scalars['String']['output'];
+  sujet: SujetMailToAdmin;
+};
+
 export type MessageEntity = {
   __typename?: 'MessageEntity';
   message: Scalars['String']['output'];
@@ -121,10 +139,12 @@ export type Mutation = {
   createEpreuve: EpreuveEntity;
   createJoinUserParkourFavoris: MessageEntity;
   createJoinUserParkourNote: MessageEntity;
+  createMailToAdmin: MessageEntity;
   createParkour: ParkourEntity;
   deleteEpreuve: MessageEntity;
   deleteJoinUserParkourFavoris: MessageEntity;
   deleteJoinUserParkourNote: MessageEntity;
+  deleteMailToAdmin: MessageEntity;
   deleteNoteAndAddOneReportValide: MessageEntity;
   deleteNoteAndAddOneReportValideAndCreateReport: MessageEntity;
   deleteParkour: MessageEntity;
@@ -162,6 +182,11 @@ export type MutationCreateJoinUserParkourNoteArgs = {
 };
 
 
+export type MutationCreateMailToAdminArgs = {
+  infos: MailToAdminCreateEntity;
+};
+
+
 export type MutationCreateParkourArgs = {
   infos: ParkourCreateEntity;
 };
@@ -179,6 +204,11 @@ export type MutationDeleteJoinUserParkourFavorisArgs = {
 
 export type MutationDeleteJoinUserParkourNoteArgs = {
   parkourId: Scalars['Float']['input'];
+};
+
+
+export type MutationDeleteMailToAdminArgs = {
+  id: Scalars['Float']['input'];
 };
 
 
@@ -306,10 +336,12 @@ export type Query = {
   authentification: MessageEntity;
   checkResetTokenValidity: MessageEntity;
   getAllEpreuve: Array<EpreuveEntity>;
+  getAllMailToAdmin: Array<MailToAdminEntity>;
   getAllParkourForMap: Array<ParkourEntity>;
   getAllUserFavByToken: Array<JoinUserParkourFavorisEntity>;
   getAllUserNoteByToken: Array<JoinUserParkourNoteEntity>;
   getEpreuveById: EpreuveEntity;
+  getMailToAdminById: MailToAdminEntity;
   getParkourById: ParkourEntity;
   getReportsBySearch: Array<ReportEntity>;
   getTheParkourTotalForSearch: Scalars['Float']['output'];
@@ -338,6 +370,11 @@ export type QueryCheckResetTokenValidityArgs = {
 
 
 export type QueryGetEpreuveByIdArgs = {
+  id: Scalars['Float']['input'];
+};
+
+
+export type QueryGetMailToAdminByIdArgs = {
   id: Scalars['Float']['input'];
 };
 
@@ -436,6 +473,14 @@ export type ResetPasswordUpdateEntity = {
 export enum Role {
   Admin = 'ADMIN',
   Client = 'CLIENT'
+}
+
+/** SujetMailToAdmin enum */
+export enum SujetMailToAdmin {
+  Client = 'CLIENT',
+  Epreuve = 'EPREUVE',
+  Parkour = 'PARKOUR',
+  Site = 'SITE'
 }
 
 export type UserEntity = {
@@ -552,6 +597,20 @@ export type DeleteJoinUserParkourNoteMutationVariables = Exact<{
 
 
 export type DeleteJoinUserParkourNoteMutation = { __typename?: 'Mutation', deleteJoinUserParkourNote: { __typename?: 'MessageEntity', message: string, success: boolean } };
+
+export type CreateMailToAdminMutationVariables = Exact<{
+  infos: MailToAdminCreateEntity;
+}>;
+
+
+export type CreateMailToAdminMutation = { __typename?: 'Mutation', createMailToAdmin: { __typename?: 'MessageEntity', message: string, success: boolean } };
+
+export type DeleteMailToAdminMutationVariables = Exact<{
+  deleteMailToAdminId: Scalars['Float']['input'];
+}>;
+
+
+export type DeleteMailToAdminMutation = { __typename?: 'Mutation', deleteMailToAdmin: { __typename?: 'MessageEntity', message: string, success: boolean } };
 
 export type CreateParkourMutationVariables = Exact<{
   infos: ParkourCreateEntity;
@@ -697,6 +756,18 @@ export type GetAllUserNoteByTokenQueryVariables = Exact<{ [key: string]: never; 
 
 
 export type GetAllUserNoteByTokenQuery = { __typename?: 'Query', getAllUserNoteByToken: Array<{ __typename?: 'JoinUserParkourNoteEntity', note: number, commentaire?: string | null, parkour: { __typename?: 'ParkourEntity', id: string, title: string, time?: number | null, length?: number | null, difficulty?: Difficulty | null, city?: string | null, note?: number | null, nbVote?: number | null, images?: Array<{ __typename?: 'ImageParkourEntity', id: string, lien: string }> | null, epreuves?: Array<{ __typename?: 'EpreuveEntity', id: string, title: string }> | null } }> };
+
+export type GetMailToAdminByIdQueryVariables = Exact<{
+  getMailToAdminByIdId: Scalars['Float']['input'];
+}>;
+
+
+export type GetMailToAdminByIdQuery = { __typename?: 'Query', getMailToAdminById: { __typename?: 'MailToAdminEntity', id: string, sujet: SujetMailToAdmin, name: string, firstname: string, emailUser: string, messageToAdmin: string } };
+
+export type GetAllMailToAdminQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllMailToAdminQuery = { __typename?: 'Query', getAllMailToAdmin: Array<{ __typename?: 'MailToAdminEntity', id: string, sujet: SujetMailToAdmin, name: string, firstname: string, emailUser: string, messageToAdmin: string }> };
 
 export type GetParkourByIdQueryVariables = Exact<{
   getParkourByIdId: Scalars['Float']['input'];
@@ -1129,6 +1200,74 @@ export function useDeleteJoinUserParkourNoteMutation(baseOptions?: Apollo.Mutati
 export type DeleteJoinUserParkourNoteMutationHookResult = ReturnType<typeof useDeleteJoinUserParkourNoteMutation>;
 export type DeleteJoinUserParkourNoteMutationResult = Apollo.MutationResult<DeleteJoinUserParkourNoteMutation>;
 export type DeleteJoinUserParkourNoteMutationOptions = Apollo.BaseMutationOptions<DeleteJoinUserParkourNoteMutation, DeleteJoinUserParkourNoteMutationVariables>;
+export const CreateMailToAdminDocument = gql`
+    mutation CreateMailToAdmin($infos: MailToAdminCreateEntity!) {
+  createMailToAdmin(infos: $infos) {
+    message
+    success
+  }
+}
+    `;
+export type CreateMailToAdminMutationFn = Apollo.MutationFunction<CreateMailToAdminMutation, CreateMailToAdminMutationVariables>;
+
+/**
+ * __useCreateMailToAdminMutation__
+ *
+ * To run a mutation, you first call `useCreateMailToAdminMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateMailToAdminMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createMailToAdminMutation, { data, loading, error }] = useCreateMailToAdminMutation({
+ *   variables: {
+ *      infos: // value for 'infos'
+ *   },
+ * });
+ */
+export function useCreateMailToAdminMutation(baseOptions?: Apollo.MutationHookOptions<CreateMailToAdminMutation, CreateMailToAdminMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateMailToAdminMutation, CreateMailToAdminMutationVariables>(CreateMailToAdminDocument, options);
+      }
+export type CreateMailToAdminMutationHookResult = ReturnType<typeof useCreateMailToAdminMutation>;
+export type CreateMailToAdminMutationResult = Apollo.MutationResult<CreateMailToAdminMutation>;
+export type CreateMailToAdminMutationOptions = Apollo.BaseMutationOptions<CreateMailToAdminMutation, CreateMailToAdminMutationVariables>;
+export const DeleteMailToAdminDocument = gql`
+    mutation DeleteMailToAdmin($deleteMailToAdminId: Float!) {
+  deleteMailToAdmin(id: $deleteMailToAdminId) {
+    message
+    success
+  }
+}
+    `;
+export type DeleteMailToAdminMutationFn = Apollo.MutationFunction<DeleteMailToAdminMutation, DeleteMailToAdminMutationVariables>;
+
+/**
+ * __useDeleteMailToAdminMutation__
+ *
+ * To run a mutation, you first call `useDeleteMailToAdminMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteMailToAdminMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteMailToAdminMutation, { data, loading, error }] = useDeleteMailToAdminMutation({
+ *   variables: {
+ *      deleteMailToAdminId: // value for 'deleteMailToAdminId'
+ *   },
+ * });
+ */
+export function useDeleteMailToAdminMutation(baseOptions?: Apollo.MutationHookOptions<DeleteMailToAdminMutation, DeleteMailToAdminMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteMailToAdminMutation, DeleteMailToAdminMutationVariables>(DeleteMailToAdminDocument, options);
+      }
+export type DeleteMailToAdminMutationHookResult = ReturnType<typeof useDeleteMailToAdminMutation>;
+export type DeleteMailToAdminMutationResult = Apollo.MutationResult<DeleteMailToAdminMutation>;
+export type DeleteMailToAdminMutationOptions = Apollo.BaseMutationOptions<DeleteMailToAdminMutation, DeleteMailToAdminMutationVariables>;
 export const CreateParkourDocument = gql`
     mutation CreateParkour($infos: ParkourCreateEntity!) {
   createParkour(infos: $infos) {
@@ -1968,6 +2107,95 @@ export type GetAllUserNoteByTokenQueryHookResult = ReturnType<typeof useGetAllUs
 export type GetAllUserNoteByTokenLazyQueryHookResult = ReturnType<typeof useGetAllUserNoteByTokenLazyQuery>;
 export type GetAllUserNoteByTokenSuspenseQueryHookResult = ReturnType<typeof useGetAllUserNoteByTokenSuspenseQuery>;
 export type GetAllUserNoteByTokenQueryResult = Apollo.QueryResult<GetAllUserNoteByTokenQuery, GetAllUserNoteByTokenQueryVariables>;
+export const GetMailToAdminByIdDocument = gql`
+    query GetMailToAdminById($getMailToAdminByIdId: Float!) {
+  getMailToAdminById(id: $getMailToAdminByIdId) {
+    id
+    sujet
+    name
+    firstname
+    emailUser
+    messageToAdmin
+  }
+}
+    `;
+
+/**
+ * __useGetMailToAdminByIdQuery__
+ *
+ * To run a query within a React component, call `useGetMailToAdminByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMailToAdminByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMailToAdminByIdQuery({
+ *   variables: {
+ *      getMailToAdminByIdId: // value for 'getMailToAdminByIdId'
+ *   },
+ * });
+ */
+export function useGetMailToAdminByIdQuery(baseOptions: Apollo.QueryHookOptions<GetMailToAdminByIdQuery, GetMailToAdminByIdQueryVariables> & ({ variables: GetMailToAdminByIdQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetMailToAdminByIdQuery, GetMailToAdminByIdQueryVariables>(GetMailToAdminByIdDocument, options);
+      }
+export function useGetMailToAdminByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMailToAdminByIdQuery, GetMailToAdminByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetMailToAdminByIdQuery, GetMailToAdminByIdQueryVariables>(GetMailToAdminByIdDocument, options);
+        }
+export function useGetMailToAdminByIdSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetMailToAdminByIdQuery, GetMailToAdminByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetMailToAdminByIdQuery, GetMailToAdminByIdQueryVariables>(GetMailToAdminByIdDocument, options);
+        }
+export type GetMailToAdminByIdQueryHookResult = ReturnType<typeof useGetMailToAdminByIdQuery>;
+export type GetMailToAdminByIdLazyQueryHookResult = ReturnType<typeof useGetMailToAdminByIdLazyQuery>;
+export type GetMailToAdminByIdSuspenseQueryHookResult = ReturnType<typeof useGetMailToAdminByIdSuspenseQuery>;
+export type GetMailToAdminByIdQueryResult = Apollo.QueryResult<GetMailToAdminByIdQuery, GetMailToAdminByIdQueryVariables>;
+export const GetAllMailToAdminDocument = gql`
+    query GetAllMailToAdmin {
+  getAllMailToAdmin {
+    id
+    sujet
+    name
+    firstname
+    emailUser
+    messageToAdmin
+  }
+}
+    `;
+
+/**
+ * __useGetAllMailToAdminQuery__
+ *
+ * To run a query within a React component, call `useGetAllMailToAdminQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllMailToAdminQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllMailToAdminQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllMailToAdminQuery(baseOptions?: Apollo.QueryHookOptions<GetAllMailToAdminQuery, GetAllMailToAdminQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllMailToAdminQuery, GetAllMailToAdminQueryVariables>(GetAllMailToAdminDocument, options);
+      }
+export function useGetAllMailToAdminLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllMailToAdminQuery, GetAllMailToAdminQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllMailToAdminQuery, GetAllMailToAdminQueryVariables>(GetAllMailToAdminDocument, options);
+        }
+export function useGetAllMailToAdminSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetAllMailToAdminQuery, GetAllMailToAdminQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetAllMailToAdminQuery, GetAllMailToAdminQueryVariables>(GetAllMailToAdminDocument, options);
+        }
+export type GetAllMailToAdminQueryHookResult = ReturnType<typeof useGetAllMailToAdminQuery>;
+export type GetAllMailToAdminLazyQueryHookResult = ReturnType<typeof useGetAllMailToAdminLazyQuery>;
+export type GetAllMailToAdminSuspenseQueryHookResult = ReturnType<typeof useGetAllMailToAdminSuspenseQuery>;
+export type GetAllMailToAdminQueryResult = Apollo.QueryResult<GetAllMailToAdminQuery, GetAllMailToAdminQueryVariables>;
 export const GetParkourByIdDocument = gql`
     query GetParkourById($getParkourByIdId: Float!) {
   getParkourById(id: $getParkourByIdId) {

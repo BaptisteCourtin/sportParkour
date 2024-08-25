@@ -1,12 +1,14 @@
-import React from "react";
 import { render, fireEvent } from "@testing-library/react";
 import { MockedProvider } from "@apollo/client/testing";
-import LikeParkour from "@/components/user/likeParkour";
+
 import {
   useCreateJoinUserParkourFavorisMutation,
   useDeleteJoinUserParkourFavorisMutation,
 } from "@/types/graphql";
+
 import toast from "react-hot-toast";
+
+import LikeParkour from "@/components/user/likeParkour";
 
 jest.mock("@/types/graphql");
 jest.mock("react-hot-toast");

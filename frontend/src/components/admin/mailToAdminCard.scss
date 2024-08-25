@@ -1,0 +1,24 @@
+.mailToAdminCard {
+  width: 100%;
+  background-color: var(--middle);
+
+  margin: var(--espace) 0;
+  padding: var(--espace);
+  border-radius: var(--radius);
+
+  .user {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: var(--gap);
+  }
+
+  .message {
+    margin: var(--espace) 0;
+  }
+
+  button {
+    background-color: var(--red);
+  }
+}

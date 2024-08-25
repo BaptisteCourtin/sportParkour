@@ -1,9 +1,11 @@
-import { fireEvent, render, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import Login from "@/pages/auth/login";
+import { fireEvent, render, waitFor } from "@testing-library/react";
 import { MockedProvider } from "@apollo/client/testing";
 import { MemoryRouterProvider } from "next-router-mock/MemoryRouterProvider";
+
 import { AUTHENTIFICATION } from "@/requests/queries/auth.queries";
+
+import Login from "@/pages/auth/login";
 
 // Mock du module next/router pour contrôler la navigation
 jest.mock("next/router", () => require("next-router-mock"));

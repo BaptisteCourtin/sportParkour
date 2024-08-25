@@ -9,6 +9,7 @@ import ImageEpreuveEntity from "../entities/imageEpreuve.entity";
 import ImageParkourEntity from "../entities/imageParkour.entity";
 import ResetPasswordEntity from "../entities/resetPassword.entity";
 import ReportEntity from "../entities/reportEntity.entity";
+import MailToAdminEntity from "../entities/mailToAdmin.entity";
 
 // -----------
 // AVEC DOCKER
@@ -31,6 +32,7 @@ import ReportEntity from "../entities/reportEntity.entity";
 //     ImageParkourEntity,
 //     ResetPasswordEntity,
 //     ReportEntity,
+//     MailToAdminEntity,
 //   ], // mettre les entities ici
 
 //   synchronize: false,
@@ -54,6 +56,7 @@ export default new DataSource({
     ImageParkourEntity,
     ResetPasswordEntity,
     ReportEntity,
+    MailToAdminEntity,
   ], // mettre les entities
   synchronize: true, // à ne pas utiliser en production - cré les tables et ???
   // logging: ["error", "query"], // à ne pas utiliser en production - écrit les queries dans la console

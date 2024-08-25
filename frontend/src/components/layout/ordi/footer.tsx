@@ -24,9 +24,12 @@ const footer = () => {
             >
               <FaMapLocationDot /> 20 rue de la brasserie, 44100 Nantes
             </a>
-            <a href="mailto:kevin75du75@gmail.com" target="_blank">
+            {/* <a href="mailto:kevin75du75@gmail.com" target="_blank">
               <FaEnvelope /> kevin75du75@gmail.com
-            </a>
+            </a> */}
+            <Link href="/infos/mailToAdmin">
+              <FaEnvelope /> kevin75du75@gmail.com
+            </Link>
             <a href="tel:+612345678" target="_blank">
               <FaPhone /> 06 14 54 50 64
             </a>

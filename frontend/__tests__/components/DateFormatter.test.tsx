@@ -1,6 +1,6 @@
-import React from "react";
-import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
+import { render, screen } from "@testing-library/react";
+
 import DateFormatter from "@/components/DateFormatter";
 
 describe("DateFormatter", () => {

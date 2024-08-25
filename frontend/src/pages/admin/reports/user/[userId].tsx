@@ -6,7 +6,7 @@ import { useGetUserByIdForPageReportLazyQuery } from "@/types/graphql";
 import NoteCard from "@/components/admin/reportUser/noteCard";
 import ReportCard from "@/components/admin/reportUser/reportCard";
 import SuppMalfratDialog from "@/components/suppression/suppMalfratDialog";
-import GoToHome from "@/components/goBack";
+import GoBack from "@/components/goBack";
 
 const OneUserByReports = () => {
   const router = useRouter();
@@ -36,7 +36,7 @@ const OneUserByReports = () => {
       ) : (
         data?.getUserByIdForPageReport && (
           <main className="userIdByReports">
-            <GoToHome />
+            <GoBack />
 
             <section className="infosMalfrat">
               <div>

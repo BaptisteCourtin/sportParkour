@@ -3,8 +3,8 @@ import datasource from "../src/lib/datasource";
 import datasource_test from "./lib/datasource_test";
 
 import assert from "assert";
-import { ApolloServer } from "@apollo/server";
 import { buildSchemaSync } from "type-graphql";
+import { ApolloServer } from "@apollo/server";
 
 import MessageEntity from "../src/entities/message.entity";
 import UserEntity from "../src/entities/user.entity";
@@ -14,12 +14,8 @@ import AuthResolver from "../src/resolvers/auth.resolver";
 // ---------------------------------------------------------------------------------
 // --- REQUESTS ---
 // ---------------------------------------------------------------------------------
-import {
-  GET_USER_BY_TOKEN,
-  IS_ADMIN,
-  IS_CLIENT,
-} from "./requests/queries/user.queries";
-import { DELETE_USER, MODIFY_USER } from "./requests/mutations/user.mutations";
+import { GET_USER_BY_TOKEN } from "./requests/queries/user.queries";
+import { MODIFY_USER } from "./requests/mutations/user.mutations";
 
 import { AUTHENTIFICATION, LOGOUT } from "./requests/queries/auth.queries";
 import { INSCRIPTION } from "./requests/mutations/auth.mutations";

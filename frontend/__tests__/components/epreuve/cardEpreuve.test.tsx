@@ -1,9 +1,10 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
+import { render, screen } from "@testing-library/react";
+
 import { GetEpreuveByIdQuery } from "@/types/graphql";
+
 import CardEpreuve from "@/components/epreuve/cardEpreuve";
-import { useRouter } from "next/router";
 
 // Mock next/link to handle the Link component
 jest.mock("next/link", () => {

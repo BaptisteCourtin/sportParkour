@@ -15,11 +15,13 @@ const buttonForReport = ({
   malfratId,
   parkourId,
   commentaire,
+  removeReportFromList,
 }: {
   reportId: number;
   malfratId: string;
   parkourId: number;
   commentaire: string;
+  removeReportFromList: any;
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -47,6 +49,7 @@ const buttonForReport = ({
       },
       onCompleted(data) {
         toast.success(data.letNote.message);
+        removeReportFromList(+reportId);
       },
       onError(error) {
         toast.error(error.message);
@@ -78,6 +81,7 @@ const buttonForReport = ({
       },
       onCompleted(data) {
         toast.success(data.deleteNoteAndAddOneReportValide.message);
+        removeReportFromList(+reportId);
       },
       onError(error) {
         toast.error(error.message);

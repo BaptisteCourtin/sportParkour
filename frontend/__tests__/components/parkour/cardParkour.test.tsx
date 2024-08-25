@@ -1,17 +1,9 @@
-import React from "react";
-import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import CardParkour from "@/components/parkour/cardParkour";
+import { render, screen } from "@testing-library/react";
+
 import { Difficulty } from "@/types/graphql";
-import Rating from "@mui/material/Rating";
-import {
-  FaLocationDot,
-  FaPersonRunning,
-  FaStopwatch,
-  FaArrowUpRightDots,
-  FaCircleArrowRight,
-} from "react-icons/fa6";
-import { title } from "process";
+
+import CardParkour from "@/components/parkour/cardParkour";
 
 // Mock Rating component
 jest.mock("@mui/material/Rating", () => (props: any) => (
