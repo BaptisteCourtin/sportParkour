@@ -39,7 +39,7 @@ describe("Footer", () => {
     expect(
       screen.getByText("20 rue de la brasserie, 44100 Nantes")
     ).toBeInTheDocument();
-    expect(screen.getByText("kevin75du75@gmail.com")).toBeInTheDocument();
+    expect(screen.getByText("Contacter l'admin")).toBeInTheDocument();
     expect(screen.getByText("06 14 54 50 64")).toBeInTheDocument();
   });
 
@@ -82,9 +82,10 @@ describe("Footer", () => {
       "href",
       "https://www.google.fr/maps/place/20+Rue+de+la+Brasserie,+44100+Nantes/@47.2086777,-1.5763371,17"
     );
-    expect(
-      screen.getByText("kevin75du75@gmail.com").closest("a")
-    ).toHaveAttribute("href", "mailto:kevin75du75@gmail.com");
+    expect(screen.getByText("Contacter l'admin").closest("a")).toHaveAttribute(
+      "href",
+      "/infos/mailToAdmin"
+    );
     expect(screen.getByText("06 14 54 50 64").closest("a")).toHaveAttribute(
       "href",
       "tel:+612345678"

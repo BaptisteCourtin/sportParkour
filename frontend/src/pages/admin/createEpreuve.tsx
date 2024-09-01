@@ -57,9 +57,7 @@ const createEpreuve = () => {
     resolver: yupResolver(createEpreuveSchema),
   });
 
-  const [createEpreuve, { data, loading, error }] = useCreateEpreuveMutation({
-    fetchPolicy: "no-cache",
-  });
+  const [createEpreuve, { data, loading, error }] = useCreateEpreuveMutation();
 
   const handleCreateEpreuve = async (
     dataForm: EpreuveCreateEntity

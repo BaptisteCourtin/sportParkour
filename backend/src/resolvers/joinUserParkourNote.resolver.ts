@@ -77,15 +77,17 @@ export default class JoinUserParkourNoteResolver {
 
       if (result) {
         if (joinUserParkourLastNote) {
+          // modify
           await new ParkourService().changeOneNoteByParkourId(
             +joinUserParkourLastNote.note,
             +result.parkour_id,
             +result.note
           );
         } else {
+          // create
           await new ParkourService().addOneNoteByParkourId(
-            result.parkour_id,
-            result.note
+            +result.parkour_id,
+            +result.note
           );
         }
 

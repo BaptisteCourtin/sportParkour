@@ -47,7 +47,10 @@ const OneParkour = () => {
   } = useIsClientQuery();
 
   // --- GET INFOS PARKOUR && INFOS JOIN-USER-PARKOUR ---
-  const [getParkour, { data, loading, error }] = useGetParkourByIdLazyQuery();
+  const [getParkour, { data, loading, error }] = useGetParkourByIdLazyQuery({
+    fetchPolicy: "cache-and-network",
+  });
+
   const [
     getIsParkourFav,
     {
@@ -55,7 +58,9 @@ const OneParkour = () => {
       loading: loadingIsParkourFav,
       error: errorIsParkourFav,
     },
-  ] = useGetUserFavByTokenAndParkourIdLazyQuery();
+  ] = useGetUserFavByTokenAndParkourIdLazyQuery({
+    fetchPolicy: "cache-and-network",
+  });
 
   const [
     getParkourNote,
@@ -64,7 +69,9 @@ const OneParkour = () => {
       loading: loadingIsParkourNote,
       error: errorIsParkourNote,
     },
-  ] = useGetUserNoteByTokenAndParkourIdLazyQuery();
+  ] = useGetUserNoteByTokenAndParkourIdLazyQuery({
+    fetchPolicy: "cache-and-network",
+  });
 
   useEffect(() => {
     if (router.isReady && id) {

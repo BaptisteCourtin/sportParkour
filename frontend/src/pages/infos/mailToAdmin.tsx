@@ -63,8 +63,6 @@ const mailToAdmin = () => {
       sujet: choosenSujetMailToAdmin,
     };
 
-    console.log(dataForm, dataAggregate);
-
     createMailToAdmin({
       variables: { infos: dataAggregate },
       onCompleted(data) {

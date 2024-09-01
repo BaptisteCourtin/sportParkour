@@ -12,7 +12,7 @@ const mailReceived = () => {
   const [mails, setMails] = useState<MailToAdminEntity[]>([]);
 
   const [getAllMailToAdmin, { data, loading, error }] =
-    useGetAllMailToAdminLazyQuery({ fetchPolicy: "no-cache" });
+    useGetAllMailToAdminLazyQuery();
 
   const makeTheRequestForMail = () => {
     getAllMailToAdmin({

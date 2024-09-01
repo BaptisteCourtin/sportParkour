@@ -24,6 +24,7 @@ const reportCard = ({
             malfratId={malfratId}
             parkourId={report.parkour.id}
             commentaire={report.commentaireEnFaute}
+            removeReportFromList={null}
           />
         ) : null}
       </div>

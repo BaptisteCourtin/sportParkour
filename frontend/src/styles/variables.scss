@@ -40,8 +40,8 @@
   --back: rgb(234, 243, 241);
   --middle: rgb(255, 255, 255);
 
-  --darkBlue: rgb(0, 38, 84);
-  --blue: rgb(62, 144, 162);
+  --darkBlue: rgb(1, 94, 255);
+  --blue: rgb(49, 123, 139);
   --yellow: rgb(255, 204, 0);
   --red: rgb(206, 17, 38);
   --white: rgb(255, 255, 255);
@@ -51,8 +51,8 @@
 :root .darkTheme {
   --text1: rgb(255, 255, 255);
   --text2: rgb(255, 255, 255);
-  --text2Trans: rgba(255, 255, 255, 0.5);
+  --text2Trans: rgba(255, 255, 255, 0.6);
 
-  --back: rgb(32, 34, 46);
-  --middle: rgb(60, 63, 83);
+  --back: #20222e;
+  --middle: #3c3f53;
 }

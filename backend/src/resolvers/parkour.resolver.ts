@@ -52,8 +52,8 @@ export default class ParkourResolver {
       await new ParkourService().getTop20ParkourBySearch(
         triParField,
         triParSort,
-
         startPage,
+
         city,
         lengthMin,
         lengthMax,

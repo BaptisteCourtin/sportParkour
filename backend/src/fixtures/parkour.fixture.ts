@@ -77,9 +77,10 @@ export async function createParkours(
       // create image
       const image = new ImageParkourEntity();
       image.id = indexImage;
-      indexImage++;
       image.lien = faker.image.url();
       image.isCouverture = isCouverture;
+
+      indexImage++;
       imagesParkour.push(image);
     }
     // met les images en bdd

@@ -62,12 +62,14 @@ export default function Home() {
 
   // --- SEARCH BY ALL ---
   const [get20Parkour, { data, loading, error }] =
-    useGetTop20ParkourBySearchLazyQuery();
+    useGetTop20ParkourBySearchLazyQuery({ fetchPolicy: "cache-and-network" });
 
   const [
     getTheParkourTotal,
     { data: dataTotal, loading: loadingTotal, error: errorTotal },
-  ] = useGetTheParkourTotalForSearchLazyQuery();
+  ] = useGetTheParkourTotalForSearchLazyQuery({
+    fetchPolicy: "cache-and-network",
+  });
 
   const makeTheRequest = () => {
     get20Parkour({

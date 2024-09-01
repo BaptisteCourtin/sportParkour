@@ -29,6 +29,8 @@ body {
 
   font-size: var(--fs-base);
   font-family: "Instrument Sans", sans-serif;
+
+  white-space: pre-line; // gère les retour à la ligne des data
 }
 
 a {

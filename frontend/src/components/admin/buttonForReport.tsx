@@ -38,9 +38,7 @@ const buttonForReport = ({
   const [
     letNote,
     { data: dataLetNote, loading: loadingLetNote, error: errorLetNote },
-  ] = useLetNoteMutation({
-    fetchPolicy: "no-cache",
-  });
+  ] = useLetNoteMutation();
 
   const handleLetNote = () => {
     letNote({
@@ -67,9 +65,7 @@ const buttonForReport = ({
       loading: loadingDeleteNoteAndReport,
       error: errorDeleteNoteAndReport,
     },
-  ] = useDeleteNoteAndAddOneReportValideMutation({
-    fetchPolicy: "no-cache",
-  });
+  ] = useDeleteNoteAndAddOneReportValideMutation();
 
   const handleSuppAndReport = () => {
     deleteNoteAndReport({

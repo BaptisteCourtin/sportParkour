@@ -13,7 +13,7 @@ const multerMid = multer({
   },
 });
 
-// put profile picture in cloud
+// put picture in cloud
 app.post(
   "/uploadPhoto",
   multerMid.single("file"),

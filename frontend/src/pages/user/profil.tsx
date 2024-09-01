@@ -29,7 +29,7 @@ const profil = () => {
   } = useIsAdminQuery();
 
   const [getUser, { data, loading, error }] = useGetUserByTokenLazyQuery({
-    fetchPolicy: "no-cache",
+    fetchPolicy: "cache-and-network",
   });
 
   useEffect(() => {

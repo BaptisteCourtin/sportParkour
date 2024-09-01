@@ -110,8 +110,8 @@ class ParkourService {
   async getTop20ParkourBySearch(
     triParField: string,
     triParSort: "ASC" | "DESC",
-
     startPage?: number,
+
     city?: string,
     lengthMin?: number,
     lengthMax?: number,
@@ -204,7 +204,7 @@ class ParkourService {
     const parkour: ParkourEntity = await this.getParkourById(parkourId);
 
     const newNbVote = parkour.nbVote + 1;
-    const newNote = (parkour.note * parkour.nbVote + note) / newNbVote;
+    let newNote = (+parkour.note * parkour.nbVote + note) / newNbVote;
 
     const data: ParkourUpdateNoteEntity = {
       nbVote: newNbVote,

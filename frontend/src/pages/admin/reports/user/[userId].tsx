@@ -14,7 +14,7 @@ const OneUserByReports = () => {
 
   // --- GET INFOS USER ---
   const [getUserReports, { data, loading, error }] =
-    useGetUserByIdForPageReportLazyQuery();
+    useGetUserByIdForPageReportLazyQuery({ fetchPolicy: "cache-and-network" });
 
   useEffect(() => {
     if (router.isReady && userId) {

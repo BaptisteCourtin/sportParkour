@@ -133,9 +133,7 @@ const modifyOneParkour = () => {
   const [
     modifyParkour,
     { data: dataModify, loading: loadingModify, error: errorModify },
-  ] = useModifyParkourMutation({
-    fetchPolicy: "no-cache",
-  });
+  ] = useModifyParkourMutation();
 
   const [choosenDifficulty, setChoosenDifficulty] = useState<Difficulty>();
 
@@ -146,9 +144,7 @@ const modifyOneParkour = () => {
       loading: loadingImageModify,
       error: errorImageModify,
     },
-  ] = useModifyImageCouvertureParkourMutation({
-    fetchPolicy: "no-cache",
-  });
+  ] = useModifyImageCouvertureParkourMutation();
 
   const handleModifyParkour = async (
     dataForm: ParkourUpdateEntity

@@ -31,9 +31,7 @@ const suppMalfratDialog = ({ dataMalfrat }) => {
       loading: loadingDeleteUser,
       error: errorDeleteUser,
     },
-  ] = useDeleteUserByAdminMutation({
-    fetchPolicy: "no-cache",
-  });
+  ] = useDeleteUserByAdminMutation();
 
   function handleDeleteUser(idUserToSupp: string): void {
     if (idUserToSupp) {

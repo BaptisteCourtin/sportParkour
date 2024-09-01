@@ -59,7 +59,7 @@ function Reset() {
   const [
     checkToken,
     { data: dataCheck, loading: loadingCheck, error: errorCheck },
-  ] = useCheckResetTokenValidityLazyQuery();
+  ] = useCheckResetTokenValidityLazyQuery({ fetchPolicy: "no-cache" });
 
   const [
     changePassword,

@@ -54,7 +54,7 @@ const recherche = () => {
       loading: loadingUsersWithReports,
       error: errorUsersWithReports,
     },
-  ] = useGetUsersWithReportsLazyQuery();
+  ] = useGetUsersWithReportsLazyQuery({ fetchPolicy: "no-cache" });
 
   const makeTheRequestForUser = () => {
     getUsersWithReports({

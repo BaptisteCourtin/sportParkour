@@ -4,16 +4,21 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { jwtVerify } from "jose";
 
-interface Payload {
-  email: string;
-  role: string;
-}
-
 // l'appel de dotenv est fait dans le next.config
 const SECRET_KEY = process.env.SECRET_KEY || "";
 const LOGIN_URL = "/auth/login";
 
 // -----
+
+interface Payload {
+  email: string;
+  role: string;
+}
+
+// check pour ces routes là
+export const config = {
+  matcher: ["/admin/:path*", "/user/:path*"],
+};
 
 export default async function middleware(request: NextRequest) {
   const token = request.cookies.get("tokenParkour")?.value;
@@ -68,8 +73,3 @@ function handleInvalidToken(request: NextRequest): NextResponse {
   response.cookies.delete("tokenParkour");
   return response;
 }
-
-// check pour ces routes là
-export const config = {
-  matcher: ["/admin/:path*", "/user/:path*"],
-};

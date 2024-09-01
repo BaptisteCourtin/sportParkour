@@ -99,7 +99,6 @@ async function main() {
             user = await new UserService().getUserByEmail(verify.payload.email);
           } catch (err) {
             console.error(err);
-            //potentiellement gérer l'erreur, est ce que l'erreur est liée au fait que le token soit expiré? est ce qu'on le renouvelle? ou est ce autre chose? etc...
           }
         }
         return { req, res, user };

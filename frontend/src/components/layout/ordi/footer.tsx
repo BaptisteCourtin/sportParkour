@@ -28,7 +28,7 @@ const footer = () => {
               <FaEnvelope /> kevin75du75@gmail.com
             </a> */}
             <Link href="/infos/mailToAdmin">
-              <FaEnvelope /> kevin75du75@gmail.com
+              <FaEnvelope /> Contacter l'admin
             </Link>
             <a href="tel:+612345678" target="_blank">
               <FaPhone /> 06 14 54 50 64

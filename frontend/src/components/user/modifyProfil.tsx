@@ -74,9 +74,7 @@ const modifyProfil = ({ dataProfil, setIsModifMode, isModifMode }) => {
   const [
     modifyUser,
     { data: dataModify, loading: loadingModify, error: errorModify },
-  ] = useModifyUserMutation({
-    fetchPolicy: "no-cache",
-  });
+  ] = useModifyUserMutation();
 
   const handleModifyUser = async ({
     imageProfil,

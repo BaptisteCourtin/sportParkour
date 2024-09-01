@@ -99,7 +99,7 @@ class JoinUserParkourNoteService {
     const infos = {
       user_id: userId,
       parkour_id: data.parkour_id,
-      note: data.note,
+      note: +data.note,
       commentaire: data.commentaire,
     };
 

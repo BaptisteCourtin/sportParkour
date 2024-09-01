@@ -96,9 +96,7 @@ const modifyOneEpreuve = () => {
   const [
     modifyEpreuve,
     { data: dataModify, loading: loadingModify, error: errorModify },
-  ] = useModifyEpreuveMutation({
-    fetchPolicy: "no-cache",
-  });
+  ] = useModifyEpreuveMutation();
 
   const [
     modifyImageEpreuve,
@@ -107,9 +105,7 @@ const modifyOneEpreuve = () => {
       loading: loadingImageModify,
       error: errorImageModify,
     },
-  ] = useModifyImageCouvertureEpreuveMutation({
-    fetchPolicy: "no-cache",
-  });
+  ] = useModifyImageCouvertureEpreuveMutation();
 
   const handleModifyEpreuve = async (
     dataForm: EpreuveUpdateEntity

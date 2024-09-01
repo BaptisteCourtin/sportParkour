@@ -71,9 +71,7 @@ const createParkour = () => {
     resolver: yupResolver(createParkourSchema),
   });
 
-  const [createParkour, { data, loading, error }] = useCreateParkourMutation({
-    fetchPolicy: "no-cache",
-  });
+  const [createParkour, { data, loading, error }] = useCreateParkourMutation();
 
   const [choosenDifficulty, setChoosenDifficulty] = useState<Difficulty>();
 

@@ -61,9 +61,7 @@ const buttonForComment = ({
       loading: loadingDeleteNoteAndReport,
       error: errorDeleteNoteAndReport,
     },
-  ] = useDeleteNoteAndAddOneReportValideAndCreateReportMutation({
-    fetchPolicy: "no-cache",
-  });
+  ] = useDeleteNoteAndAddOneReportValideAndCreateReportMutation();
 
   const handleSuppAndCreateReport = () => {
     deleteNoteAndCreateReport({

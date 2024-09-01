@@ -9,7 +9,7 @@ import BigTriPar from "@/components/bigTriPar";
 
 const notes = () => {
   const [getNotes, { data, loading, error }] =
-    useGetAllUserNoteByTokenLazyQuery();
+    useGetAllUserNoteByTokenLazyQuery({ fetchPolicy: "cache-and-network" });
 
   useEffect(() => {
     getNotes({
@@ -34,49 +34,49 @@ const notes = () => {
           {data?.getAllUserNoteByToken
             .slice() // c'est en read only donc sans slice je peux pas manip
             .sort(function compare(a, b) {
-              if (tri === "default") {
+              if (tri === "id_DESC") {
                 if (a.parkour.id > b.parkour.id) return -1;
                 return 1;
               }
               // nom
-              else if (tri === "nomAZ") {
+              else if (tri === "title_ASC") {
                 if (a.parkour.title < b.parkour.title) return -1;
                 return 1;
-              } else if (tri === "nomZA") {
+              } else if (tri === "title_DESC") {
                 if (a.parkour.title > b.parkour.title) return -1;
                 return 1;
               }
               // temps
-              else if (tri === "tempsCroissant") {
+              else if (tri === "time_ASC") {
                 if (a.parkour.time && b.parkour.time) {
                   if (a.parkour.time < b.parkour.time) return -1;
                 }
                 return 1;
-              } else if (tri === "tempsDecroissant") {
+              } else if (tri === "time_DESC") {
                 if (a.parkour.time && b.parkour.time) {
                   if (a.parkour.time > b.parkour.time) return -1;
                 }
                 return 1;
               }
               // longueur
-              else if (tri === "longueurCroissant") {
+              else if (tri === "length_ASC") {
                 if (a.parkour.length && b.parkour.length) {
                   if (a.parkour.length < b.parkour.length) return -1;
                 }
                 return 1;
-              } else if (tri === "longueurDecroissant") {
+              } else if (tri === "length_DESC") {
                 if (a.parkour.length && b.parkour.length) {
                   if (a.parkour.length > b.parkour.length) return -1;
                 }
                 return 1;
               }
               // note
-              else if (tri === "noteCroissant") {
+              else if (tri === "note_ASC") {
                 if (a.parkour.note && b.parkour.note) {
                   if (a.parkour.note < b.parkour.note) return -1;
                 }
                 return 1;
-              } else if (tri === "noteDecroissant") {
+              } else if (tri === "note_DESC") {
                 if (a.parkour.note && b.parkour.note) {
                   if (a.parkour.note > b.parkour.note) return -1;
                 }
