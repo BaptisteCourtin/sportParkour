@@ -29,7 +29,6 @@ services:
       - "4000:4000"
     volumes:
       - "./backend/src:/app/src"
-      # - "./backend/sportParkour.sqlite:/app/sportParkour.sqlite"
     env_file:
       - ./.env
     healthcheck:
