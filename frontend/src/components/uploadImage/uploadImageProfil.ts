@@ -8,9 +8,7 @@ export const uploadImageProfil = async (imageProfil: any): Promise<string> => {
     formData.append("file", imageProfil[0], imageProfil[0].name);
 
     const resultImage = await axiosInstanceImage.post("/uploadPhoto", formData);
-    imageProfilLien =
-      "https://storage.cloud.google.com" +
-      resultImage.data.split("https://storage.googleapis.com")[1];
+    imageProfilLien = resultImage.data;
 
     return imageProfilLien;
   } catch (error) {

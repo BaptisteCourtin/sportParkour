@@ -19,9 +19,7 @@ export const uploadImages = async (
         formData
       );
 
-      const imageLien =
-        "https://storage.cloud.google.com" +
-        resultImage.data.split("https://storage.googleapis.com")[1];
+      const imageLien = resultImage.data;
 
       let isCouv = false;
       if (isMyCouverture === index) {
