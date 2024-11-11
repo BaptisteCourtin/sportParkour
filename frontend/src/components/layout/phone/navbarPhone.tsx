@@ -11,6 +11,7 @@ import {
 // navbar phone (an bas) avec liens pages
 const navbarPhone = () => {
   const router = useRouter();
+
   return (
     <nav className="navbarPhone elementsNavigation">
       <Link
